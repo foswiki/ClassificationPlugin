@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1380194836" format="1.1" reprev="15" version="15"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1389971526" format="1.1" reprev="15" version="16"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -12,6 +12,7 @@ See the CategoryTemplate.
    * KEYWORDS: keywords to filter for
    * TAG: tags to be searching for in this category
    * SHOWHEADER: display anchors, defaults to off
+   * EXCLUDE: categories to be excluded from the list
 
 %ENDSECTION{name="documentation" type="section"}%
 
@@ -22,7 +23,7 @@ See the CategoryTemplate.
   "%HIERARCHY{
      web="%BASEWEB%"
      top="%IF{"defined CAT" then="%CAT%" else="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%"
-     exclude="%IF{"defined CAT" then="%CAT%" else="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%"
+     exclude="%IF{"defined CAT" then="%CAT%" else="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%%IF{"defined EXCLUDE" then="|%EXCLUDE%"}%"
      depth="2"
      format="($trunctitle);$topic;$origweb$n"
    }%"
@@ -94,7 +95,6 @@ See the CategoryTemplate.
 &copy; 2006-2013 Michael Daum http://michaeldaumconsulting.com
 
 %DBCALL{"Applications.GnuGeneralPublicLicense" section="notice"}%
-
 
 %META:FORM{name="Applications.ApplicationTopic"}%
 %META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%

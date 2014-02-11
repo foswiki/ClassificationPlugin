@@ -103,6 +103,8 @@ weighted matching coefficient.
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  11 Feb 2014: | implemented =sort= paramenter for %HIERARCHY; protect against possible infinite recursion on mal-formed category data |
+|  13 Nov 2013: | implement drag&drop interface for hierarchy widget |
 |  07 Nov 2013: | rewrite of hierarchy widget using Foswiki:Extensions/JSTreeContrib; new !TopicType !SeoTopic |
 |  07 Jan 2013: | first public releaes |
 |  30 Oct 2007: | first check-in to svn |

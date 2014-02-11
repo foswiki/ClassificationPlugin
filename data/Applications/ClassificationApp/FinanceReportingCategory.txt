@@ -1,12 +1,13 @@
-%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1357565280" format="1.1" version="2"}%
-%META:TOPICPARENT{name="FinanceAndPlaning"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1392032018" format="1.1" reprev="3" version="3"}%
+%META:TOPICPARENT{name="FinanceAndPlanning"}%
 %DBCALL{"Applications.ClassificationApp.RenderCategory"}%
 
 
-
 %META:FORM{name="Applications.ClassificationApp.Category"}%
-%META:FIELD{name="TopicType" attributes="" title="TopicType" value="Category, CategorizedTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="Category, CategorizedTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Reporting"}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
-%META:FIELD{name="Category" attributes="" title="Category" value="FinanceAndPlaning"}%
+%META:FIELD{name="Category" attributes="" title="Category" value="FinanceAndPlanning"}%
 %META:FIELD{name="Icon" attributes="" title="Icon" value="chart_curve.png"}%
+%META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%
+%META:FIELD{name="Order" attributes="" title="Order" value=""}%

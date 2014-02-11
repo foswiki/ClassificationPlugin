@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1383819617" format="1.1" reprev="19" version="19"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1390903057" format="1.1" reprev="20" version="21"}%
 %META:TOPICPARENT{name="TopicType"}%
 %TOC%
 %DBCALL{"Applications.RenderTopicInstaller" 
@@ -17,7 +17,7 @@ Categories themselves are CategorizedTopics thus implementing a hierarchy.
 See also: See [[CategorizedTopic]], [[ClassifiedTopic]], [[TaggedTopic]], [[CategoryTemplate]], [[CategoryViewTemplate]], [[CategoryEditTemplate]]
 %ENDSECTION{name="documentation" type="section"}%
 
-%STARTINCLUDE%<!-- -->
+<verbatim class="foswikiHidden">
 %TWISTY{
   link="%BUTTON{
     "%IF{"defined 'LABEL'" then="%LABEL%" else="%MAKETEXT{"New"}%"}%" 
@@ -27,9 +27,12 @@ See also: See [[CategorizedTopic]], [[ClassifiedTopic]], [[TaggedTopic]], [[Cate
 }%
 %DBCALL{"Applications.ClassificationApp.RenderCategoryFactory"}%
 %ENDTWISTY%
+</verbatim>
 
+%STARTINCLUDE%<!-- -->
 %DBCALL{"Applications.ClassificationApp.RenderCategoryBrowser" 
   THEWEB="%URLPARAM{"web" default="%BASEWEB%"}%"
+  MODE="edit"
 }%<!-- -->%STOPINCLUDE%
 
 ---++ %TOPIC% form

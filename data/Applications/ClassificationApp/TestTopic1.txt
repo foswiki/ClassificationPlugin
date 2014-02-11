@@ -8,9 +8,9 @@
    * DISTANCE{from="foo" to="IntranetDirectory"}: %DISTANCE{from="foo" to="IntranetDirectory"}%
    * DISTANCE{from="TestCategory5" to="ChannelManagementCategory"}: %DISTANCE{from="TestCategory5" to="ChannelManagementCategory"}%
    * DISTANCE{from="TopCategory" to="BottomCategory" format="min=$min, max=$max"}: %DISTANCE{from="TopCategory" to="BottomCategory" format="min=$min, max=$max"}%
-   * DISTANCE{from="TopCategory" to="FinanceAndPlaning"}: %DISTANCE{from="TopCategory" to="FinanceAndPlaning"}%
-   * DISTANCE{from="TestCategory8" to="FinanceAndPlaning"}: %DISTANCE{from="TestCategory8" to="FinanceAndPlaning" abs="off"}%
-   * DISTANCE{from="FinanceAndPlaning" to="TestCategory8"}: %DISTANCE{from="FinanceAndPlaning" to="TestCategory8" abs="off"}%
+   * DISTANCE{from="TopCategory" to="FinanceAndPlanning"}: %DISTANCE{from="TopCategory" to="FinanceAndPlanning"}%
+   * DISTANCE{from="TestCategory8" to="FinanceAndPlanning"}: %DISTANCE{from="TestCategory8" to="FinanceAndPlanning" abs="off"}%
+   * DISTANCE{from="FinanceAndPlanning" to="TestCategory8"}: %DISTANCE{from="FinanceAndPlanning" to="TestCategory8" abs="off"}%
 </verbatim>
 
 ---++ Topics without a category

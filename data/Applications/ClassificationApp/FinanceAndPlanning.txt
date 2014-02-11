@@ -9,4 +9,3 @@
 %META:FIELD{name="Category" attributes="" title="Category" value="DepartmentsCategory"}%
 %META:FIELD{name="Icon" attributes="" title="Icon" value="coins.png"}%
 %META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%
-%META:TOPICMOVED{by="micha" date="1372239615" from="Applications/ClassificationApp.FinanceAndPlaning" to="Applications/ClassificationApp.FinanceAndPlanning"}%

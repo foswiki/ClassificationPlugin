@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1374652917" format="1.1" reprev="14" version="14"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1389972317" format="1.1" reprev="16" version="16"}%
 ---+!! %TOPICTITLE%
 
 ---++ %MAKETEXT{"Welcome"}%
@@ -41,30 +41,8 @@
 %STOPCHAPTER%
 </div>
 </div>
-<div class="foswikiRow">
-<div class="foswikiCol12">
 ---
-</div>
-</div>
-<div class="foswikiRow">
-<div class="foswikiCol4">
----++ %MAKETEXT{"Topic list"}%
-   * ...
-   * ...
-   * ...
-
-%STOPCHAPTER%
-</div>
-<div class="foswikiCol4 border">
----++ %MAKETEXT{"Quick links"}%
-   * [[Categories]]
-   * [[ClassifiedTopics]]
-   * [[WebPreferences]]
-   * [[WebTopicList]]
-   * [[WebStatistics]]
-   * [[WebNotify]]
-%STOPCHAPTER%
-</div>
+<div class="foswikiRow foswikiRedBullets">
 <div class="foswikiCol4 border">
 ---++ %MAKETEXT{"Topics tagged \"[_1]\"" args="%QUERYTAG%"}%
 <!--
@@ -74,21 +52,42 @@
 %DBQUERY{
   "Tag=~'\b%QUERYTAG%\b'"
   exclude=".*(Template|Formulare)$"
-  format="   1 [[$web.$topic]]"
+  format="   * [[$web.$topic]]"
   sort="on"
 }%
 %STOPCHAPTER%
 </div>
+<div class="foswikiCol4 border">
+---++ %MAKETEXT{"Quick links"}%
+   * ...
+   * ...
+   * ...
+
+%STOPCHAPTER%
 </div>
-</div><!-- end of grid -->
+<div class="foswikiCol4 border">
+---++ %MAKETEXT{"Tools"}%
+   * [[Categories]]
+   * [[ClassifiedTopics]]
+   * [[WebPreferences]]
+   * [[WebTopicList]]
+   * [[WebStatistics]]
+   * [[WebNotify]]
+%STOPCHAPTER%
+</div>
+</div>
 ---
+<div class="foswikiRow">
+<div class="foswikiCol12">
 ---++ %MAKETEXT{"Add more text here"}%
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam aliquam molestie scelerisque. Aenean accumsan ante cursus nisl dapibus sed rhoncus lacus bibendum. Quisque eros libero, feugiat porttitor semper quis, commodo et magna. Sed fermentum lacinia dolor vitae iaculis. Nulla dapibus commodo orci non lacinia. Aliquam erat volutpat. Proin in nulla ut libero fringilla iaculis vitae sit amet purus. Vivamus ut convallis lacus. Nulla turpis eros, tincidunt sit amet accumsan non, molestie ut eros. Nunc porta rhoncus dui vitae interdum. Praesent rhoncus mollis quam, vel egestas mi rhoncus at. Quisque vestibulum magna sed justo laoreet at ultricies quam adipiscing. Vivamus sit amet sem justo, id ultrices sem. Vestibulum risus ipsum, congue eu varius sit amet, luctus eget velit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
 
 %STOPCHAPTER%
-
-<!-- %JQREQUIRE{"hyphenator, loader, infinitescroll"}% %REDDOTINIT% %IMAGE% -->
+</div>
+</div>
+</div><!-- end of grid -->
+<!-- %JQREQUIRE{"hyphenator, loader, infinitescroll, sameheight" warn="off"}% %REDDOTINIT% %IMAGE% -->
 <!--
    * Set CACHEEXPIRE = +5min
    * Set CACHEABLE = on

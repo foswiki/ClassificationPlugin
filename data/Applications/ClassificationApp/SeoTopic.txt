@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1375429072" format="1.1" reprev="4" version="5"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1387370904" format="1.1" reprev="4" version="6"}%
 %META:TOPICPARENT{name="TopicType"}%
 %DBCALL{"Applications.RenderTopicInstaller" TEXT="Install '%TOPIC%' TopicType" TYPE="TopicType"}%
 
@@ -22,7 +22,7 @@
 | <nop>TopicTitle | text | 75 | | title of this topic | |
 | Summary | text | 75 | | Short description of the role of this topic | |
 | Tag | tag | 30 | | keywords | |
-| Category | cat | 1 |  | categories this blog entry is field to |  |
+| Category | cat | 1 | | categories this blog entry is field to |  |
 | HTML Title | text | 75 | | controls the title being added to the html page, defaults to <nop>TopicTitle if. <a href='#' id='clsGenerateTitle'>%MAKETEXT{"Generate title"}%</a> | |
 | Meta Description | textarea | 80x2 | | SEO description. Use a maximum of 160 chars for the description. <a href='#' id='clsGenerateDescription'>%MAKETEXT{"Generate description"}%</a> | |
 | Meta Keywords | text | 75 | | SEO keywords. Specify a comma separate list of keywords. <a href='#' id='clsGenerateKeywords'>%MAKETEXT{"Generate keywords"}%</a> | |

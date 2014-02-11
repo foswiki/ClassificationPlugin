@@ -95,14 +95,13 @@ sub init {
   foreach my $name (keys %{$this->{parents}}) {
     my $parent = $this->{parents}{$name};
 
-#print STDERR "parent name=$name\n";
-
     # make sure the parents are pointers, not the category names
     unless (ref($parent)) {
       $parent = $this->{hierarchy}->getCategory($name);
       if ($parent) {
         $this->{parents}{$name} = $parent;
       } else {
+        print STDERR "parent $name of $this->{name} NOT found in $this->{hierarchy}->{web}\n";
         delete $this->{parents}{$name};
       }
     }
@@ -655,8 +654,6 @@ sub importCategories {
       my %parents = map {$_->{name}=>1} $impChild->getParents();
       $parents{$this->{name}} = 1;
 
-#print STDERR "$name parents: ".join(", ", keys %parents)."\n";
-
       my $cat;# = $thisHierarchy->getCategory($name);
       $cat = $thisHierarchy->createCategory($name);
       $cat->setTitle($impChild->{title});
@@ -745,7 +742,7 @@ sub getAllBreadCrumbs {
   my @result = ();
   foreach my $parent (@parents) {
     next if $parent->{name} eq 'TopCategory';
-    foreach my $item ($parent->getAllBreadCrumbs($separator)) {
+    foreach my $item ($parent->getAllBreadCrumbs($separator, $seen)) {
       push @result, $item.$separator.$this->{name};
     }
   }
@@ -826,6 +823,7 @@ sub traverse {
   my $footer = $params->{footer} || '';
   my $format = $params->{format};
   my $separator = $params->{separator} || '';
+  my $sort = $params->{sort} || '';
 
   # use topformat if we render the top category and there's only one sibling
   if ($nrSiblings == 1) {
@@ -840,13 +838,11 @@ sub traverse {
     unless defined $format;
 
   # get sub-categories
-  my @children = 
-    sort {
-      $a->{order} <=> $b->{order} ||
-      $a->{title} cmp $b->{title}
-    } map {
-      $this->{children}{$_}
-    } grep {!/^BottomCategory$/} keys %{$this->{children}};
+  my @children = map {
+    $this->{children}{$_}
+  } grep {!/^BottomCategory$/} keys %{$this->{children}};
+
+  $this->{hierarchy}->sortCategories(\@children, $sort);
   my $nrChildren = scalar(@children);
 
   #writeDebug("traverse() nrCalls=$$nrCalls, depth=$depth, name=$this->{name} order=$this->{order}");

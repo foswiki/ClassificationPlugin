@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1380187029" format="1.1" reprev="7" version="7"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1384354026" format="1.1" reprev="9" version="9"}%
 %META:TOPICPARENT{name="TestCategory"}%
 %DBCALL{"Applications.ClassificationApp.RenderCategory"}%
 
@@ -6,7 +6,7 @@
 %META:FIELD{name="TopicType" title="TopicType" value="Category, CategorizedTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value="foo bar summary"}%
-%META:FIELD{name="Category" attributes="" title="Category" value="TestCategory, TestCategory16"}%
+%META:FIELD{name="Category" attributes="" title="Category" value="TestCategory, TopCategory"}%
 %META:FIELD{name="Icon" attributes="" title="Icon" value=""}%
 %META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%
-%META:FIELD{name="Order" attributes="" title="Order" value="50"}%
+%META:FIELD{name="Order" attributes="" title="Order" value="30"}%

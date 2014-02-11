@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1371559314" format="1.1" reprev="15" version="15"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1390384358" format="1.1" reprev="16" version="16"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.WikiTopicView"}%
@@ -7,7 +7,16 @@
 %{<verbatim class="tml">}%
 %TMPL:DEF{"beforetext"}%<div class="foswikiTopicInfo">
 %DBCALL{"Applications.ClassificationApp.RenderClassifiedTopicView" TITLE_EXTRA="%TMPL:P{"titleextra"}%" }%
-</div>%IF{"$'ENABLEQUALITYCHECK'='on'" then="$percntTMPL:P{\"qualitycheck\"}$percnt"}%%TMPL:END%
+</div>%IF{
+  "$'ENABLEQUALITYCHECK'='on' or $'ENABLEQUALITYCHECK'=~'\btags\b'" 
+  then="$percntTMPL:P{\"qualitycheck::tags\"}$percnt"
+}%%IF{
+  "$'ENABLEQUALITYCHECK'='on' or $'ENABLEQUALITYCHECK'=~'\bcats\b'" 
+  then="$percntTMPL:P{\"qualitycheck::cats\"}$percnt"
+}%%IF{
+  "$'ENABLEQUALITYCHECK'='on' or $'ENABLEQUALITYCHECK'=~'\bh1\b'" 
+  then="$percntTMPL:P{\"qualitycheck::h1\"}$percnt"
+}%%TMPL:END%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
@@ -33,16 +42,25 @@
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"qualitycheck"}%%TMPL:PREV%%TMPL:P{"qualitycheck::notags"}%%TMPL:END%
-%{</verbatim>}%
-
-%{<verbatim class="tml">}%
-%TMPL:DEF{"qualitycheck::notags"}%%IF{
-  "'%BASEWEB%.%BASETOPIC%'/TopicType=~'ClassifiedTopic' and '%BASEWEB%.%BASETOPIC%'/Tag=''" 
+%TMPL:DEF{"qualitycheck::tags"}%%IF{
+  "'%BASEWEB%.%BASETOPIC%'/TopicType=~'TaggedTopic' and '%BASEWEB%.%BASETOPIC%'/Tag=''" 
   then="<p class='foswikiWarningMessage'>This page needs tagging. Please add keywords describing what this page is about.</p>" 
 }%%TMPL:END%
 %{</verbatim>}%
 
+%{<verbatim class="tml">}%
+%TMPL:DEF{"qualitycheck::cats"}%%IF{
+  "'%BASEWEB%.%BASETOPIC%'/TopicType=~'CategorizedTopic' and '%BASEWEB%.%BASETOPIC%'/Category=''" 
+  then="<p class='foswikiWarningMessage'>This page needs to be categorized. Please file it to an appropriate category.</p>" 
+}%%TMPL:END%
+%{</verbatim>}%
+
+%{<verbatim class="tml">}%
+%TMPL:DEF{"qualitycheck::h1"}%%IF{
+  "'%BASEWEB%.%BASETOPIC%'/text=~'<h1' or '%BASEWEB%.%BASETOPIC%'/text=~'(^|\n)---\+[^\+]'" 
+  then="<p class='foswikiWarningMessage'>Multiple heading 1 detected. Please only use heading 2, 3, ... inside the content area.</p>" 
+}%%TMPL:END%
+%{</verbatim>}%
 
 %META:FORM{name="Applications.ApplicationTopic"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicView"}%

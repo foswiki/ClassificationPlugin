@@ -825,19 +825,14 @@ sub traverse {
 
   my $top = $params->{top} || 'TopCategory';
   my $nullFormat = $params->{nullformat} || '';
+  my $sort = $params->{sort} || '';
 
   my @result;
   my $nrCalls = 0;
   my $seen = {};
 
-  my @cats = 
-    sort {
-      $a->{order} <=> $b->{order} ||
-      $a->{title} cmp $b->{title}
-    } map {
-      $this->getCategory($_)
-    } split(/\s*,\s*/,$top);
-
+  my @cats = map { $this->getCategory($_) } split(/\s*,\s*/,$top);
+  $this->sortCategories(\@cats, $sort);
 
   my $nrSiblings = scalar(@cats);
   foreach my $cat (@cats) {
@@ -1000,6 +995,33 @@ sub filterCategories {
   }
 
   return @result;
+}
+
+###############################################################################
+sub sortCategories {
+  my ($this, $cats, $crit) = @_;
+
+  return unless $cats;
+
+  if ($crit eq 'order') {
+    @$cats = sort { $a->{order} <=> $b->{order} } @$cats;
+
+    return $cats;
+  }
+
+  if ($crit =~ /^(name|title)$/) {
+    @$cats = sort { $a->{$crit} cmp $b->{$crit} } @$cats;
+
+    return $cats;
+  }
+
+  @$cats =
+    sort { 
+      $a->{order} <=> $b->{order} || 
+      $a->{title} cmp $b->{title} 
+    } @$cats;
+
+  return $cats;
 }
 
 

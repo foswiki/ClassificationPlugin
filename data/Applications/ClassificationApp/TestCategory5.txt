@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1372264478" format="1.1" reprev="5" version="5"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1384354027" format="1.1" reprev="6" version="6"}%
 %META:TOPICPARENT{name="WebHome"}%
 %DBCALL{"Applications.ClassificationApp.RenderCategory"}%
 
@@ -10,4 +10,4 @@
 %META:FIELD{name="Category" attributes="" title="Category" value=""}%
 %META:FIELD{name="Icon" attributes="" title="Icon" value=""}%
 %META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%
-%META:FIELD{name="Order" attributes="" title="Order" value=""}%
+%META:FIELD{name="Order" attributes="" title="Order" value="50"}%

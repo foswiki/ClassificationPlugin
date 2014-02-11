@@ -11,4 +11,3 @@
 %META:FIELD{name="Icon" attributes="" title="Icon" value="coins.png"}%
 %META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%
 %META:FIELD{name="Order" attributes="" title="Order" value=""}%
-%META:TOPICMOVED{by="micha" date="1372239641" from="Applications/ClassificationApp.FinanceAndPlaningBudgetCategory" to="Applications/ClassificationApp.FinanceAndPlanningBudgetCategory"}%
