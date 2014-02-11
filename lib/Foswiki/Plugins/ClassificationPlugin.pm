@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2013 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2014 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,8 +17,8 @@ use strict;
 use warnings;
 use Foswiki::Contrib::DBCacheContrib::Search ();
 
-our $VERSION = '2.00';
-our $RELEASE = '2.00';
+our $VERSION = '2.10';
+our $RELEASE = '2.10';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'A topic classification plugin and application';
 

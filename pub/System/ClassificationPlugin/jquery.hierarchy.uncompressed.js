@@ -1,7 +1,7 @@
 /*
  * jQuery hierarchy plugin 0.10
  *
- * Copyright (c) 2013 Your Name http://michaeldaumconsulting.com
+ * Copyright (c) 2013-2014 Michael Daum http://michaeldaumconsulting.com
  *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
