@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1383817823" format="1.1" reprev="13" version="13"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1393259686" format="1.1" reprev="13" version="14"}%
 %META:TOPICPARENT{name="TopicFunction"}%
  %TOC{depth="2"}%
 
@@ -21,7 +21,7 @@
 ---++ Implementation
 <verbatim class="tml">
 %STARTINCLUDE%<!-- -->
-<div class="jqHierarchy clsBrowser" data-web="%THEWEB{default="%BASEWEB%"}%" data-root="%TOP{default="TopCategory"}%" %IF{"'%MODE%'='select'" then="data-input-field-name='%NAME{default="Category"}%'"}% data-mode="%MODE{default="browse"}%" data-display-counts="true" data-container=".jqHierarchyContainer">
+<div class="jqHierarchy clsBrowser" data-web="%THEWEB{default="%BASEWEB%"}%" data-root="%TOP{default="TopCategory"}%" %IF{"'%MODE%'='select'" then="data-input-field-name='%NAME{default="Category"}%'"}% data-mode="%MODE{default="browse"}%" data-display-counts="true" data-container=".jqHierarchyContainer" data-sort="title">
     %IF{"'%MODE%'='select'"
       then="<input type='hidden' name='%NAME{default="Category"}%' value='%VALUE{default=""}%' />"
       else="<!-- -->"
@@ -68,7 +68,7 @@
 %DBCALL{"Applications.RenderFunctionCallers"}%
 
 ---++ Copyright
-&copy; 2007-2013 Michael Daum http://michaeldaumconsulting.com
+&copy; 2007-2014 Michael Daum http://michaeldaumconsulting.com
 
 %DBCALL{"Applications.GnuGeneralPublicLicense" section="notice"}%
 

@@ -45,7 +45,7 @@ a summary for an object listed within the TaggedTopic.
 %DBCALL{"Applications.RenderFunctionCallers"}%
 
 ---++ Copyright
-&copy; 2006-2013 Michael Daum http://michaeldaumconsulting.com
+&copy; 2006-2014 Michael Daum http://michaeldaumconsulting.com
 
 %DBCALL{"Applications.GnuGeneralPublicLicense" section="notice"}%
 

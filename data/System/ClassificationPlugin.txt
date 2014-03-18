@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1357569946" format="1.1" reprev="6" version="6"}%
+%META:TOPICINFO{author="micha" comment="reprev" date="1394524174" format="1.1" reprev="7" version="7"}%
 ---+!! ClassificationPlugin
 %TOC%
 
@@ -13,45 +13,43 @@ Categories become the backbone spanning all of your content. Content can then be
 categories narrowing down search results interactively in addition to the normal full-text search.
 
 ---++ Key features 
-   * *Multilevel facet navigation*: Wiki content is displayed dynamically by browsing a category tree or 
-     by means of interactive tag clouds. 
+*Multilevel facet navigation*: Wiki content is displayed dynamically by browsing a category tree or 
+by means of interactive tag clouds. 
 
-   * *Managing taxonomies the wiki way*: Categories in a taxonomy are first-class wiki citizens that can be created,
-     renamed, managed and reused as easily as normal wiki topics.
+*Managing taxonomies the wiki way*: Categories in a taxonomy are first-class wiki citizens that can be created,
+renamed, managed and reused as easily as normal wiki topics.
 
-   * *Expressive knowledge models*: Categories may form poly-hierarchies
-     where categories can have multiple parent categories. Wiki documents can be filed into multiple
-     categories at the same time.
+*Expressive knowledge models*: Categories may form poly-hierarchies
+where categories can have multiple parent categories. Wiki documents can be filed into multiple
+categories at the same time.
 
-   * *Multidimensional classification*: A wiki document may participate in multiple taxonomies and folksonomies
-     at the same time. Different facets of a document can be separated in a clean way.
+*Multidimensional classification*: A wiki document may participate in multiple taxonomies and folksonomies
+at the same time. Different facets of a document can be separated in a clean way.
 
-   * *Reusing and merging taxonomies*: A category tree once defined in one web space can be imported into another
-     web space effortless. You are free to chose which part of a tree you want to import. Multiple category trees
-     from a number of web spaces can be merged and reassembled differently in a new web. That way predefined
-     taxonomies can be managed in a centralized way and reused as needed in different webs. Any change to a taxonomy
-     in one place will automatically show up in all webs that imported it.
+*Reusing and merging taxonomies*: A category tree once defined in one web space can be imported into another
+web space effortless. You are free to chose which part of a tree you want to import. Multiple category trees
+from a number of web spaces can be merged and reassembled differently in a new web. That way predefined
+taxonomies can be managed in a centralized way and reused as needed in different webs. Any change to a taxonomy
+in one place will automatically show up in all webs that imported it.
 
-   * *Tagging for corporate intranets*: While categories establish a predefined vocabulary, tags are a way to
-     assign keywords to wiki content in an ad hoc fashion. This completes category knowledge management in
-     a natural and fruitful way.
+*Tagging for corporate intranets*: While categories establish a predefined vocabulary, tags are a way to
+assign keywords to wiki content in an ad hoc fashion. This completes category knowledge management in
+a natural and fruitful way.
 
-   * *Standardized <nop>WikiApplicatons*: <nop>ClassificationPlugin conforms to the <nop>WikiWorkbench application
-     framework that grants for scalable and long-term maintainable <nop>WikiApplications.
+*Standardized <nop>WikiApplicatons*: <nop>ClassificationPlugin conforms to the <nop>WikiWorkbench application
+framework that grants for scalable and long-term maintainable <nop>WikiApplications.
 
-   * *Extensibility*: <nop>ClassificationPlugin serves as a building block for further <nop>WikiApplications
-     to be integrated in an overall knowledge management infrastructure. It serves as a middleware for a couple
-     of higher order applications, like blogging, forums and skills management available separately.
+*Extensibility*: <nop>ClassificationPlugin serves as a building block for further <nop>WikiApplications
+to be integrated in an overall knowledge management infrastructure. It serves as a middleware for a couple
+of higher order applications, like blogging, forums and skills management available separately.
 
-   * *Document types*: <nop>ClassificationPlugin adds a couple of document types to the standard set that come with
-     the <nop>WikiWorkbench. This gives you maximum flexibility in your knowledge management initiative. Further
-     document types can be derived with ease. These will automatically participate in the overall knowledge management
-     framework.
+*Document types*: <nop>ClassificationPlugin adds a couple of document types to the standard set that come with
+the <nop>WikiWorkbench. This gives you maximum flexibility in your knowledge management initiative. Further
+document types can be derived with ease. These will automatically participate in the overall knowledge management
+framework.
 
-   * *Facetted Search*: <nop>ClassificationPlugin integrates well into Foswiki:Extensions/SolrPlugin using tags and 
-     categories to drill down into search results.
-
-For further information please contact foswiki@michaeldaumconsulting.com.
+*Facetted Search*: <nop>ClassificationPlugin integrates well into [[Foswiki:Extensions/SolrPlugin][SolrPlugin]] using tags and 
+categories to drill down into search results.
 
 ---++ Screenshots
 %IMAGE{"ClassificationPluginSnap1.png" size="150" crop="on"}%
@@ -62,32 +60,284 @@ For further information please contact foswiki@michaeldaumconsulting.com.
 %IMAGE{"ClassificationPluginSnap6.png" size="150" crop="on"}%
 %IMAGE{"ClassificationPluginSnap7.png" size="150" crop="on"}%
 
----++ Syntax Rules
-=%<nop>HIERARCHY{...}%=
+---++ Getting started
 
-Format strings may contain the following:
-   * =$time= expands to the calculated time difference
-   * =%$= expands to a =%= char
-   * =$$= expands to a =$= char
-   * =
-= expands to a linefeed
-   * =$t= expands to a tab space
-   * == expands to the empty string
+The easiest way to get started is to create a new web by using the =_ClassificationTemplate= web as a template. For this
 
----++ ISA
+   1 go to [[System.WebCreateNewWeb]] (or [[System.ManagingWebs]] in case you are not using [[Foswiki:Extensions/NatSkin][NatSkin]])
+   2 enter the name of your new web, e.g. "Knowledge"
+   4 select =_ClassificationTemplate= as a template web
+   5 click Submit
+
+This will create a new web called "Knowledge" which has got all the means preinstalled to create content under the control of the ClassificationPlugin such as:
+
+   * create new categories on the <nop>Knowledge.Category topic
+   * create new categorizable and taggable content either using the <nop>Knowledge.ClassifiedTopic form or by hitting the "New" button on the top of each button
+
+Customize the frontpage of the new "Knowledge" web by describing the key content and thematic fields stored in it as well as their use.
+Note that for best findability it is recommended to install [[Foswiki:Extensions/SolrPlugin][SolrPlugin]] along with ClassificationPlugin. <nop>SolrPlugin will
+be able to automatically generate recommended links to similar content in your "Knowledge" web based on category and tagging meta data. It also lets you
+filter and trim down search results selecting tags and categories in use.
+
+For further information please contact foswiki@michaeldaumconsulting.com.
+---++ The <nop>ClassificationApp
+
+ClassificationPlugin is based on the [[Foswiki:Extensions/WikiWorkbenchContrib][WikiWorkbench application framework]] as well as being a base for further
+wiki applications build with ClassificationPlugin itself. It has been used to build more specific apps such as 
+
+   * contacts management
+   * skills management
+   * invoicing 
+   * data center management
+
+where categories and tags play a gluing role to extract and link together <nop>TopicTypes from various domains. In all of these cases custom <nop>TopicTypes have been
+implemented by extending the types coming with the ClassificationPlugin. By standardizing these applications using the <nop>WikiWorkbench approach and using the
+<nop>ClassificationApp as a building block, developing wiki apps has reached a new level being long-term maintainable, reusable, extensible and flexible as proven
+in many real-live corporate intranets.
+
+ClassificationPlugin plays a central role in rolling out a unified knowledge management undertaking that covers very different kinds of content with varying data models.
+
+For more details see the [[Applications.ClassificationApp.WebHome][ClassificationApp]] itself.
+
+---++ Macros
+
+---+++ HIERARCHY
+
+| *Parameter* | *Description* | *Default* |
+| =[web]= | web for which to render the hierarchy for | base web |
+| =top= | category within the hierarchy to start decending down the hierarchy | <nop>TopCategory |
+| =sort= | sort categories on each step of the hierarchy according to the given property; possible values: =order=, =name=, =title=, =ordertitle=; \
+          =order= refers to the <nop>Order formfield of a category that can be used to influence sorting manually; \
+          sorting categories by =order= ignores their lexical order as would be the case using =title=; \
+          sorting by =ordertitle= first reads the Order property of a category and then falls back to lexical order | =ordertitle= |
+| =header= | string to be prepended to categories | |
+| =format= | string to be used to render a category | <verbatim><ul>
+  <li>
+    <img src="$icon" /> 
+    <a href="$url">$title</a> 
+    $children
+  </li>
+</ul></verbatim> | 
+| =topformat= | format to be used by the =top= category | same as =format= |
+| =nullformat= | format to be used when no category was found in the =web= | |
+| =separator= | string to be inserted between categories rendered using =format= | |
+| =footer= | footer string appended to categories | |
+| =placeholder= | string to be used for the =$children= variable when a category has no children | (empty string) |
+| =indent= | indentation string used for the =$indent= variable | '   ' (three spaces) |
+| =mindepth= | minimum depth from which to start rendering categories | 0 |
+| =depth= | maximum depth traversing the hierarchy | 0 (infinite) |
+| =matchattr= | which attribute of a category to be used sorting the hierarchy; possible values: =name=, =title= | =name= |
+| =matchcase= | case sensitivity sorting categories reading =matchattr= | =on= |
+| =exclude= | regular expression to filter out categories reading =matchattr= |  |
+| =include= | regular expression to filter out non-matching categories |  |
+| =filter= | filter expression when counting topics subsumed by a category |  |
+| =unique= | if switched on a category will only be listed once if found in multiple places within the hierarchy | off |
+| =open= | list of category names to be considered =open= and which are traversed further down the hierarchy | by default all categories are considered "open" | 
+| =hideclosed= | if switched on all "closed" categories, i.e. those not listed in =open= are hidden/not rendered | off |
+| =hidenull= | if switched on categories with no topis in them will be hidden | off |
+| =nrleafs= | counts of leaf nodes of a category; this value is normally computed automatically; you might use this parameter when counts for are available using different means; format: =cat:count, cat:count, ...= ; | (computed automatically) |
+| =nrtopics= | counts of all topics subsumed by a category; like =nrleafs= this value is normally compuited automatically; format: =cat:count, cat:count, ...= |  |
+
+Format strings such as =header=, =footer=, and =format= may contain the following variables:
+
+| *Variable* | *Description* |
+| =$breadcrumbs= | comma separated list of categories from the top category down to the current one; note that this is a simplified linear representation of the category's location not taking multile parents into account |
+| =$call= | number of iteration steps performed while expanding the %HIERARCHY macro |
+| =$count= | number of topics subsumed by a category; see =nrtopics= above |
+| =$cyclic= | boolean flag indicating whether the current category is part of a cycle in the hierarchy, which normally indicates a configuration error |
+| =$depth= | distance of the current category to the top category |
+| =$icon= | image url of the icon of the current category |
+| =$id= | id of the category within the hierarchy |
+| =$indent= | indentation string; this variable expands to the =indent= parameter times the depth of the current category |
+| =$index= | index of the current category among its siblings |
+| =$isexpanded= | boolean flag indicating whether the current category is "open" or "closed"; see the =open= and =hideclosed= parameter above |
+| =$leafs= | number of leaf nodes of the current category; see also the =nrleafs= parameter |
+| =$link= | render anchor markup to render a link to the current category; see also =$url= |
+| =$name= | topic name of the current category; this value is unique within a hierarchy |
+| =$order= | Order property of a category |
+| =$origweb= | originating web where the category was defined; this value might differ from =$web= in case the hierarchy has been (partially) imported from another web |
+| =$parents= | comma separated list of parent categories |
+| =$siblings= | number of sibling nodes |
+| =$subcats= | number of subordinated categories |
+| =$summary= | Summary property of a category |
+| =$tags= | Tag property of a category |
+| =$title= | <nop>TopicTitle property |
+| =$topic= | topic name of a category (alias for =$name=) |
+| =$trunctitle= | title of a category with the parent topic's title removed from the prefix if found |
+| =$url= | url to the current category |
+| =$web= | web of the current hierarchy; see also =$origweb= |
+
+---+++ ISA
 Predicate that checks if a topic is filed in a specific category or one of its subcategories
-Also available in <nop>DBCacheContrib search expressions.
+and either returns =1= or =0=.
 
----++ SUBSUMES
-Predicate that checks if a category is a parent category of another. 
-Also available in <nop>DBCacheContrib search expressions.
+| *Parameter* | *Description* | *Default* |
+| =[topic]=  | the topic to look up | current base topic |
+| =web= | the web that holds the hierarchy of categories to use | current base web |
+| =cat= | a category or a comma separated list of multiple categories | =TopCategory= |
 
----++ SIMILARTOPICS
+Categories listed in the =cat= parameter are checked in the given order. %ISA returns
+=1= for the first category found that "contains" =topic=.
+
+
+---+++ SUBSUMES
+Predicate that checks if a category is a parent category of another
+and either returns =1= or =0=.
+
+| *Parameter* | *Description* | *Default* |
+| =[_anonymous]= | a category name at an upper level of the hierarchy | current base topic |
+| =cat= | a category or a comma separated list of multiple categories | |
+| =web= | the web that holds the hierarchy of categories to use | current base web |
+
+The macro tests all categories listed in =cat= and returns =1= if at least one of them
+is being subsumbed.
+
+Example:
+
+<verbatim class="tml">
+%SUBSUMES{"CorporateCategory" cat="CustomerCategory, HumanResourcesCategory"}%
+</verbatim>
+
+Hierarchy:
+
+   * <nop>CorporateCategory
+      * ...
+      * <nop>ProductsCategory
+      * <nop>CustomerCategory
+      * ...
+   * <nop>DepartmentsCategory
+      * ...
+      * <nop>HumanResourcesCategory
+      * ...
+
+The result is =1= because <nop>CorporateCategory subsumes <nop>CustomerCategory even though
+it doesn subsume <nop>HumanResourcesCategory.
+
+---+++ DISTANCE
+A function that returns the numerical distance of two categories or topics being located
+in a shared hierarchy. This macro reads the distance matrix being calculated internally
+that caches the network topology of the hierarchy. Both, the %ISA as well as %SUBSUMES macro
+are based on distance properties of the items being compared.
+
+| *Parameter* | *Description* | *Default* |
+| =[from]= | the starting point where to start measuring from; this can be a category or a topic | current base topic |
+| =to= | the end point to measure the distance; this can be a category or a topic | =TopCategory= |
+| =abs= | boolean flag to switch on/off absolute distances; if switched =off= results can be negative as well given the order endpoints are specified in =from= and =top= | =off= |
+| =web= | the web that holds the hierarchy to use | current base web |
+| =format= | format string | =$dist= |
+| =undef= | format string that will be returned in case =from= or =to= weren't found or aren't connected at all | (empty string) |
+
+The distance is defined as follows:
+
+   * return =0= if =from= equals =to=
+   * returns the minimum number of nodes including the =to= node to get from category =from= to category =to=
+   * if =from= is a topic (not a category) the result is decreased by one
+   * if =to= is a topic (not a category) the result is increased by one
+   * if =from= and =to= are not connected the result is =undef=
+   * if =from= is located "higher" in the hierarchy than =to= the result is negative unless =abs= has been set to =on=
+
+When either =from= or =to= are topics (not a category) then the _set_ of categories they are filed into
+are taken into consideration to compute the minimum distance. 
+
+---+++ CATINFO
+Render category information for a given category or topic.
+
+The macro either operates in "cat mode" or "topic mode" when either the =topic= or the =cat= parameter
+has been specified. In "cat mode" the macro returns information about this one category. In "topic mode"
+it returns information about all categories the topic is filed into.
+
+| *Parameter* | *Description* | *Default* |
+| =[topic]= | the topic to return category information for | |
+| =cat= | a category to return information for; note that =topic= and =cat= are exclusive; you can only specify one of them | |
+| =format= | format string to render category information; see the list of possible variables below | =$link= |
+| =separator= | format string used to separate list items | =, = (coma + blank) |
+| =header= | header string prepended to the result | (empty string) |
+| =footer= | footer string appended to the result | (empty string) |
+| =web= | the web that holds the hierarchy to use | current base web |
+| =subsumes= | only return info about categories subsumed by this category | =TopCategory= |
+| =parentsubsumes= | only return info about parent categories subsumbed by this category | =TopCategory= |
+| =sortchildren= | switch on/off sorting of returned childdren | =off= |
+| =maxchildren= | maximum number of children to return info about; =0= means no limit | =0= |
+| =morechildren= | in case more than =maxchildren= items have been found, insert this format string to indicate that there are more | (empty string) |
+| =hidenull= | hide children that have no leafs | =off= |
+| =null= | format string to be returned in case the category or topic wasn't found | (empty string) |
+| =exclude= | regular expression to filter out non-matching categories | |
+| =include= | regular expression to that matching categories must match | |
+| =matchattr= | attribute of a category to test =exclude= and =include= against; possible values are =name= and =title= | =name= |
+| =matchcase= | boolean flag indicating the case sensitivity of the =include= and =exclude= match operation | =on= |
+| =truncate= | regular expression to be removed from from the =$title= variable and stored in the =$trunctitle= variable to be used in the =format= string | |
+| =limit= | maximum number of categories to process; =0= means all | =0= |
+| =skip= | number of categories to skip while rendering results; this parameter allows to implement paging together with =limit= | =0= |
+
+The =format=, =header= and =footer= parameter know the following variables:
+
+| *Variable* | *Description* |
+| =$breadcrumb=, =$breadcrumbs= | breadcrumb list of links to parent categories |
+| =$breadcrumbnames= | breadcrumb list of parent category names |
+| =$breadcrumbtitles= | breadcrumb list of parent category titles |
+| =$children=, =childrenlinks? | list links to children |
+| =$childrenname= | list of child names |
+| =$childrentitle= | list of child titles |
+| =$childrenurls= | list of child urls |
+| =$count= | number of categories found |
+| =$cyclic= | returns =0= or =1= depending on the category being part of a cycle or not |
+| =$icon= | url to icon representing the category |
+| =$index= | running number of all categories being formated |
+| =$leafs= | number of leaf nodes of the current category |
+| =$link= | link to the current category as an html anchor |
+| =$more= | expands to the =morechildren= parameter in case =maxchildren= has been reached |
+| =$name=, =$topic= | name of the current category |
+| =$order= | order of the current category |
+| =$origweb= | original web where the current category has been defined; this might differ from =$web= when part of the hierarchy including this category has been imported from another web |
+| =$parentitles= | list of titles of the parent categories |
+| =$parentlinks=, =$parent=, =$parents=  | list of links to the parent categories |
+| =$parentnames= | list of names of the parent categories |
+| =$parenturls= | list of urls of the parent categories |
+| =$summary= | summary property of the current category |
+| =$tags= | tags of the current category |
+| =$title= | title of the current category |
+| =$trunctitle= | title of a category with the parent topic's title removed from the prefix if found |
+| =$url= | url to the currrent category |
+| =$web= | web where this category is being located (see also =$origweb=) |
+
+
+---+++ TAGINFO
+Render tag information for a given category or topic.
+
+| *Parameter* | *Description* | *Default* |
+| =[topic]= | topic for which to render tag information | =%!BASETOPIC%= |
+| =format= | format string to render tag information; see the list of possible variables below | =$title= |
+| =separator= | format string used to separate list items | =, = (coma + blank) |
+| =header= | header string prepended to the result | (empty string) |
+| =footer= | footer string appended to the result | (empty string) |
+| =web= | web of the topic, note that this might also be specified in the =topic= parameter | =%!BASEWEB%= |
+| =exclude= | regular expressions to filter out tags | |
+| =include= | regular expression that tags must match to be rendered | |
+| =limit= | maximum number of tags to show | |
+| =skip= | number of tags to skip in the list of tags to be rendered | |
+
+---+++ SIMILARTOPICS
+
+<div class="foswikiWarningMessage">
+Warning: You are strongly encouraged to use =%SOLRSIMILAR= feature of [[Foswiki:Extensions/SolrPlugin][SolrPlugin]]
+for better performance and flexibility.
+</div>
+
 Returns a list of topics that are similar to the current one. Similarity between two
 topics is a value expressed in percentage, where 100% means that the topics are extremely
 similar and 0% means that the compared topics aren't corelated at all. The similarity
 is computed on the base of the categorization and tagging information using a
 weighted matching coefficient.
+
+---++ Integration into query language 
+
+ClassificationPlugins adds three new operators to the query language to make use of category information in wiki applications.
+Note however that for now only the =%DBQUERY= language is supported (see [[Foswiki:Extensions/DBCachePlugin][DBCachePlugin]]).
+
+| *Operator* | *Description* | 
+| =cat1 SUBSUMES cat2= | returns true when =cat1= subsumes =cat2= | 
+| =topic ISA cat= | returns true when =topic= is covered by =cat= | 
+| =catOrTopic DISTANCE catOrTopic= | returns the distance between two categories, a category and a topic or two topics within the context of the same hierarchy; see the above definition of the [[#DISTANCE][%DISTANCE]] macro |
 
 ---++ Installation Instructions
 %$INSTALL_INSTRUCTIONS%
@@ -103,6 +353,12 @@ weighted matching coefficient.
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  18 Mar 2014: | fixed syntax error in jstree combponent (Foswiki:Main/DanieleGondoni);\
+                  added =sort= paramteter to HIERARCHY macro;\
+                  sorting all categories by title now (was by order before); \
+                  fixed infinite recursion on malformed category data ; \
+                  fixed hierarchy not being properly refreshed using the jstree component; \
+                  fixed jstree component's way of setting the category title for a new node |
 |  11 Feb 2014: | implemented =sort= paramenter for %HIERARCHY; protect against possible infinite recursion on mal-formed category data |
 |  13 Nov 2013: | implement drag&drop interface for hierarchy widget |
 |  07 Nov 2013: | rewrite of hierarchy widget using Foswiki:Extensions/JSTreeContrib; new !TopicType !SeoTopic |

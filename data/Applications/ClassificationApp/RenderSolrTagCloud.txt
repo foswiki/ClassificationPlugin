@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1381922633" format="1.1" reprev="29" version="31"}%
+%META:TOPICINFO{author="micha" comment="reprev" date="1395049733" format="1.1" reprev="29" version="32"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -62,7 +62,11 @@ function escapeValue(value) {
 jQuery(function($) {
   $('.solrTagCloud a').click(function() {
     var $this = $(this),
-        href = '%SCRIPTURL{"view"}%/%IF{"defined THEWEB and not isempty THEWEB and $THEWEB != 'all'" then="%THEWEB%" else="%BASEWEB%"}%/WebSearch';
+        web = '%IF{"defined THEWEB and not isempty THEWEB and $THEWEB != 'all'" then="%THEWEB%" else="%BASEWEB%"}%',
+        href;
+
+    web = web.replace(/\//, '.', 'g');
+    href = '%SCRIPTURL{"view"}%/'+web+'/WebSearch';
 
     href += '#fq='+encodeURIComponent('tag:'+escapeValue($this.attr('value')));
     var tags = '%TAG{default=""}%'.split(/\s*,\s*/);
@@ -78,7 +82,7 @@ jQuery(function($) {
       }
     }
     %IF{"defined THEWEB and not isempty THEWEB and $THEWEB != 'all'" 
-       then="href += '&fq='+encodeURIComponent('web:%THEWEB%');"
+       then="href += '&fq='+encodeURIComponent('web:%THEWEB%'.replace(/\//, '.', 'g'));"
     }%
     href += '&fq='+encodeURIComponent('type:%TYPE{default="topic"}%');
     window.location.href = href;
@@ -126,7 +130,7 @@ jQuery(function($) {
 %DBCALL{"Applications.RenderFunctionCallers"}%
 
 ---++ Copyright
-&copy; 2006-2013 Michael Daum http://michaeldaumconsulting.com
+&copy; 2006-2014 Michael Daum http://michaeldaumconsulting.com
 
 %DBCALL{"Applications.GnuGeneralPublicLicense" section="notice"}%
 

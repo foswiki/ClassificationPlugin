@@ -10,4 +10,4 @@
 %META:FIELD{name="Category" attributes="" title="Category" value=""}%
 %META:FIELD{name="Icon" attributes="" title="Icon" value=""}%
 %META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%
-%META:FIELD{name="Order" attributes="" title="Order" value="70"}%
+%META:FIELD{name="Order" attributes="" title="Order" value=""}%

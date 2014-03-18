@@ -9,7 +9,7 @@
  *
  */
 
-;(function($, window, document) {
+(function($, window, document) {
 
   /***************************************************************************
    * defaults
@@ -29,7 +29,8 @@
         refreshButton: ".jqHierarchyRefreshButton",
         inputFieldName: undefined,
         container: undefined,
-        multiSelect: true
+        multiSelect: true,
+        sort: 'index'
       };
 
   /***************************************************************************
@@ -37,7 +38,8 @@
    */
   $.expr[':'].jstree_contains_all = function(a,i,m) {
     var word, words = [],
-        searchFor = m[3].toLowerCase().replace(/^\s+/g,'').replace(/\s+$/g,'');
+        searchFor = m[3].toLowerCase().replace(/^\s+/g,'').replace(/\s+$/g,''),
+        j;
 
     if (searchFor.indexOf(' ') >= 0) {
       words = searchFor.split(' ');
@@ -45,8 +47,8 @@
       words = [searchFor];
     }
 
-    for (var i = 0; i < words.length; i++) {
-      word = words[i];
+    for (j = 0; j < words.length; j++) {
+      word = words[j];
       if ((a.textContent || a.innerText || "").toLowerCase().indexOf(word) == -1) {
         return false;
       }
@@ -57,7 +59,8 @@
 
   $.expr[':'].jstree_contains_any = function(a,i,m) {
     var word, words = [],
-        searchFor = m[3].toLowerCase().replace(/^\s+/g,'').replace(/\s+$/g,'');
+        searchFor = m[3].toLowerCase().replace(/^\s+/g,'').replace(/\s+$/g,''),
+        j;
 
     if (searchFor.indexOf(' ') >= 0) {
       words = searchFor.split(' ');
@@ -65,8 +68,8 @@
       words = [searchFor];
     }
 
-    for (var i = 0; i < words.length; i++) {
-      word = words[i];
+    for (j = 0; j < words.length; j++) {
+      word = words[j];
       if ((a.textContent || a.innerText || "").toLowerCase().indexOf(word) >= 0) {
         return true;
       }
@@ -128,7 +131,7 @@
           this.__callback({ "obj" : obj, "name" : val });
           return (obj.nodeValue = val);
         }
-      },
+      }
     }    
   });
 
@@ -189,11 +192,12 @@
               "topic": self.opts.topic,
               "cat": node.attr ? node.data("name") : self.opts.root,
               "select": self.inputField.val(),
-              "counts": self.opts.displayCounts
-            }
+              "counts": self.opts.displayCounts,
+              "sort": self.opts.sort
+            };
           },
           "success": function(data) {
-            setTimeout(function() {
+            window.setTimeout(function() {
               self.setSelection(self.inputField.val().split(/\s*,\s*/));
             });
           }
@@ -210,7 +214,7 @@
               "web": self.opts.web,
               "topic": self.opts.topic,
               "title": term
-            }
+            };
           }
         }
       },
@@ -343,7 +347,7 @@
           });
         }, function() {
           $.jstree.rollback(data.rlbk);
-        })
+        });
       })
 
       /* renaming a node */
@@ -408,8 +412,8 @@
 
         catName = $.wikiword.wikify(catName);
 
-        console.log("creating '"+catName+"', title='"+title+"' in '"+parentName+"'");
-        console.log("rslt=",data.rslt);
+        //console.log("creating '"+catName+"', title='"+title+"' in '"+parentName+"'");
+        //console.log("rslt=",data.rslt);
 
         $.ajax({
           async: false,
@@ -422,14 +426,15 @@
             "topic": self.opts.topic,
             "cat": catName,
             "title": title,
-            "parent": parentName,
-            "position": pos,
+            "parent": parentName
+            //, "position": pos
           }, 
           error: function() {
             $.jstree.rollback(data.rlbk);
           },
           success: function(response) {
-            $(data.rslt.obj).data("name", response.id).addClass(response.id);
+            $(data.rslt.obj).data("name", response.id).data("title", title).addClass(response.id);
+            //self.worker.jstree("refresh", -1);
           },
           complete: function(xhr) {
             var response = $.parseJSON(xhr.responseText);
@@ -500,11 +505,11 @@
     });
 
     self.searchField.bind("keypress", function(event) {
-      var $this = $(this);
+      var $this = $(this), val;
       // track last key pressed
       if(event.keyCode == 13) {
-        var val = $this.val();
-        if (val.length == 0) {
+        val = $this.val();
+        if (val.length === 0) {
           self.worker.jstree("close_all", -1, 0);
           self.worker.jstree("refresh", -1);
           $this.hide(); 
@@ -539,7 +544,7 @@
 
     if (typeof(self.opts.inputFieldName) !== 'undefined') {
       self.inputField = self.elem.find("input[name='"+self.opts.inputFieldName+"']");
-      if (self.inputField.length == 0) {
+      if (self.inputField.length === 0) {
         self.inputField = undefined;
       }
     }
@@ -642,8 +647,9 @@
     newValues = [];
     for (i = 0; i < values.length; i++)  {
       value = values[i];
-      if (!value)
+      if (!value) {
         continue;
+      }
       if (value != val) {
         newValues.push(value);
       }
@@ -677,7 +683,7 @@
       data: { 
         "action" : "refresh", 
         "web": self.opts.web,
-        "topic": self.opts.topic,
+        "topic": self.opts.topic
       },
       beforeSend: function() {
         $.blockUI({message:"<h1>Refreshing ...</h1>"});
@@ -737,7 +743,7 @@
             $(this).dialog("close");
             dfd.resolve();
             return true;
-          },
+          }
         }, {
           text: opts.cancelText,
           icons: {
@@ -771,7 +777,7 @@
         $.data(this, pluginName, new Hierarchy(this, opts)); 
       } 
     }); 
-  } 
+  };
 
   /***************************************************************************
    * dom initializer

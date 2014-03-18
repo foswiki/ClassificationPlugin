@@ -79,7 +79,7 @@ sub dispatchAction {
 
 ################################################################################
 sub getChildren {
-  my ($this, $session, $cat, $selected, $depth, $displayCounts, $seen) = @_;
+  my ($this, $session, $cat, $selected, $depth, $displayCounts, $sort, $seen) = @_;
 
   return if $depth == 0;
 
@@ -91,16 +91,26 @@ sub getChildren {
 
   my @result = ();
 
-  my @children = 
-    sort {
+  my @children = $cat->getChildren;
+
+  if ($sort eq 'on' || $sort eq 'order') {
+    @children = sort {
       $a->{order} <=> $b->{order} ||
-      $a->{title} cmp $b->{title}
-    } 
-    $cat->getChildren();
+      lc($a->{title}) cmp lc($b->{title})
+    } @children;
+  } elsif ($sort eq 'title') {
+    @children = sort {
+      lc($a->{title}) cmp lc($b->{title})
+    } @children;
+  } elsif ($sort eq 'name') {
+    @children = sort {
+      lc($a->{name}) cmp lc($b->{name})
+    } @children;
+  }
 
   foreach my $child (@children) {
     next if $child->{name} eq 'BottomCategory';
-    my $nrChildren = scalar(grep {!/^BottomCategory$/} keys $child->{children});
+    my $nrChildren = scalar(grep {!/^BottomCategory$/} keys %{$child->{children}});
     my $nrTopics = $displayCounts?$child->countTopics():0;
     my $state = $nrChildren?"closed":"";
     foreach my $selCat (@$selected) {
@@ -134,7 +144,7 @@ sub getChildren {
       state => $state,
     };
     if ($state eq 'open') {
-      $record->{children} = $this->getChildren($session, $child, $selected, $depth-1, $displayCounts, $seen);
+      $record->{children} = $this->getChildren($session, $child, $selected, $depth-1, $displayCounts, $sort, $seen);
     }
     push @result, $record;
   }
@@ -153,9 +163,10 @@ sub getChildren {
 sub handle_refresh {
   my ($this, $session, $hierarchy) = @_;
 
-  #writeDebug("refresh called for ".$hierarchy->{web});
+  writeDebug("refresh called for ".$hierarchy->{web});
 
   $hierarchy->init;
+  $hierarchy->finish;
 
   return {
     type => "notice",
@@ -176,7 +187,11 @@ sub handle_get_children {
   my @select = $request->param('select');
   my $maxDepth = $request->param('maxDepth');
   $maxDepth = -1 unless defined $maxDepth;
+
   my $displayCounts = Foswiki::Func::isTrue($request->param('counts'), 0);
+
+  my $sort = $request->param('sort');
+  $sort = 'on' if !defined($sort) || $sort !~ /^(on|title|order|name)$/;
 
   #writeDebug("select=@select") if @select;
 
@@ -193,7 +208,7 @@ sub handle_get_children {
   }
   @select = values %select; 
 
-  return $this->getChildren($session, $cat, \@select, $maxDepth, $displayCounts);
+  return $this->getChildren($session, $cat, \@select, $maxDepth, $displayCounts, $sort);
 }
 
 ################################################################################
@@ -297,7 +312,10 @@ sub handle_move_node {
   };
 
   # init'ing hierarchy 
-  $hierarchy->init if $cat->{hierarchy}{web} ne $cat->{origWeb};
+  if ($cat->{hierarchy}{web} ne $cat->{origWeb}) {
+    $hierarchy->init;
+    $hierarchy->finish;
+  }
 
   return {
     type => "notice",
@@ -341,7 +359,10 @@ sub handle_rename_node {
   };
 
   # init'ing hierarchy 
-  $hierarchy->init if $cat->{hierarchy}{web} ne $cat->{origWeb};
+  if ($cat->{hierarchy}{web} ne $cat->{origWeb}) {
+    $hierarchy->init;
+    $hierarchy->finish;
+  }
 
   return {
     type => "notice",
@@ -373,7 +394,8 @@ sub handle_create_node {
       unless defined $hierarchy->getCategory($parentName);
   }
 
-  my $position = $request->param("position") || 0;
+  my $position = $request->param("position");
+  $position = '' unless defined $position;
   #writeDebug("catName=$catName, parentName=$parentName, position=$position, title=$title");
 
   my $tmplObj;
@@ -410,6 +432,9 @@ sub handle_create_node {
 
   $obj->save();
   #writeDebug("new category object:".$obj->getEmbeddedStoreForm());
+
+  $hierarchy->init;
+  $hierarchy->finish;
 
   return {
     type => "notice",

@@ -162,7 +162,7 @@ msgstr "Erweiterte Optionen anzeigen"
 
 #: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:32
 msgid "Show all tags"
-msgstr "Alle Schl&&uuml;sselworte anzeigen"
+msgstr "Alle Schlüsselworte anzeigen"
 
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:6
 msgid "Some tips:"

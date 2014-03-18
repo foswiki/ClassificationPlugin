@@ -198,12 +198,9 @@ sub handleISA {
   ($thisWeb, $thisTopic) =
     Foswiki::Func::normalizeWebTopicName($thisWeb, $thisTopic);
 
-  my %lookingForCategory = map {$_=>1} split(/\s*,\s*/,$theCategory);
   my $hierarchy = getHierarchy($thisWeb);
 
-  #writeDebug("hierarchy=$hierarchy");
-
-  foreach my $catName (keys %lookingForCategory) {
+  foreach my $catName (split(/\s*,\s*/, $theCategory)) {
     #writeDebug("testing $catName");
     my $cat = $hierarchy->getCategory($catName);
     next unless $cat;
@@ -369,19 +366,18 @@ sub handleCATINFO {
 
     my $line = $theFormat;
 
-    my $parents = '';
     my @parents;
     if ($line =~ /\$parent/) {
       @parents = sort {uc($a->{title}) cmp uc($b->{title})} $category->getParents($parentSubsumesCat);
-
     }
 
-    if ($line =~ /\$parents?\b/) {
+    my $parentLinks = '';
+    if ($line =~ /\$parents?\b/ || $line =~ /\$parents?links?/) {
       my @links = ();
       foreach my $parent (@parents) {
         push @links, $parent->getLink();
       }
-      $parents = join($theSep, @links);
+      $parentLinks = join($theSep, @links);
     }
 
     my $parentsName = '';
@@ -400,15 +396,6 @@ sub handleCATINFO {
         push @titles, $parent->{title};
       }
       $parentsTitle = join($theSep, @titles);
-    }
-
-    my $parentLinks = '';
-    if ($line =~ /\$parents?links?/) {
-      my @links = ();
-      foreach my $parent (@parents) {
-        push @links, $parent->getLink();
-      }
-      $parentLinks = join($theSep, @links);
     }
 
     my $parentUrls = '';
@@ -476,7 +463,7 @@ sub handleCATINFO {
     }
 
     my $children = '';
-    if ($line =~ /\$children?\b/) {
+    if ($line =~ /\$children(links)?\b/) {
       my @links = ();
       foreach my $child (@children) {
         push @links, $child->getLink();
@@ -494,7 +481,7 @@ sub handleCATINFO {
     }
 
     my $childrenTitle = '';
-    if ($line =~ /\$children?title/) {
+    if ($line =~ /\$childrentitle/) {
       my @titles = ();
       foreach my $child (@children) {
         push @titles, $child->{title};
@@ -502,17 +489,9 @@ sub handleCATINFO {
       $childrenTitle = join($theSep, @titles);
     }
 
-    my $childrenLinks = '';
-    if ($line =~ /\$children?links?/) {
-      my @links = ();
-      foreach my $child (@children) {
-        push @links, $child->getLink();
-      }
-      $childrenLinks = join($theSep, @links);
-    }
 
     my $childrenUrls = '';
-    if ($line =~ /\$children?urls?/) {
+    if ($line =~ /\$childrenurls?/) {
       my @urls = ();
       foreach my $child (@children) {
         push @urls, $child->getUrl();
@@ -560,17 +539,16 @@ sub handleCATINFO {
     $line =~ s/\$parents?title/$parentsTitle/g;
     $line =~ s/\$parents?links?/$parentLinks/g;
     $line =~ s/\$parents?urls?/$parentUrls/g;
-    $line =~ s/\$parents?/$parents/g;
+    $line =~ s/\$parents?/$parentLinks/g;
     $line =~ s/\$cyclic/$isCyclic/g;
     $line =~ s/\$leafs/$countLeafs/g;
     $line =~ s/\$count/$nrTopics/g;
     $line =~ s/\$breadcrumbnames?/$breadCrumbNames/g;
     $line =~ s/\$breadcrumbs?/$breadCrumbs/g;
     $line =~ s/\$children?name/$childrenName/g;
-    $line =~ s/\$children?title/$childrenTitle/g;
-    $line =~ s/\$children?links?/$childrenLinks/g;
-    $line =~ s/\$children?urls?/$childrenUrls/g;
-    $line =~ s/\$children?/$children/g;
+    $line =~ s/\$childrentitle/$childrenTitle/g;
+    $line =~ s/\$childrenurls?/$childrenUrls/g;
+    $line =~ s/\$children(links?)?/$children/g;
     $line =~ s/\$icon/$iconUrl/g;
     $line =~ s/\$tags/$tags/g;
     $line =~ s/,/&#44;/g; # hack around MAKETEXT where args are comma separated accidentally
@@ -590,7 +568,6 @@ sub handleTAGINFO {
   my ($session, $params, $theTopic, $theWeb) = @_;
 
   #writeDebug("called handleTAGINFO(".$params->stringify().")");
-  my $theCat = $params->{cat};
   my $theFormat = $params->{format} || '$link';
   my $theSep = $params->{separator};
   my $theHeader = $params->{header} || '';

@@ -68,7 +68,7 @@ Renders an index of all known categories, top categories first.
 %DBCALL{"Applications.RenderFunctionCallers"}%
 
 ---++ Copyright
-&copy; 2008-2013 Michael Daum http://michaeldaumconsulting.com
+&copy; 2008-2014 Michael Daum http://michaeldaumconsulting.com
 
 %DBCALL{"Applications.GnuGeneralPublicLicense" section="notice"}%
 

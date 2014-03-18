@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1389971526" format="1.1" reprev="15" version="16"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1392980602" format="1.1" reprev="17" version="17"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -25,6 +25,7 @@ See the CategoryTemplate.
      top="%IF{"defined CAT" then="%CAT%" else="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%"
      exclude="%IF{"defined CAT" then="%CAT%" else="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%%IF{"defined EXCLUDE" then="|%EXCLUDE%"}%"
      depth="2"
+     sort="title"
      format="($trunctitle);$topic;$origweb$n"
    }%"
   cols="%IF{"defined CLASSIFICATIONPLUGIN_NRCOLS" then="%CLASSIFICATIONPLUGIN_NRCOLS%" else="3"}%"
@@ -92,7 +93,7 @@ See the CategoryTemplate.
 %DBCALL{"Applications.RenderFunctionCallers"}%
 
 ---++ Copyright
-&copy; 2006-2013 Michael Daum http://michaeldaumconsulting.com
+&copy; 2006-2014 Michael Daum http://michaeldaumconsulting.com
 
 %DBCALL{"Applications.GnuGeneralPublicLicense" section="notice"}%
 

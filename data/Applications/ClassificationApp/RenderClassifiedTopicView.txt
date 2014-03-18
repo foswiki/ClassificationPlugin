@@ -50,7 +50,7 @@ showing its category and tagging info in the top.
 %DBCALL{"Applications.RenderFunctionCallers"}%
 
 ---++ Copyright
-&copy; 2007-2013 Michael Daum http://michaeldaumconsulting.com
+&copy; 2007-2014 Michael Daum http://michaeldaumconsulting.com
 
 %DBCALL{"Applications.GnuGeneralPublicLicense" section="notice"}%
 

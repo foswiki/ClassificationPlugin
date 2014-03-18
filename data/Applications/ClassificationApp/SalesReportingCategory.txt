@@ -1,12 +1,13 @@
-%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1357565281" format="1.1" version="2"}%
+%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1393260232" format="1.1" version="3"}%
 %META:TOPICPARENT{name="SalesCategory"}%
 %DBCALL{"Applications.ClassificationApp.RenderCategory"}%
 
 
 
 %META:FORM{name="Applications.ClassificationApp.Category"}%
-%META:FIELD{name="TopicType" attributes="" title="TopicType" value="Category, CategorizedTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="Category, CategorizedTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Reporting"}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
 %META:FIELD{name="Category" attributes="" title="Category" value="SalesCategory"}%
 %META:FIELD{name="Icon" attributes="" title="Icon" value="chart_curve.png"}%
+%META:FIELD{name="Order" attributes="" title="Order" value=""}%
