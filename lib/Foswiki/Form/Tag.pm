@@ -15,16 +15,17 @@
 # As per the GPL, removal of this notice is prohibited.
 
 package Foswiki::Form::Tag;
+
+use strict;
+use warnings;
+
 use Foswiki::Func ();
 use Foswiki::Form::Textboxlist ();
 our @ISA = ('Foswiki::Form::Textboxlist');
 
-use strict;
 
 sub renderForDisplay {
-    my ( $this, $format, $value, $attrs, $web, $topic ) = @_;
-    # SMELL: working around the topicObj not being added to the renderForDisplay API as it does for
-    # renderForEdit, by using some extra params ... *shudder*
+    my ( $this, $format, $value, $attrs) = @_;
 
     if ( !$attrs->{showhidden} ) {
         my $fa = $this->{attributes} || '';
@@ -33,9 +34,19 @@ sub renderForDisplay {
         }
     }
 
+    my $displayValue = $this->getDisplayValue($value);
+    $format =~ s/\$value\(display\)/$displayValue/g;
+    $format =~ s/\$value/$value/g;
+
+    return $this->SUPER::renderForDisplay($format, $value, $attrs);
+}
+
+sub getDisplayValue {
+    my ( $this, $value) = @_;
+
     my $baseWeb = $this->{session}->{webName};
     my $baseTopic = $this->{session}->{topicName};
-    $web ||= $baseWeb;
+    my $web = $baseWeb;
 
     my $context = Foswiki::Func::getContext();
 
@@ -55,7 +66,7 @@ sub renderForDisplay {
     }
     $value = join(', ', @value);
 
-    return $this->SUPER::renderForDisplay($format, $value, $attrs);
+    return $value;
 }
 
 sub renderForEdit {

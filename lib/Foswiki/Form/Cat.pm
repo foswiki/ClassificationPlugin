@@ -15,12 +15,15 @@
 # As per the GPL, removal of this notice is prohibited.
 
 package Foswiki::Form::Cat;
+
+use strict;
+use warnings;
+
 use Foswiki::Form::FieldDefinition ();
 our @ISA = ('Foswiki::Form::FieldDefinition');
 
 use Foswiki::Plugins::ClassificationPlugin ();
 use Foswiki::Func ();
-use strict;
 
 sub new {
     my $class = shift;
@@ -59,9 +62,7 @@ sub getOptions { # needed by FieldDefinition
 }
 
 sub renderForDisplay {
-    my ( $this, $format, $value, $attrs, $web, $topic ) = @_;
-    # SMELL: working around the topicObj not being added to the renderForDisplay API as it does for
-    # renderForEdit, by using some extra params ... *shudder*
+    my ( $this, $format, $value, $attrs ) = @_;
 
     if ( !$attrs->{showhidden} ) {
         my $fa = $this->{attributes} || '';
@@ -70,7 +71,17 @@ sub renderForDisplay {
         }
     }
 
-    $web ||= $this->{session}->{webName};
+    my $displayValue = $this->getDisplayValue($value);
+    $format =~ s/\$value\(display\)/$displayValue/g;
+    $format =~ s/\$value/$value/g;
+
+    return $this->SUPER::renderForDisplay($format, $value, $attrs);
+}
+
+sub getDisplayValue {
+    my ($this, $value) = @_;
+
+    my $web = $this->{session}->{webName};
 
     my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($web);
 
@@ -84,8 +95,6 @@ sub renderForDisplay {
       }
     }
     $value = join(', ', @value);
-
-    return $this->SUPER::renderForDisplay($format, $value, $attrs);
 }
 
 sub renderForEdit {
