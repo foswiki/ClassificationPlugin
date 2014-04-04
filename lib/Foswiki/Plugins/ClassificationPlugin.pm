@@ -76,27 +76,27 @@ sub initPlugin {
       $jsTreeConnector = Foswiki::Plugins::ClassificationPlugin::JSTreeConnector->new();
     }
     $jsTreeConnector->dispatchAction(@_);
-  });
+  }, authenticate => 0);
 
   Foswiki::Func::registerRESTHandler('splitfacet', sub {
     initServices();
     return Foswiki::Plugins::ClassificationPlugin::Services::splitFacet(@_);
-  });
+  }, authenticate => 0);
 
   Foswiki::Func::registerRESTHandler('renametag', sub {
     initServices();
     return Foswiki::Plugins::ClassificationPlugin::Services::renameTag(@_);
-  });
+  }, authenticate => 0);
 
   Foswiki::Func::registerRESTHandler('normalizetags', sub {
     initServices();
     return Foswiki::Plugins::ClassificationPlugin::Services::normalizeTags(@_);
-  });
+  }, authenticate => 0);
 
   Foswiki::Func::registerRESTHandler('deployTopicType', sub {
     initServices();
     return Foswiki::Plugins::ClassificationPlugin::Services::deployTopicType(@_);
-  });
+  }, authenticate => 0);
 
   Foswiki::Contrib::DBCacheContrib::Search::addOperator(
     name=>'SUBSUMES', 
