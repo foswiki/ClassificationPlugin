@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1357565281" format="1.1" version="8"}%
+%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1397121262" format="1.1" version="9"}%
 %META:TOPICPARENT{name="Applications/ClassificationApp.TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -20,20 +20,21 @@ a summary for an object listed within the TaggedTopic.
     [[$web.$topic][$expand(topictitle)]]&nbsp;$percntREDDOT{\"$web.$topic\"}$percnt
     $expand('<div class=\"foswikiTopicSummary\">' and Summary and '</div>')<!-- -->
     <div class='foswikiTopicInfo'>
-      $percntTAGINFO{\"$web.$topic\" 
-        header=\"<span class='clsTagInfo'>$dollarpercntMAKETEXT{\\"Tagged [_1]\\" args=\\"\"
-        separator=\"&#44; \"
-        limit=\"5\"
-        footer=\"\\"}$dollarpercnt</span>\"
-      }$percnt<!-- -->
-      <div class='clsAuthorDateInfo'>
-        <!-- -->$formatTime(info.date),
+      <span class='clsAuthorDateInfo'>
+        <!-- -->$formatTime(info.date)
+        <span class='natRevisionSep'>&#124;</span> 
         <nop>$percntGETTOPICTITLE{\"
              $percntUSERINFO{\"$expand(info.author)\"
                format=\"$wikiusername\"
              }$percnt\"
         }$percnt
-      </div>
+      </span>
+      $percntTAGINFO{\"$web.$topic\" 
+        header=\" <span class='natRevisionSep'>&#124;</span> <span class='clsTagInfo'>\" 
+        separator=\"&#44; \"
+        limit=\"5\"
+        footer=\"</span>\"
+      }$percnt<!-- -->
    </div>
   </div>"
 }%%STOPINCLUDE%

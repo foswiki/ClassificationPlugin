@@ -26,14 +26,14 @@ use JSON ();
 
 use constant OBJECTVERSION => 0.82;
 use constant CATWEIGHT => 1.0; # used in computeSimilarity()
-use constant DEBUG => 0; # toggle me
+use constant TRACE => 0; # toggle me
 
 use vars qw(%insideInit);
 
 ###############################################################################
 # static
 sub writeDebug {
-  print STDERR '- ClassificationPlugin::Hierarchy - '.$_[0]."\n" if DEBUG;
+  print STDERR '- ClassificationPlugin::Hierarchy - '.$_[0]."\n" if TRACE;
 }
 
 ################################################################################
@@ -61,7 +61,7 @@ sub new {
 
   if ($this && $this->{_version} == OBJECTVERSION) {
     writeDebug("restored hierarchy object (v$this->{_version}) from $cacheFile");
-    #if (DEBUG) {
+    #if (TRACE) {
     #  use Data::Dumper;
     #  writeDebug(Dumper($this));
     #}
@@ -110,7 +110,7 @@ sub finish {
     # SMELL: don't cache the prefs for now
     undef $this->{_prefs}; 
 
-    #if (DEBUG) {
+    #if (TRACE) {
     #  use Data::Dumper;
     #  writeDebug(Dumper($this));
     #}
@@ -301,7 +301,7 @@ sub init {
 
 ################################################################################
 sub printDistanceMatrix {
-  return unless DEBUG;
+  return unless TRACE;
 
   my ($this) = @_;
 
@@ -365,7 +365,7 @@ sub computeDistance {
   #writeDebug("maxId=$maxId, loops=$loops");
   writeDebug("done computeDistance() Wallace-Kollias");
 
-  #if (DEBUG) {
+  #if (TRACE) {
   #  use Data::Dumper;
   #  writeDebug(Dumper(\@distance));
   #}
@@ -430,7 +430,7 @@ sub distance {
     $secondIsTopic == 1 &&
     $topic1 eq $topic2;
 
-  if (DEBUG) {
+  if (TRACE) {
     #writeDebug("catSet1 = ".join(',', sort keys %catSet1));
     #writeDebug("catSet2 = ".join(',', sort keys %catSet2));
   }
@@ -550,7 +550,7 @@ sub computeSimilarity {
 
   my $total = $onlyA + $onlyB + $intersection;
   $similarity = $total?$intersection/$total:0;
-  #if (DEBUG && $similarity) {
+  #if (TRACE && $similarity) {
   #  writeDebug("similarity($topicA, $topicB) = $similarity");
   #  writeDebug("onlyA=$onlyA, onlyB=$onlyB, intersection=$intersection, total=$total");
   #}

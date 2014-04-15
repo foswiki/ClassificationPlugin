@@ -1,10 +1,6 @@
-%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1357565282" format="1.1" version="4"}%
+%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1397218061" format="1.1" version="5"}%
 %META:TOPICPARENT{name="WebHome"}%
 this is a test
-
-
-
-
 
 long row long row long row long row long row long row long row long
 row long row long row long row long row long row long row long row
@@ -22,10 +18,8 @@ row long row long row long row long row long row
    * Set STYLEBORDER = thin
    * Set SKINSTYLE = base
 
-
 Exclude-Liste sieht jetzt so aus:<br>
 exclude="^(CategoryBrowser|WebRss|WebAtom|WebChanges|WebPreferences|WebTopicLinks|WebIndex|WebNotify|WebHome|WebTagCloud|WebLinks|WebSideBar|.*Group|Site.*|WebHtmlHead|Category|WebStatistics|WebBottomBar|WebRightBar|.*Favorites|Visitor*|NewsItem\d+|News\d+|TopicTemplate|WebTool|WebTopicList|WebTopicEditTemplate|TaggedTopic|CategorizedTopic|ClassifiedTopic|TopicType|TopicStub|WikiTopic|WebLeftBar|WebTopicCreator|WebSearchAdvanced|WebSearch)$"
-
 
 %TABPANE%
 %TAB{"Text"}%
@@ -40,6 +34,6 @@ exclude="^(CategoryBrowser|WebRss|WebAtom|WebChanges|WebPreferences|WebTopicLink
 
 %META:FORM{name="Applications.ClassificationApp.TaggedTopic"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TaggedTopic, WikiTopic"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="TestTagging"}%
+%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value="yet another test topic"}%
-%META:FIELD{name="Tag" attributes="" title="Tag" value="Application Performance Management XML Oracle Database, a AA, a aa, test, topic, a a a"}%
+%META:FIELD{name="Tag" attributes="" title="Tag" value="a a a, test, topic"}%

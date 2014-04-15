@@ -23,12 +23,12 @@ use Foswiki::Plugins::ClassificationPlugin ();
 use JSON ();
 use Error qw( :try );
 
-use constant DEBUG => 0; # toggle me
+use constant TRACE => 0; # toggle me
 
 ################################################################################
 # static
 sub writeDebug {
-  print STDERR $_[0]."\n" if DEBUG;
+  print STDERR $_[0]."\n" if TRACE;
 }
 
 ################################################################################

@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1380203917" format="1.1" reprev="18" version="18"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1397221156" format="1.1" reprev="20" version="20"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -19,6 +19,33 @@ showing its category and tagging info in the top.
 %DBCALL{"Applications.RenderWikiTopicView" TITLE_EXTRA="%TITLE_EXTRA%"}%
 %CATINFO{
   "%BASEWEB%.%BASETOPIC%" 
+  header="<span class='natRevisionSep'>&#124;</span> %JQICON{"fa-folder"}% "
+  format="<a href='$url' rel='tag' itemprop='keywords' class='$name'><noautolink>$title</noautolink></a>"
+}% <!-- -->
+%TAGINFO{
+  "%BASEWEB%.%BASETOPIC%"
+  header="<span class='natRevisionSep'>&#124;</span> %JQICON{"fa-tag"}% "
+  format="<a href='$url' rel='tag' itemprop='keywords' class='$class'><noautolink>$name</noautolink></a>"
+  limit="30"
+  footer="$percntIF{\"$count > $index\" 
+    then=\"<span class='clsTopicInfoMoreContainer'> &#8230; 
+      <a href='#' class='clsTopicInfoMore' title='%MAKETEXT{"Show all tags"}%'>%MAKETEXT{"more"}%</a>
+      </span>\"
+    }$percnt"
+}% <!-- -->
+%JQREQUIRE{"ui"}%<!-- -->
+%ADDTOZONE{
+  "script"
+  requires="JQUERYPLUGIN, JQUERYPLUGIN::UI"
+  text="<script src='%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/jquery.classifiedtopic.js'></script>"
+  id="CLASSIFICATIONPLUGIN::JS"
+}%<!-- -->%STOPINCLUDE%
+</verbatim>
+
+---++ Old taginfo / catinfo
+<verbatim class="tml">
+%CATINFO{
+  "%BASEWEB%.%BASETOPIC%" 
   header="$percntMAKETEXT{\"Filed in [_1]\" args=\""
   separator="&#44; "
   footer="\"}$percnt$percntCALC{\"$SET(catinfo, 1)\"}$percnt"
@@ -33,13 +60,6 @@ showing its category and tagging info in the top.
       </span>\"
     }$percnt\"}$percnt"
 }%
-%JQREQUIRE{"ui"}%<!-- -->
-%ADDTOZONE{
-  "script"
-  requires="JQUERYPLUGIN, JQUERYPLUGIN::UI"
-  text="<script src='%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/jquery.classifiedtopic.js'></script>"
-  id="CLASSIFICATIONPLUGIN::JS"
-}%<!-- -->%STOPINCLUDE%
 </verbatim>
 
 ---++ Test

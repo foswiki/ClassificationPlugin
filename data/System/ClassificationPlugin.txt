@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="micha" comment="reprev" date="1394524174" format="1.1" reprev="7" version="7"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1394524174" format="1.1" reprev="7" version="7"}%
 ---+!! ClassificationPlugin
 %TOC%
 
@@ -353,6 +353,7 @@ Note however that for now only the =%DBQUERY= language is supported (see [[Foswi
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  04 Apr 2014: | fixed compatibility with foswiki >= 1.2.0; flag rest handlers that don't require authentication |
 |  18 Mar 2014: | fixed syntax error in jstree combponent (Foswiki:Main/DanieleGondoni);\
                   added =sort= paramteter to HIERARCHY macro;\
                   sorting all categories by title now (was by order before); \

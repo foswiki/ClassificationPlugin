@@ -17,7 +17,7 @@ package Foswiki::Plugins::ClassificationPlugin::Access;
 use strict;
 use Foswiki::Plugins::ClassificationPlugin;
 
-use constant  DEBUG => 0; # toggle m
+use constant  TRACE => 0; # toggle m
 
 use constant NO_CATACL => 0;
 use constant DENY_ALLOW => 1;
@@ -28,8 +28,8 @@ use base 'Foswiki::Access';
 ###############################################################################
 # static
 sub writeDebug {
-  #&Foswiki::Func::writeDebug('- ClassificationPlugin - '.$_[0]) if DEBUG;
-  print STDERR '- ClassificationPlugin::Access - '.$_[0]."\n" if DEBUG;
+  #&Foswiki::Func::writeDebug('- ClassificationPlugin - '.$_[0]) if TRACE;
+  print STDERR '- ClassificationPlugin::Access - '.$_[0]."\n" if TRACE;
 }
 
 ###############################################################################

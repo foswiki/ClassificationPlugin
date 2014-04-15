@@ -20,12 +20,12 @@ use warnings;
 use Foswiki::Contrib::DBCacheContrib::Search ();
 use Foswiki::Plugins::DBCachePlugin::Core ();
 
-use constant DEBUG => 0; # toggle me
+use constant TRACE => 0; # toggle me
 
 ###############################################################################
 # static
 sub writeDebug {
-  print STDERR ' - ClassificationPlugin::Category - '.$_[0]."\n" if DEBUG;
+  print STDERR ' - ClassificationPlugin::Category - '.$_[0]."\n" if TRACE;
 }
 
 ################################################################################

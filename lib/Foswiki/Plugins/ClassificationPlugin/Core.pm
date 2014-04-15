@@ -27,7 +27,7 @@ use vars qw(
   @changedCats
 );
 
-use constant DEBUG => 0; # toggle me
+use constant TRACE => 0; # toggle me
 use constant FIXFORMFIELDS => 1; # work around a bug in Foswiki
 use constant MEMORYCACHE => 0; # set to 1 for experimental memory cache
 use Foswiki::Plugins::DBCachePlugin::Core ();
@@ -37,8 +37,8 @@ use Error qw( :try );
 
 ###############################################################################
 sub writeDebug {
-  print STDERR '- ClassificationPlugin::Core - '.$_[0]."\n" if DEBUG;
-  #Foswiki::Func::writeDebug('- ClassificationPlugin::Core - '.$_[0]) if DEBUG;
+  print STDERR '- ClassificationPlugin::Core - '.$_[0]."\n" if TRACE;
+  #Foswiki::Func::writeDebug('- ClassificationPlugin::Core - '.$_[0]) if TRACE;
 }
 
 ###############################################################################
@@ -699,7 +699,7 @@ sub beforeSaveHandler {
   # playing a central role in this plugin, TopicType and Category.
   # 
   if (FIXFORMFIELDS) {
-    #if (DEBUG) {
+    #if (TRACE) {
     #  use Data::Dumper;
     #  $Data::Dumper::Maxdepth = 3;
     #  writeDebug("BEFORE FIXFORMFIELDS");
@@ -727,7 +727,7 @@ sub beforeSaveHandler {
       }
     }
 
-    #if (DEBUG) {
+    #if (TRACE) {
     #  use Data::Dumper;
     #  $Data::Dumper::Maxdepth = 3;
     #  writeDebug("AFTER FIXFORMFIELDS");
@@ -1121,7 +1121,7 @@ sub renameTag {
     if ($found) {
       my $newTags = join(', ', keys %tags);
 
-      if (DEBUG) {
+      if (TRACE) {
         print STDERR "\n$topic: old=".join(", ", sort @$tags)."\n";
         print STDERR "$topic: new=$newTags\n";
       } 

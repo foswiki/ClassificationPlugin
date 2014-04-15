@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1357565279" format="1.1" version="7"}%
+%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1397121379" format="1.1" version="8"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -20,19 +20,20 @@ a summary for an object listed within the Category topic.
      [[$web.$topic][$expand(topictitle)]] $percntREDDOT{\"$web.$topic\"}$percnt
      $expand('<div class=\"foswikiTopicSummary\">' and Summary and '</div>')
      <div class='foswikiTopicInfo'>
-       $percntCATINFO{\"$web.$topic\" 
-         header=\"<span class='clsCatInfo'>$dollarpercntMAKETEXT{\\"Filed in [_1]\\" args=\\"\" 
-         separator=\"&#44; \"
-        footer=\"\\"}$dollarpercnt</span>\"
-       }$percnt<!-- -->
-       <div class='clsAuthorDateInfo'>
-         <!-- -->$formatTime(info.date),
+       <span class='clsAuthorDateInfo'>
+         <!-- -->$formatTime(info.date)
+         <span class='natRevisionSep'>&#124;</span> 
          <nop>$percntGETTOPICTITLE{\"
            $percntUSERINFO{\"$expand(info.author)\"
              format=\"$wikiusername\"
            }$percnt\"
          }$percnt
-      </div>
+      </span>
+       $percntCATINFO{\"$web.$topic\" 
+         header=\" <span class='natRevisionSep'>&#124;</span> <span class='clsCatInfo'>\" 
+         separator=\"&#44; \"
+        footer=\"</span>\"
+       }$percnt<!-- -->
      </div>
    </div>"
 }%%STOPINCLUDE%

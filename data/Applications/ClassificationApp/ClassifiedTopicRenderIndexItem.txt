@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1390989119" format="1.1" reprev="21" version="23"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1397121130" format="1.1" reprev="24" version="24"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -25,24 +25,25 @@ a summary for an object of type ClassifiedTopic.
     [[$web.$topic][$expand(topictitle)]]&nbsp;$percntREDDOT{\"$web.$topic\"}$percnt
     $expand('<div class=\"foswikiTopicSummary\">' and Summary and '</div>')<!-- -->
     <div class='foswikiTopicInfo'>
-      $percntCATINFO{\"$web.$topic\" 
-        header=\"<span class='clsCatInfo'>$dollarpercntMAKETEXT{\\"Filed in [_1]\\" args=\\"\" 
-        separator=\"&#44; \"
-        footer=\"\\"}$dollarpercnt</span>$dollarpercntCALC{\\"$SET(catinfo, 1)\\"}$dollarpercnt\"
-      }$percnt$percntTAGINFO{\"$web.$topic\" 
-        header=\"<span class='clsTagInfo'>$percntCALC{\"$IF($GET(catinfo),&#44; $dollarpercntMAKETEXT{\\\"tagged [_1]\\\" args=\\\",$dollarpercntMAKETEXT{\\\"Tagged [_1]\\\" args=\\\")\"}$percnt\"
-        separator=\"&#44; \"
-        limit=\"5\"
-        footer=\"\\"}$dollarpercnt</span>\"
-      }$percnt<!-- -->
-      <div class='clsAuthorDateInfo'>
-        <!-- -->$formatTime(info.date),
+      <span class='clsAuthorDateInfo'>
+        <!-- -->$formatTime(info.date) 
+        <span class='natRevisionSep'>&#124;</span> 
         <nop>$percntGETTOPICTITLE{\"
              $percntUSERINFO{\"$expand(info.author)\"
                format=\"$wikiusername\"
              }$percnt\"
         }$percnt
-      </div>
+      </span>
+      $percntCATINFO{\"$web.$topic\" 
+        header=\" <span class='natRevisionSep'>&#124;</span> <span class='clsCatInfo'>\" 
+        separator=\"&#44; \"
+        footer=\"</span>\"
+      }$percnt$percntTAGINFO{\"$web.$topic\" 
+        header=\" <span class='natRevisionSep'>&#124;</span> <span class='clsTagInfo'>\" 
+        separator=\"&#44; \"
+        limit=\"5\"
+        footer=\"</span>\"
+      }$percnt<!-- -->
     </div>
   </div>
   %CLEAR%"
