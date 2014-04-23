@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="micha" comment="reprev" date="1398188320" format="1.1" reprev="17" version="17"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1398188320" format="1.1" reprev="17" version="17"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.WikiTopicView"}%
