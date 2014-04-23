@@ -283,6 +283,10 @@ a:hover.tag_todo {
   color:#fff !important;
 }
 
+.clsHilight {
+  background-color:#FFFFC0;
+  color:black;
+}
 
 /* pattern skin tweaks */
 #patternMainContents h1 a,
@@ -293,8 +297,25 @@ a:hover.tag_todo {
 #patternMainContents h6 a {
   text-decoration:none !important;
 }
-
-.clsHilight {
-  background-color:#FFFFC0;
-  color:black;
+#patternMainContents h1 .foswikiTopicSummary {
+  font-size: 65%;
+  line-height: 1.5;
+  color:#a1a1a1;
+}
+#patternMainContents .foswikiTopicInfo {
+  margin-bottom:2em;
+}
+#patternMainContents .foswikiTopicInfo h1 {
+  margin:0.5em 0;
+  border-bottom:1px solid #dfdfdf;
+}
+#patternMainContents .foswikiTopicInfo,
+#patternMainContents .foswikiTopicInfo a {
+  color:#a1a1a1;
+}
+#patternMainContents .foswikiTopicInfo h1 a {
+  color:inherit;
+}
+.patternTop .patternRevInfo {
+  display:none;
 }

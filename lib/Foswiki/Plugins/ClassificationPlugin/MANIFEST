@@ -153,6 +153,7 @@ data/Applications/ClassificationApp/WebRss.txt 0644
 data/Applications/ClassificationApp/WebSearchAdvanced.txt 0644
 data/Applications/ClassificationApp/WebSearch.txt 0644
 data/Applications/ClassificationApp/WebStatistics.txt 0644
+data/Applications/ClassificationApp/WebTagList.txt 0644
 data/Applications/ClassificationApp/WebTool.txt 0644
 data/Applications/ClassificationApp/WebTopicEditTemplate.txt 0644
 data/Applications/ClassificationApp/WebTopicList.txt 0644
@@ -176,6 +177,7 @@ data/_ClassificationTemplate/WebPreferences.txt 0644
 data/_ClassificationTemplate/WebRss.txt 0644
 data/_ClassificationTemplate/WebSearch.txt 0644
 data/_ClassificationTemplate/WebStatistics.txt 0644
+data/_ClassificationTemplate/WebTagList.txt 0644
 data/_ClassificationTemplate/WebTopicEditTemplate.txt 0644
 data/_ClassificationTemplate/WebTopicList.txt 0644
 data/System/ClassificationPlugin.txt 0644

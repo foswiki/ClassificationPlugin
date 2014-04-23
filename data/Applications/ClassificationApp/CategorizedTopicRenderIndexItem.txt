@@ -22,7 +22,7 @@ a summary for an object listed within the Category topic.
      <div class='foswikiTopicInfo'>
        <span class='clsAuthorDateInfo'>
          <!-- -->$formatTime(info.date)
-         <span class='natRevisionSep'>&#124;</span> 
+         <span class='foswikiRevisionSep'>&#124;</span> 
          <nop>$percntGETTOPICTITLE{\"
            $percntUSERINFO{\"$expand(info.author)\"
              format=\"$wikiusername\"
@@ -30,7 +30,7 @@ a summary for an object listed within the Category topic.
          }$percnt
       </span>
        $percntCATINFO{\"$web.$topic\" 
-         header=\" <span class='natRevisionSep'>&#124;</span> <span class='clsCatInfo'>\" 
+         header=\" <span class='foswikiRevisionSep'>&#124;</span> <span class='clsCatInfo'>\" 
          separator=\"&#44; \"
         footer=\"</span>\"
        }$percnt<!-- -->

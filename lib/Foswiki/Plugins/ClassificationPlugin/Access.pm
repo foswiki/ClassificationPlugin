@@ -18,7 +18,6 @@ use strict;
 use Foswiki::Plugins::ClassificationPlugin;
 
 use constant  TRACE => 0; # toggle m
-
 use constant NO_CATACL => 0;
 use constant DENY_ALLOW => 1;
 use constant ALLOW_DENY => 2;

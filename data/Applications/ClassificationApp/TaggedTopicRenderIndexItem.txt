@@ -22,7 +22,7 @@ a summary for an object listed within the TaggedTopic.
     <div class='foswikiTopicInfo'>
       <span class='clsAuthorDateInfo'>
         <!-- -->$formatTime(info.date)
-        <span class='natRevisionSep'>&#124;</span> 
+        <span class='foswikiRevisionSep'>&#124;</span> 
         <nop>$percntGETTOPICTITLE{\"
              $percntUSERINFO{\"$expand(info.author)\"
                format=\"$wikiusername\"
@@ -30,7 +30,7 @@ a summary for an object listed within the TaggedTopic.
         }$percnt
       </span>
       $percntTAGINFO{\"$web.$topic\" 
-        header=\" <span class='natRevisionSep'>&#124;</span> <span class='clsTagInfo'>\" 
+        header=\" <span class='foswikiRevisionSep'>&#124;</span> <span class='clsTagInfo'>\" 
         separator=\"&#44; \"
         limit=\"5\"
         footer=\"</span>\"

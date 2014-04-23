@@ -27,7 +27,7 @@ a summary for an object of type ClassifiedTopic.
     <div class='foswikiTopicInfo'>
       <span class='clsAuthorDateInfo'>
         <!-- -->$formatTime(info.date) 
-        <span class='natRevisionSep'>&#124;</span> 
+        <span class='foswikiRevisionSep'>&#124;</span> 
         <nop>$percntGETTOPICTITLE{\"
              $percntUSERINFO{\"$expand(info.author)\"
                format=\"$wikiusername\"
@@ -35,11 +35,11 @@ a summary for an object of type ClassifiedTopic.
         }$percnt
       </span>
       $percntCATINFO{\"$web.$topic\" 
-        header=\" <span class='natRevisionSep'>&#124;</span> <span class='clsCatInfo'>\" 
+        header=\" <span class='foswikiRevisionSep'>&#124;</span> <span class='clsCatInfo'>\" 
         separator=\"&#44; \"
         footer=\"</span>\"
       }$percnt$percntTAGINFO{\"$web.$topic\" 
-        header=\" <span class='natRevisionSep'>&#124;</span> <span class='clsTagInfo'>\" 
+        header=\" <span class='foswikiRevisionSep'>&#124;</span> <span class='clsTagInfo'>\" 
         separator=\"&#44; \"
         limit=\"5\"
         footer=\"</span>\"

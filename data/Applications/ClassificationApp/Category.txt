@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1390903057" format="1.1" reprev="20" version="21"}%
+%META:TOPICINFO{author="micha" comment="reprev" date="1397729650" format="1.1" reprev="20" version="22"}%
 %META:TOPICPARENT{name="TopicType"}%
 %TOC%
 %DBCALL{"Applications.RenderTopicInstaller" 
@@ -33,6 +33,7 @@ See also: See [[CategorizedTopic]], [[ClassifiedTopic]], [[TaggedTopic]], [[Cate
 %DBCALL{"Applications.ClassificationApp.RenderCategoryBrowser" 
   THEWEB="%URLPARAM{"web" default="%BASEWEB%"}%"
   MODE="edit"
+  BUTTONS="filter, refresh"
 }%<!-- -->%STOPINCLUDE%
 
 ---++ %TOPIC% form

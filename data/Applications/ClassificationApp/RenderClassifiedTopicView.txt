@@ -19,12 +19,12 @@ showing its category and tagging info in the top.
 %DBCALL{"Applications.RenderWikiTopicView" TITLE_EXTRA="%TITLE_EXTRA%"}%
 %CATINFO{
   "%BASEWEB%.%BASETOPIC%" 
-  header="<span class='natRevisionSep'>&#124;</span> %JQICON{"fa-folder"}% "
+  header="<span class='foswikiRevisionSep'>&#124;</span> %JQICON{"fa-folder"}% "
   format="<a href='$url' rel='tag' itemprop='keywords' class='$name'><noautolink>$title</noautolink></a>"
 }% <!-- -->
 %TAGINFO{
   "%BASEWEB%.%BASETOPIC%"
-  header="<span class='natRevisionSep'>&#124;</span> %JQICON{"fa-tag"}% "
+  header="<span class='foswikiRevisionSep'>&#124;</span> %JQICON{"fa-tag"}% "
   format="<a href='$url' rel='tag' itemprop='keywords' class='$class'><noautolink>$name</noautolink></a>"
   limit="30"
   footer="$percntIF{\"$count > $index\" 

@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1393259686" format="1.1" reprev="13" version="14"}%
+%META:TOPICINFO{author="micha" comment="reprev" date="1397729628" format="1.1" reprev="15" version="15"}%
 %META:TOPICPARENT{name="TopicFunction"}%
  %TOC{depth="2"}%
 
@@ -14,7 +14,7 @@
       * =edit=: allows to modify the hierarchy 
       * =select=: select one or more categories; specify the name of the formfield to be used in the NAME parameter
       * =browse=: navigate among categories
-   * BUTTONS: =on=, =off= - toggle the display of the buttons, defaults to =on=
+   * BUTTONS: =on=, =off= - toggle the display of the buttons, defaults to =on=; you may also switch on individual buttons using a comma separated lists of ids =filter=, =refresh=, =undo= and/or =clear=
 
 %ENDSECTION{name="documentation" type="section"}%
 
@@ -25,8 +25,8 @@
     %IF{"'%MODE%'='select'"
       then="<input type='hidden' name='%NAME{default="Category"}%' value='%VALUE{default=""}%' />"
       else="<!-- -->"
-    }%%IF{"'%BUTTONS{default="on"}%'='on'"
-      then="$percntDBCALL{\"%WEB%.%TOPIC%\" section=\"buttons\"}$percnt"
+    }%%IF{"'%BUTTONS{default="on"}%'!='off'"
+      then="$percntDBCALL{\"%WEB%.%TOPIC%\" section=\"buttons\" buttons=\"%BUTTONS{default="on"}%\"}$percnt"
       else="<!-- -->"
     }%
   <div class="jqHierarchyContainer jqUITooltip" data-theme='default' data-position="right" data-arrow="true"></div>
@@ -48,10 +48,19 @@
 <verbatim class="tml">
 %STARTSECTION{"buttons"}%<div class="jqHierarchyButtons jqUITooltip" data-theme="info" data-position="top" data-arrow="true">
  <input type="text" size="28" class="foswikiInputField jqHierarchySearchField" style="display:none" /> 
- %BUTTON{"%MAKETEXT{"Filter"}%" icon="find" class="simple jqHierarchySearchButton" title="%MAKETEXT{"Search for matching categories"}%"}% 
- %IF{"'%USERNAME%' ingroup 'AdminGroup'" 
+ %IF{"'%buttons%'=~'\bfilter\b' or '%buttons%'='on'"
+    then="%BUTTON{"%MAKETEXT{"Filter"}%" icon="find" class="simple jqHierarchySearchButton" title="%MAKETEXT{"Search for matching categories"}%"}%"
+ }%<!-- -->
+ %IF{"'%USERNAME%' ingroup 'AdminGroup' and ('%buttons%'=~'\brefresh\b' or '%buttons%'='on')" 
    then="%BUTTON{"%MAKETEXT{"Refresh"}%" icon="arrow_refresh" class="jqHierarchyRefreshButton simple" title="%MAKETEXT{"Refresh hierarchy cache on the backend"}%"}%"
- }%%CLEAR% 
+ }%<!-- -->
+ %IF{"'%buttons%'=~'\bclear\b' or '%buttons%'='on'"
+    then="%BUTTON{"%MAKETEXT{"Clear"}%" icon="application" class="simple jqHierarchyClearButton" title="%MAKETEXT{"Empty the selection"}%""}%"
+ }%<!-- -->
+ %IF{"'%buttons%'=~'\bundo\b' or '%buttons%'='on'"
+    then="%BUTTON{"%MAKETEXT{"Undo"}%" icon="arrow_refresh" class="simple jqHierarchyResetButton" title="%MAKETEXT{"Reset the selection"}%""}%"
+ }%<!-- -->
+ %CLEAR% 
 </div>%ENDSECTION{"buttons"}%
 </verbatim>
 
@@ -60,10 +69,10 @@
 %DBCALL{"%TOPIC%" MODE="select"}%
 
 ---+++ browse
-%DBCALL{"%TOPIC%" MODE="browse"}%
+%DBCALL{"%TOPIC%" MODE="browse" BUTTONS="off"}%
 
 ---+++ edit
-%DBCALL{"%TOPIC%" MODE="edit"}%
+%DBCALL{"%TOPIC%" MODE="edit" BUTTONS="filter, refresh"}%
 
 %DBCALL{"Applications.RenderFunctionCallers"}%
 
