@@ -19,6 +19,7 @@ use warnings;
 
 use Foswiki::Func ();
 use Foswiki::Meta ();
+use Foswiki::Sandbox ();
 use Foswiki::Plugins::ClassificationPlugin ();
 use JSON ();
 use Error qw( :try );
@@ -46,6 +47,7 @@ sub dispatchAction {
 
   my $request = Foswiki::Func::getRequestObject();
   my $theWeb = $request->param('web') || $session->{webName};
+  $theWeb = Foswiki::Sandbox::untaint($theWeb, \&Foswiki::Sandbox::validateWebName) || '';
 
   my $result;
   try {

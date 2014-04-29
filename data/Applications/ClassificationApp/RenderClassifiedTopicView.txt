@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1397221156" format="1.1" reprev="20" version="20"}%
+%META:TOPICINFO{author="micha" comment="reprev" date="1398678623" format="1.1" reprev="21" version="21"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -10,6 +10,7 @@ showing its category and tagging info in the top.
 
 ---+++++ Parameters
    * TITLE_EXTRA: optional addition to the topic title. see Applications.RenderWikiTopicView
+   * DISPLAYREVISIONINFO: boolean flag to switch on/off revinfo 
 
 %ENDSECTION{name="documentation" type="section"}%
 
@@ -17,6 +18,14 @@ showing its category and tagging info in the top.
 <verbatim class="tml">
 %STARTINCLUDE%<!-- -->
 %DBCALL{"Applications.RenderWikiTopicView" TITLE_EXTRA="%TITLE_EXTRA%"}%
+%IF{"'%DISPLAYREVISIONINFO{default="on"}%'='on'"
+   then="$percntDBCALL{\"%WEB%.%TOPIC%\" section=\"revinfo\"}$percnt"
+}%<!-- -->%STOPINCLUDE%
+</verbatim>
+
+---++ Revision Info
+<verbatim class="tml">
+%STARTSECTION{"revinfo"}%<!-- -->
 %CATINFO{
   "%BASEWEB%.%BASETOPIC%" 
   header="<span class='foswikiRevisionSep'>&#124;</span> %JQICON{"fa-folder"}% "
@@ -39,27 +48,7 @@ showing its category and tagging info in the top.
   requires="JQUERYPLUGIN, JQUERYPLUGIN::UI"
   text="<script src='%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/jquery.classifiedtopic.js'></script>"
   id="CLASSIFICATIONPLUGIN::JS"
-}%<!-- -->%STOPINCLUDE%
-</verbatim>
-
----++ Old taginfo / catinfo
-<verbatim class="tml">
-%CATINFO{
-  "%BASEWEB%.%BASETOPIC%" 
-  header="$percntMAKETEXT{\"Filed in [_1]\" args=\""
-  separator="&#44; "
-  footer="\"}$percnt$percntCALC{\"$SET(catinfo, 1)\"}$percnt"
-}%%TAGINFO{
-  "%BASEWEB%.%BASETOPIC%" 
-  header="%CALC{"$IF($GET(catinfo),&#44; $percntMAKETEXT{\\"tagged [_1]\\" args=\\",$percntMAKETEXT{\\"Tagged [_1]\\" args=\\")"}%"
-  separator="&#44; "
-  limit="30"
-  footer="$percntIF{\"$count > $index\" 
-    then=\"<span class='clsTopicInfoMoreContainer'> &#8230; 
-      <a href='#' class='clsTopicInfoMore' title='%MAKETEXT{"Show all tags"}%'>%MAKETEXT{"more"}%</a>
-      </span>\"
-    }$percnt\"}$percnt"
-}%
+}%%ENDSECTION{"revinfo"}%
 </verbatim>
 
 ---++ Test
@@ -73,7 +62,6 @@ showing its category and tagging info in the top.
 &copy; 2007-2014 Michael Daum http://michaeldaumconsulting.com
 
 %DBCALL{"Applications.GnuGeneralPublicLicense" section="notice"}%
-
 
 %META:FORM{name="Applications.ApplicationTopic"}%
 %META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%

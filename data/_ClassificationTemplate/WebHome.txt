@@ -97,4 +97,3 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam aliquam molestie
 %META:PREFERENCE{name="NATSKIN_SIDEBAR" title="NATSKIN_SIDEBAR" type="Local" value="off"}%
 %META:PREFERENCE{name="DISPLAYREVISIONINFO" title="DISPLAYREVISIONINFO" type="Local" value="off"}%
 %META:PREFERENCE{name="NOWYSIWYG" title="NOWYSIWYG" type="Set" value="on"}%
-%META:PREFERENCE{name="TOPICTITLE" title="TOPICTITLE" type="Local" value="_ClassificationTemplate"}%
