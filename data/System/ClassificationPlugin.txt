@@ -353,6 +353,7 @@ Note however that for now only the =%DBQUERY= language is supported (see [[Foswi
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  22 May 2014: | fixes to Category factory; initial work on a category-based virtual filesystem for webdav |
 |  23 Apr 2014: | improved topic info layout; added <nop>WebTagList; added back Clear button to category editor |
 |  04 Apr 2014: | fixed compatibility with foswiki >= 1.2.0; flag rest handlers that don't require authentication |
 |  18 Mar 2014: | fixed syntax error in jstree combponent (Foswiki:Main/DanieleGondoni);\
