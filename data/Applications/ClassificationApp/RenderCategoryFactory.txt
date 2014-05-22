@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1400743395" format="1.1" reprev="16" version="16"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1400750821" format="1.1" reprev="16" version="17"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -21,6 +21,7 @@ This function renders an input form to create a new category.
 <input type="hidden" name="action" value="form" />
 <input type="hidden" name="TopicType" value="Category, CategorizedTopic" />
 <input type="hidden" name="topicparent" value="none" />
+<input type="hidden" name="redirectto" value="%BASEWEB%.%BASETOPIC%" />
 <input type="hidden" name="topic" value="%URLPARAM{"topic" encode="entity"}%"  class="jqWikiWord {source:'#cattitle', suffix:'Category'}" />
 <input type="hidden" name="Summary" value="" />
 <div class="foswikiFormSteps clsCategoryFactory">

@@ -293,7 +293,14 @@ sub reparent {
   }
 
   my $field = $meta->get('FIELD', 'Category');
-  return unless $field;
+  unless ($field) {
+    $field = {
+      name => 'Category',
+      title => 'Category',
+      attributes => '',
+      value => '',
+    };
+  }
 
   my %cats = map { $_ => 1 } split(/\s*,\s*/, $field->{value});
 
@@ -807,7 +814,7 @@ sub traverse {
   $depth ||= 0;
 
   my $maxDepth = $params->{depth};
-  return '' if $maxDepth && $depth >= $maxDepth;
+  return '' if defined($maxDepth) && $depth >= $maxDepth;
 
   $index ||= 1;
   $nrSiblings ||= 1;

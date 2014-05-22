@@ -827,7 +827,6 @@ sub traverse {
   writeDebug("called traverse for hierarchy in '$this->{web}'");
 
   my $top = $params->{top} || 'TopCategory';
-  my $nullFormat = $params->{nullformat} || '';
   my $sort = $params->{sort} || '';
 
   my @result;
@@ -844,27 +843,42 @@ sub traverse {
       push @result, $catResult if $catResult;
     }
   }
-  return $nullFormat unless @result;
 
   my $result = '';
-  my $separator = $params->{separator} || '';
-  my $header = $params->{header} || '';
-  my $footer = $params->{footer} || '';
+  my $count = scalar($this->getCategories) - 2;
 
-  $separator = Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($separator);
-  $result = join($separator, @result);
+  if (@result) {
+    my $separator = $params->{separator} || '';
+    my $header = $params->{header} || '';
+    my $footer = $params->{footer} || '';
 
-  $header = Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($header,
-    depth=>0,
-    indent=>'',
-  );
-  $footer = Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($footer,
-    depth=>0,
-    indent=>'',
-  );
+    $separator = Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($separator);
+    $result = join($separator, @result);
+
+    $header = Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($header,
+      depth=>0,
+      indent=>'',
+      count=>$count,
+    );
+    $footer = Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($footer,
+      depth=>0,
+      indent=>'',
+      count=>$count,
+    );
+    $result = $header.$result.$footer;
+  } else {
+    my $nullFormat = $params->{nullformat} || '';
+
+    $result = Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($nullFormat,
+      depth=>0,
+      indent=>'',
+      count=>$count,
+    );
+  }
 
   writeDebug("done traverse");
-  return $header.$result.$footer;
+
+  return $result;
 }
 
 ###############################################################################

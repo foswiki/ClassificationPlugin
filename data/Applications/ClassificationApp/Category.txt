@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1400742037" format="1.1" reprev="20" version="23"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1400750716" format="1.1" reprev="24" version="24"}%
 %META:TOPICPARENT{name="TopicType"}%
 %TOC%
 %DBCALL{"Applications.RenderTopicInstaller" 
@@ -17,7 +17,6 @@ Categories themselves are CategorizedTopics thus implementing a hierarchy.
 See also: See [[CategorizedTopic]], [[ClassifiedTopic]], [[TaggedTopic]], [[CategoryTemplate]], [[CategoryViewTemplate]], [[CategoryEditTemplate]]
 %ENDSECTION{name="documentation" type="section"}%
 
-
 %STARTINCLUDE%<!-- -->
 %TWISTY{
   link="%BUTTON{
@@ -29,10 +28,17 @@ See also: See [[CategorizedTopic]], [[ClassifiedTopic]], [[TaggedTopic]], [[Cate
 %DBCALL{"Applications.ClassificationApp.RenderCategoryFactory"}%
 %ENDTWISTY%
 
-%DBCALL{"Applications.ClassificationApp.RenderCategoryBrowser" 
-  THEWEB="%URLPARAM{"web" default="%BASEWEB%"}%"
-  MODE="edit"
-  BUTTONS="filter, refresh"
+%IF{
+  "'%HIERARCHY{
+     web="%URLPARAM{"web" default="%BASEWEB%"}%"
+     nullformat="$count"
+     depth="0"
+   }%'!=0"
+   then="$percntDBCALL{\"Applications.ClassificationApp.RenderCategoryBrowser\" 
+     THEWEB=\"%URLPARAM{"web" default="%BASEWEB%"}%\"
+     MODE=\"edit\"
+     BUTTONS=\"filter, refresh\"
+   }$percnt"
 }%<!-- -->%STOPINCLUDE%
 
 ---++ %TOPIC% form
