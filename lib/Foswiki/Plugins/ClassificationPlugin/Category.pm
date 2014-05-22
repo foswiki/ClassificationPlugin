@@ -71,7 +71,6 @@ sub purgeCache {
   undef $this->{_isCyclic};
   undef $this->{_perms};
 
-
   $this->{gotUpdate} = 1;
 }
 

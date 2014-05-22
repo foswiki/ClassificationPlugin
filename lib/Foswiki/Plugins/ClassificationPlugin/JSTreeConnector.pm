@@ -263,7 +263,10 @@ sub handle_move_node {
   throw Error::Simple("Copy not implemented yet") if $doCopy;
 
   # reparent
-  my ($meta) = Foswiki::Func::readTopic($this->{origWeb}, $this->{name});
+  my ($meta) = Foswiki::Func::readTopic($cat->{origWeb}, $cat->{name});
+  throw Error::Simple("Woops, category not found: $cat->{origWeb}.$cat->{name}")
+    unless Foswiki::Func::topicExists($cat->{origWeb}, $cat->{name});
+
   $meta = $cat->reparent($newParent, $oldParent, $meta);
   throw Error::Simple("Woops, can't reparent $catName") unless defined $meta;
   

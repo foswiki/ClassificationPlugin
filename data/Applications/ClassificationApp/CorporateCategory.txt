@@ -1,11 +1,12 @@
-%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1357565279" format="1.1" version="2"}%
+%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1400744209" format="1.1" version="3"}%
 %META:TOPICPARENT{name="IntranetDirectory"}%
 %DBCALL{"Applications.ClassificationApp.RenderCategory"}%
 
 %META:FORM{name="Applications.ClassificationApp.Category"}%
-%META:FIELD{name="TopicType" attributes="" title="TopicType" value="Category, CategorizedTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="Category, CategorizedTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Corporate"}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
 %META:FIELD{name="Category" attributes="" title="Category" value="IntranetDirectory"}%
 %META:FIELD{name="Icon" attributes="" title="Icon" value="bell.png"}%
 %META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%
+%META:FIELD{name="Order" attributes="" title="Order" value="10"}%

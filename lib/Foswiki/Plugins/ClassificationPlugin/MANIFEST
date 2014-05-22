@@ -181,6 +181,7 @@ data/_ClassificationTemplate/WebTagList.txt 0644
 data/_ClassificationTemplate/WebTopicEditTemplate.txt 0644
 data/_ClassificationTemplate/WebTopicList.txt 0644
 data/System/ClassificationPlugin.txt 0644
+lib/Filesys/Virtual/Categories.pm 0644
 lib/Foswiki/Form/Cat.pm 0644
 lib/Foswiki/Form/Tag.pm 0644
 lib/Foswiki/Plugins/ClassificationPlugin/Access.pm 0644

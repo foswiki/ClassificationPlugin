@@ -24,7 +24,7 @@ use Foswiki::Prefs ();
 use Foswiki::Func ();
 use JSON ();
 
-use constant OBJECTVERSION => 0.82;
+use constant OBJECTVERSION => 0.83;
 use constant CATWEIGHT => 1.0; # used in computeSimilarity()
 use constant TRACE => 0; # toggle me
 
@@ -144,6 +144,8 @@ sub purgeCache {
       $cat->purgeCache() if $cat;
       undef $this->{_catsOfTopic};
     }
+    $this->{_top}->purgeCache() if $this->{_top};
+    $this->{_bottom}->purgeCache() if $this->{_bottom};
   } 
 
   if ($mode > 3) { # category topics
@@ -155,6 +157,7 @@ sub purgeCache {
     undef $this->{_categories};
     undef $this->{_distance};
     undef $this->{_prefs};
+    undef $this->{_top};
     undef $this->{_top};
     undef $this->{_bottom};
     undef $this->{_aclAttribute};
@@ -941,6 +944,7 @@ sub collectTopicsOfCategory {
     $cat->{_topics} = {};
     $cat->{gotUpdate} = 1;
   }
+  $this->{_top}{_topics} = {};
 
   foreach my $topicName ($db->getKeys()) {
     my $topicObj = $db->fastget($topicName);
@@ -957,11 +961,11 @@ sub collectTopicsOfCategory {
     next if $topicTypes =~ /\bCategory\b/o;
 
     my $cats = $this->getCategoriesOfTopic($topicObj);
-    next unless $cats;
+    push @$cats, 'TopCategory' if !$cats || !@$cats;
 
     foreach my $catName (@$cats) {
       my $cat = $this->getCategory($catName);
-      #writeDebug("adding $topicName it to category $catName");
+      writeDebug("adding $topicName it to category $catName");
       $cat->{_topics}{$topicName} = 1;
     }
   }

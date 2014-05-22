@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1383817526" format="1.1" version="15"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1400743395" format="1.1" reprev="16" version="16"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -21,46 +21,13 @@ This function renders an input form to create a new category.
 <input type="hidden" name="action" value="form" />
 <input type="hidden" name="TopicType" value="Category, CategorizedTopic" />
 <input type="hidden" name="topicparent" value="none" />
+<input type="hidden" name="topic" value="%URLPARAM{"topic" encode="entity"}%"  class="jqWikiWord {source:'#cattitle', suffix:'Category'}" />
+<input type="hidden" name="Summary" value="" />
 <div class="foswikiFormSteps clsCategoryFactory">
-<h2 >%MAKETEXT{"Create a new category in the [_1] web" args="<span class='foswikiAlert'><nop>%WEBLINK{"%BASEWEB%" format="$name"}%</span>"}%</h2>
+<h2 >%MAKETEXT{"Create a new category in the [_1] web" args="<nop>%WEBLINK{"%BASEWEB%" format="$name"}%"}%</h2>
 <div class="foswikiFormStep">
   <h3>%MAKETEXT{"Title"}%:</h3>
   <input class="foswikiInputField" type="text" id="cattitle" name="TopicTitle" size="60" value="%URLPARAM{"TopicTitle" encode="entity"}%" />
-  <div class="foswikiFormDescription">
-    %MAKETEXT{"Enter the title of the new category. This is a free-form text that the topic name will be derived from by default."}%
-  </div>
-</div>
-<div class="foswikiFormStep">
-  <h3>%MAKETEXT{"Topic"}%:</h3>
-  <input class="foswikiInputField" type="text" id="cattopic" name="topic" size="60" value="%URLPARAM{"topic" encode="entity"}%" />
-  <div class="foswikiFormDescription">
-    %MAKETEXT{"Enter the category topic name. This must be a unique ID among all categories within a taxonomy."}%
-  </div>
-</div>
-<div class="foswikiFormStep">
-  <h3>%MAKETEXT{"Summary"}%</h3>
-  <input class="foswikiInputField" type="text" name="Summary" size="60" value="%URLPARAM{"Summary" encode="entity"}%" />
-  <div class="foswikiFormDescription">
-    %MAKETEXT{"Enter a short summary line describing what this category is about."}%
-  </div>
-</div>
-<div class="foswikiFormStep">
-  <h3>%MAKETEXT{"Parent category"}%:</h3>
-  %DBCALL{"Applications.ClassificationApp.RenderCategoryBrowser" MODE="select"}%
-  <div class="foswikiFormDescription">
-    %MAKETEXT{"Select one or more parent categories that the newly created category is subordinated to."}%
-  </div>
-</div>
-<div class="foswikiFormStep">
-  <h3>%MAKETEXT{"Icon"}%:</h3>
-  %DBCALL{"Applications.ClassificationApp.RenderIconSelector" 
-    BUTTONS="off" 
-    VALUE="%URLPARAM{"Icon"}%" 
-    SOURCE="%CLASSIFICATIONPLUGIN_ICONSET%"
-  }%
-  <div class="foswikiFormDescription">
-    %MAKETEXT{"Select an icon to be used when displaying this category in a list or hierarchy tree."}%
-  </div>
 </div>
 <div class="foswikiFormStep">
   %BUTTON{"%MAKETEXT{"Submit"}%" type="save" icon="add"}%
@@ -69,20 +36,8 @@ This function renders an input form to create a new category.
 </div>
 </form>
 %JQREQUIRE{"wikiword"}%<!-- -->
-%ADDTOZONE{"script" topic="%WEB%.%TOPIC%" section="init" requires="JQUERYPLUGIN::WIKIWORD"}%<!-- -->
 </noautolink>
 <!-- -->%STOPINCLUDE%
-</verbatim>
-
----++ !JavaScript initialisation
-<verbatim class="tml">
-%STARTSECTION{"init"}%<literal>
-<script>
-jQuery(function($) {
-  $("#cattopic").wikiword("#cattitle", {suffix: 'Category', initial:'...Category'});
-});
-</script>
-</literal>%ENDSECTION{"init"}%
 </verbatim>
 
 ---++ Test
