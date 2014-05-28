@@ -6,4 +6,4 @@ Foswiki::Plugins::FlexFormPlugin,>=2.61,perl,Required
 Foswiki::Plugins::JQueryPlugin,>=4.20,perl,Required
 Foswiki::Plugins::NatEditPlugin,>=7.11,perl,Required
 Foswiki::Plugins::RenderPlugin,>=3.1,perl,Required
-Foswiki::Contrib::NatSkin,>=4.00,perl,Recommended
+Foswiki::Contrib::NatSkin,>=4.00,perl,Optional

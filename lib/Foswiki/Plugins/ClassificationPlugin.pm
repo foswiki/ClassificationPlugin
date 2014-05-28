@@ -17,8 +17,8 @@ use strict;
 use warnings;
 use Foswiki::Contrib::DBCacheContrib::Search ();
 
-our $VERSION = '3.21';
-our $RELEASE = '3.21';
+our $VERSION = '3.22';
+our $RELEASE = '3.22';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'A topic classification plugin and application';
 
