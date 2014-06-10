@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1392980602" format="1.1" reprev="17" version="17"}%
+%META:TOPICINFO{author="micha" comment="reprev" date="1402086723" format="1.1" reprev="21" version="21"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -11,8 +11,10 @@ See the CategoryTemplate.
    * CAT: category to be rendered, defaults to URLPARM{"catname" default="BASETOPIC"}
    * KEYWORDS: keywords to filter for
    * TAG: tags to be searching for in this category
-   * SHOWHEADER: display anchors, defaults to off
    * EXCLUDE: categories to be excluded from the list
+   * SHOWHEADER: switch on/off display anchors, defaults to off
+   * SHOWTOPICS: switch on/off display of topics in this category; defaults to on
+   * SHOWGROUPS: switch on/off alphabetic headers; defaults to off
 
 %ENDSECTION{name="documentation" type="section"}%
 
@@ -22,8 +24,8 @@ See the CategoryTemplate.
 %MAKEINDEX{
   "%HIERARCHY{
      web="%BASEWEB%"
-     top="%IF{"defined CAT" then="%CAT%" else="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%"
-     exclude="%IF{"defined CAT" then="%CAT%" else="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%%IF{"defined EXCLUDE" then="|%EXCLUDE%"}%"
+     top="%CAT{default="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%"
+     exclude="%CAT{default="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%%IF{"defined EXCLUDE" then="|%EXCLUDE%"}%"
      depth="2"
      sort="title"
      format="($trunctitle);$topic;$origweb$n"
@@ -32,8 +34,22 @@ See the CategoryTemplate.
   split="\n"
   pattern="\((.*)\);(.*);(.*)"
   sort="off"
-  format="$percntDBCALL{\"$3.$2->RenderIndexItem\" TITLE=\"$1\"}$percnt"
-}%
+  %IF{"'%SHOWGROUPS{default="off"}%'!='on'" then="group=\"\""}%
+  format="$percntDBCALL{\"$3.$2->RenderIndexItem\" TITLE=\"$1\" THEWEB=\"%BASEWEB%\"}$percnt"
+}%<!-- -->
+%IF{"'%SHOWTOPICS{default="%IF{"'%CAT{default="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%'='TopCategory'" then="off" else="on"}%"}%'='on'"
+   then="$percntDBCALL{\"%WEB%.%TOPIC%\" 
+      section=\"topicindex\"
+      TAG=\"%TAG%\"
+      KEYWORDS=\"%KEYWORDS%\"
+   }$percnt"
+}%<!-- -->
+</div></noautolink>
+<!-- -->%STOPINCLUDE%
+</verbatim>
+
+<verbatim class="tml">
+%STARTSECTION{"topicindex"}%<!-- -->
 %MAKEINDEX{
   "%DBQUERY{
     "!(TopicType=~'\bCategory\b') AND 
@@ -59,10 +75,9 @@ See the CategoryTemplate.
   pattern="(.*);(.*);(.*)"
   sort="nocase"
   %IF{"'%SHOWHEADER%'='on'" then="header=\"$anchors\""}%
-    format="$percntDBCALL{\"$3.$2->RenderIndexItem\"}$percnt"
-  }%<!-- -->
-</div></noautolink>
-<!--  -->%STOPINCLUDE%
+  format="$percntDBCALL{\"$3.$2->RenderIndexItem\"}$percnt"
+}%<!-- -->
+<!--  -->%ENDSECTION{"topicindex"}%%
 </verbatim>
 
 ---++ Toolbar 

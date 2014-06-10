@@ -1,27 +1,10 @@
-%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1357565280" format="1.1" version="7"}%
-%META:TOPICPARENT{name="WebHome"}%
-wwwxxx
-yyy
-zzz
-111222
-111
-222
-333
-444
-555
-666
-777
-888
-999
-111
-222
-333
-444
-555
+%META:TOPICINFO{author="micha" comment="reprev" date="1401709243" format="1.1" reprev="8" version="8"}%
+%META:TOPICPARENT{name="BusinessStructure"}%
+
 
 %META:FORM{name="Applications.ClassificationApp.ClassifiedTopic"}%
 %META:FIELD{name="TopicType" title="TopicType" value="ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Org.Chart"}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value="This is a test topic with a nop  in it"}%
 %META:FIELD{name="Tag" attributes="" title="Tag" value=""}%
-%META:FIELD{name="Category" attributes="" title="Category" value=""}%
+%META:FIELD{name="Category" attributes="" title="Category" value="BusinessStructure"}%

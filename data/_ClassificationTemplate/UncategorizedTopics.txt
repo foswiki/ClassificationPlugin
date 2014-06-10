@@ -1,0 +1,13 @@
+%META:TOPICINFO{author="micha" comment="reprev" date="1401709430" format="1.1" reprev="1" version="1"}%
+%META:TOPICPARENT{name="WebHome"}%
+%DBCALL{
+  "Applications.ClassificationApp.RenderUncategorizedTopics"
+  EXCLUDE="UncategorizedTopics|WebTopicEditTemplate"
+}%
+
+%META:FORM{name="Applications.ClassificationApp.ClassifiedTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Uncategorized Topics"}%
+%META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
+%META:FIELD{name="Tag" attributes="" title="Tag" value=""}%
+%META:FIELD{name="Category" attributes="" title="Category" value=""}%

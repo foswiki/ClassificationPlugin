@@ -425,7 +425,7 @@ sub distance {
     return undef unless $cats; # no categories, no distance
     foreach my $name (@$cats) {
       $catObj = $this->getCategory($name);
-      $catSet2{$name} = $catObj->{id} if $catObj
+      $catSet2{$name} = $catObj->{id} if $catObj;
     }
   }
   return 0 if 
@@ -451,7 +451,7 @@ sub distance {
   }
 
   # both sets aren't connected
-  return undef unless defined($min);
+  return undef if !defined($min) && $topic1 ne 'TopCategory' && $topic2 ne 'TopCategory';
 
   $min = abs($min) + 2 if $firstIsTopic && $secondIsTopic;
   $min-- if $firstIsTopic;

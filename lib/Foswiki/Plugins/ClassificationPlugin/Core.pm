@@ -112,6 +112,7 @@ sub OP_distance {
   my $web = $Foswiki::Plugins::DBCachePlugin::Core::dbQueryCurrentWeb || $baseWeb;
   my $hierarchy = getHierarchy($web);
   my $dist = $hierarchy->distance($lval, $rval);
+
   return $dist || 0;
 }
 
@@ -344,7 +345,7 @@ sub handleCATINFO {
   my $parentSubsumesCat = $hierarchy->getCategory($theParentSubsumes);
 
   foreach my $catName (sort @$categories) {
-    next if $catName =~ /BottomCategory|TopCategory/;
+    next if $theCat && $theCat ne 'TopCategory' && $catName =~ /BottomCategory|TopCategory/;
     my $category = $hierarchy->getCategory($catName);
     next unless $category;
 

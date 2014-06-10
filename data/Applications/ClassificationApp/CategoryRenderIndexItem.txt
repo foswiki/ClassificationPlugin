@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1397121183" format="1.1" reprev="9" version="11"}%
+%META:TOPICINFO{author="micha" comment="reprev" date="1402084278" format="1.1" reprev="13" version="13"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -10,13 +10,16 @@ a summary for an object of type ClassifiedTopic.
 ---+++++ Parameters
    * OBJECT
    * TITLE
+   * THEWEB
 
 %ENDSECTION{name="documentation" type="section"}%
 
 ---++ Implementation
 <verbatim class="tml">
 %STARTINCLUDE%<!-- --><noautolink>
-%CATINFO{cat="%DBQUERY{topic="%OBJECT%" format="$topic"}%"
+%CATINFO{
+   cat="%DBQUERY{topic="%OBJECT%" format="$topic"}%"
+   web="%THEWEB{default="%DBQUERY{topic="%OBJECT%" format="$web"}%"}%"
    maxchildren="6"
    sortchildren="on"
    morechildren="<a href='$url' title='%MAKETEXT{"more"}%'>...</a>"

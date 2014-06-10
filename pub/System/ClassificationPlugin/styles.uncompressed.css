@@ -31,6 +31,7 @@
 }
 .clsBrowser .treeview li { 
   padding: 1px 0px 1px 20px;
+  border:0;
 }
 .clsTag {
   padding:1px 15px 2px 5px;

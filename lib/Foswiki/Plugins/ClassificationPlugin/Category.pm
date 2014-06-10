@@ -100,7 +100,7 @@ sub init {
       if ($parent) {
         $this->{parents}{$name} = $parent;
       } else {
-        print STDERR "parent $name of $this->{name} NOT found in $this->{hierarchy}->{web}\n";
+        writeDebug("parent $name of $this->{name} NOT found in $this->{hierarchy}->{web}");
         delete $this->{parents}{$name};
       }
     }
@@ -182,7 +182,6 @@ sub computeDistance {
 
   my $thisId = $this->{id};
   return if $ancestors->{$thisId};
-
 
   # become an ancestor
   $ancestors->{$thisId} = $this;

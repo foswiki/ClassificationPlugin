@@ -17,8 +17,8 @@ use strict;
 use warnings;
 use Foswiki::Contrib::DBCacheContrib::Search ();
 
-our $VERSION = '3.22';
-our $RELEASE = '3.22';
+our $VERSION = '3.30';
+our $RELEASE = '3.30';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'A topic classification plugin and application';
 
@@ -76,27 +76,47 @@ sub initPlugin {
       $jsTreeConnector = Foswiki::Plugins::ClassificationPlugin::JSTreeConnector->new();
     }
     $jsTreeConnector->dispatchAction(@_);
-  }, authenticate => 0);
+  }, 
+    authenticate => 0,
+    validate => 0,
+    http_allow => 'GET,POST',
+  );
 
   Foswiki::Func::registerRESTHandler('splitfacet', sub {
     initServices();
     return Foswiki::Plugins::ClassificationPlugin::Services::splitFacet(@_);
-  }, authenticate => 0);
+  }, 
+    authenticate => 1,
+    validate => 0,
+    http_allow => 'GET,POST',
+  );
 
   Foswiki::Func::registerRESTHandler('renametag', sub {
-    initServices();
-    return Foswiki::Plugins::ClassificationPlugin::Services::renameTag(@_);
-  }, authenticate => 0);
+      initServices();
+      return Foswiki::Plugins::ClassificationPlugin::Services::renameTag(@_);
+    }, 
+    authenticate => 1,
+    validate => 0,
+    http_allow => 'POST',
+  );
 
   Foswiki::Func::registerRESTHandler('normalizetags', sub {
     initServices();
     return Foswiki::Plugins::ClassificationPlugin::Services::normalizeTags(@_);
-  }, authenticate => 0);
+  }, 
+    authenticate => 1,
+    validate => 0,
+    http_allow => 'POST',
+  );
 
   Foswiki::Func::registerRESTHandler('deployTopicType', sub {
     initServices();
     return Foswiki::Plugins::ClassificationPlugin::Services::deployTopicType(@_);
-  }, authenticate => 0);
+  }, 
+    authenticate => 1,
+    validate => 0,
+    http_allow => 'POST',
+  );
 
   Foswiki::Contrib::DBCacheContrib::Search::addOperator(
     name=>'SUBSUMES', 

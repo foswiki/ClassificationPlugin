@@ -1,6 +1,6 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1367829599" format="1.1" reprev="1" version="1"}%
+%META:TOPICINFO{author="micha" comment="reprev" date="1401709261" format="1.1" reprev="2" version="2"}%
 %META:TOPICPARENT{name="WebHome"}%
-   * <nop>MetaDescription: %DBQUERY{topic="%TOPIC%" format="$formfield(MetaDescription)"}%
+
 
 %META:FORM{name="Applications/ClassificationApp.SeoTopic"}%
 %META:FIELD{name="TopicType" title="TopicType" value="SeoTopic, ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic"}%

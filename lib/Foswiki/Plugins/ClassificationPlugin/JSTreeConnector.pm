@@ -296,7 +296,7 @@ sub handle_move_node {
       $a->{order} <=> $b->{order} || $a->{title} cmp $b->{title};
     } grep {$_->{name} !~ /^BottomCategory$/} values %{$newParent->{children}};
 
-  print STDERR "sortedCats=".join(", ", map {$_->{name}} @sortedCats)."\n";
+  #print STDERR "sortedCats=".join(", ", map {$_->{name}} @sortedCats)."\n";
 
   my $index = 10;
   foreach my $item (@sortedCats) {

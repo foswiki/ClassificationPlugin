@@ -93,6 +93,7 @@ data/Applications/ClassificationApp/RenderKnownTags.txt 0644
 data/Applications/ClassificationApp/RenderSideBar.txt 0644
 data/Applications/ClassificationApp/RenderSolrTagCloud.txt 0644
 data/Applications/ClassificationApp/RenderTagEditor.txt 0644
+data/Applications/ClassificationApp/RenderUncategorizedTopics.txt 0644
 data/Applications/ClassificationApp/RenderWebTagCloud.txt 0644
 data/Applications/ClassificationApp/SalesCategory.txt 0644
 data/Applications/ClassificationApp/SalesForecastCategory.txt 0644
@@ -168,6 +169,7 @@ data/_ClassificationTemplate/TestCategory.txt 0644
 data/_ClassificationTemplate/TestTopic.txt 0644
 data/_ClassificationTemplate/TopCategory.txt 0644
 data/_ClassificationTemplate/TopicType.txt 0644
+data/_ClassificationTemplate/UncategorizedTopics.txt 0644
 data/_ClassificationTemplate/WebAtom.txt 0644
 data/_ClassificationTemplate/WebChanges.txt 0644
 data/_ClassificationTemplate/WebHome.txt 0644

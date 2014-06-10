@@ -1,0 +1,40 @@
+%META:TOPICINFO{author="micha" comment="reprev" date="1401709324" format="1.1" reprev="2" version="2"}%
+%META:TOPICPARENT{name="TopicFunction"}%
+%TOC{depth="2"}%
+
+---++ Documentation
+%STARTSECTION{"documentation"}%
+%RED%TODO%ENDCOLOR%
+
+---+++++ Parameters
+   * EXCLUDE: regular expression of topics to be excluded, defaults to =UncategorizedTopics|WebTopicEditTemplate=
+
+%ENDSECTION{"documentation"}%
+
+---++ Implementation
+<verbatim class="tml">
+%STARTINCLUDE%%DBQUERY{
+  "TopicType=~'\b(Classified|Categorized)Topic\b' AND TopicType !~ '\bCategory\b' AND ('TopCategory' DISTANCE topic) = 1"
+  exclude="%EXCLUDE{default="UncategorizedTopics|WebTopicEditTemplat"}%"
+  web="%BASEWEB%"
+  format="   1 [[$web.$topic]]"
+}%%STOPINCLUDE%
+</verbatim>
+
+---++ Test
+%DBCALL{"%TOPIC%"}%
+
+%DBCALL{"Applications.RenderFunctionCallers"}%
+
+---++ Copyright
+&copy; 2014 Michael Daum http://michaeldaumconsulting.com
+
+%DBCALL{"Applications.GnuGeneralPublicLicense" section="notice"}%
+
+%META:FORM{name="Applications.ApplicationTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%
+%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" attributes="c" title="Summary" value="list all topics not categorized yet"}%
+%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:TOPICMOVED{by="micha" date="1401703596" from="Applications/ClassificationApp.RenderUncategorizedTopicsuncat" to="Applications/ClassificationApp.RenderUncategorizedTopics"}%
+%META:PREFERENCE{name="EDIT_TEMPLATE" title="EDIT_TEMPLATE" type="Set" value="Applications.WikiTopicEdit"}%
