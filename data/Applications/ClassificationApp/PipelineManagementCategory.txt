@@ -9,5 +9,5 @@
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Pipeline Management"}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
 %META:FIELD{name="Category" attributes="" title="Category" value="SalesCategory"}%
-%META:FIELD{name="Icon" attributes="" title="Icon" value="pipe.png"}%
+%META:FIELD{name="Icon" attributes="" title="Icon" value="pipe"}%
 %META:FIELD{name="Order" attributes="" title="Order" value=""}%

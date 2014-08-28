@@ -17,8 +17,8 @@ use strict;
 use warnings;
 use Foswiki::Contrib::DBCacheContrib::Search ();
 
-our $VERSION = '3.30';
-our $RELEASE = '3.30';
+our $VERSION = '3.99';
+our $RELEASE = '3.99';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'A topic classification plugin and application';
 
@@ -97,7 +97,7 @@ sub initPlugin {
     }, 
     authenticate => 1,
     validate => 0,
-    http_allow => 'POST',
+    http_allow => 'GET,POST',
   );
 
   Foswiki::Func::registerRESTHandler('normalizetags', sub {
@@ -106,7 +106,7 @@ sub initPlugin {
   }, 
     authenticate => 1,
     validate => 0,
-    http_allow => 'POST',
+    http_allow => 'GET,POST',
   );
 
   Foswiki::Func::registerRESTHandler('deployTopicType', sub {
@@ -115,7 +115,7 @@ sub initPlugin {
   }, 
     authenticate => 1,
     validate => 0,
-    http_allow => 'POST',
+    http_allow => 'GET,POST',
   );
 
   Foswiki::Contrib::DBCacheContrib::Search::addOperator(
@@ -139,8 +139,6 @@ sub initPlugin {
 
   Foswiki::Func::addToZone('head', 'CLASSIFICATIONPLUGIN::CSS', $css, 'JQUERYPLUGIN::FOSWIKI');
 
-  # SMELL this is not reliable as it depends on plugin order
-  # if (Foswiki::Func::getContext()->{SolrPluginEnabled}) {
   if ($Foswiki::cfg{Plugins}{SolrPlugin}{Enabled}) {
     require Foswiki::Plugins::SolrPlugin;
     Foswiki::Plugins::SolrPlugin::registerIndexTopicHandler(\&indexTopicHandler);

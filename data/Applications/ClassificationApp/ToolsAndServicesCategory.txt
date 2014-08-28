@@ -9,5 +9,5 @@
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Tools & Services"}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
 %META:FIELD{name="Category" attributes="" title="Category" value="IntranetDirectory"}%
-%META:FIELD{name="Icon" attributes="" title="Icon" value="wrench_orange.png"}%
+%META:FIELD{name="Icon" attributes="" title="Icon" value="wrench_orange"}%
 %META:FIELD{name="Order" attributes="" title="Order" value="40"}%

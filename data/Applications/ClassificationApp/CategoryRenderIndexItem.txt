@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="micha" comment="reprev" date="1402084278" format="1.1" reprev="13" version="13"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1408451519" format="1.1" reprev="18" version="18"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -18,19 +18,20 @@ a summary for an object of type ClassifiedTopic.
 <verbatim class="tml">
 %STARTINCLUDE%<!-- --><noautolink>
 %CATINFO{
-   cat="%DBQUERY{topic="%OBJECT%" format="$topic"}%"
-   web="%THEWEB{default="%DBQUERY{topic="%OBJECT%" format="$web"}%"}%"
+   cat="%OBJECT%"
+   web="%THEWEB{default=""}%"
    maxchildren="6"
    sortchildren="on"
    morechildren="<a href='$url' title='%MAKETEXT{"more"}%'>...</a>"
-   format="<div class='clsIndexItem clsCategoryItem' style='background-image:url($icon)'>
+   format="<div class='clsIndexItem clsCategoryItem clearfix'>
+     $icon<!-- -->
      <a href='$url'>%IF{"defined TITLE" then="%TITLE%" else="$title"}%</a>$percntIF{
        \"'$count'>'0'\" then=\"&nbsp;($count)\"
      }$percnt<!-- -->
      $percntIF{\"'$percntENCODE{\"$summary\" type=\"entity\"}$percnt'!=''\" then=\"<div class='foswikiTopicInfo'>$summary</div>\"}$percnt<!-- -->
      <div class='clsSubCategories'>$children $more</div>
    </div>"
-}%%CLEAR%</noautolink><!-- -->%STOPINCLUDE%
+}%</noautolink><!-- -->%STOPINCLUDE%
 </verbatim>
 
 ---++ Test
@@ -45,7 +46,7 @@ a summary for an object of type ClassifiedTopic.
 
 
 %META:FORM{name="Applications.ApplicationTopic"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%
+%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction, WikiTopic"}%
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" attributes="c" title="Summary" value="Render a summary for a Category in a category index"}%
 %META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%

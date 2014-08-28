@@ -1,0 +1,9 @@
+*.gz
+*,v
+pub/System/ClassificationPlugin/jquery.tagsuggestion.js
+pub/System/ClassificationPlugin/renametag.js
+pub/System/ClassificationPlugin/jquery.hierarchy.js
+pub/System/ClassificationPlugin/jquery.classifiedtopic.js
+pub/System/ClassificationPlugin/jquery.catselector.js
+pub/System/ClassificationPlugin/jquery.tagselector.js
+pub/System/ClassificationPlugin/styles.css

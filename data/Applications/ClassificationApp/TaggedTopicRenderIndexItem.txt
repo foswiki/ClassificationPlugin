@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1397121262" format="1.1" version="9"}%
+%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1403120699" format="1.1" version="10"}%
 %META:TOPICPARENT{name="Applications/ClassificationApp.TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -15,7 +15,7 @@ a summary for an object listed within the TaggedTopic.
 ---++ Implementation
 <verbatim class="tml">
 %STARTINCLUDE%%DBQUERY{topic="%OBJECT%"
-  format="<div class='clsIndexItem clsTopicItem clsTaggedTopicItem'>
+  format="<div class='clsIndexItem clsTopicItem clsTaggedTopicItem clearfix'>
     $percntDBCALL{\"$web.$topic->Applications.RenderTopicThumbnail\" TYPE=\"plain\"}$percnt<!-- -->
     [[$web.$topic][$expand(topictitle)]]&nbsp;$percntREDDOT{\"$web.$topic\"}$percnt
     $expand('<div class=\"foswikiTopicSummary\">' and Summary and '</div>')<!-- -->

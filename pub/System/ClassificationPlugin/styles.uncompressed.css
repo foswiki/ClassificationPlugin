@@ -223,9 +223,19 @@ a.clsTagClose:hover {
 .clsTopicItem .imagePlain_right {
   margin:4px 0px 1em 1em;
 }
+/*
 .clsCategoryItem {
   padding-left:20px;
   background-repeat:no-repeat;
+}
+*/
+.clsIndexItem .fa {
+  font-size:110%;
+  margin-right:2px;
+}
+.clsCategoryItem .fa-folder {
+  color:#F9E9A1;
+  text-shadow:1px 1px #aaa;
 }
 
 /* icon selector */

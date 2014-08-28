@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="micha" comment="reprev" date="1402086950" format="1.1" reprev="16" version="16"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1403773436" format="1.1" reprev="18" version="18"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.WikiTopicView"}%
@@ -33,7 +33,7 @@
   format="$percntFORMATLIST{\"$parentlinks\" 
          split=\"\s*,\s*\" 
          separator=\"&#44; \" 
-         header=\"<div class='foswikiTopicInfo'>%JQICON{"fa-folder"}% \"
+         header=\"<div class='foswikiTopicInfo'>%JQICON{"fa-share fa-rotate-270"}% \"
          footer=\"</div>\"
       }$percnt"
 }%<!-- -->%TMPL:END%

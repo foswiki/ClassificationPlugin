@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="micha" comment="reprev" date="1402085106" format="1.1" reprev="22" version="22"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1404836028" format="1.1" reprev="22" version="23"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -28,8 +28,9 @@ showing its category and tagging info in the top.
 %STARTSECTION{"revinfo"}%<!-- -->
 %CATINFO{
   "%BASEWEB%.%BASETOPIC%" 
+  exclude="TopCategory"
   header="<span class='foswikiRevisionSep'>&#124;</span> %JQICON{"fa-folder"}% "
-  format="<a href='$url' rel='tag' itemprop='keywords' class='$name'><noautolink>$title</noautolink></a>"
+  format="<a href='$origurl' rel='tag' itemprop='keywords' class='$name'><noautolink>$title</noautolink></a>"
 }% <!-- -->
 %TAGINFO{
   "%BASEWEB%.%BASETOPIC%"

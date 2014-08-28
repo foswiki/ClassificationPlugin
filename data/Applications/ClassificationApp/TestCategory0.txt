@@ -1,13 +1,14 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1400744215" format="1.1" reprev="3" version="4"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1404053883" format="1.1" reprev="5" version="6"}%
 %META:TOPICPARENT{name="WebHome"}%
 %DBCALL{"Applications.ClassificationApp.RenderCategory"}%
 
 
 %META:FORM{name="Applications.ClassificationApp.Category"}%
 %META:FIELD{name="TopicType" title="TopicType" value="Category, CategorizedTopic, WikiTopic"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="TestCategory0"}%
+%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
+%META:FIELD{name="Redirect" attributes="" title="Redirect" value=""}%
 %META:FIELD{name="Category" attributes="" title="Category" value=""}%
-%META:FIELD{name="Icon" attributes="" title="Icon" value=""}%
+%META:FIELD{name="Icon" attributes="" title="Icon" value="folder"}%
 %META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%
 %META:FIELD{name="Order" attributes="" title="Order" value="50"}%

@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1394524174" format="1.1" reprev="7" version="7"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1394524174" format="1.1" reprev="7" version="1"}%
 ---+!! ClassificationPlugin
 %TOC%
 
@@ -353,6 +353,10 @@ Note however that for now only the =%DBQUERY= language is supported (see [[Foswi
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |
 |  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  28 Aug 2014: | new "icon" formfield from MoreFormfieldsPlugin; \
+                  added virtual filesystem for WebDAVContrib based on categories; \
+                  new "redirect" feature for Categories to redirect to a portal page representing this category
+                  instead of rendering the plain category view |
 |  10 Jun 2014: | added options to disable some parts of a category view template; added tool to list uncategorized topics; fully specify all security switches for rest handlers |
 |  22 May 2014: | fixes to Category factory; initial work on a category-based virtual filesystem for webdav |
 |  23 Apr 2014: | improved topic info layout; added <nop>WebTagList; added back Clear button to category editor |

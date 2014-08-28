@@ -19,6 +19,8 @@ use warnings;
 
 use Foswiki::Contrib::DBCacheContrib::Search ();
 use Foswiki::Plugins::DBCachePlugin::Core ();
+use Foswiki::Plugins ();
+use Foswiki::Plugins::JQueryPlugin ();
 
 use constant TRACE => 0; # toggle me
 
@@ -349,6 +351,17 @@ sub getParents {
   return @parents;
 }
 
+###############################################################################
+# get the "natural" parent
+sub getParent {
+  my ($this, $subsumes) = @_;
+
+  my @parents = sort {uc($a->{title}) cmp uc($b->{title})} $this->getParents($subsumes);
+
+  return unless @parents;
+  return shift @parents;
+}
+
 
 ###############################################################################
 sub getAllParents {
@@ -540,6 +553,14 @@ sub setTitle {
 }
 
 ###############################################################################
+sub setRedirect {
+  my ($this, $redirect) = @_;
+  $this->{redirect} = $redirect;
+  $this->{gotUpdate} = 1;
+  return $redirect;
+}
+
+###############################################################################
 sub isCyclic {
   my $this = shift;
 
@@ -665,7 +686,8 @@ sub importCategories {
       $cat->setSummary($impChild->{summary});
       $cat->setOrder($impChild->{order});
       $cat->setParents(keys %parents);
-      $cat->setIcon($impChild->getIcon());
+      $cat->setIcon($impChild->{icon});
+      $cat->setRedirect($impChild->{redirect});
       $cat->{origWeb} = $impWeb;
 
       # recurse
@@ -689,47 +711,49 @@ sub setIcon {
 sub getIcon {
   my $this = shift;
 
-  return $this->{icon} || 'folder.gif';
+  my $icon = $this->{icon} || 'folder';
+  
+  # remove file extension for backwards compatibility
+  $icon =~ s/\.(png|gif)$//;
+
+  return Foswiki::Plugins::JQueryPlugin::handleJQueryIcon($Foswiki::Plugins::SESSION, {
+    _DEFAULT => $icon
+  });
 }
 
 ###############################################################################
 sub getIconUrl {
   my $this = shift;
 
-  my $icon = $this->{icon} || 'folder.gif';
+  my $icon = $this->{icon} || 'folder';
 
-  my $pubUrlPath = $Foswiki::cfg{PubUrlPath};
+  # remove file extension for backwards compatibility
+  $icon =~ s/\.(png|gif)$//;
 
-  return 
-    $pubUrlPath.
-    '/Applications/ClassificationApp/IconSet/'.
-    $icon;
+  return Foswiki::Plugins::JQueryPlugin::Plugins::getIconUrlPath($icon);
 }
 
 ###############################################################################
 sub getBreadCrumbs {
-  my ($this, $separator) = @_;
-
-  $separator = "." unless defined $separator;
+  my ($this, $subsumes) = @_;
 
   my @breadCrumbs = ();
   my %seen = ();
 
   my $parent = $this;
+
   while ($parent) {
     last if $seen{$parent->{name}};
     $seen{$parent->{name}} = 1;
 
-    push @breadCrumbs, $parent->{name};
+    push @breadCrumbs, $parent;
 
-    my @parents = $parent->getParents();
-    last unless @parents;
-
-    $parent = shift @parents;
+    $parent = $parent->getParent($subsumes);
     last if !$parent || $parent eq $parent->{hierarchy}{_top};
   }
 
-  return join($separator, reverse @breadCrumbs);
+
+  return reverse @breadCrumbs;
 }
 
 ###############################################################################
@@ -759,23 +783,31 @@ sub getAllBreadCrumbs {
 
 ###############################################################################
 sub getLink {
-  my $this = shift;
+  my ($this, $doRedirect) = @_;
 
-  return "<a href='".$this->getUrl()."' rel='tag' class='$this->{name}'><noautolink>$this->{title}</noautolink></a>";
+  return "<a href='".$this->getUrl($doRedirect)."' rel='tag' class='$this->{name}'><noautolink>$this->{title}</noautolink></a>";
 }
 
 ###############################################################################
 sub getUrl {
-  my $this = shift;
+  my ($this, $doRedirect) = @_;
   
   my $hierWeb = $this->{hierarchy}->{web};
+
+  $doRedirect = 1 unless defined $doRedirect;
+
+  if ($doRedirect && $this->{redirect}) {
+    return Foswiki::Func::getScriptUrlPath($hierWeb, $this->{redirect}, 'view');
+  } 
+
+  my $url;
   if ($hierWeb ne $this->{origWeb}) {
-    return Foswiki::Func::getScriptUrlPath($hierWeb, 
-      'TopCategory', 'view', catname=>$this->{name});
+    $url = Foswiki::Func::getScriptUrlPath($hierWeb, 'TopCategory', 'view', catname=>$this->{name});
+  } else {
+    $url = Foswiki::Func::getScriptUrlPath($hierWeb, $this->{name}, 'view');
   }
 
-  return Foswiki::Func::getScriptUrlPath($hierWeb, 
-      $this->{name}, 'view');
+  return $url;
 }
 
 ###############################################################################
@@ -1044,7 +1076,7 @@ sub traverse {
   if ($header =~ /\$breadcrumbs/ ||
       $footer =~ /\$breadcrumbs/ ||
       $format =~ /\$breadcrumbs/) {
-    $breadCrumbs = $this->getBreadCrumbs(", ");
+    $breadCrumbs = join(", ", map {$_->{name}} $this->getBreadCrumbs());
   }
 
   my $truncTitle = $this->{title};
@@ -1107,8 +1139,12 @@ sub traverse {
   return Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($format, 
     'link'=>($this->{name} =~ /^(TopCategory|BottomCategory)$/)?
       "<b>$this->{title}</b>":$this->getLink(),
+    'origlink'=>($this->{name} =~ /^(TopCategory|BottomCategory)$/)?
+      "<b>$this->{title}</b>":$this->getLink(0),
     'url'=>($this->{name} =~ /^(TopCategory|BottomCategory)$/)?"":
       $this->getUrl(),
+    'origurl'=>($this->{name} =~ /^(TopCategory|BottomCategory)$/)?"":
+      $this->getUrl(0),
     'web'=>$this->{hierarchy}->{web}, 
     'origweb'=>$this->{origWeb} || '', 
     'topic'=>$this->{name},

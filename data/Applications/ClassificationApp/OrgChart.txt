@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="micha" comment="reprev" date="1401709243" format="1.1" reprev="8" version="8"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1401709243" format="1.1" reprev="8" version="8"}%
 %META:TOPICPARENT{name="BusinessStructure"}%
 
 

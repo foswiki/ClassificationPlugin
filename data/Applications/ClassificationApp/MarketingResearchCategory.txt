@@ -8,5 +8,5 @@
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Research"}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
 %META:FIELD{name="Category" attributes="" title="Category" value="MarketingCategory"}%
-%META:FIELD{name="Icon" attributes="" title="Icon" value="find.png"}%
+%META:FIELD{name="Icon" attributes="" title="Icon" value="find"}%
 %META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%

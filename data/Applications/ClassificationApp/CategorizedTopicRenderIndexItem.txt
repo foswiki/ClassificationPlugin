@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1397121379" format="1.1" version="8"}%
+%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1403120683" format="1.1" version="9"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -15,7 +15,7 @@ a summary for an object listed within the Category topic.
 ---++ Implementation
 <verbatim class="tml">
 %STARTINCLUDE%%DBQUERY{topic="%OBJECT%"
-   format="<div class='clsIndexItem clsTopicItem clsCategorizedTopicItem'>
+   format="<div class='clsIndexItem clsTopicItem clsCategorizedTopicItem clearfix'>
      $percntDBCALL{\"Applications.RenderTopicThumbnail\" TYPE=\"plain\"}$percnt<!-- -->
      [[$web.$topic][$expand(topictitle)]] $percntREDDOT{\"$web.$topic\"}$percnt
      $expand('<div class=\"foswikiTopicSummary\">' and Summary and '</div>')

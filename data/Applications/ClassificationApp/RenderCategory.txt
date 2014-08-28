@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="micha" comment="reprev" date="1402086723" format="1.1" reprev="21" version="21"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1403173122" format="1.1" reprev="24" version="24"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -28,7 +28,7 @@ See the CategoryTemplate.
      exclude="%CAT{default="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%%IF{"defined EXCLUDE" then="|%EXCLUDE%"}%"
      depth="2"
      sort="title"
-     format="($trunctitle);$topic;$origweb$n"
+     format="($title);$topic;$origweb$n"
    }%"
   cols="%IF{"defined CLASSIFICATIONPLUGIN_NRCOLS" then="%CLASSIFICATIONPLUGIN_NRCOLS%" else="3"}%"
   split="\n"
@@ -67,12 +67,12 @@ See the CategoryTemplate.
     "
     web="%BASEWEB%"
     hidenull="on"
-    format="$expand(TopicTitle or topic);$topic;$web"
+    format="($expand(TopicTitle or topic));$topic;$web"
     separator="$n"
   }%"
   cols="%IF{"defined CLASSIFICATIONPLUGIN_NRCOLS" then="%CLASSIFICATIONPLUGIN_NRCOLS%" else="3"}%"
   split="\n"
-  pattern="(.*);(.*);(.*)"
+  pattern="\((.*)\);(.*);(.*)"
   sort="nocase"
   %IF{"'%SHOWHEADER%'='on'" then="header=\"$anchors\""}%
   format="$percntDBCALL{\"$3.$2->RenderIndexItem\"}$percnt"

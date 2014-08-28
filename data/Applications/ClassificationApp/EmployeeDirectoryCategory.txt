@@ -9,5 +9,5 @@
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Employee Directory"}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
 %META:FIELD{name="Category" attributes="" title="Category" value="ToolsAndServicesCategory, CorporateCategory"}%
-%META:FIELD{name="Icon" attributes="" title="Icon" value="telephone.png"}%
+%META:FIELD{name="Icon" attributes="" title="Icon" value="telephone"}%
 %META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%

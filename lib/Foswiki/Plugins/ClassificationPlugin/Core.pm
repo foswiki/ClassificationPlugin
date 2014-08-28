@@ -315,8 +315,10 @@ sub handleCATINFO {
       return '' unless $hierarchy;
       $thisWeb = $hierarchy->{web};
     } else {
-      ($thisWeb, $theCat) = 
+      my $catWeb;
+      ($catWeb, $theCat) = 
         Foswiki::Func::normalizeWebTopicName($thisWeb, $theCat);
+      $thisWeb = $catWeb unless defined $thisWeb;
       $hierarchy = getHierarchy($thisWeb);
     }
     push @$categories, $theCat;
@@ -411,30 +413,35 @@ sub handleCATINFO {
     my $breadCrumbs = '';
     my $breadCrumbNames = '';
     if ($line =~ /\$(breadcrumb(name)?)s?/ && !$doneBreadCrumbs) {
-      my @breadCrumbs = ();
+
+      my @breadCrumbs = $category->getBreadCrumbs();
+      if ($theExclude) {
+        @breadCrumbs = grep { $_->{name} !~ /^($theExclude)$/ } @breadCrumbs;
+      }
+
+      my @breadCrumbLinks = ();
       my @breadCrumbNames = ();
-      my %seen = ();
-      my $parent = $category;
+
+      if (@breadCrumbs) {
+        my $firstParent = $breadCrumbs[-1];
+
+        if ($firstParent->{redirect} && $thisTopic && $firstParent->{redirect} eq $thisTopic) {
+          pop @breadCrumbs;
+        }
+
+        @breadCrumbLinks = map {$_->getLink()} @breadCrumbs;
+        @breadCrumbNames = map {$_->{name}} @breadCrumbs;
+      }
+
       unless ($theCat) {
-        if (Foswiki::Func::topicExists($thisWeb, $thisTopic)) {
-          push @breadCrumbs, "[[$thisWeb.$thisTopic]]";
+        if ($thisTopic && Foswiki::Func::topicExists($thisWeb, $thisTopic)) {
+          push @breadCrumbLinks, "[[$thisWeb.$thisTopic]]";
           push @breadCrumbNames, $thisTopic;
-          $seen{$thisTopic} = 1;
         }
       }
-      while ($parent) {
-        last if $seen{$parent->{name}};
-        $seen{$parent->{name}} = 1;
-        next if $theExclude && $parent->{name} =~ /^($theExclude)$/;
-        push @breadCrumbs, $parent->getLink();
-        push @breadCrumbNames, $parent->{name};
-        my @parents = $parent->getParents();
-        last unless @parents;
-        $parent = shift @parents;
-        last if $parent eq $parent->{hierarchy}{_top};
-      }
-      $breadCrumbs = join($theSep, reverse @breadCrumbs);
-      $breadCrumbNames = join($theSep, reverse @breadCrumbNames);
+
+      $breadCrumbs = join($theSep, @breadCrumbLinks);
+      $breadCrumbNames = join($theSep, @breadCrumbNames);
       $doneBreadCrumbs = 1;
     }
 
@@ -517,9 +524,12 @@ sub handleCATINFO {
 
     my $title = $category->{title} || $catName;
     my $link = $category->getLink();
+    my $origlink = $category->getLink(0);
+    my $origurl = $category->getUrl(0);
     my $url = $category->getUrl();
     my $summary = $category->{summary} || '';
 
+    my $icon = $category->getIcon();
     my $iconUrl = $category->getIconUrl();
 
     my $truncTitle = $title;
@@ -528,7 +538,9 @@ sub handleCATINFO {
     $line =~ s/\$more/$moreChildren/g;
     $line =~ s/\$index/$index/g;
     $line =~ s/\$link/$link/g;
+    $line =~ s/\$origlink/$origlink/g;
     $line =~ s/\$url/$url/g;
+    $line =~ s/\$origurl/$origurl/g;
     $line =~ s/\$web/$thisWeb/g;
     $line =~ s/\$origweb/$category->{origWeb}/g;
     $line =~ s/\$order/$category->{order}/g;
@@ -550,7 +562,8 @@ sub handleCATINFO {
     $line =~ s/\$childrentitle/$childrenTitle/g;
     $line =~ s/\$childrenurls?/$childrenUrls/g;
     $line =~ s/\$children(links?)?/$children/g;
-    $line =~ s/\$icon/$iconUrl/g;
+    $line =~ s/\$iconurl/$iconUrl/g;
+    $line =~ s/\$icon/$icon/g;
     $line =~ s/\$tags/$tags/g;
     $line =~ s/,/&#44;/g; # hack around MAKETEXT where args are comma separated accidentally
     push @result, $line if $line;

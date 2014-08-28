@@ -24,7 +24,7 @@ use Foswiki::Prefs ();
 use Foswiki::Func ();
 use JSON ();
 
-use constant OBJECTVERSION => 0.83;
+use constant OBJECTVERSION => 0.91;
 use constant CATWEIGHT => 1.0; # used in computeSimilarity()
 use constant TRACE => 0; # toggle me
 
@@ -243,6 +243,7 @@ sub init {
       $cat->setOrder($order);
       $cat->setTitle($title);
       $cat->setIcon($form->fastget("Icon"));
+      $cat->setRedirect($form->fastget("Redirect"));
 
       #writeDebug("$topicName has got title '$title'");
 

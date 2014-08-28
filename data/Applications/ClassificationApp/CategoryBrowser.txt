@@ -1,9 +1,12 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1381660056" format="1.1" reprev="4" version="4"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1402902088" format="1.1" reprev="4" version="5"}%
 %META:TOPICPARENT{name="ApplicationTopic"}%
 %DBCALL{"Applications.RenderTopicInstaller"}%
 
 %STARTINCLUDE%<!-- -->
-%DBCALL{"Applications.ClassificationApp.RenderCategoryBrowser" THEWEB="%URLPARAM{"web" default="%BASEWEB%"}%"}%
+%DBCALL{"Applications.ClassificationApp.RenderCategoryBrowser" 
+   THEWEB="%URLPARAM{"web" default="%BASEWEB%"}%"
+   BUTTONS="filter,refresh"
+}%
 <!-- -->%STOPINCLUDE%
 
 See: [[RenderCategoryBrowser]]

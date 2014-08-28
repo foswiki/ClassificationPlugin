@@ -9,4 +9,4 @@
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Contacts"}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
 %META:FIELD{name="Category" attributes="" title="Category" value="ToolsAndServicesCategory"}%
-%META:FIELD{name="Icon" attributes="" title="Icon" value="application_cascade.png"}%
+%META:FIELD{name="Icon" attributes="" title="Icon" value="application_cascade"}%

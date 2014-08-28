@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="micha" comment="reprev" date="1401709324" format="1.1" reprev="2" version="2"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1402490116" format="1.1" reprev="2" version="3"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -17,7 +17,8 @@
   "TopicType=~'\b(Classified|Categorized)Topic\b' AND TopicType !~ '\bCategory\b' AND ('TopCategory' DISTANCE topic) = 1"
   exclude="%EXCLUDE{default="UncategorizedTopics|WebTopicEditTemplat"}%"
   web="%BASEWEB%"
-  format="   1 [[$web.$topic]]"
+  header="| *#* | *Topic* | *Title* |$n"
+  format="| $index | [[$web.$topic][$topic]] | $expand(topictitle) |"
 }%%STOPINCLUDE%
 </verbatim>
 

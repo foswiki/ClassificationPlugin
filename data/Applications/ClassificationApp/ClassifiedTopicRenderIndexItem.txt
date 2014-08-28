@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1397121130" format="1.1" reprev="24" version="24"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1405348796" format="1.1" reprev="27" version="28"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -9,14 +9,16 @@ a summary for an object of type ClassifiedTopic.
 
 ---+++++ Parameters
    * OBJECT
+   * THEICON
 
 %ENDSECTION{name="documentation" type="section"}%
 
 ---++ Implementation
 <verbatim class="tml">
-%STARTINCLUDE%<!-- -->%CALC{"$SET(catinfo, 0)"}%
+%STARTINCLUDE%<!-- -->
 %DBQUERY{topic="%OBJECT%"
-  format="<div class='clsIndexItem clsTopicItem clsCassifiedTopicItem'>
+  format="<div class='clsIndexItem clsTopicItem clsCassifiedTopicItem clearfix'>
+    %IF{"defined THEICON" then="$percntJQICON{%THEICON%}$percnt"}%<!-- -->
     $percntDBCALL{\"$web.$topic->Applications.RenderTopicThumbnail\" 
       TYPE=\"plain\" 
       ALIGN=\"right\"
@@ -38,6 +40,7 @@ a summary for an object of type ClassifiedTopic.
         header=\" <span class='foswikiRevisionSep'>&#124;</span> <span class='clsCatInfo'>\" 
         separator=\"&#44; \"
         footer=\"</span>\"
+        exclude=\"TopCategory\"
       }$percnt$percntTAGINFO{\"$web.$topic\" 
         header=\" <span class='foswikiRevisionSep'>&#124;</span> <span class='clsTagInfo'>\" 
         separator=\"&#44; \"
@@ -45,8 +48,7 @@ a summary for an object of type ClassifiedTopic.
         footer=\"</span>\"
       }$percnt<!-- -->
     </div>
-  </div>
-  %CLEAR%"
+  </div>"
 }%<!-- -->%STOPINCLUDE%
 </verbatim>
 

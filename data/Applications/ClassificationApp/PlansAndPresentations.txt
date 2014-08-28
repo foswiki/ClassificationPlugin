@@ -12,5 +12,5 @@
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Plans & Presentations"}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
 %META:FIELD{name="Category" attributes="" title="Category" value="MarketingCategory"}%
-%META:FIELD{name="Icon" attributes="" title="Icon" value="chart_curve.png"}%
+%META:FIELD{name="Icon" attributes="" title="Icon" value="chart_curve"}%
 %META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%

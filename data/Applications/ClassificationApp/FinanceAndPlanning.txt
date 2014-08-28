@@ -7,5 +7,5 @@
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Finance  & Planning"}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
 %META:FIELD{name="Category" attributes="" title="Category" value="DepartmentsCategory"}%
-%META:FIELD{name="Icon" attributes="" title="Icon" value="coins.png"}%
+%META:FIELD{name="Icon" attributes="" title="Icon" value="coins"}%
 %META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%

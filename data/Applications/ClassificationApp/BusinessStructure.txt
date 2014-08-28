@@ -7,5 +7,5 @@
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Business Structure"}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
 %META:FIELD{name="Category" attributes="" title="Category" value="CorporateCategory"}%
-%META:FIELD{name="Icon" attributes="" title="Icon" value="chart_organisation.png"}%
+%META:FIELD{name="Icon" attributes="" title="Icon" value="chart_organisation"}%
 %META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%
