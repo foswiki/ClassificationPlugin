@@ -1,0 +1,5 @@
+foswiki-classificationplugin (0.00-0+mdc0) lucid; urgency=low
+
+  * Initial debianization
+
+ -- Michael Daum <debian@michaeldaumconsulting.com>  Fri, 25 May 2012 13:59:51 +0200

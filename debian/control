@@ -1,0 +1,17 @@
+Source: foswiki-classificationplugin
+Section: web
+Priority: extra
+Maintainer: Michael Daum <debian@michaeldaumconsulting.com>
+Build-Depends: debhelper (>= 8)
+Standards-Version: 3.9.2
+Homepage: http://foswiki.org/Extensions/ClassificationPlugin
+#Vcs-Git: git://git.debian.org/collab-maint/foswiki.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/foswiki.git;a=summary
+
+Package: foswiki-classificationplugin
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}, foswiki-core, 
+Description: A topic classification plugin and application
+ (...add your text here...)
+ .
+ See http://foswiki.org/Extensions/ClassificationPlugin for more.
