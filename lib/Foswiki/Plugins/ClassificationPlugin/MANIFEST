@@ -336,6 +336,8 @@ pub/System/ClassificationPlugin/jquery.classifiedtopic.uncompressed.js 0644
 pub/System/ClassificationPlugin/jquery.hierarchy.js 0644
 pub/System/ClassificationPlugin/jquery.hierarchy.js.gz 0644
 pub/System/ClassificationPlugin/jquery.hierarchy.uncompressed.js 0644
+pub/System/ClassificationPlugin/jquery.tagcloud.js 0644
+pub/System/ClassificationPlugin/jquery.tagcloud.js.gz 0644
 pub/System/ClassificationPlugin/jquery.tagcloud.uncompressed.js 0644
 pub/System/ClassificationPlugin/jquery.tagselector.js 0644
 pub/System/ClassificationPlugin/jquery.tagselector.js.gz 0644

@@ -11,7 +11,7 @@
  *
  */
 jQuery(function($) {
-  "use strict";
+"use strict";
 
   /***************************************************************************
    * plugin constructor 

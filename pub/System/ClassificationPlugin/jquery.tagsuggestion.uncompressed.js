@@ -1,5 +1,5 @@
 jQuery(function($) {
-  "use strict";
+"use strict";
 
   $(".clsTagSuggestion:not(.jqInitedTagSuggestion)").livequery(function() {
     var $this = $(this), 

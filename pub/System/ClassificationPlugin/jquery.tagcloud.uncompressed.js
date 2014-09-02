@@ -1,5 +1,5 @@
 (function($) {
-  "use strict";
+"use strict";
 
   function toggleItem(list, opts) {
     var split = opts.split;

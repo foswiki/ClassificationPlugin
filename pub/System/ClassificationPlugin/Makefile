@@ -1,10 +1,11 @@
 FOSWIKI_ROOT?=~/foswiki/trunk/core
 TARGET=\
-  jquery.tagselector.js \
-  jquery.tagsuggestion.js \
   jquery.catselector.js \
   jquery.classifiedtopic.js \
   jquery.hierarchy.js \
+  jquery.tagcloud.js \
+  jquery.tagselector.js \
+  jquery.tagsuggestion.js \
   renametag.js \
   styles.css
 

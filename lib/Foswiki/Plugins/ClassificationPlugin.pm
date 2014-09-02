@@ -17,8 +17,8 @@ use strict;
 use warnings;
 use Foswiki::Contrib::DBCacheContrib::Search ();
 
-our $VERSION = '3.99';
-our $RELEASE = '3.99';
+our $VERSION = '3.99_001';
+our $RELEASE = '3.99_001';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'A topic classification plugin and application';
 
@@ -148,6 +148,7 @@ sub initPlugin {
   $doneInitCore = 0;
   $doneInitServices = 0;
   $jsTreeConnector = undef;
+
   return 1;
 }
 
