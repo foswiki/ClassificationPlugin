@@ -22,7 +22,7 @@ use vars qw(
   %loadTimeStamps 
   %modTimeStamps 
   %cachedIndexFields
-  $baseWeb $baseTopic 
+  $session 
   $purgeMode
   @changedCats
 );
@@ -43,7 +43,9 @@ sub writeDebug {
 
 ###############################################################################
 sub init {
-  ($baseWeb, $baseTopic) = @_;
+  $session = shift;
+
+  $session ||= $Foswiki::Plugins::SESSION;
 
   $purgeMode = 0;
   @changedCats = ();
@@ -80,7 +82,7 @@ sub OP_subsumes {
   my $rval = $r->matches( $map );
   return 0 unless ( defined $lval  && defined $rval);
 
-  my $web = $Foswiki::Plugins::DBCachePlugin::Core::dbQueryCurrentWeb || $baseWeb;
+  my $web = $Foswiki::Plugins::DBCachePlugin::Core::dbQueryCurrentWeb || $session->{webName};
   my $hierarchy = getHierarchy($web);
   return $hierarchy->subsumes($lval, $rval);
 }
@@ -93,7 +95,7 @@ sub OP_isa {
 
   return 0 unless ( defined $lval  && defined $rval);
 
-  my $web = $Foswiki::Plugins::DBCachePlugin::Core::dbQueryCurrentWeb || $baseWeb;
+  my $web = $Foswiki::Plugins::DBCachePlugin::Core::dbQueryCurrentWeb || $session->{webName};
   my $hierarchy = getHierarchy($web);
   my $cat = $hierarchy->getCategory($rval);
   return 0 unless $cat;
@@ -109,7 +111,7 @@ sub OP_distance {
 
   return 0 unless ( defined $lval  && defined $rval);
 
-  my $web = $Foswiki::Plugins::DBCachePlugin::Core::dbQueryCurrentWeb || $baseWeb;
+  my $web = $Foswiki::Plugins::DBCachePlugin::Core::dbQueryCurrentWeb || $session->{webName};
   my $hierarchy = getHierarchy($web);
   my $dist = $hierarchy->distance($lval, $rval);
 
@@ -121,8 +123,8 @@ sub handleSIMILARTOPICS {
   my ($session, $params, $theTopic, $theWeb) = @_;
 
   #writeDebug("called handleSIMILARTOPICS()");
-  my $thisTopic = $params->{_DEFAULT} || $params->{topic} || $baseTopic;
-  my $thisWeb = $params->{web} || $baseWeb;
+  my $thisTopic = $params->{_DEFAULT} || $params->{topic} || $session->{topicName};
+  my $thisWeb = $params->{web} || $session->{webName};
   my $theFormat = $params->{format} || '$topic';
   my $theHeader = $params->{header} || '';
   my $theFooter = $params->{footer} || '';
@@ -174,7 +176,7 @@ sub handleHIERARCHY {
 
   #writeDebug("called handleHIERARCHY(".$params->stringify().")");
 
-  my $thisWeb = $params->{_DEFAULT} || $params->{web} || $baseWeb;
+  my $thisWeb = $params->{_DEFAULT} || $params->{web} || $session->{webName};
   $thisWeb =~ s/\./\//go;
 
   my $hierarchy = getHierarchy($thisWeb);
@@ -186,8 +188,8 @@ sub handleISA {
   my ($session, $params, $theTopic, $theWeb) = @_;
 
   #writeDebug("called handleISA()");
-  my $thisWeb = $params->{web} || $baseWeb;
-  my $thisTopic = $params->{_DEFAULT} || $params->{topic} || $baseTopic;
+  my $thisWeb = $params->{web} || $session->{webName};
+  my $thisTopic = $params->{_DEFAULT} || $params->{topic} || $session->{topicName};
   my $theCategory = $params->{cat} || 'TopCategory';
 
   #writeDebug("topic=$thisTopic, theCategory=$theCategory");
@@ -216,8 +218,8 @@ sub handleISA {
 sub handleSUBSUMES {
   my ($session, $params, $theTopic, $theWeb) = @_;
 
-  my $thisWeb = $params->{web} || $baseWeb;
-  my $theCat1 = $params->{_DEFAULT} || $baseTopic;
+  my $thisWeb = $params->{web} || $session->{webName};
+  my $theCat1 = $params->{_DEFAULT} || $session->{topicName};
   my $theCat2 = $params->{cat} || '';
 
   #writeDebug("called handleSUBSUMES($theCat1, $theCat2)");
@@ -248,8 +250,8 @@ sub handleSUBSUMES {
 sub handleDISTANCE {
   my ($session, $params, $theTopic, $theWeb) = @_;
 
-  my $thisWeb = $params->{web} || $baseWeb;
-  my $theFrom = $params->{_DEFAULT} || $params->{from} || $baseTopic;
+  my $thisWeb = $params->{web} || $session->{webName};
+  my $theFrom = $params->{_DEFAULT} || $params->{from} || $session->{topicName};
   my $theTo = $params->{to} || 'TopCategory';
   my $theAbs = $params->{abs} || 'off';
   my $theFormat = $params->{format} || '$dist';
@@ -282,7 +284,7 @@ sub handleCATINFO {
   my $theSep = $params->{separator};
   my $theHeader = $params->{header} || '';
   my $theFooter = $params->{footer} || '';
-  my $thisWeb = $params->{web} || $baseWeb;
+  my $thisWeb = $params->{web} || $session->{webName};
   my $thisTopic = $params->{_DEFAULT} || $params->{topic};
   my $theSubsumes = $params->{subsumes} || '';
   my $theParentSubsumes = $params->{parentsubsumes} || '';
@@ -586,8 +588,8 @@ sub handleTAGINFO {
   my $theSep = $params->{separator};
   my $theHeader = $params->{header} || '';
   my $theFooter = $params->{footer} || '';
-  my $thisWeb = $params->{web} || $baseWeb;
-  my $thisTopic = $params->{_DEFAULT} || $params->{topic} || $baseTopic;
+  my $thisWeb = $params->{web} || $session->{webName};
+  my $thisTopic = $params->{_DEFAULT} || $params->{topic} || $session->{topicName};
   my $theExclude = $params->{exclude} || '';
   my $theInclude = $params->{include} || '';
   my $theLimit = $params->{limit};
@@ -750,8 +752,8 @@ sub beforeSaveHandler {
   }
 
   if ($web eq $Foswiki::cfg{TrashWebName}) {
-    writeDebug("detected a move from $baseWeb to trash");
-    $web = $baseWeb;# operations are on the baseWeb
+    writeDebug("detected a move from $session->{webName} to trash");
+    $web = $session->{webName};# operations are on the baseWeb
   }
 
   # get topic type info
@@ -920,8 +922,8 @@ sub afterSaveHandler {
   writeDebug("afterSaveHandler($web, $topic)");
 
   if ($web eq $Foswiki::cfg{TrashWebName}) {
-    #writeDebug("detected a move from $baseWeb to trash");
-    $web = $baseWeb;# operations are on the baseWeb
+    #writeDebug("detected a move from $session->{webName} to trash");
+    $web = $session->{webName};# operations are on the baseWeb
   }
   $web =~ s/\//./go;
  
@@ -1059,7 +1061,7 @@ sub findHierarchy {
   my $catName = shift;
 
   # try baseweb first
-  my $hierarchy = getHierarchy($baseWeb);
+  my $hierarchy = getHierarchy($session->{webName});
   my $cat = $hierarchy->getCategory($catName);
 
   unless ($cat) {

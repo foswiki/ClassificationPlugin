@@ -190,7 +190,7 @@ sub init {
 
   my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($this->{web});
   unless ($db) {
-    print STDERR "ERROR: can't get web for $this->{web}\n";
+    print STDERR "ERROR: can't get web for $this->{web}\n".$this->_stackTrace();
     delete $insideInit{$this->{web}};
     return;
   }
@@ -755,7 +755,8 @@ sub getCategories {
 
   unless (defined($this->{_categories})) {
     $this->init();
-    die "init returned no categories" unless defined $this->{_categories};
+    die "no categories for $this->{web}\n".$this->_stackTrace()
+      unless defined $this->{_categories};
   }
   return values %{$this->{_categories}}
 }
@@ -766,7 +767,8 @@ sub getCategoryNames {
 
   unless (defined($this->{_categories})) {
     $this->init();
-    die "init returned no categories" unless defined $this->{_categories};
+    die "no categories for $this->{web}\n".$this->_stackTrace()
+      unless defined $this->{_categories};
   }
   return keys %{$this->{_categories}}
 }
@@ -780,7 +782,8 @@ sub getCategory {
 
   unless (defined($this->{_categories})) {
     $this->init();
-    die "init returned no categories" unless defined $this->{_categories};
+    die "no categories for $this->{web}\n".$this->_stackTrace()
+      unless defined $this->{_categories};
   }
   my $cat = $this->{_categories}{$name};
 
@@ -804,6 +807,20 @@ sub getCategory {
 
   return $cat
 }
+
+sub _stackTrace {
+  my ($this, $method) = @_;
+
+  my $stack = '';
+  for (my $i = 1; $i < 20; $i++) {
+    my ($pkg, undef, $line, $func) = caller($i);
+    $stack .= "$pkg, $func(), line $line\n";
+    last if $pkg eq 'Foswiki::UI';
+  }
+
+  return $stack;
+}
+
 
 ###############################################################################
 sub setCategory {

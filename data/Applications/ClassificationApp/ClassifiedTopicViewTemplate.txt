@@ -20,7 +20,7 @@
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"breadcrumbs"}%%IF{
+%TMPL:DEF{"breadcrumbs::contents"}%%IF{
   "not defined CLASSIFICATIONPLUGIN_CATEGORYBREADCRUMBS or $CLASSIFICATIONPLUGIN_CATEGORYBREADCRUMBS='on'" 
   then="$percntTMPL:P{\"breadcrumbs::catinfo\"}$percnt" 
   else="$percntTMPL:P{\"breadcrumbs::default\"}$percnt" 

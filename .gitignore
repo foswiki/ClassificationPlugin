@@ -1,3 +1,4 @@
+igp_*
 *.gz
 *,v
 *.swp
@@ -16,3 +17,4 @@ ClassificationPlugin.txt
 ClassificationPlugin.zip
 ClassificationPlugin_installer
 ClassificationPlugin_installer.pl
+.changes

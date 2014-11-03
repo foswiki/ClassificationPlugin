@@ -18,12 +18,11 @@ use strict;
 use warnings;
 
 our $debug = 0;
-our $baseWeb;
-our $baseTopic;
 use Foswiki::Plugins::DBCachePlugin ();
 use Foswiki::Plugins::DBCachePlugin::Core ();
 use Foswiki::Plugins::ClassificationPlugin::Core();
 use Foswiki::Func ();
+use Foswiki::Plugins ();
 use Foswiki::Sandbox ();
 use Foswiki::Form ();
 use JSON ();
@@ -52,7 +51,6 @@ sub writeDebug {
 
 ###############################################################################
 sub init {
-  ($baseWeb, $baseTopic) = @_;
 }
 
 ###############################################################################
@@ -98,7 +96,7 @@ sub normalizeTags {
   my ($session, $subject, $verb, $response) = @_;
 
   my $query = Foswiki::Func::getCgiQuery();
-  my $theWeb = $query->param('web') || $baseWeb;
+  my $theWeb = $query->param('web') || $session->{webName};
   $theWeb = Foswiki::Sandbox::untaintUnchecked($theWeb);
 
   my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($theWeb);
@@ -149,7 +147,7 @@ sub renameTag {
   my ($session, $subject, $verb, $response) = @_;
 
   my $query = Foswiki::Func::getCgiQuery();
-  my $theWeb = $query->param('web') || $baseWeb;
+  my $theWeb = $query->param('web') || $session->{webName};
   $theWeb = Foswiki::Sandbox::untaintUnchecked($theWeb);
 
   my @theFrom = $query->param('from');
@@ -206,7 +204,7 @@ sub splitFacet {
   my $query = Foswiki::Func::getCgiQuery();
   $debug = Foswiki::Func::isTrue($query->param('debug'), 0);
 
-  my $theWeb = $query->param('web') || $baseWeb;
+  my $theWeb = $query->param('web') || $session->{webName};
 
   unless (Foswiki::Func::webExists($theWeb)) {
     printJSONRPC($response, 300, "web $theWeb does not exist");

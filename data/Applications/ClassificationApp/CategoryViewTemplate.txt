@@ -5,7 +5,7 @@
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"breadcrumbs"}%%DBCALL{
+%TMPL:DEF{"breadcrumbs::contents"}%%DBCALL{
   "Applications.ClassificationApp.RenderCategoryBreadcrumbs"
   CAT="%URLPARAM{"catname"}%"
   SEP="%TMPL:P{"sep"}%"

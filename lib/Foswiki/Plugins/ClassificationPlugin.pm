@@ -13,12 +13,15 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 package Foswiki::Plugins::ClassificationPlugin;
+
 use strict;
 use warnings;
+
+use Foswiki::Func ();
 use Foswiki::Contrib::DBCacheContrib::Search ();
 
-our $VERSION = '3.99_001';
-our $RELEASE = '3.99_001';
+our $VERSION = '3.99_002';
+our $RELEASE = '3.99_002';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'A topic classification plugin and application';
 
@@ -26,13 +29,10 @@ our $jsTreeConnector;
 
 our $doneInitCore;
 our $doneInitServices;
-our $baseTopic;
-our $baseWeb;
 our $css = '<link rel="stylesheet" href="%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/styles.css" media="all" />';
   
 ###############################################################################
 sub initPlugin {
-  ($baseTopic, $baseWeb) = @_;
 
   Foswiki::Func::registerTagHandler('HIERARCHY', sub {
     initCore();
@@ -168,11 +168,12 @@ sub indexAttachmentHandler {
 sub initCore {
   return if $doneInitCore;
   $doneInitCore = 1;
+
   require Foswiki::Plugins::ClassificationPlugin::Core;
-  Foswiki::Plugins::ClassificationPlugin::Core::init($baseWeb, $baseTopic);
+  Foswiki::Plugins::ClassificationPlugin::Core::init();
 
 #  require Foswiki::Plugins::ClassificationPlugin::Access;
-#  Foswiki::Plugins::ClassificationPlugin::Access::init($baseWeb, $baseTopic);
+#  Foswiki::Plugins::ClassificationPlugin::Access::init();
 }
 
 ###############################################################################
@@ -183,7 +184,7 @@ sub initServices {
   initCore();
 
   require Foswiki::Plugins::ClassificationPlugin::Services;
-  Foswiki::Plugins::ClassificationPlugin::Services::init($baseWeb, $baseTopic);
+  Foswiki::Plugins::ClassificationPlugin::Services::init();
 }
 
 ###############################################################################
