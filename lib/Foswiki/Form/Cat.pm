@@ -25,6 +25,18 @@ our @ISA = ('Foswiki::Form::FieldDefinition');
 use Foswiki::Plugins::ClassificationPlugin ();
 use Foswiki::Func ();
 
+use Foswiki::Request();
+
+BEGIN {
+
+  # Backwards compatibility for Foswiki 1.1.x
+  unless (defined *Foswiki::Request::multi_param) {
+    no warnings 'redefine';
+    *Foswiki::Request::multi_param = \&Foswiki::Request::param;
+    use warnings 'redefine';
+  }
+}
+
 sub new {
     my $class = shift;
     my $this = $class->SUPER::new( @_ );
@@ -45,12 +57,12 @@ sub isMultiValued {
 sub getOptions { # needed by FieldDefinition
   my $this = shift;
 
-  my $query = Foswiki::Func::getCgiQuery();
+  my $request = Foswiki::Func::getCgiQuery();
 
   # trick this in by getting all values from the query
   # and allow them to be asserted
   my @values = ();
-  my @valuesFromQuery = $query->param($this->{name});
+  my @valuesFromQuery = $request->multi_param($this->{name});
   foreach my $item (@valuesFromQuery) {
     next unless defined $item;
     foreach my $value (split(/\s*,\s*/, $item)) {

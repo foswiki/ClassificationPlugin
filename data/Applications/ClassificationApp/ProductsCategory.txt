@@ -1,13 +1,14 @@
-%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1357565280" format="1.1" version="2"}%
+%META:TOPICINFO{author="micha" comment="autosave" date="1415288567" format="1.1" version="3"}%
 %META:TOPICPARENT{name="CorporateCategory"}%
 %DBCALL{"Applications.ClassificationApp.RenderCategory"}%
 
 
-
 %META:FORM{name="Applications.ClassificationApp.Category"}%
-%META:FIELD{name="TopicType" attributes="" title="TopicType" value="Category, CategorizedTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="Category, CategorizedTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Products"}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
+%META:FIELD{name="Redirect" attributes="" title="Redirect" value=""}%
 %META:FIELD{name="Category" attributes="" title="Category" value="CorporateCategory"}%
-%META:FIELD{name="Icon" attributes="" title="Icon" value="cube_molecule"}%
+%META:FIELD{name="Icon" attributes="" title="Icon" value="cake"}%
 %META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%
+%META:FIELD{name="Order" attributes="" title="Order" value=""}%

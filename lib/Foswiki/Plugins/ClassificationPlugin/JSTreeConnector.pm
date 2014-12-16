@@ -186,11 +186,11 @@ sub handle_get_children {
   my $request = Foswiki::Func::getRequestObject();
 
   my $catName = $request->param('cat') || "TopCategory";
-  my @select = $request->param('select');
+  my @select = $request->multi_param('select');
   my $maxDepth = $request->param('maxDepth');
   $maxDepth = -1 unless defined $maxDepth;
 
-  my $displayCounts = Foswiki::Func::isTrue($request->param('counts'), 0);
+  my $displayCounts = Foswiki::Func::isTrue(scalar $request->param('counts'), 0);
 
   my $sort = $request->param('sort');
   $sort = 'on' if !defined($sort) || $sort !~ /^(on|title|order|name)$/;

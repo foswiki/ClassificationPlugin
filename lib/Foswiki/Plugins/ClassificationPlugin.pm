@@ -20,6 +20,17 @@ use warnings;
 use Foswiki::Func ();
 use Foswiki::Contrib::DBCacheContrib::Search ();
 
+use Foswiki::Request();
+
+BEGIN {
+    # Backwards compatibility for Foswiki 1.1.x
+    unless ( Foswiki::Request->can('multi_param') ) {
+        no warnings 'redefine';
+        *Foswiki::Request::multi_param = \&Foswiki::Request::param;
+        use warnings 'redefine';
+    }
+}
+
 our $VERSION = '3.99_002';
 our $RELEASE = '3.99_002';
 our $NO_PREFS_IN_TOPIC = 1;

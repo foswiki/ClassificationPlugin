@@ -42,15 +42,15 @@ See also: See [[CategorizedTopic]], [[ClassifiedTopic]], [[TaggedTopic]], [[Cate
 }%<!-- -->%STOPINCLUDE%
 
 ---++ %TOPIC% form
-| *Name:*| *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* |
-| TopicType | label | 3 |Category,CategorizedTopic| Document type  | |
-| <nop>TopicTitle | text | 75 | | title | |
-| Summary | text | 75 | | short description of this category | |
-| Redirect | text | 75 | | topic where to redirect to when visiting this category, e.g. a portal page representing this category | |
-| Category | cat | 1 | | one or more parent categories that this category is filed to |  |
-| Icon | icon | 30 | cat="Silk" exclude="_add,_delete,arrow_,osx,border_,_start,_stop,_go,_edit,_play,_record,control_,_decrease,_increase,_next,_prev,_error,_eject,_pause,_toggle,_link,_magnify,shapes?_,sort_,text_" | icon to be displayed listing this category |  |
-| <nop>ImportedCategory | text | 75 | | import a root category from another web; all categories below it will be imported to this web in a virtual way |  |
-| Order | text | 5 | | number used in sorting categories | |
+| *Name:*| *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
+| TopicType | label | 3 |Category,CategorizedTopic| Document type  | | |
+| <nop>TopicTitle | text | 75 | | title | | |
+| Summary | text | 75 | | short description of this category | | |
+| Redirect | text | 75 | | topic where to redirect to when visiting this category, e.g. a portal page representing this category | | |
+| Category | cat | 1 | | one or more parent categories that this category is filed to |  | |
+| Icon | icon | 30 | cat="Silk" exclude="_add,_delete,arrow_,osx,border_,_start,_stop,_go,_edit,_play,_record,control_,_decrease,_increase,_next,_prev,_error,_eject,_pause,_toggle,_link,_magnify,shapes?_,sort_,text_" | icon to be displayed listing this category |  | |
+| <nop>ImportedCategory | text | 75 | | import a root category from another web; all categories below it will be imported to this web in a virtual way |  | |
+| Order | text | 5 | | number used in sorting categories | | |
 
 %DBCALL{"Applications.RenderDataFormList" THEWEB="%URLPARAM{"web" default="%BASEWEB%"}%"}%
 

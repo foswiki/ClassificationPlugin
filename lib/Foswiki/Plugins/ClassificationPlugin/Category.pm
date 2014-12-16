@@ -785,7 +785,16 @@ sub getAllBreadCrumbs {
 sub getLink {
   my ($this, $doRedirect) = @_;
 
-  return "<a href='".$this->getUrl($doRedirect)."' rel='tag' class='$this->{name}'><noautolink>$this->{title}</noautolink></a>";
+  my $session = $Foswiki::Plugins::SESSION;
+  my $request = Foswiki::Func::getRequestObject();
+
+  my $baseWeb = $session->{webName};
+  my $baseTopic = $request->param("catname") || $session->{topicName};
+
+  my $currentTopic = '';
+  $currentTopic = ' foswikiCurrentTopicLink' if $baseWeb eq $this->{hierarchy}->{web} && $baseTopic eq $this->{name};
+
+  return "<a href='".$this->getUrl($doRedirect)."' rel='tag' class='$this->{name}$currentTopic'><noautolink>$this->{title}</noautolink></a>";
 }
 
 ###############################################################################
