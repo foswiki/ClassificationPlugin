@@ -25,18 +25,6 @@ our @ISA = ('Foswiki::Form::FieldDefinition');
 use Foswiki::Plugins::ClassificationPlugin ();
 use Foswiki::Func ();
 
-use Foswiki::Request();
-
-BEGIN {
-
-  # Backwards compatibility for Foswiki 1.1.x
-  unless (defined *Foswiki::Request::multi_param) {
-    no warnings 'redefine';
-    *Foswiki::Request::multi_param = \&Foswiki::Request::param;
-    use warnings 'redefine';
-  }
-}
-
 sub new {
     my $class = shift;
     my $this = $class->SUPER::new( @_ );
