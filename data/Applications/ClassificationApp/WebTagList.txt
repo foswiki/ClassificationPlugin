@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1397219908" format="1.1" reprev="1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1418731764" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="WebHome"}%
 %MAKEINDEX{
   "%DBSTATS{ 
@@ -20,6 +20,5 @@
 %META:FIELD{name="TopicType" title="TopicType" value="WikiTopic"}%
 %META:FIELD{name="TopicTitle" attributes="c" title="<nop>TopicTitle" value="WebTagIndex"}%
 %META:FIELD{name="Summary" attributes="c" title="Summary" value="list of all tags in this web"}%
-%META:TOPICMOVED{by="micha" date="1397219908" from="Applications/ClassificationApp.WebTagIndex" to="Applications/ClassificationApp.WebTagList"}%
 %META:PREFERENCE{name="NATSKIN_SIDEBAR" title="NATSKIN_SIDEBAR" type="Local" value="off"}%
 %META:PREFERENCE{name="DISPLAYREVISIONINFO" title="DISPLAYREVISIONINFO" type="Local" value="off"}%

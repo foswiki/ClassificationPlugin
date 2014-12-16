@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="autosave" date="1357565279" format="1.1" version="8"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1418731764" format="1.1" version="1"}%
 %META:TOPICPARENT{name="WikiApplication"}%
 %TOC{depth="4"}%
 ---++ Description
@@ -26,4 +26,3 @@
 %META:FIELD{name="Copyright" attributes="" title="Copyright" value="&copy; 2006-2014 Michael Daum http://michaeldaumconsulting.com"}%
 %META:FIELD{name="License" attributes="" title="License" value="Applications.GnuGeneralPublicLicense"}%
 %META:FIELD{name="Dependencies" attributes="" title="Dependencies" value=""}%
-%META:TOPICMOVED{by="micha" date="1335191471" from="Applications/ClassificationApp.ClassificationApp" to="Applications/ClassificationApp.CompleteDocumentation"}%
