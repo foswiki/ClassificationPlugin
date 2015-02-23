@@ -1,7 +1,7 @@
 /*
  * jQuery hierarchy plugin 0.10
  *
- * Copyright (c) 2013-2014 Michael Daum http://michaeldaumconsulting.com
+ * Copyright (c) 2013-2015 Michael Daum http://michaeldaumconsulting.com
  *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
@@ -10,6 +10,7 @@
  */
 
 (function($, window, document) {
+"use strict";
 
   /***************************************************************************
    * defaults
@@ -193,7 +194,8 @@
               "cat": node.attr ? node.data("name") : self.opts.root,
               "select": self.inputField.val(),
               "counts": self.opts.displayCounts,
-              "sort": self.opts.sort
+              "sort": self.opts.sort,
+              "t": (new Date()).getTime()
             };
           },
           "success": function(data) {
@@ -213,7 +215,8 @@
               "action": "search",
               "web": self.opts.web,
               "topic": self.opts.topic,
-              "title": term
+              "title": term,
+              "t": (new Date()).getTime()
             };
           }
         }
@@ -323,7 +326,8 @@
                 "oldParent":oldParent,
                 "next": nextCat,
                 "prev": prevCat,
-                "copy": copy
+                "copy": copy,
+                "t": (new Date()).getTime()
               },
               error: function() {
                 $.jstree.rollback(data.rlbk);
@@ -377,7 +381,8 @@
             "web": self.opts.web,
             "topic": self.opts.topic,
             "cat" : catName,
-            "title": newTitle
+            "title": newTitle,
+            "t": (new Date()).getTime()
           },
           error: function() {
             $.jstree.rollback(data.rlbk);
@@ -426,7 +431,8 @@
             "topic": self.opts.topic,
             "cat": catName,
             "title": title,
-            "parent": parentName
+            "parent": parentName,
+            "t": (new Date()).getTime()
             //, "position": pos
           }, 
           error: function() {
@@ -470,7 +476,8 @@
                 "action" : "remove_node", 
                 "web": self.opts.web,
                 "topic": self.opts.topic,
-                "cat": catName
+                "cat": catName,
+                "t": (new Date()).getTime()
               }, 
               error: function() {
                 $.jstree.rollback(data.rlbk);
@@ -683,7 +690,8 @@
       data: { 
         "action" : "refresh", 
         "web": self.opts.web,
-        "topic": self.opts.topic
+        "topic": self.opts.topic,
+        "t": (new Date()).getTime()
       },
       beforeSend: function() {
         $.blockUI({message:"<h1>Refreshing ...</h1>"});

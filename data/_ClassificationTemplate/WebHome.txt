@@ -1,12 +1,11 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1418731764" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="reprev" date="1424695107" format="1.1" reprev="19" version="1"}%
 ---+!! %TOPICTITLE%
 
 ---++ %MAKETEXT{"Welcome"}%
 %DBCALL{"Applications.ClassificationApp.WelcomeMessage"}%
 
-<div class="foswikiGrid">
-<div class="foswikiRow">
-<div class="foswikiCol8">
+%BEGINGRID{border="on"}%
+%BEGINCOL{"8"}%
 ---++ %MAKETEXT{"Categories"}%
 <verbatim class="jqLoader {section:'parties'}">
 %STARTSECTION{"parties"}%<!-- -->
@@ -27,9 +26,8 @@
 </div>
 %CLEAR%
 <!-- -->%ENDSECTION{"tagcloud"}%
-</div>
 %STOPCHAPTER%
-<div class="foswikiCol4 border">
+%BEGINCOL{"4"}%
 ---++ %MAKETEXT{"Recent changes"}%
 <verbatim class="jqLoader {section:'recentchanges'}">
 %STARTSECTION{"recentchanges"}%<!-- -->
@@ -39,11 +37,8 @@
 <!-- -->%ENDSECTION{"recentchanges"}%
 </verbatim>
 %STOPCHAPTER%
-</div>
-</div>
----
-<div class="foswikiRow foswikiRedBullets">
-<div class="foswikiCol4 border">
+%BEGINROW{class="foswikiRedBullets"}%
+%BEGINCOL{"4"}%
 ---++ %MAKETEXT{"Topics tagged \"[_1]\"" args="%QUERYTAG%"}%
 <!--
    * Set QUERYTAG = test
@@ -56,16 +51,14 @@
   sort="on"
 }%
 %STOPCHAPTER%
-</div>
-<div class="foswikiCol4 border">
+%BEGINCOL{"4"}%
 ---++ %MAKETEXT{"Quick links"}%
    * ...
    * ...
    * ...
 
 %STOPCHAPTER%
-</div>
-<div class="foswikiCol4 border">
+%BEGINCOL{"4"}%
 ---++ %MAKETEXT{"Tools"}%
    * [[Categories]]
    * [[ClassifiedTopics]]
@@ -74,19 +67,13 @@
    * [[WebStatistics]]
    * [[WebNotify]]
 %STOPCHAPTER%
-</div>
-</div>
----
-<div class="foswikiRow">
-<div class="foswikiCol12">
+%BEGINCOL{"12"}%
 ---++ %MAKETEXT{"Add more text here"}%
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam aliquam molestie scelerisque. Aenean accumsan ante cursus nisl dapibus sed rhoncus lacus bibendum. Quisque eros libero, feugiat porttitor semper quis, commodo et magna. Sed fermentum lacinia dolor vitae iaculis. Nulla dapibus commodo orci non lacinia. Aliquam erat volutpat. Proin in nulla ut libero fringilla iaculis vitae sit amet purus. Vivamus ut convallis lacus. Nulla turpis eros, tincidunt sit amet accumsan non, molestie ut eros. Nunc porta rhoncus dui vitae interdum. Praesent rhoncus mollis quam, vel egestas mi rhoncus at. Quisque vestibulum magna sed justo laoreet at ultricies quam adipiscing. Vivamus sit amet sem justo, id ultrices sem. Vestibulum risus ipsum, congue eu varius sit amet, luctus eget velit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
 
 %STOPCHAPTER%
-</div>
-</div>
-</div><!-- end of grid -->
+%ENDGRID%
 <!-- %JQREQUIRE{"hyphenator, loader, infinitescroll, sameheight" warn="off"}% %REDDOTINIT% %IMAGE% -->
 <!--
    * Set CACHEEXPIRE = +5min
@@ -97,3 +84,4 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam aliquam molestie
 %META:PREFERENCE{name="NATSKIN_SIDEBAR" title="NATSKIN_SIDEBAR" type="Local" value="off"}%
 %META:PREFERENCE{name="DISPLAYREVISIONINFO" title="DISPLAYREVISIONINFO" type="Local" value="off"}%
 %META:PREFERENCE{name="NOWYSIWYG" title="NOWYSIWYG" type="Set" value="on"}%
+%META:PREFERENCE{name="TOPICTITLE" title="TOPICTITLE" type="Local" value="_ClassificationTemplate"}%

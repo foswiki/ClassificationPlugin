@@ -2,6 +2,7 @@ igp_*
 *.gz
 *,v
 *.swp
+*.lease
 pub/System/ClassificationPlugin/jquery.catselector.js
 pub/System/ClassificationPlugin/jquery.classifiedtopic.js
 pub/System/ClassificationPlugin/jquery.hierarchy.js
