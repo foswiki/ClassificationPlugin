@@ -348,7 +348,7 @@ Note however that for now only the =%DBQUERY= language is supported (see [[Foswi
 -->
 
 |  Plugin Author: | Michael Daum |
-|  Copyright &copy;: | 2006-2014, Michael Daum http://michaeldaumconsulting.com |
+|  Copyright &copy;: | 2006-2015, Michael Daum http://michaeldaumconsulting.com |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
 |  Release: | %$RELEASE% |
 |  Version: | %$VERSION% |

@@ -23,6 +23,6 @@
 %META:FIELD{name="Summary" attributes="c" title="Summary" value="Categorization and folksomony application"}%
 %META:FIELD{name="Version" attributes="" title="Version" value="0.7"}%
 %META:FIELD{name="Author" attributes="" title="Author" value="Michael Daum"}%
-%META:FIELD{name="Copyright" attributes="" title="Copyright" value="&copy; 2006-2014 Michael Daum http://michaeldaumconsulting.com"}%
+%META:FIELD{name="Copyright" attributes="" title="Copyright" value="&copy; 2006-2015 Michael Daum http://michaeldaumconsulting.com"}%
 %META:FIELD{name="License" attributes="" title="License" value="Applications.GnuGeneralPublicLicense"}%
 %META:FIELD{name="Dependencies" attributes="" title="Dependencies" value=""}%
