@@ -1,0 +1,20 @@
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICPARENT{name="TopicView"}%
+%{<verbatim class="tml">}%
+%TMPL:INCLUDE{"Applications.ClassificationApp.ClassifiedTopicView"}%
+%{</verbatim>}%
+
+%{<verbatim class="tml">}%
+%TMPL:DEF{"beforetext"}%%TMPL:PREV%
+%RENDERFORDISPLAY{
+   exclude="TopicTitle|Summary|TopicType|Category|Tag"
+   footer="$n"
+}%
+%TMPL:END%
+%{</verbatim>}%
+
+%META:FORM{name="Applications.TopicView"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="TopicView for WorkflowDefinitions"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1418731764" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1" version="1"}%
 %META:TOPICPARENT{name="Applications/ClassificationApp.TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -43,14 +43,7 @@ a summary for an object listed within the TaggedTopic.
 ---++ Test
 %DBCALL{"%TOPIC%" OBJECT="TestTopic0"}%
 
-%DBCALL{"Applications.RenderFunctionCallers"}%
-
----++ Copyright
-&copy; 2006-2014 Michael Daum http://michaeldaumconsulting.com
-
-%DBCALL{"Applications.GnuGeneralPublicLicense" section="notice"}%
-
-%META:FORM{name="Applications.ApplicationTopic"}%
+%META:FORM{name="Applications.TopicFunction"}%
 %META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" attributes="c" title="Summary" value="Renders an index item for TaggedTopics"}%

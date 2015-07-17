@@ -1,0 +1,14 @@
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICPARENT{name="TestCategory0"}%
+
+
+%META:FORM{name="Applications/ClassificationApp.ClassifiedControlledTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="WikiTopic, ClassifiedTopic, CategorizedTopic, TaggedTopic, ControlledTopic, ClassifiedControlledTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value="Classified Controlled Test Topic"}%
+%META:FIELD{name="Summary" title="Summary" value=""}%
+%META:FIELD{name="Workflow" title="Workflow" value="SimpleApprovalWorkflow"}%
+%META:FIELD{name="Tag" title="Tag" value="bar, foo, test"}%
+%META:FIELD{name="Category" title="Category" value="TestCategory0, TestCategory16"}%
+%META:WORKFLOW{name="draft" LASTTIME_draft="19 Mar 2015 - 15:08" LASTUSER_draft="Home.MichaelDaum" LASTVERSION_draft="1"}%
+%META:PREFERENCE{name="WORKFLOW" title="WORKFLOW" type="Set" value="SimpleApprovalWorkflow"}%
+%META:PREFERENCE{name="WORKFLOWHISTORYFORMAT" title="WORKFLOWHISTORYFORMAT" type="Set" value="$nstate=$state;rev=$rev;user=$wikiusername;date=$date"}%

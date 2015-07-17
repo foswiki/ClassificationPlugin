@@ -1,0 +1,79 @@
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICPARENT{name="TopicFunction"}%
+%TOC{depth="2"}%
+
+---++ Documentation
+%STARTSECTION{"documentation"}%
+%RED%TODO%ENDCOLOR%
+
+---+++++ Parameters
+   * OBJECT the topic to render the info block for
+
+%ENDSECTION{"documentation"}%
+
+---++ Implementation
+<verbatim class="tml">
+%STARTINCLUDE%<div class="clearfix %IF{
+   "'%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" rev="%URLPARAM{"rev"}%"}%'='approved'"
+   then="foswikiSuccessMessage"
+   else="%IF{
+            "'%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" rev="%URLPARAM{"rev"}%"}%'='rejected'"
+            then="foswikiErrorMessage"
+            else="foswikiWarningMessage"
+         }%"
+}%">
+<div class='foswikiRight'>
+%TWISTYBUTTON{
+   id="workflowinfo"
+   showlink=" %MAKETEXT{"Show details"}%" 
+   hidelink=" %MAKETEXT{"Hide details"}%"
+   showimgleft="%ICONURLPATH{"toggleopen"}%" 
+   hideimgleft="%ICONURLPATH{"toggleclose"}%"
+}%
+</div>
+%TRANSLATE{"%WORKFLOWSTATEMESSAGE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" rev="%URLPARAM{"rev"}%"}%"}%
+</div>
+%TWISTYTOGGLE{
+   remember="off"
+   id="workflowinfo"
+}%
+<div class="foswikiPageForm foswikiSmallish clsWorkflowInfo clearfix">
+%BEGINGRID{border="on"}%
+%BEGINCOL{"6"}%
+<table class='foswikiLayoutTable'>
+<tr>
+   <th>%TRANSLATE{"Current State:"}%</td>
+   <td>%TRANSLATE{"%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"rev="%URLPARAM{"rev"}%"}%"}%</td>
+</tr>
+%IF{"$'URLPARAM{rev}'=''"
+   then="<tr>
+         <th>%MAKETEXT{"Action:"}%</th>
+         <td>$percntWORKFLOWTRANSITION{\"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%\"}$percnt</td>
+      </tr>"
+}%</table>
+%BEGINCOL{"6"}%
+<table class='foswikiLayoutTable'>
+<tr>
+   <th>%TRANSLATE{"Workflow:"}%</td>
+   <td>[[%EXPAND{"$percntWORKFLOW$percnt" scope="%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"}%]]</td>
+</tr>
+%IF{"'%WORKFLOWLASTREV{"approved" topic="%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"}%'!=''"
+   then="<tr>
+      <th>%TRANSLATE{"Last Approved:"}%</th>
+      <td><a href='%SCRIPTURLPATH{"view"}%/%WEB%/%TOPIC%?rev=%WORKFLOWLASTREV{"approved" topic="%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"}%'>%WORKFLOWLASTTIME{"approved" topic="%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"}%, version %WORKFLOWLASTREV{"approved" topic="%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"}%</a></td>
+   </tr>"
+}%</table>
+%ENDGRID%
+</div>
+%ENDTWISTY%%STOPINCLUDE%
+</verbatim>
+
+---++ Test
+%DBCALL{"%TOPIC%" OBJECT="ControlledTestTopic"}%
+
+%META:FORM{name="Applications.TopicFunction"}%
+%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="renders an info block at the top of a ControlledTopic"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%
+%META:PREFERENCE{name="EDIT_TEMPLATE" title="EDIT_TEMPLATE" type="Set" value="Applications.WikiTopicEdit"}%

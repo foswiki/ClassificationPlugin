@@ -18,6 +18,10 @@ data/Applications/ClassificationApp/CategoryTemplate.txt 0644
 data/Applications/ClassificationApp/Category.txt 0644
 data/Applications/ClassificationApp/CategoryViewTemplate.txt 0644
 data/Applications/ClassificationApp/ChannelManagementCategory.txt 0644
+data/Applications/ClassificationApp/ClassifiedControlledTestTopic.txt 0644
+data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt 0644
+data/Applications/ClassificationApp/ClassifiedControlledTopic.txt 0644
+data/Applications/ClassificationApp/ClassifiedControlledTopicViewTemplate.txt 0644
 data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt 0644
 data/Applications/ClassificationApp/ClassifiedTopicRenderIndexItem.txt 0644
 data/Applications/ClassificationApp/ClassifiedTopic.txt 0644
@@ -25,6 +29,10 @@ data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt 0644
 data/Applications/ClassificationApp/CompetitionCategory.txt 0644
 data/Applications/ClassificationApp/CompleteDocumentation.txt 0644
 data/Applications/ClassificationApp/ContactsCategory.txt 0644
+data/Applications/ClassificationApp/ControlledTestTopic.txt 0644
+data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt 0644
+data/Applications/ClassificationApp/ControlledTopic.txt 0644
+data/Applications/ClassificationApp/ControlledTopicViewTemplate.txt 0644
 data/Applications/ClassificationApp/CorporateCategory.txt 0644
 data/Applications/ClassificationApp/CustomersCategory.txt 0644
 data/Applications/ClassificationApp/DataFormAttribute.txt 0644
@@ -95,6 +103,7 @@ data/Applications/ClassificationApp/RenderSolrTagCloud.txt 0644
 data/Applications/ClassificationApp/RenderTagEditor.txt 0644
 data/Applications/ClassificationApp/RenderUncategorizedTopics.txt 0644
 data/Applications/ClassificationApp/RenderWebTagCloud.txt 0644
+data/Applications/ClassificationApp/RenderWorkflowInfo.txt 0644
 data/Applications/ClassificationApp/SalesCategory.txt 0644
 data/Applications/ClassificationApp/SalesForecastCategory.txt 0644
 data/Applications/ClassificationApp/SalesReportingCategory.txt 0644
@@ -104,6 +113,7 @@ data/Applications/ClassificationApp/SeoTopic.txt 0644
 data/Applications/ClassificationApp/SeoTopicViewTemplate.txt 0644
 data/Applications/ClassificationApp/ServicesCategory.txt 0644
 data/Applications/ClassificationApp/ServicesForum.txt 0644
+data/Applications/ClassificationApp/SimpleApprovalWorkflow.txt 0644
 data/Applications/ClassificationApp/SoftwareCategory.txt 0644
 data/Applications/ClassificationApp/StarterKitCategory.txt 0644
 data/Applications/ClassificationApp/SupportForum.txt 0644
@@ -147,6 +157,7 @@ data/Applications/ClassificationApp/UpgradingForum.txt 0644
 data/Applications/ClassificationApp/WebAtom.txt 0644
 data/Applications/ClassificationApp/WebChanges.txt 0644
 data/Applications/ClassificationApp/WebHome.txt 0644
+data/Applications/ClassificationApp/WebLexicon.txt 0644
 data/Applications/ClassificationApp/WebLinks.txt 0644
 data/Applications/ClassificationApp/WebNotify.txt 0644
 data/Applications/ClassificationApp/WebPreferences.txt 0644
@@ -162,12 +173,15 @@ data/Applications/ClassificationApp/WikiApplication.txt 0644
 data/Applications/ClassificationApp/WikisCategory.txt 0644
 data/Applications/ClassificationApp/WikiTopic.txt 0644
 data/Applications/ClassificationApp/WishListForum.txt 0644
+data/Applications/ClassificationApp/WorkflowDefinitionEditTemplate.txt 0644
+data/Applications/ClassificationApp/WorkflowDefinitionTemplate.txt 0644
+data/Applications/ClassificationApp/WorkflowDefinition.txt 0644
+data/Applications/ClassificationApp/WorkflowDefinitionViewTemplate.txt 0644
 data/_ClassificationTemplate/Category.txt 0644
 data/_ClassificationTemplate/ClassifiedTopic.txt 0644
 data/_ClassificationTemplate/TestCategory.txt 0644
 data/_ClassificationTemplate/TestTopic.txt 0644
 data/_ClassificationTemplate/TopCategory.txt 0644
-data/_ClassificationTemplate/TopicType.txt 0644
 data/_ClassificationTemplate/UncategorizedTopics.txt 0644
 data/_ClassificationTemplate/WebAtom.txt 0644
 data/_ClassificationTemplate/WebChanges.txt 0644
@@ -188,12 +202,14 @@ lib/Foswiki/Form/Tag.pm 0644
 lib/Foswiki/Plugins/ClassificationPlugin/Access.pm 0644
 lib/Foswiki/Plugins/ClassificationPlugin/Category.pm 0644
 lib/Foswiki/Plugins/ClassificationPlugin/Core.pm 0644
+lib/Foswiki/Plugins/ClassificationPlugin/DEPENDENCIES 0644
 lib/Foswiki/Plugins/ClassificationPlugin/Hierarchy.pm 0644
 lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm 0644
 lib/Foswiki/Plugins/ClassificationPlugin.pm 0644
 lib/Foswiki/Plugins/ClassificationPlugin/Services.pm 0644
 locale/ClassificationPlugin/de.po 0644
 locale/ClassificationPlugin/Foswiki.pot 0644
+pub/Applications/ClassificationApp/CompleteDocumentation/DirectedGraphPlugin_1.png 0644
 pub/Applications/ClassificationApp/IconSet/anchor.png 0644
 pub/Applications/ClassificationApp/IconSet/application_cascade.png 0644
 pub/Applications/ClassificationApp/IconSet/application_double.png 0644

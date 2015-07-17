@@ -28,7 +28,7 @@ use constant OBJECTVERSION => 0.91;
 use constant CATWEIGHT => 1.0; # used in computeSimilarity()
 use constant TRACE => 0; # toggle me
 
-use vars qw(%insideInit);
+our %insideInit;
 
 ###############################################################################
 # static
@@ -41,44 +41,51 @@ sub writeDebug {
 sub new {
   my $class = shift;
   my $web = shift;
+  my $topic = shift;
+  my $text = shift;
 
-  $web =~ s/\//\./go;
-  #writeDebug("new hierarchy for web $web");
   my $this;
-  my $cacheFile = Foswiki::Plugins::ClassificationPlugin::Core::getCacheFile($web);
-  
   my $session = $Foswiki::Plugins::SESSION;
   my $query = Foswiki::Func::getCgiQuery();
-  my $refresh = '';
-  $refresh = $query->param('refresh') || '' if defined $session;
-  $refresh = ($refresh =~ /on|class|cat/)?1:0;
 
-  unless ($refresh) {
-    eval {
-      $this = Storable::lock_retrieve($cacheFile);
-    };
-  }
+  if (defined $web) {
+    $web =~ s/\//\./go;
+    my $cacheFile = Foswiki::Plugins::ClassificationPlugin::Core::getCacheFile($web, $topic);
+    
+    my $refresh = '';
+    $refresh = $query->param('refresh') || '' if defined $session;
+    $refresh = ($refresh =~ /on|class|cat/)?1:0;
 
-  if ($this && $this->{_version} == OBJECTVERSION) {
-    writeDebug("restored hierarchy object (v$this->{_version}) from $cacheFile");
-    #if (TRACE) {
-    #  use Data::Dumper;
-    #  writeDebug(Dumper($this));
-    #}
-    return $this;
+    unless ($refresh) {
+      eval {
+        $this = Storable::lock_retrieve($cacheFile);
+      };
+    }
+
+    if ($this && $this->{_version} == OBJECTVERSION) {
+      writeDebug("restored hierarchy object (v$this->{_version}) from $cacheFile");
+      #if (TRACE) {
+      #  use Data::Dumper;
+      #  writeDebug(Dumper($this));
+      #}
+      return $this;
+    } else {
+      writeDebug("creating new object");
+    }
   } else {
-    writeDebug("creating new object");
+    $web = '_virtual';
   }
 
   $this = {
     web=>$web,
+    topic => $topic,
+    text => $text,
     idCounter=>0,
     @_
   };
 
   $this = bless($this, $class);
   $this->init();
-
   $this->{gotUpdate} = 1;
   $this->{_version} = OBJECTVERSION;
 
@@ -102,9 +109,14 @@ sub finish {
     }
   }
 
+  return if $this->{web} eq '_virtual';
+
+  my $key = $this->{web};
+  $key .= '.'.$this->{topic} if defined $this->{topic};
+
   writeDebug("gotUpdate=$gotUpdate");
   if ($gotUpdate) {
-    my $cacheFile = Foswiki::Plugins::ClassificationPlugin::Core::getCacheFile($this->{web});
+    my $cacheFile = Foswiki::Plugins::ClassificationPlugin::Core::getCacheFile($key);
     writeDebug("saving hierarchy $this->{web} to $cacheFile");
 
     # SMELL: don't cache the prefs for now
@@ -176,79 +188,38 @@ sub purgeCache {
 sub init {
   my $this = shift;
 
-  # be anal
-  die "recursive call to Hierarchy::init for $this->{web}" if $insideInit{$this->{web}};
-  $insideInit{$this->{web}} = 1;
+  my $key = $this->{web};
+  $key .= '.'.$this->{topic} if defined $this->{topic};
 
-  writeDebug("called Hierarchy::init for $this->{web} ... EXPENSIVE");
+  # be anal
+  die "recursive call to Hierarchy::init for $key" if $insideInit{$key};
+  $insideInit{$key} = 1;
+
+  writeDebug("called Hierarchy::init for $key ... EXPENSIVE");
 
   # reset all
   $this->purgeCache(5);
 
-  my $session = $Foswiki::Plugins::SESSION;
-  $this->{_prefs} = new Foswiki::Prefs($session);
+  # init from a topic
+  if ($this->{topic}) {
+    unless ($this->initFromTopic) {
+      delete $insideInit{$key};
+      return;
+    }
+  } 
 
-  my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($this->{web});
-  unless ($db) {
-    print STDERR "ERROR: can't get web for $this->{web}\n".$this->_stackTrace();
-    delete $insideInit{$this->{web}};
-    return;
-  }
+  # init from text
+  elsif ($this->{text}) {
+    unless ($this->initFromText) {
+      return;
+    }
+  } 
 
-  # iterate over all topics and collect categories
-  my $seenImport = {};
-  
-  foreach my $topicName ($db->getKeys()) {
-    my $topicObj = $db->fastget($topicName);
-    next unless $topicObj;
-    my $form = $topicObj->fastget("form");
-    next unless $form;
-    $form = $topicObj->fastget($form);
-    next unless $form;
-
-    # get topic types
-    my $topicType = $form->fastget("TopicType");
-    next unless $topicType;
-
-    if ($topicType =~ /\bCategory\b/) {
-      # this topic is a category in itself
-      writeDebug("found category '$topicName' in web $this->{web}");
-      my $cat = $this->{_categories}{$topicName};
-      $cat = $this->createCategory($topicName) unless $cat;
-
-      my $cats = $this->getCategoriesOfTopic($topicObj);
-      if ($cats && @$cats) {
-        $cat->setParents(@$cats);
-      } else {
-        $cat->setParents('TopCategory') if $cat->{name} ne 'TopCategory';
-      }
-
-      my $summary = $form->fastget("Summary") || '';
-      $summary =~ s/<nop>//go;
-      $summary =~ s/^\s+//go;
-      $summary =~ s/\s+$//go;
-
-      my $order = $form->fastget("Order");
-      if (defined($order) && $order =~ /([+-]?\d+(?:\.\d)*)/) {
-        $order = $1;
-      } else {
-        $order = 99999999;
-      }
-
-      my $title = $form->fastget("TopicTitle") || $topicName;
-      $title =~ s/<nop>//go;
-      $title =~ s/^\s+//go;
-      $title =~ s/\s+$//go;
-      $cat->setSummary($summary);
-      $cat->setOrder($order);
-      $cat->setTitle($title);
-      $cat->setIcon($form->fastget("Icon"));
-      $cat->setRedirect($form->fastget("Redirect"));
-
-      #writeDebug("$topicName has got title '$title'");
-
-      # import foregin categories
-      $cat->importCategories($form->fastget("ImportedCategory"), $seenImport);
+  # default
+  else {
+    unless ($this->initFromWeb) {
+      delete $insideInit{$key};
+      return;
     }
   }
 
@@ -294,13 +265,197 @@ sub init {
       foreach my $child ($cat->getChildren()) {
 	$text .= " $child->{name}";
       }
-      writeDebug($text);
+      print STDERR $text."\n";
     }
     #$this->printDistanceMatrix();
   }
 
-  writeDebug("done init $this->{web}");
-  delete $insideInit{$this->{web}};
+  writeDebug("done init $key");
+  delete $insideInit{$key};
+}
+
+################################################################################
+sub initFromTopic {
+  my $this = shift;
+
+  my $key = $this->{web};
+  $key .= '.'.$this->{topic} if defined $this->{topic};
+
+  my ($meta, $text) = Foswiki::Func::readTopic($this->{web}, $this->{topic});
+
+  return $this->initFromText($text);
+}
+
+################################################################################
+sub initFromText {
+  my $this = shift;
+
+  # potentially create the list using macros
+  my $web = $this->{web};
+  my $topic = $this->{topic} || $Foswiki::cfg{HomeTopicName};
+
+  my $text = Foswiki::Func::expandCommonVariables($this->{text}, $topic, $web);
+
+  my $insideList = 0;
+  my @list = ();
+  my %lookup = ();
+  foreach my $line ( split( /\r?\n/, $text ) ) {
+    if ($line =~ /^((?:\t|   )+)\*\s+(.*?)\s*$/ ) {
+      my $indent = $1;
+      my $title = $2;
+      $indent =~ s/\t/   /;
+      $indent = length($indent) / 3;
+      $insideList = 1;
+
+      my $name = $title;
+      $name =~ s/^\s*//;
+      $name =~ s/\s*$//;
+      $name = ucfirst($name);
+      $name =~ s/[^$Foswiki::regex{mixedAlphaNum}]//g;
+      $name =~ s/\s([$Foswiki::regex{mixedAlphaNum}])/\U$1/g;
+      $name .= 'Category';
+
+      $name = $this->{prefix}.$name if defined $this->{prefix};
+
+      #print STDERR "indent=$indent, title='$title', name=$name\n";
+      push @list, $lookup{$name} = {
+        indent => $indent,
+        title => $title,
+        name => $name, 
+      };
+    } else {
+      last if $insideList;
+    }
+  }
+
+  # make it a hierarchy
+  my $lastItem;
+  my @root = ();
+  foreach my $item (@list) {
+
+    if ($item->{indent} == 1) {
+      push @root, $item;
+    }
+
+    if ($lastItem) {
+
+      # indent
+      if ($item->{indent} > $lastItem->{indent}) {
+        $item->{parent} = $lastItem;
+      } 
+
+      # outdent
+      elsif ($item->{indent} < $lastItem->{indent}) {
+        my $parent = $lastItem;
+        for (my $i = $item->{indent}; $i <= $lastItem->{indent}; $i++) {
+          $parent = $parent->{parent};
+          last unless $parent;
+        }
+        $item->{parent} = $parent;
+      } 
+
+      # same level
+      else {
+        $item->{parent} = $lastItem->{parent};
+      }
+    } else {
+      # first item
+      $item->{parent} = undef;
+    }
+
+    $lastItem = $item;
+  }
+
+
+  foreach my $item (@list) {
+    my $cat = $this->createCategory($item->{name});
+    my $parentName = $item->{parent}?$item->{parent}{name}:'TopCategory';
+
+    $cat->setParents($parentName);
+    $cat->setTitle($item->{title});
+
+  }
+
+  return 1;
+}
+
+################################################################################
+sub initFromWeb {
+  my $this = shift;
+
+  my $key = $this->{web};
+
+  my $session = $Foswiki::Plugins::SESSION;
+  $this->{_prefs} = new Foswiki::Prefs($session);
+
+  my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($this->{web});
+  unless ($db) {
+    print STDERR "ERROR: can't get web for $this->{web}\n".$this->_stackTrace();
+    return 0;
+  }
+
+  # iterate over all topics and collect categories
+  my $seenImport = {};
+  
+  foreach my $topicName ($db->getKeys()) {
+    my $topicObj = $db->fastget($topicName);
+    next unless $topicObj;
+    my $form = $topicObj->fastget("form");
+    next unless $form;
+    $form = $topicObj->fastget($form);
+    next unless $form;
+
+    # get topic types
+    my $topicType = $form->fastget("TopicType");
+    next unless $topicType;
+
+    if ($topicType =~ /\bCategory\b/) {
+      # this topic is a category in itself
+      writeDebug("found category '$topicName' in web $key");
+      my $cat = $this->{_categories}{$topicName};
+      $cat = $this->createCategory($topicName) unless $cat;
+
+      my $cats = $this->getCategoriesOfTopic($topicObj);
+      if ($cats && @$cats) {
+        $cat->setParents(@$cats);
+      } else {
+        $cat->setParents('TopCategory') if $cat->{name} ne 'TopCategory';
+      }
+
+      my $summary = $form->fastget("Summary") || '';
+      $summary =~ s/<nop>//go;
+      $summary =~ s/^\s+//go;
+      $summary =~ s/\s+$//go;
+
+      my $order = $form->fastget("Order");
+      if (defined($order) && $order =~ /([+-]?\d+(?:\.\d)*)/) {
+        $order = $1;
+      } else {
+        $order = 99999999;
+      }
+
+      my $title = $form->fastget("TopicTitle") || $topicName;
+      $title =~ s/<nop>//go;
+      $title =~ s/^\s+//go;
+      $title =~ s/\s+$//go;
+      $cat->setSummary($summary);
+      $cat->setOrder($order);
+      $cat->setTitle($title);
+      $cat->setIcon($form->fastget("Icon"));
+      $cat->setRedirect($form->fastget("Redirect"));
+
+      #writeDebug("$topicName has got title '$title'");
+
+      # import foregin categories from another web
+      my $impCats = $form->fastget("ImportedCategory");
+      $cat->importCategories($impCats, $seenImport) if $impCats;
+
+      my $text = $form->fastget("SubCategories");
+      $cat->importCategoriesFromText($text, $this) if $text;
+    }
+  }
+  
+  return 1;
 }
 
 ################################################################################

@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1418731764" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -35,7 +35,7 @@ See the CategoryTemplate.
   pattern="\((.*)\);(.*);(.*)"
   sort="off"
   %IF{"'%SHOWGROUPS{default="off"}%'!='on'" then="group=\"\""}%
-  format="$percntDBCALL{\"$3.$2->RenderIndexItem\" TITLE=\"$1\" THEWEB=\"%BASEWEB%\"}$percnt"
+  format="$percntDBCALL{\"Applications.ClassificationApp.CategoryRenderIndexItem\" TITLE=\"$1\" THEWEB=\"%BASEWEB%\" OBJECT=\"$2\"}$percnt"
 }%<!-- -->
 %IF{"'%SHOWTOPICS{default="%IF{"'%CAT{default="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%'='TopCategory'" then="off" else="on"}%"}%'='on'"
    then="$percntDBCALL{\"%WEB%.%TOPIC%\" 
@@ -105,15 +105,9 @@ See the CategoryTemplate.
 ---++ Test
 %DBCALL{"%TOPIC%"}%
 
-%DBCALL{"Applications.RenderFunctionCallers"}%
 
----++ Copyright
-&copy; 2006-2014 Michael Daum http://michaeldaumconsulting.com
-
-%DBCALL{"Applications.GnuGeneralPublicLicense" section="notice"}%
-
-%META:FORM{name="Applications.ApplicationTopic"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="Render tools to handle categories"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FORM{name="Applications.TopicFunction"}%
+%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Render tools to handle categories"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

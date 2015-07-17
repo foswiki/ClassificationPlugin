@@ -1,0 +1,27 @@
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICPARENT{name="WebHome"}%
+---++ States
+| *State* | *Allow Edit* | *Message* |
+| draft   |              | This document is being worked on. |
+| requesting approval |  | This document is waiting for approval. |
+| approved |             | This document is approved. |
+| rejected |             | Approval for this document has been rejected. |
+| outdated |             | This document is not in use anymore. |
+
+---++ Transitions
+| *State*             | *Action*         | *Next State*        | *Allowed* | *Form* | *Notify *|
+| draft               | request approval | requesting approval |           |        |          |
+| requesting approval | approve          | approved            |           |        |          |
+| requesting approval | reject           | rejected            |           |        |          |
+| approved            | resume           | draft               |           |        |          |
+| approved            | finish           | outdated            |           |        |          |
+| rejected            | resume           | draft               |           |        |          |
+| rejected            | finish           | outdated            |           |        |          |
+| outdated            | resume           | draft               |           |        |          |
+
+%META:FORM{name="Applications/ClassificationApp.WorkflowDefinition"}%
+%META:FIELD{name="TopicType" title="TopicType" value="WikiTopic, TaggedTopic, CategorizedTopic, ClassifiedTopic, WorkflowDefinition"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value=""}%
+%META:FIELD{name="Tag" title="Tag" value=""}%
+%META:FIELD{name="Category" title="Category" value=""}%

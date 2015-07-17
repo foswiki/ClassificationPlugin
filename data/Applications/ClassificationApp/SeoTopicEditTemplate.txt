@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1418731764" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.ClassificationApp.ClassifiedTopicEdit"}%
@@ -9,12 +9,11 @@
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"topictype"}%%MAKETEXT{"seo topic"}%%TMPL:END%
+%TMPL:DEF{"topictype"}%%TRANSLATE{"seo topic"}%%TMPL:END%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
 %TMPL:DEF{"formfields"}%<!-- --> 
-<input type="hidden" name="action" value="text" /> 
 %TMPL:P{"categoriestab"}% 
 %TMPL:P{"tagstab"}% 
 %TMPL:P{"seotab"}% 
@@ -23,16 +22,17 @@
 
 %{<verbatim class="tml">}%
 %TMPL:DEF{"seotab"}%<!-- -->
-%TAB{"%MAKETEXT{"SEO"}%"}%
----++ %MAKETEXT{"Search engine optimization"}%
+%TAB{"%TRANSLATE{"SEO"}%"}%
+---++ %TRANSLATE{"Search engine optimization"}%
 %RENDERFOREDIT{"%BASEWEB%.%BASETOPIC%"
   form="%TMPL:P{"formdefinition"}%"
-  fields="HTMLTitle, MetaKeywords, MetaDescription"
-  HTMLTitle_title="%MAKETEXT{"HTML Title"}%"
-  MetaKeywords_title="%MAKETEXT{"Meta keywords"}%"
-  MetaDescription_title="%MAKETEXT{"Meta desciption"}%"
+  fields="HTMLTitle, MetaKeywords, MetaDescription, MetaImage"
+  HTMLTitle_title="%TRANSLATE{"HTML Title"}%"
+  MetaKeywords_title="%TRANSLATE{"Meta keywords"}%"
+  MetaDescription_title="%TRANSLATE{"Meta desciption"}%"
   MetaKeywords_default="%TAGINFO{topic="%BASEWEB%.%BASETOPIC%" format="$name"}%"
   MetaDescription_default="%FORMFIELD{"Summary" topic="%BASEWEB%.%BASETOPIC%"}%"
+  MetaImage_title="%TRANSLATE{"Meta Image"}%"
 }%
 <literal>
 <script>
@@ -82,8 +82,8 @@ jQuery(function($) {
 %TMPL:DEF{"validationrules"}% {'MetaDescription': {maxlength:160}} %TMPL:END%
 </verbatim>
 
-%META:FORM{name="Applications.ApplicationTopic"}%
-%META:FIELD{name="TopicType" title="TopicType" value="TopicView"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="Editor for SeoTopics"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FORM{name="Applications.TopicView"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Editor for SeoTopics"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

@@ -64,12 +64,19 @@ sub finish {
   writeDebug("called finish()");
   foreach my $hierarchy (values %hierarchies) {
     next unless defined $hierarchy;
+
     my $web = $hierarchy->{web};
+    my $topic = $hierarchy->{topic};
+
+    my $key = $web;
+    $key .= '.'.$topic if defined $topic;
+
     $hierarchy->finish();
-    undef $modTimeStamps{$web};
+
+    undef $modTimeStamps{$key};
     unless (MEMORYCACHE) {
-      undef $hierarchies{$web};
-      undef $loadTimeStamps{$web};
+      undef $hierarchies{$key};
+      undef $loadTimeStamps{$key};
     }
   }
   writeDebug("done finish()");
@@ -1015,25 +1022,33 @@ sub getTopicTypes {
 ################################################################################
 sub getCacheFile {
   my $web = shift;
+  my $topic = shift;
 
   $web =~ s/^\s+//go;
   $web =~ s/\s+$//go;
   $web =~ s/[\/\.]/_/go;
 
-  return Foswiki::Func::getWorkArea("ClassificationPlugin").'/'.$web.'.hierarchy';
+  my $key = $web;
+  $key .= '.'.$topic if defined $topic;
+
+  return Foswiki::Func::getWorkArea("ClassificationPlugin").'/'.$key.'.hierarchy';
 }
 
 ###############################################################################
 sub getModificationTime {
   my $web = shift;
+  my $topic = shift;
 
-  unless ($modTimeStamps{$web}) {
-    my $cacheFile = getCacheFile($web);
+  my $key = $web;
+  $key .= '.'.$topic if defined $topic;
+
+  unless ($modTimeStamps{$key}) {
+    my $cacheFile = getCacheFile($web, $topic);
     my @stat = stat($cacheFile);
-    $modTimeStamps{$web} = ($stat[9] || $stat[10] || 1);
+    $modTimeStamps{$key} = ($stat[9] || $stat[10] || 1);
   }
 
-  return $modTimeStamps{$web};
+  return $modTimeStamps{$key};
 }
 
 ###############################################################################
@@ -1053,6 +1068,39 @@ sub getHierarchy {
 
   return $hierarchies{$web};
 }
+
+###############################################################################
+# returns the hierarchy object for a given web.topic; construct a new one if
+# not already done
+sub getHierarchyFromTopic {
+  my $web = shift;
+  my $topic = shift;
+
+  $web =~ s/\//\./go;
+  my $key = $web.'.'.$topic;
+  my $timeStap = $loadTimeStamps{$key};
+
+  if (!$timeStap || $timeStap < getModificationTime($web, $topic)) {
+    #writeDebug("constructing hierarchy for $web");
+    require Foswiki::Plugins::ClassificationPlugin::Hierarchy;
+    $hierarchies{$key} = new Foswiki::Plugins::ClassificationPlugin::Hierarchy($web, $topic);
+    $loadTimeStamps{$key} = time();
+    #writeDebug("DONE constructing hierarchy for $web");
+  }
+
+  return $hierarchies{$key};
+}
+
+###############################################################################
+# returns a hierarchy object for a given bullet list
+# not already done
+sub getHierarchyFromText {
+  my $text = shift;
+
+  require Foswiki::Plugins::ClassificationPlugin::Hierarchy;
+  return new Foswiki::Plugins::ClassificationPlugin::Hierarchy(undef, undef, $text, @_);
+}
+
 
 ###############################################################################
 # get the hierarchy that implements the given category; this traverses all

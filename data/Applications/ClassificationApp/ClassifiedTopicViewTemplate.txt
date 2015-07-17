@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1418731764" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.WikiTopicView"}%
@@ -6,7 +6,7 @@
 
 %{<verbatim class="tml">}%
 %TMPL:DEF{"beforetext"}%<div class="foswikiTopicInfo">
-%DBCALL{"Applications.ClassificationApp.RenderClassifiedTopicView" TITLE_EXTRA="%TMPL:P{"titleextra"}%" }%
+%DBCALL{"Applications.ClassificationApp.RenderClassifiedTopicView" TITLE_EXTRA="%TMPL:P{"titleextra"}%"}%
 </div>%IF{
   "$'ENABLEQUALITYCHECK'='on' or $'ENABLEQUALITYCHECK'=~'\btags\b'" 
   then="$percntTMPL:P{\"qualitycheck::tags\"}$percnt"
@@ -63,8 +63,8 @@
 }%%TMPL:END%
 %{</verbatim>}%
 
-%META:FORM{name="Applications.ApplicationTopic"}%
-%META:FIELD{name="TopicType" title="TopicType" value="TopicView"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="Display a classified topic"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FORM{name="Applications.TopicView"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Display a classified topic"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

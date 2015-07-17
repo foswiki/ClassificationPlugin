@@ -299,6 +299,11 @@ a:hover.tag_todo {
   color:black;
 }
 
+/* workflow css */
+.clsWorkflowInfo select {
+  margin-right:1em;
+}
+
 /* pattern skin tweaks */
 #patternMainContents h1 a,
 #patternMainContents h2 a,

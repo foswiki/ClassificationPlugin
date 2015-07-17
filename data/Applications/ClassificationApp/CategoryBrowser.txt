@@ -1,18 +1,18 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1418731764" format="1.1"  version="1"}%
-%META:TOPICPARENT{name="ApplicationTopic"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICPARENT{name="WebTool"}%
 %DBCALL{"Applications.RenderTopicInstaller"}%
 
-%STARTINCLUDE%<!-- -->
+%STARTINCLUDE%
 %DBCALL{"Applications.ClassificationApp.RenderCategoryBrowser" 
    THEWEB="%URLPARAM{"web" default="%BASEWEB%"}%"
    BUTTONS="filter,refresh"
 }%
-<!-- -->%STOPINCLUDE%
+%STOPINCLUDE%
 
 See: [[RenderCategoryBrowser]]
 
-%META:FORM{name="Applications.ApplicationTopic"}%
-%META:FIELD{name="TopicType" title="TopicType" value="ApplicationTopic, WebTool"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="Explore the categories in the current web"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FORM{name="Applications.WebTool"}%
+%META:FIELD{name="TopicType" title="TopicType" value="WebTool, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Explore the categories in the current web"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

@@ -15,6 +15,7 @@
 package Foswiki::Plugins::ClassificationPlugin::Access;
 
 use strict;
+use warnings;
 use Foswiki::Plugins::ClassificationPlugin;
 
 use constant  TRACE => 0; # toggle m

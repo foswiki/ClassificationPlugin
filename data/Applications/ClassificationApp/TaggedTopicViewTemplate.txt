@@ -1,10 +1,10 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1418731764" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.ClassificationApp.ClassifiedTopicView"}%
 %{</verbatim>}%
 
-%META:FORM{name="Applications.ApplicationTopic"}%
+%META:FORM{name="Applications.TopicView"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicView"}%
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value="Display a tagged topic"}%

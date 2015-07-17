@@ -92,7 +92,10 @@ sub DESTROY {
 sub init {
   my $this = shift;
 
-  writeDebug("init category $this->{name} in web $this->{hierarchy}->{web}");
+  my $key = $this->{hierarchy}{web};
+  $key .= '.'.$this->{hierarchy}{topic} if defined $this->{hierarchy}{topic};
+
+  writeDebug("init category $this->{name} in $key");
   foreach my $name (keys %{$this->{parents}}) {
     my $parent = $this->{parents}{$name};
 
@@ -102,7 +105,7 @@ sub init {
       if ($parent) {
         $this->{parents}{$name} = $parent;
       } else {
-        writeDebug("parent $name of $this->{name} NOT found in $this->{hierarchy}->{web}");
+        writeDebug("parent $name of $this->{name} NOT found in $key");
         delete $this->{parents}{$name};
       }
     }
@@ -155,7 +158,7 @@ sub countLeafs {
 
     my @leafs = $this->getLeafs();
     if ($filter) {
-      my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($this->{hierarchy}->{web});
+      my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($this->{hierarchy}{web});
       my $search= new Foswiki::Contrib::DBCacheContrib::Search($filter);
       $nrLeafs = 0;
       foreach my $topicName (@leafs) {
@@ -335,10 +338,12 @@ sub getParents {
   my ($this, $subsumes) = @_;
 
   my $subsumesCat;
-  if (!$subsumes && ref($subsumes)) {
-    $subsumesCat = $subsumes;
-  } else {
-    $subsumesCat = $this->{hierarchy}->getCategory($subsumes);
+  if ($subsumes) {
+    if (ref($subsumes)) { 
+      $subsumesCat = $subsumes;
+    } else {
+      $subsumesCat = $this->{hierarchy}->getCategory($subsumes);
+    }
   }
 
   return values %{$this->{parents}} unless $subsumesCat;
@@ -430,7 +435,7 @@ sub getTopics {
   my ($this, $filter) = @_;
 
   unless (defined($this->{_topics})) {
-   # writeDebug("$this->{name} triggers collecting topics of categories in $this->{hierarchy}->{web}");
+   # writeDebug("$this->{name} triggers collecting topics of categories in $this->{hierarchy}{web}");
     $this->{hierarchy}->collectTopicsOfCategory();
   } else {
     #writeDebug("_topics found in cache of $this->{name}");
@@ -489,6 +494,11 @@ sub getTagsOfTopics {
 # register a subcategory
 sub addChild {
   my ($this, $category) = @_;
+
+ unless (defined $category->{name}) {
+   my ($package, $file, $line) = caller;
+   die "no name in category called from $package, line $line";
+ }
 
   #writeDebug("called $this->{name}->addChild($category->{name})");
   $this->{children}{$category->{name}} = $category;
@@ -632,7 +642,7 @@ sub getPreferences {
 
   unless ($this->{_prefs}) {
     require Foswiki::Prefs::PrefsCache;
-    $this->{_prefs} = new Foswiki::Prefs::PrefsCache($this->{hierarchy}->{_prefs}, undef, 'CAT', 
+    $this->{_prefs} = new Foswiki::Prefs::PrefsCache($this->{hierarchy}{_prefs}, undef, 'CAT', 
       $this->{origWeb}, $this->{name}); 
   }
   
@@ -641,13 +651,11 @@ sub getPreferences {
 
 ###############################################################################
 sub importCategories {
-  my ($this, $impCats, $seen) = @_;
+  my ($this, $impCats) = @_;
 
   return unless $impCats;
-  $seen ||= {};
 
   writeDebug("called importCategories($impCats)");
-  #writeDebug("already seen=".join(',', sort keys %$seen));
 
   my $thisHierarchy = $this->{hierarchy};
   my $thisWeb = $thisHierarchy->{web};
@@ -657,45 +665,94 @@ sub importCategories {
     $impWeb =~ s/\//\./go;
     next unless Foswiki::Func::webExists($impWeb);
 
+    my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($impWeb);
+    my $impObj = $db->fastget($impTopic);
+    next unless $impObj;
+
+    my $form = $impObj->fastget("form");
+    next unless $form;
+
+    $form = $impObj->fastget($form);
+    next unless $form;
+
+    my $topicType = $form->fastget("TopicType");
+
+    my $impHierarchy;
+
+    # import a topic-based category tree
+
     # prevent deep recursion importing from the same web
     next if $thisWeb eq $impWeb;
 
     # SMELL: prevent deep recursion of two webs importing each other's categories
-    my $impHierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($impWeb);
+    $impHierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($impWeb);
     next unless $impHierarchy;
 
     $impCat = $impHierarchy->getCategory($impTopic);
     next unless $impCat;
 
-    writeDebug("importing category $impTopic from $impWeb");
-    
-    # import all child categories of impCat
-    foreach my $impChild ($impCat->getChildren()) {
-      my $name = $impChild->{name};
-      next if $name eq 'BottomCategory';
-      next if $seen->{$name};
-      $seen->{$name} = 1;
-      next if Foswiki::Func::topicExists($thisWeb, $name);
-
-      my %parents = map {$_->{name}=>1} $impChild->getParents();
-      $parents{$this->{name}} = 1;
-
-      my $cat;# = $thisHierarchy->getCategory($name);
-      $cat = $thisHierarchy->createCategory($name);
-      $cat->setTitle($impChild->{title});
-      $cat->setSummary($impChild->{summary});
-      $cat->setOrder($impChild->{order});
-      $cat->setParents(keys %parents);
-      $cat->setIcon($impChild->{icon});
-      $cat->setRedirect($impChild->{redirect});
-      $cat->{origWeb} = $impWeb;
-
-      # recurse
-      $cat->importCategories("$impWeb.$name", $seen);
+    # import all children
+    foreach my $impChild ($impCat->getChildren) {
+      next if $impChild->{name} eq 'BottomCategory';
+      my $clone = $impChild->import($thisHierarchy);
+      $clone->{parents} = {$this->{name} => 1};
+      $this->addChild($clone);
     }
   }
 
   $this->{gotUpdate} = 1;
+}
+
+###############################################################################
+sub importCategoriesFromText {
+  my ($this, $text, $targetHierarchy) = @_;
+
+  die "no targert hierarchy" unless defined $targetHierarchy;
+
+  my $prefix = $this->{name};
+  $prefix =~ s/Category$//;
+  
+  writeDebug("called importCategoriesFromText()");
+  my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchyFromText($text, 
+    prefix => $prefix
+  );
+  my $top = $hierarchy->getCategory("TopCategory");
+
+  # import all children
+  foreach my $impChild ($top->getChildren) {
+    next if $impChild->{name} eq 'BottomCategory';
+    my $clone = $impChild->import($targetHierarchy);
+    $clone->{parents} = {$this->{name} => 1};
+    $this->addChild($clone);
+  }
+}
+
+###############################################################################
+sub import {
+  my ($this, $hierarchy, $seen) = @_;
+
+  $seen ||= {};
+  return if $seen->{$this->{name}};
+  $seen->{$this->{name}} = 1;
+
+  my $cat = $hierarchy->createCategory($this->{name});
+  $cat->setTitle($this->{title});
+  $cat->setSummary($this->{summary});
+  $cat->setOrder($this->{order});
+  $cat->setIcon($this->{icon});
+  $cat->setRedirect($this->{redirect});
+  $cat->{origWeb} = $hierarchy->{web};
+
+  # import all children
+  foreach my $child ($this->getChildren()) {
+    next if $child->{name} eq 'BottomCategory';
+    my $clone = $child->import($hierarchy, $seen);
+    next unless $clone;
+    $clone->{parents} = {$cat->{name} => 1};
+    $cat->addChild($clone);
+  } 
+
+  return $cat;
 }
 
 ###############################################################################
@@ -792,16 +849,18 @@ sub getLink {
   my $baseTopic = $request->param("catname") || $session->{topicName};
 
   my $currentTopic = '';
-  $currentTopic = ' foswikiCurrentTopicLink' if $baseWeb eq $this->{hierarchy}->{web} && $baseTopic eq $this->{name};
+  $currentTopic = ' foswikiCurrentTopicLink' 
+    if ($baseWeb eq $this->{hierarchy}{web} && $baseTopic eq $this->{name}) || $request->param("catname");
 
-  return "<a href='".$this->getUrl($doRedirect)."' rel='tag' class='$this->{name}$currentTopic'><noautolink>$this->{title}</noautolink></a>";
+  my $class = $currentTopic?" class='$currentTopic'":"";
+  return "<a href='".$this->getUrl($doRedirect)."'$class><noautolink>$this->{title}</noautolink></a>";
 }
 
 ###############################################################################
 sub getUrl {
   my ($this, $doRedirect) = @_;
   
-  my $hierWeb = $this->{hierarchy}->{web};
+  my $hierWeb = $this->{hierarchy}{web};
 
   $doRedirect = 1 unless defined $doRedirect;
 
@@ -810,10 +869,10 @@ sub getUrl {
   } 
 
   my $url;
-  if ($hierWeb ne $this->{origWeb}) {
-    $url = Foswiki::Func::getScriptUrlPath($hierWeb, 'TopCategory', 'view', catname=>$this->{name});
-  } else {
+  if (Foswiki::Func::topicExists($hierWeb, $this->{name})) {
     $url = Foswiki::Func::getScriptUrlPath($hierWeb, $this->{name}, 'view');
+  } else {
+    $url = Foswiki::Func::getScriptUrlPath($hierWeb, 'TopCategory', 'view', catname=>$this->{name});
   }
 
   return $url;
@@ -836,7 +895,7 @@ sub _getSubCategories {
 
   return if $maxDepth <= 0;
 
-  my $botCat = $this->{hierarchy}->{_bottom};
+  my $botCat = $this->{hierarchy}{_bottom};
   foreach my $child ($this->getChildren()) {
     next if $child eq $botCat;
     next if $result->{$child->{name}};
@@ -904,7 +963,7 @@ sub traverse {
       %openers = %{$params->{_openers}};
     } else {
       my $openers = Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($params->{open},
-        'web'=>$this->{hierarchy}->{web}, 
+        'web'=>$this->{hierarchy}{web}, 
         'origweb'=>$this->{origWeb} || '', 
         'topic'=>$this->{name},
         'name'=>$this->{name},
@@ -1093,7 +1152,7 @@ sub traverse {
 
   if ($subResult) {
     $header = Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($header,
-      'web'=>$this->{hierarchy}->{web}, 
+      'web'=>$this->{hierarchy}{web}, 
       'origweb'=>$this->{origWeb} || '', 
       'topic'=>$this->{name},
       'name'=>$this->{name},
@@ -1118,7 +1177,7 @@ sub traverse {
       'isexpanded'=>$isExpanded?'true':'false',
     );
     $footer = Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($footer,
-      'web'=>$this->{hierarchy}->{web}, 
+      'web'=>$this->{hierarchy}{web}, 
       'origweb'=>$this->{origWeb} || '', 
       'topic'=>$this->{name},
       'name'=>$this->{name},
@@ -1154,7 +1213,7 @@ sub traverse {
       $this->getUrl(),
     'origurl'=>($this->{name} =~ /^(TopCategory|BottomCategory)$/)?"":
       $this->getUrl(0),
-    'web'=>$this->{hierarchy}->{web}, 
+    'web'=>$this->{hierarchy}{web}, 
     'origweb'=>$this->{origWeb} || '', 
     'topic'=>$this->{name},
     'name'=>$this->{name},

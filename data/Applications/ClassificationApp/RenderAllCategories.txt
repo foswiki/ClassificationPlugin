@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1418731764" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -13,7 +13,7 @@ Renders an index of all known categories, top categories first.
 
 ---++ Implementation
 <verbatim class="tml">
-%STARTINCLUDE%<!-- render all categories -->
+%STARTINCLUDE%<!-- -->
 <noautolink>
 %MAKEINDEX{
   "%HIERARCHY{
@@ -33,10 +33,10 @@ Renders an index of all known categories, top categories first.
   split="\n"
   pattern="(.*);(.*);(.*)"
   unique="on"
-  format="$percntDBCALL{\"$3.$2->RenderIndexItem\"}$percnt"
+  format="$percntDBCALL{\"Applications.ClassificationApp.CategoryRenderIndexItem\" OBJECT=\"$2\" THEWEB=\"$3\"}$percnt"
 }%
 
-%MAKEINDEX{"
+%MAKEINDEX{
   "%HIERARCHY{
      web="%BASEWEB%"
      top="TopCategory"
@@ -54,10 +54,10 @@ Renders an index of all known categories, top categories first.
   split="\n"
   unique="on"
   pattern="(.*);(.*);(.*)"
-  format="$percntDBCALL{\"$3.$2->RenderIndexItem\"}$percnt"
+  format="$percntDBCALL{\"Applications.ClassificationApp.CategoryRenderIndexItem\" OBJECT=\"$2\" THEWEB=\"$3\"}$percnt"
 }%
 </noautolink>
-<!-- //render all categories -->%STOPINCLUDE%
+<!-- -->%STOPINCLUDE%
 </verbatim>
 
 ---++ Test
@@ -65,15 +65,9 @@ Renders an index of all known categories, top categories first.
 %DBCALL{"%TOPIC%"}%
 </div>
 
-%DBCALL{"Applications.RenderFunctionCallers"}%
 
----++ Copyright
-&copy; 2008-2014 Michael Daum http://michaeldaumconsulting.com
-
-%DBCALL{"Applications.GnuGeneralPublicLicense" section="notice"}%
-
-%META:FORM{name="Applications.ApplicationTopic"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="RenderAllCategories"}%
-%META:FIELD{name="Summary" attributes="" title="Summary" value="Renders an overview of all known categories"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FORM{name="Applications.TopicFunction"}%
+%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Renders an overview of all known categories"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

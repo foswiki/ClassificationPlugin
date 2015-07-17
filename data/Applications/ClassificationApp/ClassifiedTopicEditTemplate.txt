@@ -1,11 +1,11 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1418731764" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.WikiTopicEdit"}%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"topictype"}%%MAKETEXT{"classified topic"}%%TMPL:END%
+%TMPL:DEF{"topictype"}%%TRANSLATE{"classified topic" web="Applications.ClassificationApp"}%%TMPL:END%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
@@ -17,11 +17,11 @@
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"categorieslabel"}%%MAKETEXT{"Categories"}%%TMPL:END%
+%TMPL:DEF{"categorieslabel"}%%TRANSLATE{"Categories" web="Applications.ClassificationApp"}%%TMPL:END%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"tagslabel"}%%MAKETEXT{"Tags"}%%TMPL:END%
+%TMPL:DEF{"tagslabel"}%%TRANSLATE{"Tags" web="Applications.ClassificationApp"}%%TMPL:END%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
@@ -60,15 +60,14 @@
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"formfields"}%<!-- -->
-<input type="hidden" name="action" value="text" />
+%TMPL:DEF{"formfields"}%%TMPL:PREV%
 %TMPL:P{"categoriestab"}%
 %TMPL:P{"tagstab"}%
 <!-- -->%TMPL:END%
 %{</verbatim>}%
 
-%META:FORM{name="Applications.ApplicationTopic"}%
-%META:FIELD{name="TopicType" title="TopicType" value="TopicView"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="Editor for ClassifiedTopics, <nop>NatSkin version"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FORM{name="Applications.TopicView"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Editor for ClassifiedTopics, NatSkin version"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

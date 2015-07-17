@@ -1,11 +1,13 @@
 Foswiki::Contrib::JSTreeContrib,>=1.03,perl,Required
 Foswiki::Contrib::NatSkin,>=4.00,perl,Optional
-Foswiki::Contrib::WikiWorkbenchContrib,>=1.31,perl,Required
-Foswiki::Plugins::GridLayoutPlugin,>=1.00,perl,Required
+Foswiki::Contrib::WikiWorkbenchContrib,>=3.00,perl,Required
+Foswiki::Plugins::BreadCrumbsPlugin,>=2.0,perl,Required
 Foswiki::Plugins::DBCachePlugin,>=4.10,perl,Required
 Foswiki::Plugins::FilterPlugin,>=1.40,perl,Required
 Foswiki::Plugins::FlexFormPlugin,>=2.61,perl,Required
+Foswiki::Plugins::GridLayoutPlugin,>=1.00,perl,Required
 Foswiki::Plugins::JQueryPlugin,>=5.10,perl,Required
 Foswiki::Plugins::MoreFormfieldsPlugin,>=0.11,perl,Required
 Foswiki::Plugins::NatEditPlugin,>=7.11,perl,Required
 Foswiki::Plugins::RenderPlugin,>=3.1,perl,Required
+Foswiki::Plugins::WorkflowPlugin,>=1.44,perl,Optional

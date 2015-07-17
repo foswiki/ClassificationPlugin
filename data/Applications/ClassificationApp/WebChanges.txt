@@ -1,11 +1,9 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1418731764" format="1.1" version="1"}%
-
-
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1" version="1"}%
 %INCLUDE{"%SYSTEMWEB%.%TOPIC%"}%
 
-%META:FORM{name="Applications.ApplicationTopic"}%
-%META:FIELD{name="TopicType" title="TopicType" value="WebTool"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="WebChanges"}%
-%META:FIELD{name="Summary" attributes="" title="Summary" value="Most recent changes in this web"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FORM{name="Applications.WebTool"}%
+%META:FIELD{name="TopicType" title="TopicType" value="WebTool, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Most recent changes in this web"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%
 %META:PREFERENCE{name="DISPLAYFORM" title="DISPLAYFORM" type="Local" value="off"}%

@@ -1,12 +1,13 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1418731764" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1" version="1"}%
 %META:TOPICPARENT{name="IntranetDirectory"}%
 %DBCALL{"Applications.ClassificationApp.RenderCategory"}%
 
 %META:FORM{name="Applications.ClassificationApp.Category"}%
 %META:FIELD{name="TopicType" title="TopicType" value="Category, CategorizedTopic, WikiTopic"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Corporate"}%
-%META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
-%META:FIELD{name="Category" attributes="" title="Category" value="IntranetDirectory"}%
-%META:FIELD{name="Icon" attributes="" title="Icon" value="bell"}%
-%META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%
-%META:FIELD{name="Order" attributes="" title="Order" value="10"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value="Corporate"}%
+%META:FIELD{name="Summary" title="Summary" value=""}%
+%META:FIELD{name="Redirect" title="Redirect" value=""}%
+%META:FIELD{name="Category" title="Category" value="IntranetDirectory"}%
+%META:FIELD{name="Icon" title="Icon" value="bell"}%
+%META:FIELD{name="ImportedCategory" title="<nop>ImportedCategory" value=""}%
+%META:FIELD{name="Order" title="Order" value="10"}%

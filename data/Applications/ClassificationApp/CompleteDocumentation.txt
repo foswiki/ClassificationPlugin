@@ -1,9 +1,11 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1418731764" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="WikiApplication"}%
 %TOC{depth="4"}%
 ---++ Description
 
 ---++ Documentation
+---+++ Type Hierarchy
+%DBCALL{"Applications.RenderInheritanceGraph"}%
 %DBCALL{"Applications.RenderApplicationDocumentation" TYPE="TopicType"}%
 <!--%<nop>DBCALL{"RenderApplicationDocumentation" TYPE="DataForm"}%-->
 %DBCALL{"Applications.RenderApplicationDocumentation" TYPE="TopicTemplate" }%
@@ -18,11 +20,12 @@
 
 
 %META:FORM{name="Applications.WikiApplication"}%
-%META:FIELD{name="TopicType" title="TopicType" value="WikiApplication"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="Categorization and folksomony application"}%
-%META:FIELD{name="Version" attributes="" title="Version" value="0.7"}%
-%META:FIELD{name="Author" attributes="" title="Author" value="Michael Daum"}%
-%META:FIELD{name="Copyright" attributes="" title="Copyright" value="&copy; 2006-2015 Michael Daum http://michaeldaumconsulting.com"}%
-%META:FIELD{name="License" attributes="" title="License" value="Applications.GnuGeneralPublicLicense"}%
-%META:FIELD{name="Dependencies" attributes="" title="Dependencies" value=""}%
+%META:FIELD{name="TopicType" title="TopicType" value="WikiApplication, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Categorization and folksomony application"}%
+%META:FIELD{name="Version" title="Version" value="0.7"}%
+%META:FIELD{name="Author" title="Author" value="Michael Daum"}%
+%META:FIELD{name="Copyright" title="Copyright" value="&copy; 2006-2015 Michael Daum http://michaeldaumconsulting.com"}%
+%META:FIELD{name="License" title="License" value="Applications.GnuGeneralPublicLicense"}%
+%META:FIELD{name="Dependencies" title="Dependencies" value=""}%
+%META:FILEATTACHMENT{name="DirectedGraphPlugin_1.png" attachment="DirectedGraphPlugin_1.png" attr="h" comment="<nop>DirectedGraphPlugin: DOT graph" date="1437132754" size="0" user="ProjectContributor" version="1"}%

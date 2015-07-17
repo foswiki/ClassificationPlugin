@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1418731764" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.ClassificationApp.ClassifiedTopicEdit"}%
@@ -17,9 +17,8 @@
 %TMPL:DEF{"detailstab"}%<!-- -->
 %TAB{"%MAKETEXT{"Details"}%"}%
 %RENDERFOREDIT{
-   exclude="^(TopicType|Category)$"
+   exclude="^(TopicType|Category|ImportedCategory|SubCategories)$"
    TopicTitle_title="%MAKETEXT{"Title"}%"
-   ImportedCategory_title="%MAKETEXT{"Imported Category"}%"
 }%
 %ENDTAB%
 <!-- -->%TMPL:END%
@@ -28,6 +27,7 @@
 %{<verbatim class="tml">}%
 %TMPL:DEF{"formfields"}%<!--  -->
 %TMPL:P{"categoriestab"}%
+%TMPL:P{"subcategoriestab"}%
 %TMPL:P{"notestab"}%<!-- -->
 <!--  -->%TMPL:END%
 %{</verbatim>}%
@@ -40,9 +40,38 @@
 <!-- -->%TMPL:END%
 %{</verbatim>}%
 
+%{<verbatim class="tml">}%
+%TMPL:DEF{"subcategoriestab"}%<!-- -->
+%TAB{"%MAKETEXT{"Sub-Categories"}%"}%
+%RENDERFOREDIT{
+   fields="ImportedCategory, SubCategories"
+   ImportedCategory_title="%MAKETEXT{"Import"}%"
+   SubCategories_title="%MAKETEXT{"Text"}%"
+   header="$percntTABPANE{class=\"plain\"}$percnt"
+   format="$percntTAB{\"$title\" after=\"jQuery(window).trigger('resize')\"}$percnt
+           <div class='foswikiPageForm'>$n$edit$n
+            <div class='foswikiFormDescription'>$description</div>
+           </div>
+           $percntENDTAB$percnt"
+   separator="$n"
+   footer="$percntENDTABPANE$percnt"
+}%
+%JQREQUIRE{"natedit"}%<literal>
+<script>
+jQuery(function($) {
+   var natedit = $("textarea[name='SubCategories']").natedit({
+      autoMaxExpand: true
+   }).data("natedit");
+   natedit.bottomHeight = 130;
+});
+</script>
+</literal>
+%ENDTAB%
+<!-- -->%TMPL:END%
+%{</verbatim>}%
 
-%META:FORM{name="Applications.ApplicationTopic"}%
-%META:FIELD{name="TopicType" title="TopicType" value="TopicView, WikiTopic"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="Editor for category topics"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FORM{name="Applications.TopicView"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Editor for category topics"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

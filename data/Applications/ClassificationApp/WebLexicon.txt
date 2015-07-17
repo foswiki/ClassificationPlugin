@@ -1,0 +1,10 @@
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICPARENT{name="WebHome"}%
+
+%META:FORM{name="Applications.WebTool"}%
+%META:FIELD{name="TopicType" title="TopicType" value="WebTool, ApplicationTopic, WikiTopic"}%
+%META:PREFERENCE{name="VIEW_TEMPLATE" title="VIEW_TEMPLATE" type="Set" value="Applications.WebLexiconView"}%
+%META:LEXICON{name="id1" Comment="" Englishen="" Frenchfr="" Germande="Kategorien" String="Categories"}%
+%META:LEXICON{name="id2" Comment="" Englishen="" Frenchfr="" Germande="Schlüsselworte" String="Tags"}%
+%META:LEXICON{name="id3" Comment="" Englishen="" Frenchfr="" Germande="Kategorie" String="Category"}%
+%META:LEXICON{name="id4" Comment="" Englishen="" Frenchfr="" Germande="Schlüsselwort" String="Tag"}%

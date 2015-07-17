@@ -31,8 +31,8 @@ BEGIN {
     }
 }
 
-our $VERSION = '4.00';
-our $RELEASE = '27 Feb 2015';
+our $VERSION = '5.00';
+our $RELEASE = '17 Jul 2015';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'A topic classification plugin and application';
 
@@ -231,6 +231,19 @@ sub getHierarchy {
   initCore();
   return Foswiki::Plugins::ClassificationPlugin::Core::getHierarchy(@_);
 }
+
+###############################################################################
+sub getHierarchyFromTopic {
+  initCore();
+  return Foswiki::Plugins::ClassificationPlugin::Core::getHierarchyFromTopic(@_);
+}
+
+###############################################################################
+sub getHierarchyFromText {
+  initCore();
+  return Foswiki::Plugins::ClassificationPlugin::Core::getHierarchyFromText(@_);
+}
+
 
 ###############################################################################
 sub OP_subsumes {
