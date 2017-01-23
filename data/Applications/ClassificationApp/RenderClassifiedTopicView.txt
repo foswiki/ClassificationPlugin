@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -9,6 +9,7 @@ This function renders a view for a classified topic,
 showing its category and tagging info in the top.
 
 ---+++++ Parameters
+   * OBJECT: the topic to render the view for, defaults to =%<nop>BASEWEB%.%<nop>BASETOPIC%=
    * TITLE_EXTRA: optional addition to the topic title. see Applications.RenderWikiTopicView
    * DISPLAYREVISIONINFO: boolean flag to switch on/off revinfo 
 
@@ -17,9 +18,9 @@ showing its category and tagging info in the top.
 ---++ Implementation
 <verbatim class="tml">
 %STARTINCLUDE%<!-- -->
-%DBCALL{"Applications.RenderWikiTopicView" TITLE_EXTRA="%TITLE_EXTRA%"}%
+%DBCALL{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%->Applications.RenderWikiTopicView" TITLE_EXTRA="%TITLE_EXTRA%"}%
 %IF{"'%DISPLAYREVISIONINFO{default="on"}%'='on'"
-   then="$percntDBCALL{\"%WEB%.%TOPIC%\" section=\"revinfo\"}$percnt"
+   then="$percntDBCALL{\"%WEB%.%TOPIC%\" OBJECT=\"%OBJECT%\" section=\"revinfo\"}$percnt"
 }%<!-- -->%STOPINCLUDE%
 </verbatim>
 
@@ -27,13 +28,13 @@ showing its category and tagging info in the top.
 <verbatim class="tml">
 %STARTSECTION{"revinfo"}%<!-- -->
 %CATINFO{
-  "%BASEWEB%.%BASETOPIC%" 
+  "%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" 
   exclude="TopCategory"
   header="<span class='foswikiRevisionSep'>&#124;</span> %JQICON{"fa-folder"}% "
   format="<a href='$origurl' rel='tag' itemprop='keywords' class='$name'><noautolink>$title</noautolink></a>"
 }% <!-- -->
 %TAGINFO{
-  "%BASEWEB%.%BASETOPIC%"
+  "%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"
   header="<span class='foswikiRevisionSep'>&#124;</span> %JQICON{"fa-tag"}% "
   format="<a href='$url' rel='tag' itemprop='keywords' class='$class'><noautolink>$name</noautolink></a>"
   limit="30"
@@ -47,7 +48,7 @@ showing its category and tagging info in the top.
 %ADDTOZONE{
   "script"
   requires="JQUERYPLUGIN, JQUERYPLUGIN::UI"
-  text="<script src='%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/jquery.classifiedtopic.js'></script>"
+  text="<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/jquery.classifiedtopic.js'></script>"
   id="CLASSIFICATIONPLUGIN::JS"
 }%%ENDSECTION{"revinfo"}%
 </verbatim>
@@ -58,7 +59,7 @@ showing its category and tagging info in the top.
 </div>
 
 %META:FORM{name="Applications.TopicFunction"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="Renders the TopicView of a ClassifiedTopic"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Renders the TopicView of a ClassifiedTopic"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

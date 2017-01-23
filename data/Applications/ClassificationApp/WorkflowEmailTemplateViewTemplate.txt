@@ -1,0 +1,36 @@
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICPARENT{name="TopicView"}%
+%{<verbatim class="tml">}%
+%TMPL:INCLUDE{"Applications.WikiTopicView"}%
+%{</verbatim>}%
+
+%{<verbatim class="tml">}%
+%TMPL:DEF{"beforetext"}%%TMPL:PREV%
+%RENDERFORDISPLAY{
+   exclude="TopicType|TopicTitle|Summary|PlainText|HTMLText"
+   hideempty="on"
+}%
+
+---++ Plain Text
+%FORMFIELD{"PlainText"}%
+
+%IF{"HTMLText" then="
+---++ HTML Text
+<iframe width='600' height='480' style='width:99%' src='%SCRIPTURLPATH{"rest"}%/RenderPlugin/template?name=Applications.ClassificationApp.WorkflowEmailTemplateViewTemplate&expand=formfield&formfield=HTMLText;topic=%WEB%.%TOPIC%'></iframe>
+"}%
+%TMPL:END%
+%{</verbatim>}%
+
+%{<verbatim class="tml">}%
+%TMPL:DEF{"text"}%%TMPL:END%
+%{</verbatim>}%
+
+%{<verbatim class="tml">}%
+%TMPL:DEF{"formfield"}%<literal>%RENDERFOREDIT{field="%URLPARAM{"formfield"}%" format="$origvalue"}%</literal>%TMPL:END%
+%{</verbatim>}%
+
+%META:FORM{name="Applications.TopicView"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="TopicView for WorkflowEmailTemplates"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

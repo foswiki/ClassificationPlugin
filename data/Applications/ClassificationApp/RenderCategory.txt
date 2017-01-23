@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -27,10 +27,10 @@ See the CategoryTemplate.
      top="%CAT{default="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%"
      exclude="%CAT{default="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%%IF{"defined EXCLUDE" then="|%EXCLUDE%"}%"
      depth="2"
-     sort="title"
+     sort="on"
      format="($title);$topic;$origweb$n"
    }%"
-  cols="%IF{"defined CLASSIFICATIONPLUGIN_NRCOLS" then="%CLASSIFICATIONPLUGIN_NRCOLS%" else="3"}%"
+  cols="%CLASSIFICATIONPLUGIN_NRCOLS{default="3"}%"
   split="\n"
   pattern="\((.*)\);(.*);(.*)"
   sort="off"
@@ -59,7 +59,7 @@ See the CategoryTemplate.
          format=" Tag=~'\b$1\b' "
          separator="AND"
        }%
-      %FORMATLIST{"%URLPARAM{"search" default="%IF{"defined KEYWORDS" then="%KEYWORDS%"}%"}%"
+      %FORMATLIST{"%URLPARAM{"search" default="%KEYWORDS{default=""}%"}%"
          header="AND" 
          format=" uc(all) =~ uc('$1') "
          separator="AND"
@@ -70,7 +70,7 @@ See the CategoryTemplate.
     format="($expand(TopicTitle or topic));$topic;$web"
     separator="$n"
   }%"
-  cols="%IF{"defined CLASSIFICATIONPLUGIN_NRCOLS" then="%CLASSIFICATIONPLUGIN_NRCOLS%" else="3"}%"
+  cols="%CLASSIFICATIONPLUGIN_NRCOLS{default="3"}%"
   split="\n"
   pattern="\((.*)\);(.*);(.*)"
   sort="nocase"
@@ -107,7 +107,7 @@ See the CategoryTemplate.
 
 
 %META:FORM{name="Applications.TopicFunction"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction, WikiTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value="Render tools to handle categories"}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

@@ -1,4 +1,7 @@
+*~
 igp_*
+graphviz_*
+DirectedGraphPlugin_*
 *.gz
 *,v
 *.swp
@@ -11,12 +14,11 @@ pub/System/ClassificationPlugin/jquery.tagselector.js
 pub/System/ClassificationPlugin/jquery.tagsuggestion.js
 pub/System/ClassificationPlugin/renametag.js
 pub/System/ClassificationPlugin/styles.css
-ClassificationPlugin.md5
-ClassificationPlugin.sha1
-ClassificationPlugin.tgz
-ClassificationPlugin.txt
-ClassificationPlugin.zip
-ClassificationPlugin_installer
-ClassificationPlugin_installer.pl
+/ClassificationPlugin.md5
+/ClassificationPlugin.sha1
+/ClassificationPlugin.tgz
+/ClassificationPlugin.txt
+/ClassificationPlugin.zip
+/ClassificationPlugin_installer
+/ClassificationPlugin_installer.pl
 .changes
-DirectedGraphPlugin_1.png

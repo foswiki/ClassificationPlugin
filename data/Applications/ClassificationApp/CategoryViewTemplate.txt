@@ -1,7 +1,8 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.WikiTopicView"}%
+%TMPL:DEF{"sidebar"}%%TMPL:END%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
@@ -41,7 +42,7 @@
 
 %{<verbatim class="tml">}%
 %TMPL:DEF{"title"}%%HTMLTITLE{
-  separator=" %IF{"defined 'HTMLTITLESEP'" then="%HTMLTITLESEP%" else="-"}% "
+  separator=" %HTMLTITLESEP{default="-"}% "
   title="%TMPL:P{"categorytitle"}%"
 }%%TMPL:END%
 %{</verbatim>}%

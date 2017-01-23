@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -11,7 +11,7 @@ Renders an index of all known categories, top categories first.
 
 %ENDSECTION{name="documentation" type="section"}%
 
----++ Implementation
+---++ Implementationde
 <verbatim class="tml">
 %STARTINCLUDE%<!-- -->
 <noautolink>
@@ -23,7 +23,7 @@ Renders an index of all known categories, top categories first.
      depth="2"
      format="$title;$topic;$origweb$n"
   }%"
-  cols="%IF{"defined CLASSIFICATIONPLUGIN_NRCOLS" then="%CLASSIFICATIONPLUGIN_NRCOLS%" else="3"}%"
+  cols="%CLASSIFICATIONPLUGIN_NRCOLS{default="3"}%"
   header="<h2>Top categories</h2>
     There 
     $percntIF{\"'$count'='1'\"
@@ -44,7 +44,7 @@ Renders an index of all known categories, top categories first.
      mindepth="1"
     format="$title;$topic;$origweb$n$children"
   }%"
-  cols="%IF{"defined CLASSIFICATIONPLUGIN_NRCOLS" then="%CLASSIFICATIONPLUGIN_NRCOLS%" else="3"}%"
+  cols="%CLASSIFICATIONPLUGIN_NRCOLS{default="3"}%"
   header="<h2>List of all child categories</h2>
     There 
     $percntIF{\"'$count'='1'\"
@@ -67,7 +67,7 @@ Renders an index of all known categories, top categories first.
 
 
 %META:FORM{name="Applications.TopicFunction"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction, WikiTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value="Renders an overview of all known categories"}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

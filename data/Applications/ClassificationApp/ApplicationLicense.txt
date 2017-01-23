@@ -1,11 +1,11 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicType"}%
 
 
 %META:FORM{name="Applications.TopicStub"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicStub, ApplicationTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" title="Summary" value="License for WikiApplications"}%
+%META:FIELD{name="Summary" title="Summary" value=""}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="WikiWorkbench"}%
 %META:FIELD{name="Target" title="Target" value="Applications.ApplicationLicense"}%
 %META:FIELD{name="Section" title="Section" value=""}%

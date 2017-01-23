@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: ClassificationPlugin $Id\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2011-12-20 12:56+0000\n"
+"PO-Revision-Date: 2016 02 17 12:56+0000\n"
 "Last-Translator: Michael Daum <daum@michaeldaumconsulting.com>\n"
 "Language-Team: Foswiki German Translation Team <none>\n"
 "Language: de\n"
@@ -13,33 +13,54 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: data/Applications/ClassificationApp/WebTagList.txt:16
+msgid "%1 tags found"
+msgstr "%1 Tag gefunden"
+
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:12
 msgid "... and finally delete this message."
-msgstr " ... und l&&ouml;sche diese Nachricht letztendlich."
+msgstr " ... und lösche diese Nachricht letztendlich."
 
-#: data/Applications/ClassificationApp/NatSkinSearchViewTemplate.txt:23
-msgid "<span>%1</span> topics found"
-msgstr "<span>%1</span> Topics gefunden"
-
-#: data/_ClassificationTemplate/WebHome.txt:81
+#: data/_ClassificationTemplate/WebHome.txt:62
 msgid "Add more text here"
-msgstr "F&&uuml;ge mehr Text hinzu"
+msgstr "Fügen Sie mehr Text hinzu"
 
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:24
-#: data/_ClassificationTemplate/WebHome.txt:11
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:72
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:20
+#: data/_ClassificationTemplate/WebHome.txt:9
 msgid "Categories"
 msgstr "Kategorien"
 
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:80
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:19
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:50
+msgid "Change State"
+msgstr "Zustand ändern"
+
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:67
 msgid "Clear"
-msgstr "Formularinhalt l&&ouml;schen"
+msgstr "Zurücksetzen"
+
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:67
+msgid "Comment"
+msgstr "Kommentieren"
 
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:10
 msgid ""
 "Create [[%1][categories]] matching the subject fields covered in this web."
-msgstr "Lege [[%1][Kategorien]] f&&uuml;r Themenfelder in diesem Web an."
+msgstr "Lege [[%1][Kategorien]] fur Themenfelder in diesem Web an."
 
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:25
+#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:22
+#: data/Applications/ClassificationApp/ControlledTopic.txt:18
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:22
+#: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:20
+msgid "Create a new %1"
+msgstr "Ein neues %1 anlegen"
+
+#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:28
 msgid "Create a new category in the %1 web"
 msgstr "Neue Kategorie im %1 Web anlegen"
 
@@ -48,49 +69,71 @@ msgid ""
 "Customize each section on this dashboard to your needs by hovering over the "
 "heading. It will display a pencil icon."
 msgstr ""
+"Passen Sie jeden Abschitt diese Dashboards Ihren Bedürfnissen an, indem Sie "
+"mit der Maus über die Überschriften fahren. Es wird dann ein Stift-Icon "
+"angezeigt."
+
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:18
+#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:30
+#: data/Applications/ClassificationApp/WorkflowDefinitionEditTemplate.txt:24
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:16
+msgid "Details"
+msgstr "Details"
+
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:45
+msgid "Diff"
+msgstr "Änderungen"
 
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:11
 msgid ""
 "Edit this page and give it a name. This will be used as the display title "
 "linking to this web, e.g. in breadcrumbs and search interfaces."
 msgstr ""
+"Bearbeiten Sie diese Seite und geben sie ihr einen Namen. Er wird dann in "
+"Links zu diesem Web angezeigt, wie zum Beispiel in Brodkrumen-Navigationen "
+"und Suchen."
 
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:44
-msgid "Enter a short summary line describing what this category is about."
-msgstr "Geben Sie eine kurze Beschreibung der Kategorie an."
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
+msgid "Empty the selection"
+msgstr "Auswahl zurücksetzen"
 
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:37
-msgid ""
-"Enter the category topic name. This must be a unique ID among all categories "
-"within a taxonomy."
-msgstr ""
-
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:30
-msgid ""
-"Enter the title of the new category. This is a free-form text that the topic "
-"name will be derived from by default."
-msgstr ""
-
-#: data/Applications/ClassificationApp/CategoryViewTemplate.txt:41
-#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:22
-msgid "Filed in %1"
-msgstr "Abgelegt in %1"
-
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:82
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:69
 msgid "Filter"
 msgstr "Filter"
 
-#: data/Applications/ClassificationApp/ClassifiedTopic.txt:33
-msgid "Hide advanced options"
-msgstr "Erweiterte Optionen verstecken"
+#: data/Applications/ClassificationApp/SeoTopic.txt:28
+msgid "Generate description"
+msgstr "Beschreibung generieren"
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:31
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:55
+#: data/Applications/ClassificationApp/SeoTopic.txt:29
+msgid "Generate keywords"
+msgstr "Schlüsselworte generieren"
+
+#: data/Applications/ClassificationApp/SeoTopic.txt:27
+msgid "Generate title"
+msgstr "Titel generieren"
+
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:46
+msgid "HTML Text"
+msgstr "HTML-Text"
+
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:34
+msgid "HTML Title"
+msgstr "HTML-Titel"
+
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:18
+msgid "History"
+msgstr "Änderungsgeschichte"
+
 #: data/Applications/ClassificationApp/RenderCategorySettings.txt:30
 msgid "Icon"
 msgstr "Icon"
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:27
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:48
+msgid "Import"
+msgstr "Import"
+
 #: data/Applications/ClassificationApp/RenderCategorySettings.txt:26
 msgid "Imported Categories"
 msgstr "Importierte Kategorien"
@@ -99,68 +142,105 @@ msgstr "Importierte Kategorien"
 msgid ""
 "Install Foswiki:Extensions/NatSkin for best usability, design and "
 "readability of your content."
-msgstr "Installieren Sie Foswiki:Extensions/NatSkin f&&uml; eine verbesserte Benutzbarkeit und Lesbarkeit Ihrer Inhalte."
+msgstr ""
+"Installieren Sie Foswiki:Extensions/NatSkin f&&uml; eine verbesserte "
+"Benutzbarkeit und Lesbarkeit Ihrer Inhalte."
 
-#: data/Applications/ClassificationApp/CategorizedTopic.txt:19
-#: data/Applications/ClassificationApp/Category.txt:23
-#: data/Applications/ClassificationApp/ClassifiedTopic.txt:16
-#: data/Applications/ClassificationApp/TaggedTopic.txt:15
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:44
+msgid "Last in %1"
+msgstr "Zuletzt in %1"
+
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:25
+msgid "Message"
+msgstr "Nachricht"
+
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:39
+msgid "Meta Image"
+msgstr "Meta-Bild"
+
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:36
+msgid "Meta desciption"
+msgstr "Meta-Beschreibung"
+
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:35
+msgid "Meta keywords"
+msgstr "Meta-Schlüsselworte"
+
+#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:79
+msgid ""
+"Multiple heading 1 detected. Please only use heading 2, 3, ... inside the "
+"content area."
+msgstr ""
+
+#: data/Applications/ClassificationApp/Category.txt:28
+#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:21
+#: data/Applications/ClassificationApp/ControlledTopic.txt:17
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:21
+#: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:19
 msgid "New"
 msgstr "Neu"
 
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:31
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:57
+msgid "New State"
+msgstr "Neuer Zustand"
+
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:37
+msgid "Notes"
+msgstr "Notizen"
+
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:30
 msgid "Nothing found"
 msgstr "Keine Treffer"
-
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:23
-msgid "Order"
-msgstr "Sortierung"
-
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:48
-msgid "Parent category"
-msgstr "Ober-Kategorie"
 
 #: data/Applications/ClassificationApp/RenderCategorySettings.txt:22
 msgid "Parent topic"
 msgstr "Ober-Topic"
 
-#: data/_ClassificationTemplate/WebHome.txt:56
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:36
+msgid "Plain Text"
+msgstr "Einfacher Text"
+
+#: data/_ClassificationTemplate/WebHome.txt:46
 msgid "Quick links"
 msgstr "Schnellverweise"
 
 #: data/_ClassificationTemplate/WebLinks.txt:21
 msgid "Recent Changes"
-msgstr "Letzte &&Auml;nderungen"
+msgstr "Letzte Änderungen"
 
-#: data/_ClassificationTemplate/WebHome.txt:34
+#: data/_ClassificationTemplate/WebHome.txt:22
 msgid "Recent changes"
-msgstr "Letzte &&Auml;nderungen"
+msgstr "Letzte Änderungen"
 
-#: data/Applications/ClassificationApp/RenderTagEditor.txt:42
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
+msgid "Refresh"
+msgstr "Neu laden"
+
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
+msgid "Refresh hierarchy cache on the backend"
+msgstr "Hierarchie neu laden"
+
+#: data/Applications/ClassificationApp/RenderTagEditor.txt:43
 msgid "Related tags"
-msgstr "Verwandte Schl&&uuml;sselworte"
+msgstr "Verwandte Schlüsselworte"
 
-#: data/Applications/ClassificationApp/NatSkinSearchViewTemplate.txt:7
-msgid "Search result for %1"
-msgstr "Treffer f&&uuml;r %1"
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:61
+msgid "Reset the selection"
+msgstr "Auswahl rückgängig machen"
 
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:62
-msgid ""
-"Select an icon to be used when displaying this category in a list or "
-"hierarchy tree."
-msgstr ""
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:29
+msgid "SEO"
+msgstr "SEO"
 
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:51
-msgid ""
-"Select one or more parent categories that the newly created category is "
-"subordinated to."
-msgstr ""
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:30
+msgid "Search engine optimization"
+msgstr "Suchmaschinen-Optimierung"
 
-#: data/Applications/ClassificationApp/ClassifiedTopic.txt:32
-msgid "Show advanced options"
-msgstr "Erweiterte Optionen anzeigen"
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
+msgid "Search for matching categories"
+msgstr "Nach passenden Kategorien suchen"
 
-#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:32
+#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:43
 msgid "Show all tags"
 msgstr "Alle Schlüsselworte anzeigen"
 
@@ -168,21 +248,24 @@ msgstr "Alle Schlüsselworte anzeigen"
 msgid "Some tips:"
 msgstr "Einige Tipps:"
 
-#: data/Applications/ClassificationApp/CategorizedTopic.txt:40
-#: data/Applications/ClassificationApp/ClassifiedTopic.txt:53
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:66
-#: data/Applications/ClassificationApp/TaggedTopic.txt:33
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:45
+msgid "Sub-Categories"
+msgstr "Sub-Kategorien"
+
+#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:34
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:71
 msgid "Submit"
-msgstr "&&Uuml;bermitteln"
+msgstr "Übermitteln"
 
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:41
-msgid "Summary"
-msgstr "Zusammenfassung"
-
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:28
-#: data/_ClassificationTemplate/WebHome.txt:21
+#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:24
+#: data/Applications/ClassificationApp/ClassifiedTopicRenderRss.txt:31
+#: data/_ClassificationTemplate/WebHome.txt:15
 msgid "Tags"
-msgstr "Schl&&uuml;sselworte"
+msgstr "Schlüsselworte"
+
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:49
+msgid "Text"
+msgstr "Text"
 
 #: data/Applications/ClassificationApp/WebAtom.txt:5
 #: data/Applications/ClassificationApp/WebRss.txt:7
@@ -200,34 +283,56 @@ msgid ""
 "list:"
 msgstr ""
 "Dies ist ein Abonnement-Service, um automatisch per E-Mail benachrichtigt zu "
-"werden, wenn ein Topic im %1 Web sich ge&&auml;ndert hat. Um sich f&&uuml;r "
-"diesen Service anzumelden f&&uuml;gen Sie einfach ihren %2 in alphabetischer "
-"Reihenfolge zu dieser Liste hinzu."
+"werden, wenn ein Topic im %1 Web sich geändert hat. Um sich fur diesen "
+"Service anzumelden fügen Sie einfach ihren %2 in alphabetischer Reihenfolge "
+"zu dieser Liste hinzu."
 
-#: data/Applications/ClassificationApp/ClassifiedTopic.txt:28
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:27
+#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:57
+msgid ""
+"This page needs tagging. Please add keywords describing what this page is "
+"about."
+msgstr ""
+
+#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:68
+msgid ""
+"This page needs to be categorized. Please file it to an appropriate category."
+msgstr ""
+
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:21
+#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:20
+#: data/Applications/ClassificationApp/ControlledTopic.txt:16
+#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:30
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:20
+#: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:18
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:23
 msgid "Title"
 msgstr "Titel"
 
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:34
-msgid "Topic"
-msgstr "Topic"
+#: data/_ClassificationTemplate/WebHome.txt:53
+msgid "Tools"
+msgstr "Werkzeuge"
 
-#: data/_ClassificationTemplate/WebHome.txt:48
-msgid "Topic list"
-msgstr "Topic-Liste"
-
-#: data/_ClassificationTemplate/WebHome.txt:66
+#: data/_ClassificationTemplate/WebHome.txt:33
 msgid "Topics tagged \"%1\""
 msgstr "Verschlagwortet als %1"
 
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:81
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:61
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:68
 msgid "Undo"
-msgstr "R&&uuml;ckg&&auml;ngig"
+msgstr "Ruckgängig"
 
-#: data/_ClassificationTemplate/WebHome.txt:6
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:45
+msgid "View"
+msgstr "Anschauen"
+
+#: data/_ClassificationTemplate/WebHome.txt:4
 msgid "Welcome"
 msgstr "Willkommen"
+
+#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:47
+#: data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt:20
+msgid "Workflow settings"
+msgstr "Workflow-Einstellungen"
 
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:4
 msgid ""
@@ -236,6 +341,18 @@ msgid ""
 "content, it will fill up with hopefully useful information that helps you "
 "keeping track of what's going on in this web."
 msgstr ""
+"Sie haben gerade ein neues leeres Web angelegt. Deshalb mag dieses Dashboard "
+"zu Beginn etwas komisch aussehen. Sobald Sie anfangen, neue Inhalte "
+"anzulegen, wird es sich hoffentlich mit nützlicher Information füllen, die "
+"Ihnen hilft, die Änderungen in diesem Web anzuzeigen."
+
+#: lib/Foswiki/Access/ClassificationACLAccess.pm:108
+msgid "access denied on category"
+msgstr "Zugang zur Kategorie verweigert"
+
+#: lib/Foswiki/Access/ClassificationACLAccess.pm:128
+msgid "access not allowed on category"
+msgstr "Zugang zur Kategorie nicht erlaubt"
 
 #: data/Applications/ClassificationApp/CategorizedTopicEditTemplate.txt:5
 msgid "categorized topic"
@@ -249,15 +366,28 @@ msgstr "Kategorien"
 msgid "classified topic"
 msgstr "klassifiziertes Topic"
 
-#: data/Applications/ClassificationApp/RenderTagEditor.txt:44
+#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:12
+#: data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt:8
+msgid "controlled topic"
+msgstr "Kontrolliertes Topic"
+
+#: data/Applications/ClassificationApp/RenderTagEditor.txt:45
 msgid "found in %1 other topic(s)"
 msgstr "in %1 anderen Topic(s) gefunden"
 
-#: data/Applications/ClassificationApp/CategoryRenderIndexItem.txt:22
-#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:32
+#: data/Applications/ClassificationApp/CategoryRenderIndexItem.txt:25
+#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:43
 msgid "more"
 msgstr "mehr"
 
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:8
 msgid "requires Foswiki:Extensions/EditChapterPlugin"
-msgstr "ben&&ouml;tigt Foswiki:Extensions/EditChapterPlugin"
+msgstr "benötigt Foswiki:Extensions/EditChapterPlugin"
+
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:16
+msgid "seo topic"
+msgstr "SEO-Topic"
+
+#: data/Applications/ClassificationApp/WorkflowDefinitionEditTemplate.txt:8
+msgid "workflow definition"
+msgstr "Workflow-Definition"

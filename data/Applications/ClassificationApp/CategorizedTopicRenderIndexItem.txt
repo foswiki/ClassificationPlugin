@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -17,7 +17,7 @@ a summary for an object listed within the Category topic.
 %STARTINCLUDE%%DBQUERY{topic="%OBJECT%"
    format="<div class='clsIndexItem clsTopicItem clsCategorizedTopicItem clearfix'>
      $percntDBCALL{\"Applications.RenderTopicThumbnail\" TYPE=\"plain\"}$percnt<!-- -->
-     [[$web.$topic][$expand(topictitle)]] $percntREDDOT{\"$web.$topic\"}$percnt
+     [[$web.$topic][$expand(topictitle)]]%IF{"context RedDotPluginEnabled" then="$dollarpercntREDDOT{\\"$web.$topic\\"}$dollarpercnt"}%
      $expand('<div class=\"foswikiTopicSummary\">' and Summary and '</div>')
      <div class='foswikiTopicInfo'>
        <span class='clsAuthorDateInfo'>
@@ -31,9 +31,13 @@ a summary for an object listed within the Category topic.
       </span>
        $percntCATINFO{\"$web.$topic\" 
          header=\" <span class='foswikiRevisionSep'>&#124;</span> <span class='clsCatInfo'>\" 
+         exclude=\"TopCategory|%URLPARAM{"catname" default="%BASETOPIC%"}%\"
          separator=\"&#44; \"
         footer=\"</span>\"
        }$percnt<!-- -->
+      $percntIF{\"'$expand(total_likes)'>0\"
+         then=\"<span class='foswikiRevisionSep'>&#124;</span> <span class='clsLikeInfo'>$percntTRANSLATE{\"[quant,_1,like,likes]\" args=\"$expand(total_likes)\"}$percnt</span>\"
+      }$percnt<!-- -->
      </div>
    </div>"
 }%%STOPINCLUDE%

@@ -1,10 +1,41 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="WebHome"}%
+
 
 %META:FORM{name="Applications.WebTool"}%
 %META:FIELD{name="TopicType" title="TopicType" value="WebTool, ApplicationTopic, WikiTopic"}%
-%META:PREFERENCE{name="VIEW_TEMPLATE" title="VIEW_TEMPLATE" type="Set" value="Applications.WebLexiconView"}%
 %META:LEXICON{name="id1" Comment="" Englishen="" Frenchfr="" Germande="Kategorien" String="Categories"}%
 %META:LEXICON{name="id2" Comment="" Englishen="" Frenchfr="" Germande="Schlüsselworte" String="Tags"}%
 %META:LEXICON{name="id3" Comment="" Englishen="" Frenchfr="" Germande="Kategorie" String="Category"}%
 %META:LEXICON{name="id4" Comment="" Englishen="" Frenchfr="" Germande="Schlüsselwort" String="Tag"}%
+%META:LEXICON{name="id5" Comment="" Englishen="" Frenchfr="" Germande="Workflow, an dem dieses Topic teilnimmt" String="workflow for this topic"}%
+%META:LEXICON{name="id6" Comment="" Englishen="" Frenchfr="" Germande="Kategorien dieses Topics" String="categories this topic is field to"}%
+%META:LEXICON{name="id7" Comment="SimpleApprovalWorkflow" Englishen="" Frenchfr="" Germande="Dieses Dokument ist in Bearbeitung." String="This document is being worked on."}%
+%META:LEXICON{name="id8" Comment="" Englishen="" Frenchfr="" Germande="Details anzeigen" String="Show details"}%
+%META:LEXICON{name="id9" Comment="RenderWorkflowInfo" Englishen="" Frenchfr="" Germande="Aktion:" String="Action:"}%
+%META:LEXICON{name="id10" Comment="SimpleApprovalWorkflow" Englishen="" Frenchfr="" Germande="Dieses Dokument liegt zur Begutachtung vor." String="This document is waiting for approval."}%
+%META:LEXICON{name="id11" Comment="SimpleApprovalWorkflow" Englishen="" Frenchfr="" Germande="Dieses Dokument ist genehmigt." String="This document is approved."}%
+%META:LEXICON{name="id12" Comment="SimpleApprovalWorkflow" Englishen="" Frenchfr="" Germande="Die Genehmigung für dieses Dokument wurde zurückgezogen." String="Approval for this document has been rejected."}%
+%META:LEXICON{name="id13" Comment="SimpleApprovalWorkflow" Englishen="" Frenchfr="" Germande="Dieses Dokument ist nicht mehr in Benutzung." String="This document is not in use anymore."}%
+%META:LEXICON{name="id14" Comment="RenderWorkflowInfo" Englishen="" Frenchfr="" Germande="Aktueller Status:" String="Current State:"}%
+%META:LEXICON{name="id15" Comment="RenderWorkflowInfo" Englishen="" Frenchfr="" Germande="Details ausblenden" String="Hide details"}%
+%META:LEXICON{name="id16" Comment="Category" Englishen="" Frenchfr="" Germande="Verantwortlicher für diese Kategorie" String="person taking care of this category"}%
+%META:LEXICON{name="id17" Comment="Category" Englishen="" Frenchfr="" Germande="Verantwortlicher" String="Responsible Person"}%
+%META:LEXICON{name="id18" Comment="Category" Englishen="" Frenchfr="" Germande="Erläuterung zu dieser Kategorie" String="short description of this category"}%
+%META:LEXICON{name="id19" Comment="Category" Englishen="" Frenchfr="" Germande="Weiterleitung" String="Redirect"}%
+%META:LEXICON{name="id20" Comment="Category" Englishen="" Frenchfr="" Germande="Seite, auf die von dieser Kategorie aus weitergeleitet werden soll" String="topic where to redirect to when visiting this category, e.g. a portal page representing this category"}%
+%META:LEXICON{name="id21" Comment="" Englishen="" Frenchfr="" Germande="Ein oder mehrere Eltern-Kategorien" String="one or more parent categories that this category is filed to"}%
+%META:LEXICON{name="id22" Comment="Category" Englishen="" Frenchfr="" Germande="Dargestelltes Symbol für diese Kategorie" String="icon to be displayed listing this category"}%
+%META:LEXICON{name="id23" Comment="Category" Englishen="" Frenchfr="" Germande="Logische Nummerierung für die sortierte Darstellung" String="number used in sorting categories"}%
+%META:LEXICON{name="id24" Comment="Category" Englishen="" Frenchfr="" Germande="Kategorie eines anderen Webs, dessen Unterkategorien importiert werden sollen" String="import a root category from another web; all categories below it will be imported to this web in a virtual way"}%
+%META:LEXICON{name="id25" Comment="Category" Englishen="" Frenchfr="" Germande="Geben Sie Unter-Kategorien als Liste an" String="specify sub-categories inline as a bullet list"}%
+%META:LEXICON{name="id26" Comment="CategoryEditTemplate" Englishen="" Frenchfr="" Germande="Details" String="Details"}%
+%META:LEXICON{name="id27" Comment="CategoryEditTemplate" Englishen="" Frenchfr="" Germande="Unter-Kategorien" String="Sub-Categories"}%
+%META:LEXICON{name="id28" Comment="CategoryEditTemplate" Englishen="" Frenchfr="" Germande="Importieren" String="Import"}%
+%META:LEXICON{name="id29" Comment="" Englishen="" Frenchfr="" Germande="Diese Seite benötigt eine Verschlagwortung. Bitte fügen Sie Schlüsselworte hinzu, um zu beschreiben, worum es auf dieser Seite geht." String="This page needs tagging. Please add keywords describing what this page is about."}%
+%META:LEXICON{name="id30" Comment="" Englishen="" Frenchfr="" Germande="Diese Seite benötigt eine Kategorisierung. Bitte stellen Sie sie in eine adäquate Kategorie." String="This page needs to be categorized. Please file it to an appropriate category."}%
+%META:LEXICON{name="id31" Comment="" Englishen="" Frenchfr="" Germande="Mehrere Überschriften h1 erkannt. Bitte benutzen Sie nur Überschriften h2, h3, .... innerhalb des Inhaltsbereiches." String="Multiple heading 1 detected. Please only use heading 2, 3, ... inside the content area."}%
+%META:LEXICON{name="id32" Comment="" Englishen="" Frenchfr="" Germande="Bitte geben Sie einen Titel für dieses Topic an." String="enter a title for this topic"}%
+%META:LEXICON{name="id33" Comment="" Englishen="" Frenchfr="" Germande="Kurzbeschreibung oder Untertitel" String="short description or tagline"}%
+%META:LEXICON{name="id34" Comment="" Englishen="" Frenchfr="" Germande="Schlüsselworte für dieses Topic" String="keywords for this topic"}%
+%META:PREFERENCE{name="VIEW_TEMPLATE" title="VIEW_TEMPLATE" type="Set" value="Applications.WebLexiconView"}%

@@ -1,7 +1,7 @@
 /*
- * jQuery hierarchy plugin 0.10
+ * jQuery hierarchy plugin 1.10
  *
- * Copyright (c) 2013-2015 Michael Daum http://michaeldaumconsulting.com
+ * Copyright (c) 2013-2017 Michael Daum http://michaeldaumconsulting.com
  *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
@@ -172,6 +172,7 @@
     self.worker = $("<div />").appendTo(self.container).jstree({
       "plugins": plugins,
       "themes": {
+         "url": foswiki.getPubUrl("System", "JSTreeContrib", "themes/minimal/style.css"),
          "theme":"minimal", 
          "icons": true
       }, 
@@ -570,6 +571,7 @@
       //console.log("select '"+name+"'");
 
       self.addVal(name);
+      self.inputField.trigger("change");
       self.elem.find("."+name).each(function() {
         var $this = $(this);
         if(!$this.data("_seen")) {
@@ -585,6 +587,7 @@
       //console.log("deselect '"+name+"'");
 
       self.removeVal(name);
+      self.inputField.trigger("change");
       self.elem.find("."+name).each(function() {
         var $this = $(this);
         if(!$this.data("_seen")) {
@@ -672,7 +675,7 @@
    */
   Hierarchy.prototype.reset = function() {
     var self = this;
-    self.inputField.val(self.origSelection);
+    self.inputField.val(self.origSelection).trigger("change");
     self.worker.jstree("refresh", -1);
   };
 
@@ -715,7 +718,7 @@
    */
   Hierarchy.prototype.clear = function() {
     var self = this;
-    self.inputField.val("");
+    self.inputField.val("").trigger("change");
     self.worker.jstree("refresh", -1);
   };
 
@@ -744,9 +747,7 @@
       $("<div></div>").dialog({
         buttons: [{
           text: opts.okayText,
-          icons: {
-            primary: opts.okayIcon
-          },
+          icon: opts.okayIcon,
           click: function() {
             $(this).dialog("close");
             dfd.resolve();
@@ -754,9 +755,7 @@
           }
         }, {
           text: opts.cancelText,
-          icons: {
-            primary: opts.cancelIcon
-          },
+          icon: opts.cancelIcon,
           click: function() {
             $(this).dialog("close");
             dfd.reject();

@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2013-2015 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2013-2017 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -97,12 +97,12 @@ sub getChildren {
 
   if ($sort eq 'on' || $sort eq 'order') {
     @children = sort {
-      $a->{order} <=> $b->{order} ||
-      lc($a->{title}) cmp lc($b->{title})
+      $a->order <=> $b->order ||
+      lc($a->title) cmp lc($b->title)
     } @children;
   } elsif ($sort eq 'title') {
     @children = sort {
-      lc($a->{title}) cmp lc($b->{title})
+      lc($a->title) cmp lc($b->title)
     } @children;
   } elsif ($sort eq 'name') {
     @children = sort {
@@ -123,11 +123,11 @@ sub getChildren {
     }
     my $record = {
       data => {
-        "title" => $child->{title}.($nrTopics?"<span class='jstree-count'>($nrTopics)</span>":""),
+        "title" => $child->title.($nrTopics?"<span class='jstree-count'>($nrTopics)</span>":""),
         "icon" => $child->getIconUrl(),
         "attr" => {
           "href" => $child->getUrl(),
-          "title" => $child->{summary},
+          "title" => $child->summary,
         },
       },
       "attr" => {
@@ -135,7 +135,7 @@ sub getChildren {
       },
       "metadata" => {
         "name" => $child->{name},
-        "title" => $child->{title},
+        "title" => $child->title,
         "nrChildren" => int($nrChildren),
         "nrTopics" => int($nrTopics),
         "editUrl" => Foswiki::Func::getScriptUrl($child->{origWeb}, $child->{name}, "edit", 
@@ -293,7 +293,7 @@ sub handle_move_node {
       (defined($prevCat) && $a->{name} eq $prevCatName && $b->{name} eq $catName)?-1:
       (defined($nextCat) && $a->{name} eq $catName && $b->{name} eq $nextCatName)?-1:
       (defined($nextCat) && $a->{name} eq $nextCatName && $b->{name} eq $catName)?1:
-      $a->{order} <=> $b->{order} || $a->{title} cmp $b->{title};
+      $a->order <=> $b->order || $a->title cmp $b->title;
     } grep {$_->{name} !~ /^BottomCategory$/} values %{$newParent->{children}};
 
   #print STDERR "sortedCats=".join(", ", map {$_->{name}} @sortedCats)."\n";
@@ -302,7 +302,7 @@ sub handle_move_node {
   foreach my $item (@sortedCats) {
     try {
       my ($meta) = Foswiki::Func::readTopic($item->{origWeb}, $item->{name});
-      $item->setOrder($index, $meta);
+      $item->order($index, $meta);
       Foswiki::Func::saveTopic($item->{origWeb}, $item->{name}, $meta);
     } catch Foswiki::AccessControlException with {
       throw Error::Simple("No write access to $item->{origWeb}.$item->{name}");  
@@ -325,7 +325,7 @@ sub handle_move_node {
   return {
     type => "notice",
     title => "Success",
-    message => "moved ".$cat->{title}." to ".$newParent->{title},
+    message => "moved ".$cat->title." to ".$newParent->title,
     id => $cat->{name},
   };
 }
@@ -482,7 +482,7 @@ sub handle_remove_node {
   return {
     type => "notice",
     title => "Success",
-    message => "deleted category '".$cat->{title}."'",
+    message => "deleted category '".$cat->title."'",
     id => $catName
   };
 }

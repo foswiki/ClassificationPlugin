@@ -1,0 +1,48 @@
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICPARENT{name="TopicFunction"}%
+%TOC{depth="2"}%
+
+---++ Documentation
+%STARTSECTION{"documentation"}%
+uses sections =plain_text= and =html_text= from calling topic
+
+---+++++ Parameters
+   * TEMPLATE
+
+%ENDSECTION{"documentation"}%
+
+---++ Implementation
+<verbatim class="tml">
+%STARTINCLUDE%<literal>From: %FORMFIELD{"From" topic="%TEMPLATE%"}%
+To: %FORMFIELD{"To" topic="%TEMPLATE%"}%
+Subject: =?utf-8?B?%BASE64{"$percntFORMFIELD{\"Subject\" topic=\"%TEMPLATE%\"}$percnt"}%?=
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="=_=0i0k0i0w0s0o0fXuOi0E0A"
+
+This is a multi-part message in MIME format.
+%RENDERFORDISPLAY{
+   topic="%TEMPLATE%"
+   fields="PlainText, HTMLText"
+   hideempty="on"
+   header="--=_=0i0k0i0w0s0o0fXuOi0E0A$n"
+   footer="$n--=_=0i0k0i0w0s0o0fXuOi0E0A--"
+   separator="$n--=_=0i0k0i0w0s0o0fXuOi0E0A$n"
+   PlainText_format="Content-Type: text/plain; charset=%CHARSET%; format=flowed
+Content-Transfer-Encoding: 8bit
+
+$origvalue"
+   HTMLText_format="Content-Type: text/html; charset=%CHARSET%
+Content-Transfer-Encoding: 8bit
+
+$origvalue"
+}%</literal>%STOPINCLUDE%
+</verbatim>
+
+
+%META:FORM{name="Applications.TopicFunction"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value=""}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%
+%META:TOPICMOVED{by="micha" date="1446825189" from="Applications/LessonsLearnedApp.RenderEmail" to="Applications/ClassificationApp.RenderWorkflowEmail"}%

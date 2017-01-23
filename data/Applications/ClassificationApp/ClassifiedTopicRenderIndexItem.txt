@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -24,7 +24,7 @@ a summary for an object of type ClassifiedTopic.
       ALIGN=\"right\"
       CROP=\"west\"
     }$percnt<!-- -->
-    [[$web.$topic][$expand(topictitle)]]&nbsp;$percntREDDOT{\"$web.$topic\"}$percnt
+    [[$web.$topic][$expand(topictitle)]]%IF{"context RedDotPluginEnabled" then="$dollarpercntREDDOT{\\"$web.$topic\\"}$dollarpercnt"}%
     $expand('<div class=\"foswikiTopicSummary\">' and Summary and '</div>')<!-- -->
     <div class='foswikiTopicInfo'>
       <span class='clsAuthorDateInfo'>
@@ -38,14 +38,17 @@ a summary for an object of type ClassifiedTopic.
       </span>
       $percntCATINFO{\"$web.$topic\" 
         header=\" <span class='foswikiRevisionSep'>&#124;</span> <span class='clsCatInfo'>\" 
+        exclude=\"TopCategory|%URLPARAM{"catname" default="%BASETOPIC%"}%\"
         separator=\"&#44; \"
         footer=\"</span>\"
-        exclude=\"TopCategory\"
       }$percnt$percntTAGINFO{\"$web.$topic\" 
         header=\" <span class='foswikiRevisionSep'>&#124;</span> <span class='clsTagInfo'>\" 
         separator=\"&#44; \"
         limit=\"5\"
         footer=\"</span>\"
+      }$percnt<!-- -->
+      $percntIF{\"'$expand(total_likes)'>0\"
+         then=\"<span class='foswikiRevisionSep'>&#124;</span> <span class='clsLikeInfo'>$percntTRANSLATE{\"[quant,_1,like,likes]\" args=\"$expand(total_likes)\"}$percnt</span>\"
       }$percnt<!-- -->
     </div>
   </div>"
@@ -58,7 +61,7 @@ a summary for an object of type ClassifiedTopic.
 %DBCALL{"%TOPIC%" OBJECT="TestCategorizedTopic1"}%
 
 %META:FORM{name="Applications.TopicFunction"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="Render a summary for a ClassifiedTopic in a category index"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Render a summary for a ClassifiedTopic in a category index"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

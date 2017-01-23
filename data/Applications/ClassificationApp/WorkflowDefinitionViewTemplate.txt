@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.ClassificationApp.ClassifiedTopicView"}%
@@ -13,8 +13,30 @@
 %TMPL:END%
 %{</verbatim>}%
 
+%{<verbatim class="tml">}%
+%TMPL:DEF{"aftertext"}%<!-- -->
+---++ Flowchart
+%GRAPHVIZ{
+  topic="%BASEWEB%.%BASETOPIC%"
+  nodestable="0" 
+  edgestable="1"
+  sourcecol="0"
+  labelcol="1"
+  targetcol="2"
+  renderer="dot"
+  type="svg" 
+  inline="off" 
+  preamble="
+    labelfloat=true;
+    graph [fontname = helvetica];
+    node [fontname = helvetica, fontsize=10, shape=box, fontsize=12, style=\"rounded, filled\", fillcolor=\"#EEEEEE\", color=\"#AAAAAA\", margin=\"0.25,0\"];
+    edge [fontname = helvetica, fontsize=10, color=\"#31CEF0\", arrowhead=\"vee\", minlen=1];"
+}%
+<!-- -->%TMPL:END%
+%{</verbatim>}%
+
 %META:FORM{name="Applications.TopicView"}%
-%META:FIELD{name="TopicType" title="TopicType" value="TopicView, WikiTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value="TopicView for WorkflowDefinitions"}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

@@ -1,10 +1,10 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="WebHome"}%
 
 
 %META:FORM{name="Applications.ClassificationApp.ClassifiedTopic"}%
 %META:FIELD{name="TopicType" title="TopicType" value="ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="" title="Summary" value="just to have at least some data in this web"}%
-%META:FIELD{name="Tag" attributes="" title="Tag" value="test"}%
-%META:FIELD{name="Category" attributes="" title="Category" value="TestCategory"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="just to have at least some data in this web"}%
+%META:FIELD{name="Tag" title="Tag" value="test"}%
+%META:FIELD{name="Category" title="Category" value="TestCategory"}%

@@ -1,6 +1,6 @@
 # Module of Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 # 
-# Copyright (C) 2007-2015 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2007-2017 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -84,6 +84,7 @@ sub getDisplayValue {
     my $web = $this->{session}->{webName};
 
     my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($web);
+    return $value unless $hierarchy;
 
     my @value = ();
     foreach my $catName (split(/\s*,\s*/, $value)) {

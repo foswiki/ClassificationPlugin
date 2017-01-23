@@ -1,0 +1,55 @@
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICPARENT{name="TopicFunction"}%
+%TOC{depth="2"}%
+
+---++ Documentation
+%STARTSECTION{"documentation"}%
+%RED%TODO%ENDCOLOR%
+
+---+++++ Parameters
+   * MIN: minimum frequency of a tags to be shown
+   * LIMIT: maximum number of tags in the could, defaults to 100
+   * TOPICTYPE: limit search for tags of topics of the given type
+   * THEWEB: web to restrict search to, defaults to current
+
+%ENDSECTION{"documentation"}%
+
+---++ Implementation
+<verbatim class="tml">
+%STARTINCLUDE%<noautolink> 
+%TAGCLOUD{  
+  terms="%DBSTATS{ 
+    "TopicType=~'\b(Categorized|Classified)Topic\b' AND TopicType!~'\bCategory\b'" 
+    format="$percntCATINFO{cat=\"$key\" web=\"$web\" format=\"$title\"}$percnt$key:$count:$key"  
+    separator=", " 
+    field="Category" 
+    sort="modifiedto" 
+    reverse="on" 
+    limit="%LIMIT{default="0"}%" 
+    web="%THEWEB{default="%BASEWEB%"}%"  
+  }%"  
+  header="<div class='clsTagCloud'>"  
+  format="$percntCATINFO{
+         cat=\"$3\"
+         web=\"%THEWEB{default="%BASEWEB%"}%\"
+         format=\"<span style='font-size:$weightpx;line-height:110%'><a href='$url' style='color:$fadeRGB(%TAGCLOUD_START{default="111,169,255"}%,%TAGCLOUD_END{default="0,89,224"}%);'>$title</a></span>\"
+      }$percnt"
+  footer="</div>"  
+  group="<strong>$group</strong>&nbsp;"  
+  split="\s*,\s*"  
+  buckets="25"  
+  offset="13"  
+  warn="off"  
+  min="%MIN{default="0"}%" 
+}% </noautolink>%STOPINCLUDE%
+</verbatim>
+
+---++ Test
+%DBCALL{"%TOPIC%" THEWEB="%URLPARAM{"theweb"}%"}%
+
+
+%META:FORM{name="Applications.TopicFunction"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Render a cloud of categories"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="WikiWorkbench"}%

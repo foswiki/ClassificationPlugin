@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2015 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2017 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,8 +19,7 @@ use warnings;
 
 our $debug = 0;
 use Foswiki::Plugins::DBCachePlugin ();
-use Foswiki::Plugins::DBCachePlugin::Core ();
-use Foswiki::Plugins::ClassificationPlugin::Core();
+use Foswiki::Plugins::ClassificationPlugin();
 use Foswiki::Func ();
 use Foswiki::Plugins ();
 use Foswiki::Sandbox ();
@@ -43,23 +42,26 @@ use JSON ();
 # 800: topic has got an unknown category
 # 900: oops, not mapped onto any facet
 
-###############################################################################
-sub writeDebug {
-  print STDERR $_[0]."\n" if $debug;
-  #Foswiki::Func::writeDebug('- ClassificationPlugin::Services - '.$_[0]) if $debug;
-}
 
 ###############################################################################
-sub init {
+sub new {
+  my $class = shift;
+
+  my $this = bless({
+    @_
+  }, $class);
+
+  return $this;
 }
 
 ###############################################################################
 sub finish {
+  # a nop for now
 }
 
 ###############################################################################
 sub printJSONRPC {
-  my ($response, $code, $text, $id) = @_;
+  my ($this, $response, $code, $text, $id) = @_;
 
   $response->header(
     -status  => $code?500:200,
@@ -93,14 +95,14 @@ sub printJSONRPC {
 
 ###############################################################################
 sub normalizeTags {
-  my ($session, $subject, $verb, $response) = @_;
+  my ($this, $session, $subject, $verb, $response) = @_;
 
   my $query = Foswiki::Func::getCgiQuery();
   my $theWeb = $query->param('web') || $session->{webName};
   $theWeb = Foswiki::Sandbox::untaintUnchecked($theWeb);
 
   my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($theWeb);
-  my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($theWeb);
+  my $db = Foswiki::Plugins::DBCachePlugin::getDB($theWeb);
 
   my @topicNames = sort $db->getKeys();
   my $user = Foswiki::Func::getWikiName();
@@ -122,16 +124,16 @@ sub normalizeTags {
     next if $altTag eq $tag;
     $foundTags++;
     next unless $knownTags{$altTag};
-    my $count = Foswiki::Plugins::ClassificationPlugin::Core::renameTag($altTag, $tag, $theWeb, \@foundTopics);
+    my $count = Foswiki::Plugins::ClassificationPlugin::getCore()->renameTag($altTag, $tag, $theWeb, \@foundTopics);
     #print "renamed $count topics while changing $altTag to $tag\n";
   }
   my $totalTags = scalar(keys %knownTags);
   my $foundTopics = scalar(@foundTopics);
 
   if ($foundTopics) {
-    printJSONRPC($response, 0, "Successfully rename $foundTags of $totalTags tags in $foundTopics topics");
+    $this->printJSONRPC($response, 0, "Successfully rename $foundTags of $totalTags tags in $foundTopics topics");
   } else {
-    printJSONRPC($response, 0, "No tags found");
+    $this->printJSONRPC($response, 0, "No tags found");
   }
 
   return;
@@ -144,11 +146,16 @@ sub normalizeTags {
 #    * from: old tag name
 #    * to: new tag name
 sub renameTag {
-  my ($session, $subject, $verb, $response) = @_;
+  my ($this, $session, $subject, $verb, $response) = @_;
 
   my $query = Foswiki::Func::getCgiQuery();
   my $theWeb = $query->param('web') || $session->{webName};
   $theWeb = Foswiki::Sandbox::untaintUnchecked($theWeb);
+
+  unless (Foswiki::Func::webExists($theWeb)) {
+    $this->printJSONRPC($response, 300, "web $theWeb does not exist");
+    return;
+  }
 
   my @theFrom = $query->param('from');
 
@@ -162,16 +169,16 @@ sub renameTag {
     push @from, $from;
   }
   unless (@from) {
-    printJSONRPC($response, 100, "undefined 'from' parameter");
+    $this->printJSONRPC($response, 100, "undefined 'from' parameter");
     return;
   }
 
-  my $count = Foswiki::Plugins::ClassificationPlugin::Core::renameTag(\@from, $theTo, $theWeb);
+  my $count = Foswiki::Plugins::ClassificationPlugin::getCore()->renameTag(\@from, $theTo, $theWeb);
 
   if ($count) {
-    printJSONRPC($response, 0, "Successfully renamed $count topics");
+    $this->printJSONRPC($response, 0, "Successfully renamed $count topics");
   } else {
-    printJSONRPC($response, 0, "Nothing to rename");
+    $this->printJSONRPC($response, 0, "Nothing to rename");
   }
 
   return;
@@ -194,10 +201,10 @@ sub renameTag {
 #           and their root node in the taxonomy
 # Note: this is an admin service - only users in the AdminGroup are allowed to call it
 sub splitFacet {
-  my ($session, $subject, $verb, $response) = @_;
+  my ($this, $session, $subject, $verb, $response) = @_;
 
   unless (Foswiki::Func::isAnAdmin()) {
-    printJSONRPC($response, 200, "access to service not allowed");
+    $this->printJSONRPC($response, 200, "access to service not allowed");
     return;
   }
 
@@ -205,15 +212,16 @@ sub splitFacet {
   $debug = Foswiki::Func::isTrue($query->param('debug'), 0);
 
   my $theWeb = $query->param('web') || $session->{webName};
+  $theWeb = Foswiki::Sandbox::untaintUnchecked($theWeb);
 
   unless (Foswiki::Func::webExists($theWeb)) {
-    printJSONRPC($response, 300, "web $theWeb does not exist");
+    $this->printJSONRPC($response, 300, "web $theWeb does not exist");
     return;
   }
 
   my $theInTopicType = $query->param('intopictype');
   unless (defined $theInTopicType) {
-    printJSONRPC($response, 400, "parameter intopictype required");
+    $this->printJSONRPC($response, 400, "parameter intopictype required");
     return;
   }
 
@@ -222,19 +230,19 @@ sub splitFacet {
 
   my $theNewForm = $query->param('form');
   unless (Foswiki::Func::topicExists(undef, $theNewForm)) {
-    printJSONRPC($response, 500, "form definition $theNewForm not found");
+    $this->printJSONRPC($response, 500, "form definition $theNewForm not found");
     return;
   }
 
   my $theMap = $query->param('map');
   unless (defined $theMap) {
-    printJSONRPC($response, 400, "parameter map required");
+    $this->printJSONRPC($response, 400, "parameter map required");
     return;
   }
 
-  writeDebug("opening web '$theWeb'");
+  _writeDebug("opening web '$theWeb'");
   my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($theWeb);
-  my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($theWeb);
+  my $db = Foswiki::Plugins::DBCachePlugin::getDB($theWeb);
 
   my %map = ();
   foreach my $mapItem (split(/\s*,\s*/, $theMap)) {
@@ -243,14 +251,14 @@ sub splitFacet {
       my $categoryName = $2;
       my $cat = $hierarchy->getCategory($categoryName);
       unless ($cat) {
-        printJSONRPC($response, 600, "unknwon category $categoryName");
+        $this->printJSONRPC($response, 600, "unknwon category $categoryName");
         return;
       }
 
-      writeDebug("mapping facet '$fieldName' to '$categoryName'");
+      _writeDebug("mapping facet '$fieldName' to '$categoryName'");
       $map{$fieldName} = $cat;
     } else {
-      printJSONRPC($response, 700, "invalid map format $theMap at '$mapItem'");
+      $this->printJSONRPC($response, 700, "invalid map format $theMap at '$mapItem'");
       return;
     }
   }
@@ -272,7 +280,7 @@ sub splitFacet {
 
     next unless $topicTypes =~ /\b$theInTopicType\b/;
     if ($theExcludeTopicType && $topicTypes =~ /$theExcludeTopicType/)  {
-      writeDebug("excluding $topicName because '$topicTypes matches' '$theExcludeTopicType'");
+      _writeDebug("excluding $topicName because '$topicTypes matches' '$theExcludeTopicType'");
       next;
     }
 
@@ -280,12 +288,12 @@ sub splitFacet {
     next unless $cats;
 
     $foundTopics++;
-    writeDebug("$foundTopics: reading $topicName ... cats=@$cats");
+    _writeDebug("$foundTopics: reading $topicName ... cats=@$cats");
     my %facets = ();
     foreach my $catName (@$cats) {
       my $cat = $hierarchy->getCategory($catName);
       unless ($cat) {
-	printJSONRPC($response, 800, "topic $topicName has got an unknown category $catName");
+	$this->printJSONRPC($response, 800, "topic $topicName has got an unknown category $catName");
         return;
       }
       my $foundFacet = 0;
@@ -297,13 +305,13 @@ sub splitFacet {
 	}
       }
       unless ($foundFacet) {
-        printJSONRPC($response, 900, "oops, $catName not mapped onto any facet");
+        $this->printJSONRPC($response, 900, "oops, $catName not mapped onto any facet");
         return;
       }
     }
   
     my ($meta, $text) = Foswiki::Func::readTopic($theWeb, $topicName);
-    #writeDebug("OLD meta:\n".$meta->stringify());
+    #_writeDebug("OLD meta:\n".$meta->stringify());
     
     if (%facets) {
       if ($debug) {
@@ -311,7 +319,7 @@ sub splitFacet {
 	foreach my $facet (sort keys %facets) {
 	  $message .= "\n  $facet=".join(', ', @{$facets{$facet}});
 	}
-	writeDebug("$topicName facets: $message");
+	_writeDebug("$topicName facets: $message");
       }
 
       foreach my $facet (sort keys %facets) {
@@ -333,7 +341,7 @@ sub splitFacet {
       my $formDef = $meta->get('FORM');
       $formDef->{name} = $theNewForm;
     }
-    #writeDebug("NEW meta:\n".$meta->stringify());
+    #_writeDebug("NEW meta:\n".$meta->stringify());
 
     Foswiki::Func::saveTopic($theWeb, $topicName, $meta, $text);
   }
@@ -343,7 +351,7 @@ sub splitFacet {
 
 ###############################################################################
 sub deployTopicType {
-  my ($session, $subject, $verb, $response) = @_;
+  my ($this, $session, $subject, $verb, $response) = @_;
 
   unless (Foswiki::Func::getContext()->{command_line}) {
     print STDERR "ERROR: can only be called from the commandline\n";
@@ -355,27 +363,27 @@ sub deployTopicType {
   $debug = Foswiki::Func::isTrue($query->param('debug'), 0);
   my $dry = Foswiki::Func::isTrue($query->param('dry'), 0);
 
-  writeDebug("Warning: THIS IS A DRY RUN") if $dry;
+  _writeDebug("Warning: THIS IS A DRY RUN") if $dry;
 
   my $includeWebs = $query->param('includeweb') || '.*';
   my $includeWebPattern = '^('.join("|", split(/\s*,\s*/, $includeWebs)).')$';
-  writeDebug("includeWebPattern=$includeWebPattern");
+  _writeDebug("includeWebPattern=$includeWebPattern");
 
   my $excludeWebs = $query->param('excludeweb') || '';
   my @excludeWebs = split(/\s*,\s*/, $excludeWebs);
   push @excludeWebs, '_.*', '.*/_.*', 'System', 'Trash', 'Applications.*';
   my $excludeWebPattern = '^('.join("|", @excludeWebs).')$';
-  writeDebug("excludeWebPattern=$excludeWebPattern");
+  _writeDebug("excludeWebPattern=$excludeWebPattern");
 
   my $includeTopics = $query->param('includetopic') || '.*';
   my $includeTopicPattern = '^('.join("|", split(/\s*,\s*/, $includeTopics)).')$';
-  writeDebug("includeTopicPattern=$includeTopicPattern");
+  _writeDebug("includeTopicPattern=$includeTopicPattern");
 
   my $excludeTopics = $query->param('excludetopic') || '';
   my @excludeTopics = split(/\s*,\s*/, $excludeTopics);
   push @excludeTopics, 'WebPreferences','WebIndex','WebTopicList','WebStatistics','WebChanges','WebNotify','WebTreeView','WebSearch.*','WebRss','WebAtom','.*Template';
   my $excludeTopicPattern = '^('.join("|", @excludeTopics).')$';
-  writeDebug("excludeTopicPattern=$excludeTopicPattern");
+  _writeDebug("excludeTopicPattern=$excludeTopicPattern");
 
   my $dataForm = $query->param('form') || 'Applications.ClassificationApp.ClassifiedTopic';
   $dataForm =~ s/\\/\./g;
@@ -390,7 +398,7 @@ sub deployTopicType {
   my $deleteFormPattern;
   if (defined $deleteForms) {
     $deleteFormPattern = '^('.join("|", split(/\s*,\s*/, $deleteForms)).')$';
-    writeDebug("deleteFormPattern=$deleteFormPattern");
+    _writeDebug("deleteFormPattern=$deleteFormPattern");
   }
 
   my $excludeForms = $query->param('excludeform') || '';
@@ -398,20 +406,20 @@ sub deployTopicType {
   push @excludeForms, $dataForm;
   push @excludeForms, '.*UserForm'; ### SMELL
   my $excludeFormPattern = '^('.join("|", @excludeForms).')$';
-  writeDebug("excludeFormPattern=$excludeFormPattern");
+  _writeDebug("excludeFormPattern=$excludeFormPattern");
 
   my @webs = grep { /$includeWebPattern/ && !/$excludeWebPattern/ } Foswiki::Func::getListOfWebs();
-  writeDebug("found ".scalar(@webs)." web(s)");
-  #writeDebug("webs=".join("\n", @webs));
+  _writeDebug("found ".scalar(@webs)." web(s)");
+  #_writeDebug("webs=".join("\n", @webs));
 
   Foswiki::Plugins::DBCachePlugin::disableSaveHandler();
   Foswiki::Plugins::DBCachePlugin::disableRenameHandler();
 
   my $nrTopics = 0;
   foreach my $web (@webs) {
-    writeDebug("processing web $web");
+    _writeDebug("processing web $web");
     my @topics = grep {/$includeTopicPattern/ && !/$excludeTopicPattern/} Foswiki::Func::getTopicList($web);
-    writeDebug("found ".scalar(@topics)." topic(s) in web $web");
+    _writeDebug("found ".scalar(@topics)." topic(s) in web $web");
 
     # add form to WEBFORMS in WebPreferences
     my ($meta, $text) = Foswiki::Func::readTopic($web, "WebPreferences");
@@ -420,18 +428,18 @@ sub deployTopicType {
       my $needsSave = 0;
       if ($text =~ /^(   )+\* Set WEBFORMS =\s+(.*?)\s*$/ms) {
         %webForms = map {s/\//\./g; $_ => 1} grep {!/$deleteFormPattern/} split(/\s*,\s*/, $2);
-        #writeDebug("found ".scalar(keys %webForms)." webform(s)");
+        #_writeDebug("found ".scalar(keys %webForms)." webform(s)");
         if (defined $webForms{$dataForm}) {
-          #writeDebug("dataForm already part of WEBFORMS");
+          #_writeDebug("dataForm already part of WEBFORMS");
         } else {
           $webForms{$dataForm} = 1;
-          writeDebug("adding $dataForm");
+          _writeDebug("adding $dataForm");
           my $webForms = join(", ", keys %webForms);
           $text =~ s/^(   +\* Set WEBFORMS =)\s+(.*?)$/$1 $webForms/ms;
           $needsSave = 1;
         }
       } else {
-        writeDebug("no webforms found yet ... creating them");
+        _writeDebug("no webforms found yet ... creating them");
         $text .= "\n   * Set WEBFORMS = $dataForm\n";
         $needsSave = 1;
       }
@@ -441,14 +449,14 @@ sub deployTopicType {
         minor => 1,
       }) unless $dry;
     } else {
-      writeDebug("woops, error reading $web.WebPreferences");
+      _writeDebug("woops, error reading $web.WebPreferences");
     }
 
     # install topic stup for WikiWorkbench TopicTypes
     my $topicStub = $dataForm;
     $topicStub =~ s/.*\.//;
     unless (Foswiki::Func::topicExists($web, $topicStub)) {
-      writeDebug("creating topicStub $web.$topicStub");
+      _writeDebug("creating topicStub $web.$topicStub");
 
       #SMELL: make this configurable
       my ($meta, $text) = Foswiki::Func::readTopic($web, $topicStub);
@@ -462,7 +470,7 @@ sub deployTopicType {
       }) unless $dry;
 
     } else {
-      writeDebug("topicStub $web.$topicStub already exists");
+      _writeDebug("topicStub $web.$topicStub already exists");
     }
 
     foreach my $topic (@topics) {
@@ -471,11 +479,11 @@ sub deployTopicType {
       my $formName = $meta->getFormName;
       if (defined $formName) {
         if ($formName =~ /$excludeFormPattern/) {
-          #writeDebug("... skipping topic $web.$topic with form $formName");
+          #_writeDebug("... skipping topic $web.$topic with form $formName");
           next;
         }
         if (defined $deleteFormPattern && $formName =~ /$deleteFormPattern/) {
-          #writeDebug("... deleting form $formName");
+          #_writeDebug("... deleting form $formName");
           $meta->remove("FORM");
           $meta->remove("FIELD");
         } else {
@@ -487,20 +495,20 @@ sub deployTopicType {
 
           foreach my $f ($meta->find('FIELD')) {
             if ($f->{name} !~ /^($filter)$/) {
-              #writeDebug("removing field $f->{name}");
+              #_writeDebug("removing field $f->{name}");
               $meta->remove('FIELD', $f->{name} );
             } else {
-              #writeDebug("reusing field $f->{name}");
+              #_writeDebug("reusing field $f->{name}");
             }
           }
         }
 
       } else {
-        #writeDebug("no form at $web.$topic yet ...");
+        #_writeDebug("no form at $web.$topic yet ...");
       }
-      writeDebug("$nrTopics: processing topic $web.$topic");
+      _writeDebug("$nrTopics: processing topic $web.$topic");
 
-      #writeDebug("adding form $dataForm");
+      #_writeDebug("adding form $dataForm");
       $meta->put('FORM', { name => $dataForm });
 
       my $topicTitle = _getTopicTitle(undef, undef, $meta);
@@ -522,7 +530,7 @@ sub deployTopicType {
         $lastAuthor = $topicInfo->{author} if $topicInfo;
 
         unless (defined $lastAuthor) {
-          #writeDebug("woops no proper TOPICINFO in $web.$topic");
+          #_writeDebug("woops no proper TOPICINFO in $web.$topic");
           $lastAuthor = "UnknownUser";
         }
 
@@ -542,7 +550,7 @@ sub deployTopicType {
         $webDir =~ s/\./\//g;
         my $topicFile = $Foswiki::cfg{DataDir}.'/'.$webDir.'/'.$topic.'.txt';
 
-        #writeDebug("topicFile=$topicFile");
+        #_writeDebug("topicFile=$topicFile");
         if (-e $topicFile) {
           Foswiki::Func::saveFile($topicFile, $nuText) unless $dry;
         } else {
@@ -554,7 +562,7 @@ sub deployTopicType {
     } # end of foreach topic
   } # end of foreach web
 
-  writeDebug("converted $nrTopics topic(s)");
+  _writeDebug("converted $nrTopics topic(s)");
 
   Foswiki::Plugins::DBCachePlugin::enableSaveHandler();
   Foswiki::Plugins::DBCachePlugin::enableRenameHandler();
@@ -562,6 +570,15 @@ sub deployTopicType {
   return;
 }
 
+###############################################################################
+# statics
+###############################################################################
+sub _writeDebug {
+  print STDERR $_[0]."\n" if $debug;
+  #Foswiki::Func::writeDebug('- ClassificationPlugin::Services - '.$_[0]) if $debug;
+}
+
+###############################################################################
 sub _getTopicTitle {
   my ($web, $topic, $meta) = @_;
 
@@ -593,7 +610,7 @@ sub _getTopicTitle {
 #     if ($topicTitle =~ /%TOPIC%/ or $topicTitle eq $topic) {
 #       $topicTitle = undef;
 #     } else {
-#       writeDebug("found topicTitle='$topicTitle' in h1 of $web.$topic");
+#       _writeDebug("found topicTitle='$topicTitle' in h1 of $web.$topic");
 #     }
 #   }
 # }

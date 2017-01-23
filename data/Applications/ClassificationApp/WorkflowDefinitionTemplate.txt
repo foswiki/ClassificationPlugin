@@ -1,13 +1,14 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicTemplate"}%
 ---++ States
-| *State* | *Allow Edit* | *Message* |
+| *State* | *Allow Edit* | *Allow View* | *Message* |
 
 ---++ Transitions
 | *State*  | *Action* | *Next State* | *Allowed* | *Form* | *Notify *|
 
 %META:FORM{name="Applications.TopicTemplate"}%
-%META:FIELD{name="TopicType" title="TopicType" value="TopicTemplate, WikiTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicTemplate, ApplicationTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value="a template for WorkflowDefinitions"}%
+%META:FIELD{name="ForTopicType" title="For TopicType" value=""}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

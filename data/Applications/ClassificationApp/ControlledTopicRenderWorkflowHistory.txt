@@ -1,0 +1,37 @@
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICPARENT{name="TopicFunction"}%
+%TOC{depth="2"}%
+
+---++ Documentation
+%STARTSECTION{"documentation"}%
+%RED%TODO%ENDCOLOR%
+
+---+++++ Parameters
+   * OBJECT: topic name to render the workflow history for, defaults to BASEWEB.BASETOPIC
+
+%ENDSECTION{"documentation"}%
+
+---++ Implementation
+<verbatim class="tml">
+%STARTINCLUDE%%WORKFLOWHISTORY{
+   "%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"
+   header="<h2 >%MAKETEXT{"History"}%</h2>$n<div class='foswikiFlatTable foswikiFullWidth'>$n| *Rev* | *User* | *State* | *Comment* | *Date* |$n"
+   format="| *$rev* | [[$wikiusername]] | $state | $comment | $date |"
+   footer="$n</div>"
+   separator="$n"
+}%%STOPINCLUDE%
+</verbatim>
+
+---++ Test
+
+---+++ [[ControlledTestTopic]]
+%DBCALL{"ControlledTestTopic->RenderWorkflowHistory"}%
+
+---+++ [[ClassifiedControlledTestTopic]]
+%DBCALL{"ClassifiedControlledTestTopic->RenderWorkflowHistory"}%
+
+%META:FORM{name="Applications.TopicFunction"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value=""}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="WikiWorkbench"}%

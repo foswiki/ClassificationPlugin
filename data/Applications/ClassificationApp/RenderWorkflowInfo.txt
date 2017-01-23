@@ -1,79 +1,84 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
 ---++ Documentation
 %STARTSECTION{"documentation"}%
-%RED%TODO%ENDCOLOR%
+This TopicFunction renders the header of a ControlledTopic.
 
 ---+++++ Parameters
    * OBJECT the topic to render the info block for
+   * APPROVE_STATE, the state where the controlled topic is approved/live/ready to be used, defaults to =approved=
 
 %ENDSECTION{"documentation"}%
 
 ---++ Implementation
 <verbatim class="tml">
-%STARTINCLUDE%<div class="clearfix %IF{
-   "'%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" rev="%URLPARAM{"rev"}%"}%'='approved'"
-   then="foswikiSuccessMessage"
-   else="%IF{
-            "'%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" rev="%URLPARAM{"rev"}%"}%'='rejected'"
-            then="foswikiErrorMessage"
-            else="foswikiWarningMessage"
-         }%"
-}%">
-<div class='foswikiRight'>
-%TWISTYBUTTON{
-   id="workflowinfo"
-   showlink=" %MAKETEXT{"Show details"}%" 
-   hidelink=" %MAKETEXT{"Hide details"}%"
-   showimgleft="%ICONURLPATH{"toggleopen"}%" 
-   hideimgleft="%ICONURLPATH{"toggleclose"}%"
-}%
-</div>
-%TRANSLATE{"%WORKFLOWSTATEMESSAGE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" rev="%URLPARAM{"rev"}%"}%"}%
-</div>
-%TWISTYTOGGLE{
-   remember="off"
-   id="workflowinfo"
-}%
-<div class="foswikiPageForm foswikiSmallish clsWorkflowInfo clearfix">
-%BEGINGRID{border="on"}%
-%BEGINCOL{"6"}%
-<table class='foswikiLayoutTable'>
-<tr>
-   <th>%TRANSLATE{"Current State:"}%</td>
-   <td>%TRANSLATE{"%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"rev="%URLPARAM{"rev"}%"}%"}%</td>
-</tr>
-%IF{"$'URLPARAM{rev}'=''"
-   then="<tr>
-         <th>%MAKETEXT{"Action:"}%</th>
-         <td>$percntWORKFLOWTRANSITION{\"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%\"}$percnt</td>
-      </tr>"
-}%</table>
-%BEGINCOL{"6"}%
-<table class='foswikiLayoutTable'>
-<tr>
-   <th>%TRANSLATE{"Workflow:"}%</td>
-   <td>[[%EXPAND{"$percntWORKFLOW$percnt" scope="%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"}%]]</td>
-</tr>
-%IF{"'%WORKFLOWLASTREV{"approved" topic="%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"}%'!=''"
-   then="<tr>
-      <th>%TRANSLATE{"Last Approved:"}%</th>
-      <td><a href='%SCRIPTURLPATH{"view"}%/%WEB%/%TOPIC%?rev=%WORKFLOWLASTREV{"approved" topic="%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"}%'>%WORKFLOWLASTTIME{"approved" topic="%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"}%, version %WORKFLOWLASTREV{"approved" topic="%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"}%</a></td>
+%STARTINCLUDE%<div class="foswikiPageForm foswikiHideOnPrint clearfix %ENCODE{"%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" rev="%URLPARAM{"rev"}%"}%" old=" " new="_"}%">
+%IF{"$'URLPARAM{rev}'='' and '%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" format="$numactions"}%'>0" 
+   then="<div class='foswikiRight'>$percntBUTTON{\"%TRANSLATE{"Change State"}%\" href=\"#changeStateDialog\" class=\"jqUIDialogLink\"}$percnt</div>"
+}%<table class='foswikiLayoutTable foswikiHideOnPrint'>
+%WORKFLOWSTATE{
+   "%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" 
+   rev="%URLPARAM{"rev"}%" 
+   format="<tr class='message'>
+      <th>%TRANSLATE{"Message"}%</th>
+      $percntIF{
+         \"'$state'!='%APPROVED_STATE{default="approved"}%'\" 
+         then=\"<td class='foswikiAlert'> $percntJQICON{\"fa-exclamation-triangle\"}$percnt\" 
+         else=\"<td class='foswikiOK'>$percntJQICON{\"fa-check-circle\"}$percnt\"
+      }$percnt $percntTRANSLATE{\"$message\"}$percnt</td>
+   </tr>$percntIF{
+      \"'$percntENCODE{\"$comment\" type=\"quote\"}$percnt'!=''\"
+      then=\"<tr>
+               <th>Comment</th>
+               <td>$comment</th>
+            </tr>\"
+   }$percnt"
+}%%WORKFLOWSTATE{
+   "%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" 
+   rev="%URLPARAM{"rev"}%" 
+   state="%APPROVED_STATE{default="approved"}%"
+   hidenull="on"
+   format="<tr class='last'>
+      <th>%TRANSLATE{"Last in [_1]" args="$state"}%</th>
+      <td>$time &#124; [[$user]] &#124; <a href='%SCRIPTURLPATH{"view"}%/$web/$topic?rev=$rev'>%TRANSLATE{"View"}%</a> &#124; <a href='%SCRIPTURLPATH{"compare"}%/$web/$topic?rev1=$rev&rev2=%NATMAXREV%'>%TRANSLATE{"Diff"}%</a></td>
    </tr>"
 }%</table>
-%ENDGRID%
 </div>
-%ENDTWISTY%%STOPINCLUDE%
+
+<div id="changeStateDialog" title="%TRANSLATE{"Change State"}%" class="jqUIDialog foswikiHideOnPrint" style="display:none" data-modal="true" data-position="center" data-width="540" data-cached="true">
+<form class="workflowChangeStateForm" action="%SCRIPTURLPATH{"rest"}%/WorkflowPlugin/changeState" method="post">
+  <input type='hidden' name='WORKFLOWSTATE' value='%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"}%' />
+  <input type='hidden' name='topic' value='%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%' />
+  <input type='hidden' name='t' value='%GMTIME{"$epoch"}%' />
+  <div class="foswikiFormSteps">
+    <div class="foswikiFormStep">
+      <h3>%TRANSLATE{"New State"}%:</h3>
+      %FORMATLIST{"%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" format="$actions"}%"
+         split="\s*,\s*"
+         selection="^(%FORMATLIST{"%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" format="$actions"}%" split="\s*,\s*" limit="1"}%)$"
+         marker="checked='checked'"
+         format="<label><input type='radio' name='WORKFLOWACTION' $marker value='$1'>$1</label>"
+         separator="$n"
+      }%
+    </div>
+    <div class='foswikiFormStep'>
+      <h3>%TRANSLATE{"Comment"}%:</h3>
+      <input type="text" name="WORKFLOWCOMMENT" size="60" class="foswikiInputField" />
+    </div>
+  </div>
+  <a class="jqUIDialogButton jqUIDialogSubmit {icon:'ui-icon-circle-check'}">%MAKETEXT{"Submit"}%</a>
+  <a class="jqUIDialogButton jqUIDialogClose {icon:'ui-icon-cancel'}">%MAKETEXT{"Cancel"}%</a>
+</form>
+</div>%STOPINCLUDE%
 </verbatim>
 
 ---++ Test
 %DBCALL{"%TOPIC%" OBJECT="ControlledTestTopic"}%
 
 %META:FORM{name="Applications.TopicFunction"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction, WikiTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value="renders an info block at the top of a ControlledTopic"}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%
-%META:PREFERENCE{name="EDIT_TEMPLATE" title="EDIT_TEMPLATE" type="Set" value="Applications.WikiTopicEdit"}%

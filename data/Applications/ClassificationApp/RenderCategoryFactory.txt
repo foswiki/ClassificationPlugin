@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -22,7 +22,7 @@ This function renders an input form to create a new category.
 <input type="hidden" name="TopicType" value="Category, CategorizedTopic" />
 <input type="hidden" name="topicparent" value="none" />
 <input type="hidden" name="redirectto" value="%BASEWEB%.%BASETOPIC%" />
-<input type="hidden" name="topic" value="%URLPARAM{"topic" encode="entity"}%"  class="jqWikiWord {source:'#cattitle', suffix:'Category'}" />
+<input type="hidden" name="topic" value="%URLPARAM{"topic" encode="entity"}%"  class="jqWikiWord" data-source="#cattitle" data-suffix="Category" data-transliterate="true" />
 <input type="hidden" name="Summary" value="" />
 <div class="foswikiFormSteps clsCategoryFactory">
 <h2 >%MAKETEXT{"Create a new category in the [_1] web" args="<nop>%WEBLINK{"%BASEWEB%" format="$name"}%"}%</h2>
@@ -46,7 +46,7 @@ This function renders an input form to create a new category.
 
 
 %META:FORM{name="Applications.TopicFunction"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="Renders a factory for Categories"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Renders a factory for Categories"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

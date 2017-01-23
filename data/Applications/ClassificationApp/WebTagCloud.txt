@@ -1,0 +1,21 @@
+%META:TOPICINFO{author="micha" comment="reprev" date="1474825795" format="1.1" reprev="1" version="1"}%
+%META:TOPICPARENT{name="WebHome"}%
+See also: [[RenderWebTagCloud]], [[RenderSolrTagCloud]]
+
+%DBCALL{"Applications.RenderTopicInstaller"}%
+
+<verbatim class="tml">
+%STARTINCLUDE%%DBCALL{"Applications.ClassificationApp.RenderWebTagCloud" 
+   TAG="%URLPARAM{"tag"}%" 
+   MIN="%URLPARAM{"min" default="%MIN%"}%"
+}%%STOPINCLUDE%
+</verbatim>
+
+---++ Test
+%DBCALL{"%WEB%.%TOPIC%"}%
+
+%META:FORM{name="Applications.WebTool"}%
+%META:FIELD{name="TopicType" title="TopicType" value="WebTool, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value=""}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

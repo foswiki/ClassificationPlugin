@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -19,11 +19,11 @@ if installed for better performance.
 ---++ Implementation
 <verbatim class="tml">
 %STARTINCLUDE%%SOLRSEARCH{
-  web="%IF{"defined THEWEB" then="%THEWEB%" else="%BASEWEB%"}%"
-  facetlimit="tag=%IF{"defined LIMIT and not isempty LIMIT" then="%LIMIT%" else="10"}%"
+  web="%THEWEB{default="%BASEWEB%"}%"
+  facetlimit="tag=%LIMIT{default="10"}%"
   field="none"
   facets="tag"
-  facetprefix="%IF{"defined TAG" then="%TAG%"}%"
+  facetprefix="%TAG{default=""}%"
   facetsort="index"
   header_tag="[$n"
   format_tag="{\"value\":\"$key\"}"
@@ -41,8 +41,7 @@ if installed for better performance.
 
 
 %META:FORM{name="Applications.TopicFunction"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="returns a list of known tags using !SolrPlugin"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
-%META:PREFERENCE{name="EDIT_TEMPLATE" title="EDIT_TEMPLATE" type="Set" value="Applications.WikiTopicEdit"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="returns a list of known tags using !SolrPlugin"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

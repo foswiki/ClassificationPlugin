@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %TOC%
 
 ---++ Naming
@@ -15,13 +15,14 @@ using a kind of tagline:
    * Set #DENYWEBCHANGE =
    * Set ALLOWWEBCHANGE = %USERSWEB%.AdminGroup
    * Set ALLOWTOPICCHANGE = %USERSWEB%.AdminGroup
+   * Set DENYWEBCOMMENT = %USERSWEB%.WikiGuest
 
 ---++ Application Pointer
    * Set CLASSIFICATIONPLUGIN_AUTOREPARENT = 1
 
 ---++ Wiki application settings
 
-   * Set WEBFORMS = Applications.ClassificationApp.Category, Applications.ClassificationApp.ClassifiedTopic, Applications.ClassificationApp.CategorizedTopic, Applications.ClassificationApp.TaggedTopic, Applications.WikiTopic, Applications.ApplicationTopic, Applications.WebTool
+   * Set WEBFORMS = Applications.WikiTopic
 
 ---++ Translations
 

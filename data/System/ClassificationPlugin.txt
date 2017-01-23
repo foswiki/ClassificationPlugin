@@ -1,5 +1,7 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 ---+!! ClassificationPlugin
+%FORMFIELD{"Description"}%
+
 %TOC%
 
 ---++ Description
@@ -342,17 +344,29 @@ Note however that for now only the =%DBQUERY= language is supported (see [[Foswi
 ---++ Installation Instructions
 %$INSTALL_INSTRUCTIONS%
 
----++ Plugin Info
-<!-- provided for compatibility only
-   * Set SHORTDESCRIPTION = A topic classification plugin and application
--->
+---++ Dependencies
+%$DEPENDENCIES%
 
-|  Plugin Author: | Michael Daum |
-|  Copyright &copy;: | 2006-2015, Michael Daum http://michaeldaumconsulting.com |
-|  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
-|  Release: | %$RELEASE% |
-|  Version: | %$VERSION% |
-|  Change History: | <!-- versions below in reverse order -->&nbsp; |
+---++ Change History
+%TABLE{columnwidths="7em" tablewidth="100%"}%
+|  23 Jan 2017: | added support for Foswiki:Extensions/LikePlugin; \
+                  added "Responsible Person" to Category topics; \
+                  replace css and js inline with proper files created by <nop>AttachContentPlugin; \
+                  hide the sidebar on categories by default; \
+                  improvements to <nop>ControlledTopics and <nop>ClassifiedControlledTopics; \
+                  added quality checks to <nop>ClassifiedTopics: missing tags, missing categories, duplicate h1; \
+                  improved view tempalte for workflow history; \
+                  removed old <nop>IconSet: now using =icon= formfield of <nop>MoreFormfieldsPlugin; \
+                  improved visualization of workflows using <nop>GraphvizPlugin; \
+                  fixed <nop>WebDAV view for categorized content; \
+                  some fixes for cat and tag formfields; \
+                  rewrite of core code to be more oo-ish ;\
+                  new REST hander =updateCache= to refresh the classification cache occasionally; \
+                  new notification handler that lets you subscribe to any changes within a category; \
+                  auto-subscribe <nop>ResponsiblePerson to its category: may be switched on/off by AUTOSCUBSCRIBE_RESPONSIBLE_PERSON preference; \
+                  fixed memory leaks; \
+                  implemented special ACLs to control edit rights on categories |
+|  17 Aug 2016: | add support for Foswiki:Extensions/MultiLingualPlugin to make categories translatable |
 |  17 Jul 2015: | add support for !WikiWorkbench-3.0er new-topic creator added support; \
                   integrate workflows into classification framework; \
                   improved Open Graph support for better SEO; \
@@ -378,14 +392,23 @@ Note however that for now only the =%DBQUERY= language is supported (see [[Foswi
 |  07 Jan 2013: | first public releaes |
 |  30 Oct 2007: | first check-in to svn |
 |  30 Oct 2006: | Initial version |
-|  Dependencies: | %$DEPENDENCIES% |
-|  Home page: | http://foswiki.org/Extensions/%TOPIC% |
-|  Support: | http://foswiki.org/Support/%TOPIC% |
 
-%META:FILEATTACHMENT{name="ClassificationPluginSnap7.png" attachment="ClassificationPluginSnap7.png" attr="" comment="" date="1437132754" size="233626" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap6.png" attachment="ClassificationPluginSnap6.png" attr="" comment="" date="1437132754" size="108342" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap5.png" attachment="ClassificationPluginSnap5.png" attr="" comment="" date="1437132754" size="32247" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap4.png" attachment="ClassificationPluginSnap4.png" attr="" comment="" date="1437132754" size="113934" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap3.png" attachment="ClassificationPluginSnap3.png" attr="" comment="" date="1437132754" size="337629" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap2.png" attachment="ClassificationPluginSnap2.png" attr="" comment="" date="1437132754" size="30485" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap1.png" attachment="ClassificationPluginSnap1.png" attr="" comment="" date="1437132754" size="55821" user="ProjectContributor" version="1"}%
+
+
+%META:FILEATTACHMENT{name="ClassificationPluginSnap7.png" attachment="ClassificationPluginSnap7.png" attr="" comment="" date="1485174319" size="233626" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap6.png" attachment="ClassificationPluginSnap6.png" attr="" comment="" date="1485174319" size="108342" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap5.png" attachment="ClassificationPluginSnap5.png" attr="" comment="" date="1485174319" size="32247" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap4.png" attachment="ClassificationPluginSnap4.png" attr="" comment="" date="1485174319" size="113934" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap3.png" attachment="ClassificationPluginSnap3.png" attr="" comment="" date="1485174319" size="337629" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap2.png" attachment="ClassificationPluginSnap2.png" attr="" comment="" date="1485174319" size="30485" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap1.png" attachment="ClassificationPluginSnap1.png" attr="" comment="" date="1485174319" size="55821" user="ProjectContributor" version="1"}%
+%META:FORM{name="PackageForm"}%
+%META:FIELD{name="Author" title="Author" value="Michael Daum"}%
+%META:FIELD{name="Copyright" title="Copyright" value="2006-2017, Michael Daum http://michaeldaumconsulting.com"}%
+%META:FIELD{name="Description" title="Description" value="%25$SHORTDESCRIPTION%25"}%
+%META:FIELD{name="Home" title="Home" value="https://foswiki.org/Extensions/%TOPIC%"}%
+%META:FIELD{name="License" title="License" value="GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]])"}%
+%META:FIELD{name="Release" title="Release" value="%$RELEASE%"}%
+%META:FIELD{name="Repository" title="Repository" value="https://github.com/foswiki/%TOPIC%"}%
+%META:FIELD{name="Support" title="Support" value="https://foswiki.org/Support/%TOPIC%"}%
+%META:FIELD{name="Version" title="Version" value="%$VERSION%"}%

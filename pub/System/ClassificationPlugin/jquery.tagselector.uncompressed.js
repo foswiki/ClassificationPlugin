@@ -1,7 +1,7 @@
 /*
- * jQuery TagSelector plugin 1.1
+ * jQuery TagSelector plugin 1.11
  *
- * Copyright (c) 2008-2015 Michael Daum http://michaeldaumconsulting.com
+ * Copyright (c) 2008-2017 Michael Daum http://michaeldaumconsulting.com
  *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php

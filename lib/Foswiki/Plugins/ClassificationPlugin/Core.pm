@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2015 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2017 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,93 +17,78 @@ package Foswiki::Plugins::ClassificationPlugin::Core;
 use strict;
 use warnings;
 
-use vars qw(
-  %hierarchies 
-  %loadTimeStamps 
-  %modTimeStamps 
-  %cachedIndexFields
-  $session 
-  $purgeMode
-  @changedCats
-);
-
 use constant TRACE => 0; # toggle me
 use constant FIXFORMFIELDS => 1; # work around a bug in Foswiki
-use constant MEMORYCACHE => 0; # set to 1 for experimental memory cache
-use Foswiki::Plugins::DBCachePlugin::Core ();
+use Foswiki::Plugins::ClassificationPlugin ();
+use Foswiki::Plugins::DBCachePlugin ();
 use Foswiki::Form ();
 use Foswiki::OopsException ();
+use Foswiki::Contrib::MailerContrib ();
 use Error qw( :try );
+use Carp qw(confess cluck);
 
 ###############################################################################
-sub writeDebug {
-  print STDERR '- ClassificationPlugin::Core - '.$_[0]."\n" if TRACE;
-  #Foswiki::Func::writeDebug('- ClassificationPlugin::Core - '.$_[0]) if TRACE;
-}
+sub new {
+  my $class = shift;
 
-###############################################################################
-sub init {
-  $session = shift;
+  my $this = bless({
+      purgeMode => 0,
+      beforeResponsiblePerson => '',
+      modTimeStamps => {},
+      loadTimeStamps => {},
+      hierarchies => {},
+      cachedIndexFields => {},
+      changedCats => {},
+      @_
+    },
+    $class
+  );
 
-  $session ||= $Foswiki::Plugins::SESSION;
-
-  $purgeMode = 0;
-  @changedCats = ();
-  %modTimeStamps = ();
-  %cachedIndexFields = ();
-
-  unless (MEMORYCACHE) {
-    %hierarchies = ();
-    %loadTimeStamps = ();
-  }
+  return $this;
 }
 
 ###############################################################################
 sub finish {
+  my $this = shift;
 
-  writeDebug("called finish()");
-  foreach my $hierarchy (values %hierarchies) {
+  #_writeDebug("called finish()");
+  foreach my $hierarchy (values %{$this->{hierarchies}}) {
     next unless defined $hierarchy;
-
-    my $web = $hierarchy->{web};
-    my $topic = $hierarchy->{topic};
-
-    my $key = $web;
-    $key .= '.'.$topic if defined $topic;
-
     $hierarchy->finish();
-
-    undef $modTimeStamps{$key};
-    unless (MEMORYCACHE) {
-      undef $hierarchies{$key};
-      undef $loadTimeStamps{$key};
-    }
   }
-  writeDebug("done finish()");
+
+  undef $this->{hierarchies};
+  undef $this->{modTimeStamps};
+  undef $this->{changedCats};
+  undef $this->{loadTimeStamps};
+
+  #_writeDebug("done finish()");
 }
 
 ###############################################################################
 sub OP_subsumes {
-  my ($r, $l, $map) = @_;
+  my ($this, $r, $l, $map) = @_;
   my $lval = $l->matches( $map );
   my $rval = $r->matches( $map );
   return 0 unless ( defined $lval  && defined $rval);
 
-  my $web = $Foswiki::Plugins::DBCachePlugin::Core::dbQueryCurrentWeb || $session->{webName};
-  my $hierarchy = getHierarchy($web);
+  my $session = $Foswiki::Plugins::SESSION;
+  my $web = Foswiki::Plugins::DBCachePlugin::getCore->currentWeb() || $session->{webName};
+  my $hierarchy = $this->getHierarchy($web);
   return $hierarchy->subsumes($lval, $rval);
 }
 
 ###############################################################################
 sub OP_isa {
-  my ($r, $l, $map) = @_;
+  my ($this, $r, $l, $map) = @_;
   my $lval = $l->matches( $map );
   my $rval = $r->matches( $map );
 
   return 0 unless ( defined $lval  && defined $rval);
 
-  my $web = $Foswiki::Plugins::DBCachePlugin::Core::dbQueryCurrentWeb || $session->{webName};
-  my $hierarchy = getHierarchy($web);
+  my $session = $Foswiki::Plugins::SESSION;
+  my $web = Foswiki::Plugins::DBCachePlugin::getCore->currentWeb() || $session->{webName};
+  my $hierarchy = $this->getHierarchy($web);
   my $cat = $hierarchy->getCategory($rval);
   return 0 unless $cat;
 
@@ -112,14 +97,15 @@ sub OP_isa {
 
 ###############################################################################
 sub OP_distance {
-  my ($r, $l, $map) = @_;
+  my ($this, $r, $l, $map) = @_;
   my $lval = $l->matches( $map );
   my $rval = $r->matches( $map );
 
   return 0 unless ( defined $lval  && defined $rval);
 
-  my $web = $Foswiki::Plugins::DBCachePlugin::Core::dbQueryCurrentWeb || $session->{webName};
-  my $hierarchy = getHierarchy($web);
+  my $session = $Foswiki::Plugins::SESSION;
+  my $web = Foswiki::Plugins::DBCachePlugin::getCore->currentWeb() || $session->{webName};
+  my $hierarchy = $this->getHierarchy($web);
   my $dist = $hierarchy->distance($lval, $rval);
 
   return $dist || 0;
@@ -127,9 +113,9 @@ sub OP_distance {
 
 ###############################################################################
 sub handleSIMILARTOPICS {
-  my ($session, $params, $theTopic, $theWeb) = @_;
+  my ($this, $session, $params, $theTopic, $theWeb) = @_;
 
-  #writeDebug("called handleSIMILARTOPICS()");
+  #_writeDebug("called handleSIMILARTOPICS()");
   my $thisTopic = $params->{_DEFAULT} || $params->{topic} || $session->{topicName};
   my $thisWeb = $params->{web} || $session->{webName};
   my $theFormat = $params->{format} || '$topic';
@@ -146,7 +132,7 @@ sub handleSIMILARTOPICS {
   $theSep = ', ' unless defined $theSep;
   $theLimit = 10 unless defined $theLimit;
 
-  my $hierarchy = getHierarchy($thisWeb);
+  my $hierarchy = $this->getHierarchy($thisWeb);
   my @similarTopics = $hierarchy->getSimilarTopics($thisTopic, $theThreshold);
   return '' unless @similarTopics;
 
@@ -161,7 +147,7 @@ sub handleSIMILARTOPICS {
     $index++;
     next if $theSkip && $index <= $theSkip;
     last if $theLimit && $index > $theLimit;
-    push @lines, expandVariables($theFormat,
+    push @lines, _expandVariables($theFormat,
       'topic'=>$topic,
       'web'=>$thisWeb,
       'index'=>$index,
@@ -170,36 +156,36 @@ sub handleSIMILARTOPICS {
   }
 
   return '' unless @lines;
-  $theHeader = expandVariables($theHeader, count=>$index);
-  $theFooter = expandVariables($theFooter, count=>$index);
-  $theSep = expandVariables($theSep);
+  $theHeader = _expandVariables($theHeader, count=>$index);
+  $theFooter = _expandVariables($theFooter, count=>$index);
+  $theSep = _expandVariables($theSep);
 
   return $theHeader.join($theSep, @lines).$theFooter;
 }
 
 ###############################################################################
 sub handleHIERARCHY {
-  my ($session, $params, $theTopic, $theWeb) = @_;
+  my ($this, $session, $params, $theTopic, $theWeb) = @_;
 
-  #writeDebug("called handleHIERARCHY(".$params->stringify().")");
+  #_writeDebug("called handleHIERARCHY(".$params->stringify().")");
 
   my $thisWeb = $params->{_DEFAULT} || $params->{web} || $session->{webName};
   $thisWeb =~ s/\./\//go;
 
-  my $hierarchy = getHierarchy($thisWeb);
+  my $hierarchy = $this->getHierarchy($thisWeb);
   return $hierarchy->traverse($params);
 }
 
 ###############################################################################
 sub handleISA {
-  my ($session, $params, $theTopic, $theWeb) = @_;
+  my ($this, $session, $params, $theTopic, $theWeb) = @_;
 
-  #writeDebug("called handleISA()");
+  #_writeDebug("called handleISA()");
   my $thisWeb = $params->{web} || $session->{webName};
   my $thisTopic = $params->{_DEFAULT} || $params->{topic} || $session->{topicName};
   my $theCategory = $params->{cat} || 'TopCategory';
 
-  #writeDebug("topic=$thisTopic, theCategory=$theCategory");
+  #_writeDebug("topic=$thisTopic, theCategory=$theCategory");
 
   return 1 if $theCategory =~ /^(Top|TopCategory)$/oi;
   return 0 if $theCategory =~ /^(Bottom|BottomCategory)$/oi;
@@ -208,32 +194,32 @@ sub handleISA {
   ($thisWeb, $thisTopic) =
     Foswiki::Func::normalizeWebTopicName($thisWeb, $thisTopic);
 
-  my $hierarchy = getHierarchy($thisWeb);
+  my $hierarchy = $this->getHierarchy($thisWeb);
 
   foreach my $catName (split(/\s*,\s*/, $theCategory)) {
-    #writeDebug("testing $catName");
+    #_writeDebug("testing $catName");
     my $cat = $hierarchy->getCategory($catName);
     next unless $cat;
     return 1 if $cat->contains($thisTopic);
   }
-  #writeDebug("not found");
+  #_writeDebug("not found");
 
   return 0;
 }
 
 ###############################################################################
 sub handleSUBSUMES {
-  my ($session, $params, $theTopic, $theWeb) = @_;
+  my ($this, $session, $params, $theTopic, $theWeb) = @_;
 
   my $thisWeb = $params->{web} || $session->{webName};
   my $theCat1 = $params->{_DEFAULT} || $session->{topicName};
   my $theCat2 = $params->{cat} || '';
 
-  #writeDebug("called handleSUBSUMES($theCat1, $theCat2)");
+  #_writeDebug("called handleSUBSUMES($theCat1, $theCat2)");
 
   return 0 unless $theCat2;
 
-  my $hierarchy = getHierarchy($thisWeb);
+  my $hierarchy = $this->getHierarchy($thisWeb);
   my $cat1 = $hierarchy->getCategory($theCat1);
   return 0 unless $cat1;
 
@@ -248,14 +234,14 @@ sub handleSUBSUMES {
     last if $result;
   }
 
-  #writeDebug("result=$result");
+  #_writeDebug("result=$result");
 
   return $result;
 }
 
 ###############################################################################
 sub handleDISTANCE {
-  my ($session, $params, $theTopic, $theWeb) = @_;
+  my ($this, $session, $params, $theTopic, $theWeb) = @_;
 
   my $thisWeb = $params->{web} || $session->{webName};
   my $theFrom = $params->{_DEFAULT} || $params->{from} || $session->{topicName};
@@ -264,16 +250,16 @@ sub handleDISTANCE {
   my $theFormat = $params->{format} || '$dist';
   my $theUndef = $params->{undef} || '';
 
-  #writeDebug("called handleDISTANCE($theFrom, $theTo)");
+  #_writeDebug("called handleDISTANCE($theFrom, $theTo)");
 
-  my $hierarchy = getHierarchy($thisWeb);
+  my $hierarchy = $this->getHierarchy($thisWeb);
   my $distance = $hierarchy->distance($theFrom, $theTo);
 
   return $theUndef unless defined $distance;
 
   $distance = abs($distance) if $theAbs eq 'on';
 
-  #writeDebug("distance=$distance");
+  #_writeDebug("distance=$distance");
 
   my $result = $theFormat;
   $result =~ s/\$dist/$distance/g;
@@ -283,9 +269,9 @@ sub handleDISTANCE {
 
 ###############################################################################
 sub handleCATINFO {
-  my ($session, $params, $theTopic, $theWeb) = @_;
+  my ($this, $session, $params, $theTopic, $theWeb) = @_;
 
-  #writeDebug("called handleCATINFO(".$params->stringify().")");
+  #_writeDebug("called handleCATINFO(".$params->stringify().")");
   my $theCat = $params->{cat};
   my $theFormat = $params->{format} || '$link';
   my $theSep = $params->{separator};
@@ -320,7 +306,7 @@ sub handleCATINFO {
   my $categories;
   if ($theCat) { # cats mode
     if ($thisWeb eq 'any') {
-      $hierarchy = findHierarchy($theCat);
+      $hierarchy = $this->findHierarchy($theCat);
       return '' unless $hierarchy;
       $thisWeb = $hierarchy->{web};
     } else {
@@ -328,22 +314,22 @@ sub handleCATINFO {
       ($catWeb, $theCat) = 
         Foswiki::Func::normalizeWebTopicName($thisWeb, $theCat);
       $thisWeb = $catWeb unless defined $thisWeb;
-      $hierarchy = getHierarchy($thisWeb);
+      $hierarchy = $this->getHierarchy($thisWeb);
     }
     push @$categories, $theCat;
   } elsif ($thisTopic) { # topic mode
     ($thisWeb, $thisTopic) = 
       Foswiki::Func::normalizeWebTopicName($thisWeb, $thisTopic);
-    $hierarchy = getHierarchy($thisWeb);
+    $hierarchy = $this->getHierarchy($thisWeb);
     $categories = $hierarchy->getCategoriesOfTopic($thisTopic) if $hierarchy;
   } else { # find mode
-    $hierarchy = getHierarchy($thisWeb);
+    $hierarchy = $this->getHierarchy($thisWeb);
     @$categories = $hierarchy->getCategoryNames();
   }
 
-  return expandVariables($theNull) unless $hierarchy;
-  return expandVariables($theNull)  unless $categories;
-  #writeDebug("categories=".join(', ', @$categories));
+  return _expandVariables($theNull) unless $hierarchy;
+  return _expandVariables($theNull)  unless $categories;
+  #_writeDebug("categories=".join(', ', @$categories));
 
   my @result;
   my $doneBreadCrumbs = 0;
@@ -368,7 +354,7 @@ sub handleCATINFO {
       next if $theInclude && $category->{$theMatchAttr} !~ /^($theInclude)$/i;
     }
 
-    #writeDebug("found $catName");
+    #_writeDebug("found $catName");
 
     # skip catinfo from another branch of the hierarchy
     next if $subsumesCat && !$hierarchy->subsumes($subsumesCat, $category);
@@ -380,7 +366,7 @@ sub handleCATINFO {
 
     my @parents;
     if ($line =~ /\$parent/) {
-      @parents = sort {uc($a->{title}) cmp uc($b->{title})} $category->getParents($parentSubsumesCat);
+      @parents = sort {uc($a->title) cmp uc($b->title)} $category->getParents($parentSubsumesCat);
     }
 
     my $parentLinks = '';
@@ -405,7 +391,7 @@ sub handleCATINFO {
     if ($line =~ /\$parents?title/) {
       my @titles = ();
       foreach my $parent (@parents) {
-        push @titles, $parent->{title};
+        push @titles, $parent->title;
       }
       $parentsTitle = join($theSep, @titles);
     }
@@ -434,7 +420,7 @@ sub handleCATINFO {
       if (@breadCrumbs) {
         my $firstParent = $breadCrumbs[-1];
 
-        if ($firstParent->{redirect} && $thisTopic && $firstParent->{redirect} eq $thisTopic) {
+        if ($firstParent->redirect && $thisTopic && $firstParent->redirect eq $thisTopic) {
           pop @breadCrumbs;
         }
 
@@ -457,7 +443,7 @@ sub handleCATINFO {
     my @children;
     my $moreChildren = '';
     if ($line =~ /\$children/) {
-      @children = sort {uc($a->{title}) cmp uc($b->{title})} $category->getChildren();
+      @children = sort {uc($a->title) cmp uc($b->title)} $category->getChildren();
       @children = grep {$_->{name} ne 'BottomCategory'} @children;
 
       if ($theHideNull eq 'on') {
@@ -468,7 +454,7 @@ sub handleCATINFO {
       if ($theSortChildren eq 'on') {
         @children = 
           sort {$b->countLeafs() <=> $a->countLeafs() || 
-                $a->{title} cmp $b->{title}} 
+                $a->title cmp $b->title} 
             @children;
       }
 
@@ -501,7 +487,7 @@ sub handleCATINFO {
     if ($line =~ /\$childrentitle/) {
       my @titles = ();
       foreach my $child (@children) {
-        push @titles, $child->{title};
+        push @titles, $child->title;
       }
       $childrenTitle = join($theSep, @titles);
     }
@@ -531,12 +517,12 @@ sub handleCATINFO {
     my $nrTopics = '';
     $nrTopics = $category->countTopics() if $theFormat=~ /\$count/;
 
-    my $title = $category->{title} || $catName;
+    my $title = $category->title || $catName;
     my $link = $category->getLink();
     my $origlink = $category->getLink(0);
     my $origurl = $category->getUrl(0);
     my $url = $category->getUrl();
-    my $summary = $category->{summary} || '';
+    my $summary = $category->summary || '';
 
     my $icon = $category->getIcon();
     my $iconUrl = $category->getIconUrl();
@@ -578,19 +564,19 @@ sub handleCATINFO {
     push @result, $line if $line;
     last if $theLimit && $index >= $theLimit;
   }
-  return expandVariables($theNull) unless @result;
+  return _expandVariables($theNull) unless @result;
   my $result = $theHeader.join($theSep, @result).$theFooter;
-  $result = expandVariables($result, 'count'=>scalar(@$categories));
+  $result = _expandVariables($result, 'count'=>scalar(@$categories));
 
-  #writeDebug("result=$result");
+  #_writeDebug("result=$result");
   return $result;
 }
 
 ###############################################################################
 sub handleTAGINFO {
-  my ($session, $params, $theTopic, $theWeb) = @_;
+  my ($this, $session, $params, $theTopic, $theWeb) = @_;
 
-  #writeDebug("called handleTAGINFO(".$params->stringify().")");
+  #_writeDebug("called handleTAGINFO(".$params->stringify().")");
   my $theFormat = $params->{format} || '$link';
   my $theSep = $params->{separator};
   my $theHeader = $params->{header} || '';
@@ -610,8 +596,10 @@ sub handleTAGINFO {
   ($thisWeb, $thisTopic) = 
     Foswiki::Func::normalizeWebTopicName($thisWeb, $thisTopic);
 
+  $thisWeb =~s/\//./g; # fix subwebbing
+
   # get tags
-  my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($thisWeb);
+  my $db = Foswiki::Plugins::DBCachePlugin::getDB($thisWeb);
   return '' unless $db;
   my $topicObj = $db->fastget($thisTopic);
   return '' unless $topicObj;
@@ -637,7 +625,7 @@ sub handleTAGINFO {
     my $url;
     if ($context->{SolrPluginEnabled}) {
       # SMELL: WikiWords are autolinked in parameter position ... wtf
-      $url = '<noautolink>%SOLRSCRIPTURL{topic="'.$thisWeb.'.WebSearch" tag="'.$tag.'" web="'.$thisWeb.'" union="web" separator="&&"}%</noautolink>'; # && to please MAKETEXT :(
+      $url = '<noautolink>%SOLRSCRIPTURL{topic="'.$thisWeb.'.WebSearch" tag="'.$tag.'" separator="&&"}%</noautolink>'; # && to please MAKETEXT :(
     } else {
       $url = Foswiki::Func::getScriptUrlPath($thisWeb, "WebTagCloud", "view", tag=>$tag);
     }
@@ -656,13 +644,13 @@ sub handleTAGINFO {
 
   my $count = scalar(@tags);
   my $result = $theHeader.join($theSep, @result).$theFooter;
-  $result = expandVariables($result, 
+  $result = _expandVariables($result, 
     'web'=>$thisWeb,
     'count'=>$count,
     'index'=>$index,
   );
 
-  #writeDebug("result='$result'");
+  #_writeDebug("result='$result'");
   return $result;
 }
 
@@ -670,16 +658,20 @@ sub handleTAGINFO {
 # reparent based on the category we are in
 # takes the first category in alphabetic order
 sub beforeSaveHandler {
-  my ($text, $topic, $web, $meta) = @_;
+  my ($this, $text, $topic, $web, $meta) = @_;
 
-  writeDebug("beforeSaveHandler($web, $topic)");
+  #_writeDebug("beforeSaveHandler($web, $topic)");
+
+  # remember responsiblePerson
+  my ($prevMeta) = Foswiki::Func::readTopic($web, $topic);
+  $this->{beforeResponsiblePerson} = _getResponsiblePerson($prevMeta);
 
   my $doAutoReparent = Foswiki::Func::getPreferencesFlag('CLASSIFICATIONPLUGIN_AUTOREPARENT', $web);
 
   my $session = $Foswiki::Plugins::SESSION;
   unless ($meta) {
-    $meta = new Foswiki::Meta($session, $web, $topic, $text);
-    #writeDebug("creating a new meta object");
+    $meta = Foswiki::Meta->new($session, $web, $topic, $text);
+    #_writeDebug("creating a new meta object");
   }
 
   my %isCatField = ();
@@ -690,17 +682,17 @@ sub beforeSaveHandler {
   if ($formName) {
     my ($theFormWeb, $theForm) = Foswiki::Func::normalizeWebTopicName($web, $formName);
     my $formDef;
-    writeDebug("form definition at $theFormWeb, $theForm");
+    #_writeDebug("form definition at $theFormWeb, $theForm");
     if (Foswiki::Func::topicExists($theFormWeb, $theForm)) {
       try {
-        $formDef = new Foswiki::Form($session, $theFormWeb, $theForm);
+        $formDef = Foswiki::Form->new($session, $theFormWeb, $theForm);
       } catch Foswiki::OopsException with {
         my $e = shift;
         print STDERR "ERROR: can't read form definition $theForm in ClassificationPlugin::Core::beforeSaveHandler\n";
       };
       if ($formDef) {
         foreach my $fieldDef (@{$formDef->getFields()}) {
-          #writeDebug("formDef field $fieldDef->{name} type=$fieldDef->{type}");
+          #_writeDebug("formDef field $fieldDef->{name} type=$fieldDef->{type}");
           $isCatField{$fieldDef->{name}} = 1 if $fieldDef->{type} eq 'cat';
           $isTagField{$fieldDef->{name}} = 1 if $fieldDef->{type} eq 'tag';
         }
@@ -725,8 +717,8 @@ sub beforeSaveHandler {
     #if (TRACE) {
     #  use Data::Dumper;
     #  $Data::Dumper::Maxdepth = 3;
-    #  writeDebug("BEFORE FIXFORMFIELDS");
-    #  writeDebug(Dumper($meta));
+    #  _writeDebug("BEFORE FIXFORMFIELDS");
+    #  _writeDebug(Dumper($meta));
     #}
 
     foreach my $field ($meta->find('FIELD')) {
@@ -735,7 +727,7 @@ sub beforeSaveHandler {
         $field->{title} =~ s/^.*[\.\/](.*?)$/$1/;
       }
       if ($isCatField{$field->{name}}) {
-        writeDebug("before, value=$field->{value}");
+        #_writeDebug("before, value=$field->{value}");
         $field->{value} =~ s/^top=.*$//; # clean up top= in value definition
         my $item;
         $field->{value} = join(', ', 
@@ -746,20 +738,20 @@ sub beforeSaveHandler {
             }
             split(/\s*,\s*/, $field->{value})
         ); # remove accidental web part from categories
-        writeDebug("after, value=$field->{value}");
+        #_writeDebug("after, value=$field->{value}");
       }
     }
 
     #if (TRACE) {
     #  use Data::Dumper;
     #  $Data::Dumper::Maxdepth = 3;
-    #  writeDebug("AFTER FIXFORMFIELDS");
-    #  writeDebug(Dumper($meta));
+    #  _writeDebug("AFTER FIXFORMFIELDS");
+    #  _writeDebug(Dumper($meta));
     #}
   }
 
   if ($web eq $Foswiki::cfg{TrashWebName}) {
-    writeDebug("detected a move from $session->{webName} to trash");
+    #_writeDebug("detected a move from $session->{webName} to trash");
     $web = $session->{webName};# operations are on the baseWeb
   }
 
@@ -769,7 +761,7 @@ sub beforeSaveHandler {
   $topicType = $topicType->{value};
 
   # fix topic type depending on the form
-  writeDebug("old TopicType=$topicType");
+  #_writeDebug("old TopicType=$topicType");
   my @topicType = split(/\s*,\s*/, $topicType);
   my $index = scalar(@topicType)+3;
   my %newTopicType = map {$_ =~ s/^.*\.//; $_ => $index--} @topicType;
@@ -803,7 +795,7 @@ sub beforeSaveHandler {
       push @newTopicType, $item;
     }
     my $newTopicType = join(', ', @newTopicType);
-    writeDebug("new TopicType=$newTopicType");
+    #_writeDebug("new TopicType=$newTopicType");
     $meta->putKeyed('FIELD', {name =>'TopicType', title=>'TopicType', value=>$newTopicType});
   }
 
@@ -812,20 +804,20 @@ sub beforeSaveHandler {
 
   return unless $topicType =~ /ClassifiedTopic|CategorizedTopic|Category|TaggedTopic/;
 
-  my $hierarchy = getHierarchy($web);
+  my $hierarchy = $this->getHierarchy($web);
   my $catFields = $hierarchy->getCatFields(split(/\s*,\s*/,$topicType));
 
   # get old categories from store 
-  my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($web);
+  my $db = Foswiki::Plugins::DBCachePlugin::getDB($web);
   my $topicObj = $db->fastget($topic);
   my %oldCats;
   if (!$topicObj) {
-    $purgeMode = 2; # new topic
+    $this->{purgeMode} = 2; # new topic
   } else {
     my $form = $topicObj->fastget("form");
 
     if (!$form) {
-      $purgeMode = 2; # new form
+      $this->{purgeMode} = 2; # new form
     } else {
       $form = $topicObj->fastget($form);
       
@@ -853,7 +845,7 @@ sub beforeSaveHandler {
 
     # assigning TopCategory only empties the cat field
     if ($cats eq 'TopCategory') {
-      #writeDebug("found TopCategory assignment");
+      #_writeDebug("found TopCategory assignment");
       $meta->putKeyed('FIELD', {name =>$field, title=>$title, value=>''});
       next;
     }
@@ -867,7 +859,7 @@ sub beforeSaveHandler {
 
   # set the new parent topic
   if ($doAutoReparent) {
-    writeDebug("autoreparenting");
+    #_writeDebug("autoreparenting");
     my $newParentCat;
     foreach my $cat (sort keys %newCats) {
       if ($cat ne 'TopCategory') {
@@ -877,71 +869,74 @@ sub beforeSaveHandler {
     }
     my $homeTopicName = $Foswiki::cfg{HomeTopicName};
     $newParentCat = $homeTopicName unless defined $newParentCat;
-    writeDebug("newParentCat=$newParentCat");
+    #_writeDebug("newParentCat=$newParentCat");
     $meta->remove('TOPICPARENT');
     $meta->putKeyed('TOPICPARENT', {name=>$newParentCat});
   } else {
-    writeDebug("not autoreparenting");
+    #_writeDebug("not autoreparenting");
   }
 
   # get changed categories
-  my %changedCats = ();
+  $this->{changedCats} = ();
   foreach my $cat (keys %oldCats) {
-    $changedCats{$cat} = 1 unless $newCats{$cat};
+    $this->{changedCats}{$cat} = 1 unless $newCats{$cat};
   }
   foreach my $cat (keys %newCats) {
-    $changedCats{$cat} = 1 unless $oldCats{$cat};
+    $this->{changedCats}{$cat} = 1 unless $oldCats{$cat};
   }
-  @changedCats = keys %changedCats; #remember 
 
   # add self
-  if (@changedCats && !$changedCats{$topic} && $topicType =~ /\bCategory\b/) {
-    push @changedCats, $topic;
-    #writeDebug("adding self to changedCats");
+  if (!$this->{changedCats}{$topic} && $topicType =~ /\bCategory\b/) {
+    $this->{changedCats}{$topic} = 1;
+    #_writeDebug("adding self to changedCats");
   }
 
   # cache invalidation: compute the purgeMode to be executed after save
-  $purgeMode = 1 if $topicType =~ /\bTaggedTopic\b/;
-  $purgeMode = 2 if $topicType =~ /\bCategorizedTopic\b/;
-  $purgeMode = 3 if $topicType =~ /\bClassifiedTopic\b/;
-  $purgeMode = 4 if $topicType =~ /\bCategory\b/;
+  $this->{purgeMode} = 1 if $topicType =~ /\bTaggedTopic\b/;
+  $this->{purgeMode} = 2 if $topicType =~ /\bCategorizedTopic\b/;
+  $this->{purgeMode} = 3 if $topicType =~ /\bClassifiedTopic\b/;
+  $this->{purgeMode} = 4 if $topicType =~ /\bCategory\b/;
 
   # try even harder if it missing the CategorizedTopic TopicType but
   # still uses categories
-  if ($purgeMode < 2) { 
-    my $hierarchy = getHierarchy($web); 
+  if ($this->{purgeMode} < 2) { 
+    my $hierarchy = $this->getHierarchy($web); 
     my $catFields = $hierarchy->getCatFields(split(/\s*,\s*/,$topicType));
     if ($catFields && @$catFields) {
-      $purgeMode = ($purgeMode < 1)?2:3;
+      $this->{purgeMode} = ($this->{purgeMode} < 1)?2:3;
     }
   }
 
-  writeDebug("purgeMode=$purgeMode");
-  #writeDebug("changedCats=".join(',', @changedCats));
+  #_writeDebug("purgeMode=$this->{purgeMode}");
+  #_writeDebug("changedCats=".join(',', keys %{$this->{changedCats}}));
+
 }
 
 ###############################################################################
 sub afterSaveHandler {
-  #my ($text, $topic, $web, $meta) = @_;
+  #my ($this, $text, $topic, $web, $error, $meta) = @_;
+  my $this = shift;
   my $topic = $_[1];
   my $web = $_[2];
+  my $meta = $_[4];
 
-  writeDebug("afterSaveHandler($web, $topic)");
+  #_writeDebug("afterSaveHandler($web, $topic)");
 
+  my $session = $Foswiki::Plugins::SESSION;
   if ($web eq $Foswiki::cfg{TrashWebName}) {
-    #writeDebug("detected a move from $session->{webName} to trash");
+    #_writeDebug("detected a move from $session->{webName} to trash");
     $web = $session->{webName};# operations are on the baseWeb
   }
   $web =~ s/\//./go;
  
-  if ($purgeMode) {
-    writeDebug("purging hierarchy $web");
-    my $hierarchy = getHierarchy($web);
+  if ($this->{purgeMode}) {
+    #_writeDebug("purging hierarchy $web");
+    my $hierarchy = $this->getHierarchy($web);
 
     # delete the cached html page 
     my $cache = $Foswiki::Plugins::SESSION->{cache} || $Foswiki::Plugins::SESSION->{cache};
     if (defined $cache) {
-      foreach my $catName (@changedCats) {
+      foreach my $catName (keys %{$this->{changedCats}}) {
         my $cat = $hierarchy->getCategory($catName);
         next unless $cat;
         if ($cat->{origWeb} eq $web) {
@@ -953,20 +948,56 @@ sub afterSaveHandler {
         }
       }
     }
-    writeDebug("purging @changedCats");
+    #_writeDebug("purging changedCats");
 
-    $hierarchy->purgeCache($purgeMode, \@changedCats);
-    $purgeMode = 0; # reset
+    $hierarchy->purgeCache($this->{purgeMode}, [keys %{$this->{changedCats}}]);
+    $this->{purgeMode} = 0; # reset
+  }
+
+  # auto-subscribe responsible person
+  my $autoSubscribe = Foswiki::Func::getPreferencesValue("AUTOSCUBSCRIBE_RESPONSIBLE_PERSON") || 'on';
+  $autoSubscribe = Foswiki::Func::isTrue($autoSubscribe, 1);
+
+  if ($autoSubscribe) {  
+    my @unsubscribe = ();
+    my @subscribe = ();
+
+    my %before = ();
+    foreach my $person (split(/\s*,\s*/, $this->{beforeResponsiblePerson})) {
+      $before{$person}++;
+    }
+    my %after = ();
+    my $afterResponsiblePerson = _getResponsiblePerson($meta);
+    foreach my $person (split(/\s*,\s*/, $afterResponsiblePerson)) {
+      $after{$person}++;
+    }
+    foreach my $person (keys %before) {
+      next if $after{$person};
+      push @unsubscribe, $person;
+    }
+    foreach my $person (keys %after) {
+      next if $before{$person};
+      push @subscribe, $person;
+    }
+    
+    if (@unsubscribe) {
+      #_writeDebug("auto-un-subscribing @unsubscribe");
+      Foswiki::Contrib::MailerContrib::changeSubscription($web, $_, $topic, "-") foreach @unsubscribe;
+    }
+    if (@subscribe) {
+      #_writeDebug("auto-subscribing @subscribe");
+      Foswiki::Contrib::MailerContrib::changeSubscription($web, $_, $topic) foreach @subscribe;
+    }
   }
 }
 
 ###############################################################################
 sub afterRenameHandler {
-  my ($fromWeb, $fromTopic, $fromAttachment, $toWeb, $toTopic, $toAttachment) = @_;
+  my ($this, $fromWeb, $fromTopic, $fromAttachment, $toWeb, $toTopic, $toAttachment) = @_;
 
   return if $fromAttachment || $toAttachment;
 
-  writeDebug("afterRenameHandler($fromWeb, $fromTopic, $toWeb, $toTopic)");
+  #_writeDebug("afterRenameHandler($fromWeb, $fromTopic, $toWeb, $toTopic)");
 
   my ($meta) = Foswiki::Func::readTopic($toWeb, $toTopic);
   my $formName = $meta->getFormName();
@@ -974,7 +1005,7 @@ sub afterRenameHandler {
   #print STDERR "formName=$formName\n";
   return unless $formName =~ /^Applications[\.\/]ClassificationApp[\.\/]Category$/;
 
-  my $hierarchy = getHierarchy($fromWeb);
+  my $hierarchy = $this->getHierarchy($fromWeb);
 
   if ($hierarchy) {
     my @changedCats = ($fromTopic);
@@ -984,45 +1015,20 @@ sub afterRenameHandler {
   }
 
   if ($fromWeb ne $toWeb && $toWeb ne $Foswiki::cfg{TrashWebName}) {
-    $hierarchy = getHierarchy($toWeb);
+    $hierarchy = $this->getHierarchy($toWeb);
 
     if ($hierarchy) {
       my @changedCats = ($toTopic);
       $hierarchy->purgeCache(4, \@changedCats);
     }
   } else {
-    writeDebug("detected rename to trash");
+    #_writeDebug("detected rename to trash");
   }
-}
-
-###############################################################################
-sub getTopicTypes {
-  my ($web, $topic) = @_;
-
-  my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($web);
-  return undef unless $db;
-
-  my $topicObj = $db->fastget($topic);
-  return undef unless $topicObj;
-
-  my $form = $topicObj->fastget("form");
-  return undef unless $form;
-
-  $form = $topicObj->fastget($form);
-  return undef unless $form;
-
-  my $topicTypes = $form->fastget('TopicType');
-  return undef unless $topicTypes;
-
-  my @topicTypes = split(/\s*,\s*/, $topicTypes);
-
-  return \@topicTypes;
 }
 
 ################################################################################
 sub getCacheFile {
-  my $web = shift;
-  my $topic = shift;
+  my ($this, $web, $topic) = @_;
 
   $web =~ s/^\s+//go;
   $web =~ s/\s+$//go;
@@ -1036,69 +1042,74 @@ sub getCacheFile {
 
 ###############################################################################
 sub getModificationTime {
-  my $web = shift;
-  my $topic = shift;
+  my ($this, $web, $topic) = @_;
 
   my $key = $web;
   $key .= '.'.$topic if defined $topic;
 
-  unless ($modTimeStamps{$key}) {
-    my $cacheFile = getCacheFile($web, $topic);
+  unless ($this->{modTimeStamps}{$key}) {
+    my $cacheFile = $this->getCacheFile($web, $topic);
     my @stat = stat($cacheFile);
-    $modTimeStamps{$key} = ($stat[9] || $stat[10] || 1);
+    $this->{modTimeStamps}{$key} = ($stat[9] || $stat[10] || 1);
   }
 
-  return $modTimeStamps{$key};
+  return $this->{modTimeStamps}{$key};
 }
 
 ###############################################################################
 # returns the hierarchy object for a given web; construct a new one if
 # not already done
 sub getHierarchy {
-  my $web = shift;
+  my ($this, $web) = @_;
 
-  $web =~ s/\//\./go;
-  if (!$loadTimeStamps{$web} || $loadTimeStamps{$web} < getModificationTime($web)) {
-    #writeDebug("constructing hierarchy for $web");
-    require Foswiki::Plugins::ClassificationPlugin::Hierarchy;
-    $hierarchies{$web} = new Foswiki::Plugins::ClassificationPlugin::Hierarchy($web);
-    $loadTimeStamps{$web} = time();
-    #writeDebug("DONE constructing hierarchy for $web");
+  die "no web defined" unless defined $web;
+
+  unless (Foswiki::Func::webExists($web)) {
+    cluck("ERROR: can't get hierarchy for non-existing web '$web'");
+    return;
   }
 
-  return $hierarchies{$web};
+  $web =~ s/\//\./go;
+  if (!$this->{loadTimeStamps}{$web} || $this->{loadTimeStamps}{$web} < $this->getModificationTime($web)) {
+    #_writeDebug("constructing hierarchy for $web");
+    require Foswiki::Plugins::ClassificationPlugin::Hierarchy;
+    $this->{hierarchies}{$web} = Foswiki::Plugins::ClassificationPlugin::Hierarchy->new($web);
+    $this->{loadTimeStamps}{$web} = time();
+    #_writeDebug("DONE constructing hierarchy for $web");
+  }
+
+  return $this->{hierarchies}{$web};
 }
 
 ###############################################################################
 # returns the hierarchy object for a given web.topic; construct a new one if
 # not already done
 sub getHierarchyFromTopic {
-  my $web = shift;
-  my $topic = shift;
+  my ($this, $web, $topic) = @_;
 
   $web =~ s/\//\./go;
   my $key = $web.'.'.$topic;
-  my $timeStap = $loadTimeStamps{$key};
+  my $timeStap = $this->{loadTimeStamps}{$key};
 
-  if (!$timeStap || $timeStap < getModificationTime($web, $topic)) {
-    #writeDebug("constructing hierarchy for $web");
+  if (!$timeStap || $timeStap < $this->getModificationTime($web, $topic)) {
+    #_writeDebug("constructing hierarchy for $web");
     require Foswiki::Plugins::ClassificationPlugin::Hierarchy;
-    $hierarchies{$key} = new Foswiki::Plugins::ClassificationPlugin::Hierarchy($web, $topic);
-    $loadTimeStamps{$key} = time();
-    #writeDebug("DONE constructing hierarchy for $web");
+    $this->{hierarchies}{$key} = Foswiki::Plugins::ClassificationPlugin::Hierarchy->new($web, $topic);
+    $this->{loadTimeStamps}{$key} = time();
+    #_writeDebug("DONE constructing hierarchy for $web");
   }
 
-  return $hierarchies{$key};
+  return $this->{hierarchies}{$key};
 }
 
 ###############################################################################
 # returns a hierarchy object for a given bullet list
 # not already done
 sub getHierarchyFromText {
-  my $text = shift;
+  my ($this, $text) = @_;
 
   require Foswiki::Plugins::ClassificationPlugin::Hierarchy;
-  return new Foswiki::Plugins::ClassificationPlugin::Hierarchy(undef, undef, $text, @_);
+  return Foswiki::Plugins::ClassificationPlugin::Hierarchy->new(undef, undef, $text, @_);
 }
 
 
@@ -1106,15 +1117,16 @@ sub getHierarchyFromText {
 # get the hierarchy that implements the given category; this traverses all
 # webs and loads their hierarchy to see if it exists
 sub findHierarchy {
-  my $catName = shift;
+  my ($this, $catName) = @_;
 
   # try baseweb first
-  my $hierarchy = getHierarchy($session->{webName});
+  my $session = $Foswiki::Plugins::SESSION;
+  my $hierarchy = $this->getHierarchy($session->{webName});
   my $cat = $hierarchy->getCategory($catName);
 
   unless ($cat) {
     foreach my $web (Foswiki::Func::getListOfWebs('user')) {
-      $hierarchy = getHierarchy($web);
+      $hierarchy = $this->getHierarchy($web);
       $cat = $hierarchy->getCategory($catName);
       last if $cat;
     }
@@ -1124,34 +1136,11 @@ sub findHierarchy {
 }
 
 ###############################################################################
-sub expandVariables {
-  my ($theFormat, %params) = @_;
-
-  return '' unless $theFormat;
-
-  #writeDebug("called expandVariables($theFormat)");
-
-  foreach my $key (keys %params) {
-    #die "params{$key} undefined" unless defined($params{$key});
-    $theFormat =~ s/\$$key\b/$params{$key}/g;
-  }
-  $theFormat =~ s/\$percnt/\%/go;
-  $theFormat =~ s/\$nop//go;
-  $theFormat =~ s/\$n/\n/go;
-  $theFormat =~ s/\$t\b/\t/go;
-  $theFormat =~ s/\$dollar/\$/go;
-
-  #writeDebug("result='$theFormat'");
-
-  return $theFormat;
-}
-
-###############################################################################
 sub renameTag {
-  my ($from, $to, $web, $topics) = @_;
+  my ($this, $from, $to, $web, $topics) = @_;
 
-  my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($web);
-  my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($web);
+  my $hierarchy = $this->getHierarchy($web);
+  my $db = Foswiki::Plugins::DBCachePlugin::getDB($web);
 
   $topics = [$db->getKeys()] unless $topics;
   my @from = ();
@@ -1174,7 +1163,7 @@ sub renameTag {
 
     foreach my $from (@from) {
       if ($tags{$from}) {
-        $gotAccess = Foswiki::Func::checkAccessPermission('change', $user, undef, $web, $topic)
+        $gotAccess = Foswiki::Func::checkAccessPermission('change', $user, undef, $topic, $web)
           unless defined $gotAccess;
         next unless $gotAccess;
         delete $tags{$from};
@@ -1205,10 +1194,10 @@ sub renameTag {
 
 ###############################################################################
 sub getIndexFields {
-  my ($web, $topic, $meta) = @_;
+  my ($this, $web, $topic, $meta) = @_;
 
   $web =~ s/\//./g;
-  my $indexFields = $cachedIndexFields{"$web.$topic"};
+  my $indexFields = $this->{cachedIndexFields}{"$web.$topic"};
   return $indexFields if $indexFields;
 
   @$indexFields = ();
@@ -1220,7 +1209,7 @@ sub getIndexFields {
   my $formDef;
 
   try {
-    $formDef = new Foswiki::Form($session, $web, $formName) if $formName;
+    $formDef = Foswiki::Form->new($session, $web, $formName) if $formName;
   } catch Foswiki::OopsException with {
     my $e = shift;
     print STDERR "ERROR: can't read form definition $formName in ClassificationPlugin::Core::getIndexFields\n";
@@ -1231,7 +1220,7 @@ sub getIndexFields {
     my %seenFields = ();
     my %categories;
     my %tags;
-    my $hierarchy = getHierarchy($web);
+    my $hierarchy = $this->getHierarchy($web);
     foreach my $fieldDef (@{$formDef->getFields()}) {
       my $name = $fieldDef->{name};
       my $type = $fieldDef->{type};
@@ -1254,8 +1243,16 @@ sub getIndexFields {
 	  push @$indexFields, ['field_'.$name.'_flat_lst' => $category];
 	}
 
-        # then, gather all parent categories for this cat field
         if ($hierarchy) {
+          # create a category title field
+          foreach my $category (keys %thisCategories) {
+            my $cat = $hierarchy->getCategory($category);
+            next unless $cat;
+            push @$indexFields, ['field_'.$name.'_title_lst' => $cat->title];
+          }
+        
+
+          # then, gather all parent categories for this cat field
           foreach my $category (keys %thisCategories) {
             my $cat = $hierarchy->getCategory($category);
             next unless $cat;
@@ -1310,25 +1307,151 @@ sub getIndexFields {
     }
   }
 
-  $cachedIndexFields{"$web.$topic"} = $indexFields;
+  $this->{cachedIndexFields}{"$web.$topic"} = $indexFields;
   return $indexFields;
 }
 
 ###############################################################################
 sub indexAttachmentHandler {
-  my ($indexer, $doc, $web, $topic, $attachment) = @_;
+  my ($this, $indexer, $doc, $web, $topic, $attachment) = @_;
 
-  my $indexFields = getIndexFields($web, $topic);
+  my $indexFields = $this->getIndexFields($web, $topic);
   $doc->add_fields(@$indexFields) if $indexFields;
 }
 
 ###############################################################################
-sub indexTopicHandler {
-  my ($indexer, $doc, $web, $topic, $meta, $text) = @_;
+sub getIconOfTopic {
+  my ($this, $web, $topic) = @_;
 
-  my $indexFields = getIndexFields($web, $topic, $meta);
-  $doc->add_fields(@$indexFields) if $indexFields;
+  ($web, $topic) = Foswiki::Func::normalizeWebTopicName($web, $topic);
+  my $db = Foswiki::Plugins::DBCachePlugin::getDB($web);
+  return unless $db;
+
+  my $topicObj = $db->fastget($topic);
+  return unless $topicObj;
+
+  my $formName = $topicObj->fastget('form');
+  return unless $formName;
+
+  my $form = $topicObj->fastget($formName);
+  return unless $form;
+
+  $formName = $form->fastget('name');
+
+  if ($formName =~ /\bTopicStub\b/) {
+    my $target = $form->fastget("Target");
+    return $this->getIconOfTopic($web, $target);
+  }
+
+
+  ($web, $topic) = Foswiki::Func::normalizeWebTopicName($web, $formName);
+  $db = Foswiki::Plugins::DBCachePlugin::getDB($web);
+  return unless $db;
+
+  $topicObj = $db->fastget($topic);
+  return unless $topicObj;
+
+  $form = $topicObj->fastget('form');
+  return unless $form;
+
+  $form = $topicObj->fastget($form);
+  return unless $form;
+
+
+  my $icon = $form->fastget("Icon");
+  return unless $icon;
+
+  return $icon if defined $icon;
 }
+
+###############################################################################
+sub indexTopicHandler {
+  my ($this, $indexer, $doc, $web, $topic, $meta, $text) = @_;
+
+  my $indexFields = $this->getIndexFields($web, $topic, $meta);
+  $doc->add_fields(@$indexFields) if $indexFields;
+
+  my $icon;
+
+  if ($meta->get('FIELD', 'TopicType')) {
+    $icon = $this->getIconOfTopic($web, $topic);
+  } 
+
+  if ($icon) {
+    my $field = $indexer->getField($doc, "icon");
+    $field->value($icon) if $field;
+  }
+}
+
+###############################################################################
+# statics 
+###############################################################################
+sub _getResponsiblePerson {
+  my $meta = shift;
+
+  my $topicType = $meta->get('FIELD', 'TopicType');
+  $topicType = $topicType->{value} if $topicType;
+  $topicType ||= '';
+
+  return "" unless $topicType =~ /\bCategory\b/;
+
+  my $responsiblePerson = $meta->get('FIELD', "ResponsiblePerson");
+  $responsiblePerson = $responsiblePerson->{value} if defined $responsiblePerson;
+
+  return $responsiblePerson || "";
+}
+
+###############################################################################
+sub _writeDebug {
+  print STDERR '- ClassificationPlugin::Core - '.$_[0]."\n" if TRACE;
+  #Foswiki::Func::writeDebug('- ClassificationPlugin::Core - '.$_[0]) if TRACE;
+}
+
+###############################################################################
+sub getTopicTypes {
+  my ($this, $web, $topic) = @_;
+
+  my $db = Foswiki::Plugins::DBCachePlugin::getDB($web);
+  return () unless $db;
+
+  my $topicObj = $db->fastget($topic);
+  return () unless $topicObj;
+
+  my $form = $topicObj->fastget("form");
+  return () unless $form;
+
+  $form = $topicObj->fastget($form);
+  return () unless $form;
+
+  my $topicTypes = $form->fastget('TopicType');
+  return () unless $topicTypes;
+
+  return split(/\s*,\s*/, $topicTypes);
+}
+
+###############################################################################
+sub _expandVariables {
+  my ($theFormat, %params) = @_;
+
+  return '' unless $theFormat;
+
+  #_writeDebug("called _expandVariables($theFormat)");
+
+  foreach my $key (keys %params) {
+    #die "params{$key} undefined" unless defined($params{$key});
+    $theFormat =~ s/\$$key\b/$params{$key}/g;
+  }
+  $theFormat =~ s/\$percnt/\%/go;
+  $theFormat =~ s/\$nop//go;
+  $theFormat =~ s/\$n/\n/go;
+  $theFormat =~ s/\$t\b/\t/go;
+  $theFormat =~ s/\$dollar/\$/go;
+
+  #_writeDebug("result='$theFormat'");
+
+  return $theFormat;
+}
+
 
 1;
 

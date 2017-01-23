@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.WikiTopicEdit"}%
@@ -13,28 +13,26 @@
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"formfields"}%%TMPL:P{"workflowtab"}%%TMPL:END%
+%TMPL:DEF{"settings"}%%TMPL:P{"topicsettings"}%%TMPL:P{"workflowsettings"}%%TMPL:P{"editsettings"}%%TMPL:P{"skinsettings"}%%TMPL:P{"displaysettings"}%%TMPL:P{"commentsettings"}%%TMPL:END%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"workflowtab"}%%TAB{"%MAKETEXT{"Workflow"}%"}%
----++ %MAKETEXT{"Workflow"}%
+%TMPL:DEF{"workflowsettings"}%<h2>%TRANSLATE{"Workflow settings"}%</h2>
+<div class="foswikiFormSteps">
+<div class="foswikiFormStep">
 %RENDERFOREDIT{
    fields="Workflow"
+   header="<table class='foswikiLayoutTable'>"
+   format="<tr><th>$title</th><td>$edit</td></tr>"
+   footer="</table>"
 }%
-%FORMATLIST{"%WORKFLOWHISTORY%"
-   split="\n"
-   pattern="state=(.*);rev=(.*);user=(.*);date=(.*)"
-   header="---++ %MAKETEXT{"History"}%$n<div class='foswikiFlatTable foswikiFullWidth'>$n| *Rev* | *User* | *New State* | *Date* |$n"
-   format="| *$2* | [[$3]] | $1 | $4 |"
-   footer="$n</div>"
-   separator="$n"
-}%
-%ENDTAB%%TMPL:END%%TMPL:END%
+</div>
+</div>%TMPL:END%
 %{</verbatim>}%
 
+
 %META:FORM{name="Applications.TopicView"}%
-%META:FIELD{name="TopicType" title="TopicType" value="TopicView, WikiTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value="Editor for ControlledTopics"}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

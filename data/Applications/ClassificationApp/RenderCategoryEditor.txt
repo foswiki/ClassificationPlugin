@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -50,7 +50,7 @@
 %JQREQUIRE{"treeview, ui"}%<!-- -->
 %ADDTOZONE{"script" 
   id="CLASSIFICATIONPLUGIN::CATSELECTOR" 
-  text="<script src='%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/jquery.catselector.js'></script>" 
+  text="<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/jquery.catselector.js'></script>" 
   requires="JQUERYPLUGIN::TREEVIEW, JQUERYPLUGIN::UI"
 }%<!-- -->
 %ADDTOZONE{"head"

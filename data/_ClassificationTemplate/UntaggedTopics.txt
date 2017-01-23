@@ -1,0 +1,9 @@
+%META:TOPICINFO{author="micha" comment="reprev" date="1475302014" format="1.1" reprev="1" version="1"}%
+---+!! %TOPICTITLE%
+%DBCALL{"Applications.ClassificationApp.RenderUntaggedTopics"}%
+
+%META:PREFERENCE{name="TOPICTITLE" title="TOPICTITLE" type="Local" value="Untagged Topics"}%
+%META:PREFERENCE{name="DISPLAYREVISIONINFO" title="DISPLAYREVISIONINFO" type="Local" value="off"}%
+%META:PREFERENCE{name="DISPLAYFORM" title="DISPLAYFORM" type="Local" value="off"}%
+%META:PREFERENCE{name="DISPLAYATTACHMENTS" title="DISPLAYATTACHMENTS" type="Local" value="off"}%
+%META:PREFERENCE{name="DISPLAYCOMMENTS" title="DISPLAYCOMMENTS" type="Local" value="off"}%

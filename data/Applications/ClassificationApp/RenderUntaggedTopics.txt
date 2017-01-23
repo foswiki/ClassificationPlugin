@@ -1,0 +1,35 @@
+%META:TOPICINFO{author="micha" comment="reprev" date="1475146244" format="1.1" reprev="1" version="1"}%
+%META:TOPICPARENT{name="TopicFunction"}%
+%TOC{depth="2"}%
+
+---++ Documentation
+%STARTSECTION{"documentation"}%
+List all topics that are not tagged. See also [[RenderUncategorizedTopics]].
+
+---+++++ Parameters
+   * THEWEB: the web to search for, defaults to =%<nop>BASEWEB%=
+   * EXCLUDE: regular expression of topics to be excluded, defaults to =UncategorizedTopics|UntaggedTopics|WebTopicEditTemplate=
+
+%ENDSECTION{"documentation"}%
+
+---++ Implementation
+<verbatim class="tml">
+%STARTINCLUDE%
+%DBQUERY{
+  "TopicType=~'\b(Classified|Tagged)Topic\b' AND ! Tag"
+  exclude="%EXCLUDE{default="UncategorizedTopics|UntaggedTopics|WebTopicEditTemplate"}%"
+  web="%THEWEB{default="%BASEWEB%"}%"
+  format="   1 [[$web.$topic]]"
+  separator="$n"
+}%
+%STOPINCLUDE%
+</verbatim>
+
+---++ Test
+%DBCALL{"%TOPIC%"}%
+
+%META:FORM{name="Applications.TopicFunction"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="list all topics not categorized yet"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

@@ -1,33 +1,35 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
 ---++ Documentation
 %STARTSECTION{"documentation"}%
-%RED%TODO%ENDCOLOR%
+List all topics that are not filed into any category. Technically they are direct decendance of the !TopCategory. See also [[RenderUntaggedTopics]].
 
 ---+++++ Parameters
-   * EXCLUDE: regular expression of topics to be excluded, defaults to =UncategorizedTopics|WebTopicEditTemplate=
+   * THEWEB: the web to search for, defaults to =%<nop>BASEWEB%=
+   * EXCLUDE: regular expression of topics to be excluded, defaults to =WebTopicEditTemplate=
 
 %ENDSECTION{"documentation"}%
 
 ---++ Implementation
 <verbatim class="tml">
-%STARTINCLUDE%%DBQUERY{
+%STARTINCLUDE%
+%DBQUERY{
   "TopicType=~'\b(Classified|Categorized)Topic\b' AND TopicType !~ '\bCategory\b' AND ('TopCategory' DISTANCE topic) = 1"
-  exclude="%EXCLUDE{default="UncategorizedTopics|WebTopicEditTemplat"}%"
-  web="%BASEWEB%"
-  header="| *#* | *Topic* | *Title* |$n"
-  format="| $index | [[$web.$topic][$topic]] | $expand(topictitle) |"
-}%%STOPINCLUDE%
+  exclude="%EXCLUDE{default="WebTopicEditTemplate"}%"
+  web="%THEWEB{default="%BASEWEB%"}%"
+  format="   1 [[$web.$topic]]"
+  separator="$n"
+}%
+%STOPINCLUDE%
 </verbatim>
 
 ---++ Test
 %DBCALL{"%TOPIC%"}%
 
 %META:FORM{name="Applications.TopicFunction"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="list all topics not categorized yet"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
-%META:PREFERENCE{name="EDIT_TEMPLATE" title="EDIT_TEMPLATE" type="Set" value="Applications.WikiTopicEdit"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="list all topics not categorized yet"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

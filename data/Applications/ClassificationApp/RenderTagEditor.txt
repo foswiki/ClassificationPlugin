@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -16,8 +16,8 @@
 ---++ Implementation
 <verbatim class="tml">
 %STARTINCLUDE%<div class="clsTagEditor"><noautolink>
-<input type="text" class="foswikiInputField jqTextboxList {autocomplete:'%SCRIPTURL{"rest"}%/RenderPlugin/template?topic=%THEWEB%.%THETOPIC%;name=classificationplugin;expand=querytags'}" name="%NAME%" id="%NAME%" size="%SIZE%" value="%IF{"defined VALUE" then="%VALUE%"}%" />
-%IF{"context SolrPluginEnabled" then="%DBCALL{"%WEB%.%TOPIC%" section="tagsuggestion"}%"}%
+<input type="text" class="foswikiInputField jqTextboxList {autocomplete:'%SCRIPTURL{"rest"}%/RenderPlugin/template?topic=%THEWEB{default="%BASEWEB%"}%.%THETOPIC{default="%BASETOPIC%"}%;name=classificationplugin;expand=querytags'}" name="%NAME%" id="%NAME%" size="%SIZE%" value="%VALUE{default=""}%" />
+%IF{"context SolrPluginEnabled" then="$percntDBCALL{\"%WEB%.%TOPIC%\" section=\"tagsuggestion\"}$percnt"}%
 </noautolink></div>%STOPINCLUDE%
 </verbatim>
 
@@ -26,13 +26,14 @@
 %STARTSECTION{"tagsuggestion"}%<!--  -->
 %FORMATLIST{
   "%SOLRSIMILAR{
-     "id:%THEWEB%.%THETOPIC%"
+     "id:%THEWEB{default="%BASEWEB%"}%.%THETOPIC{default="%BASETOPIC%"}%"
      like="category,tag"
      facets="tag"
      facetlimit="20"
      facetmincount="5"
      mindocumentfrequency="10"
-     filter="type:topic web:%THEWEB%"
+     rows="0"
+     filter="type:topic web:%THEWEB{default="%BASEWEB%"}%"
      format_tag="$key=$count"
      separator_tag=","
   }%"
@@ -57,7 +58,7 @@
 
 
 %META:FORM{name="Applications.TopicFunction"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="Render an editor for tags"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Render an editor for tags"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

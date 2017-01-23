@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicType"}%
 %TOC%
 %DBCALL{"Applications.RenderTopicInstaller" 
@@ -18,9 +18,14 @@ See also: See [[CategorizedTopic]], [[ClassifiedTopic]], [[TaggedTopic]], [[Cate
 %ENDSECTION{name="documentation" type="section"}%
 
 %STARTINCLUDE%<!-- -->
+%DBCALL{"%WEB%.%TOPIC%" section="%IF{"'%URLPARAM{"web" default="%BASEWEB%"}%.TopCategory' allows 'CHANGE'" then="readwrite" else="readonly"}%"}%
+<!-- -->%STOPINCLUDE%
+
+<verbatim class="tml">
+%STARTSECTION{"readwrite"}%<!-- -->
 %TWISTY{
   link="%BUTTON{
-    "%IF{"defined 'LABEL'" then="%LABEL%" else="%MAKETEXT{"New"}%"}%" 
+    "%LABEL{default="%MAKETEXT{"New"}%"}%" 
     icon="add"
     style="margin-bottom:2px;"
   }%%CLEAR%"
@@ -39,29 +44,46 @@ See also: See [[CategorizedTopic]], [[ClassifiedTopic]], [[TaggedTopic]], [[Cate
      MODE=\"edit\"
      BUTTONS=\"filter, refresh\"
    }$percnt"
-}%<!-- -->%STOPINCLUDE%
+}%<!-- -->%ENDSECTION{"readwrite"}%
+</verbatim>
+
+<verbatim class="tml">
+%STARTSECTION{"readonly"}%<!-- -->
+%IF{
+  "'%HIERARCHY{
+     web="%URLPARAM{"web" default="%BASEWEB%"}%"
+     nullformat="$count"
+     depth="0"
+   }%'!=0"
+   then="$percntDBCALL{\"Applications.ClassificationApp.RenderCategoryBrowser\" 
+     THEWEB=\"%URLPARAM{"web" default="%BASEWEB%"}%\"
+     MODE=\"browse\"
+     BUTTONS=\"filter, refresh\"
+   }$percnt"
+}%<!-- -->%ENDSECTION{"readonly"}%
+</verbatim>
 
 ---++ %TOPIC% form
 | *Name:*| *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
-| TopicType | label | 3 |Category,CategorizedTopic| Document type  | | |
+| TopicType | label | 3 | Category,CategorizedTopic, WikiTopic | Document type  | | Category,CategorizedTopic, WikiTopic |
 | <nop>TopicTitle | text | 75 | | | | |
 | Summary | text | 75 | | short description of this category | c | |
 | Redirect | text | 75 | | topic where to redirect to when visiting this category, e.g. a portal page representing this category | | |
-| Category | cat | 1 | | one or more parent categories that this category is filed to |  | |
-| Icon | icon | 30 | cat="Silk" exclude="_add,_delete,arrow_,osx,border_,_start,_stop,_go,_edit,_play,_record,control_,_decrease,_increase,_next,_prev,_error,_eject,_pause,_toggle,_link,_magnify,shapes?_,sort_,text_" | icon to be displayed listing this category |  | |
+| Category | cat | 1 | | one or more parent categories that this category is filed to | c | |
+| Icon | icon | 30 | cat="Silk" exclude="_add, _delete, arrow_, osx, border_, _start, _stop, _go, _edit, _play, _record, control_, _decrease, _increase, _next, _prev, _error, _eject, _pause, _toggle, _link, _magnify, shapes?_, sort_, text_" | icon to be displayed listing this category |  | |
 | <nop>ImportedCategory | text | 75 | | import a root category from another web; all categories below it will be imported to this web in a virtual way |  | |
 | <nop>SubCategories | textarea | 80x25 | | specify sub-categories inline as a bullet list | | |
 | Order | text | 5 | | number used in sorting categories | | |
+| Responsible Person | user+multi | 30 | | person taking care of this category | | %WIKINAME% |
 
 %DBCALL{"Applications.RenderDataFormList" THEWEB="%URLPARAM{"web" default="%BASEWEB%"}%"}%
-
 
 %META:FORM{name="Applications.TopicType"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicType, DataForm, DocuTopic, ApplicationTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Inheritance" title="Inheritance" value="CategorizedTopic, WikiTopic"}%
-%META:FIELD{name="Summary" title="Summary" value="create a hierarchy to organize your topics"}%
+%META:FIELD{name="Summary" title="Summary" value="a node in a hierarchic taxonomy"}%
 %META:FIELD{name="Icon" title="Icon" value="fa-sitemap"}%
-%META:FIELD{name="Editor" title="Editor" value="Applications/ClassificationApp.CategoryEditTemplate"}%
-%META:FIELD{name="Template" title="Template" value="Applications/ClassificationApp.CategoryTemplate"}%
+%META:FIELD{name="Editor" title="Editor" value="Applications.ClassificationApp.CategoryEditTemplate"}%
+%META:FIELD{name="Template" title="Template" value="Applications.ClassificationApp.CategoryTemplate"}%
+%META:FIELD{name="TopicNaming" title="Topic Naming" value=""}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

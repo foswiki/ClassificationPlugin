@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -20,7 +20,7 @@ settings tab in the category editor
 <table class="foswikiLayoutTable">
 <tr>
   <th>%MAKETEXT{"Parent topic"}%:</th>
-  <td><input class="foswikiInputField" type="text" name="topicparent" size="80" value="%IF{"defined TOPICPARENT" then="%TOPICPARENT%"}%" /></td>
+  <td><input class="foswikiInputField" type="text" name="topicparent" size="80" value="%TOPICPARENT{default=""}%" /></td>
 </tr>
 <tr>
   <th>%MAKETEXT{"Imported Categories"}%:</th>
@@ -47,7 +47,7 @@ settings tab in the category editor
 
 
 %META:FORM{name="Applications.TopicFunction"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="Renders the content of the settings tab in the category editor"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Renders the content of the settings tab in the category editor"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

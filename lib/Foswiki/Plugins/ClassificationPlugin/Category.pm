@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2015 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2017 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@ use strict;
 use warnings;
 
 use Foswiki::Contrib::DBCacheContrib::Search ();
-use Foswiki::Plugins::DBCachePlugin::Core ();
+use Foswiki::Plugins::DBCachePlugin ();
 use Foswiki::Plugins ();
 use Foswiki::Plugins::JQueryPlugin ();
 
@@ -54,10 +54,119 @@ sub new {
   # register to hierarchy
   $hierarchy->setCategory($name, $this);
 
-  #writeDebug("new category name=$this->{name} title=$this->{title} web=$hierarchy->{web}"); 
+  #writeDebug("new category name=$this->{name} title=$this->title web=$hierarchy->{web}"); 
 
   return $this;
 }
+
+###############################################################################
+sub title {
+  my ($this, $val) = @_;
+
+  if (defined $val) {
+    $val = urlDecode($val);
+    if ($val ne ($this->{title}//'')) {
+      $this->{title} = $val;
+      $this->{gotUpdate} = 1;
+    }
+  } 
+
+  return $this->{hierarchy}->translate($this->{title});
+}
+
+###############################################################################
+sub summary {
+  my ($this, $val) = @_;
+
+  if (defined $val) {
+    $val = urlDecode($val);
+    if ($val ne ($this->{summary}//'')) {
+      $this->{summary} = $val;
+      $this->{gotUpdate} = 1;
+    }
+  }
+
+  return $this->{hierarchy}->translate($this->{summary});
+}
+
+###############################################################################
+sub redirect {
+  my ($this, $val) = @_;
+
+  if (defined $val) {
+    if ($val ne ($this->{redirect}//'')) {
+      $this->{redirect} = $val;
+      $this->{gotUpdate} = 1;
+    }
+  }
+
+  return $this->{redirect};
+}
+
+###############################################################################
+sub icon {
+  my ($this, $val) = @_;
+
+  if (defined $val && $val ne ($this->{icon}//'')) {
+    $this->{icon} = $val;
+    $this->{gotUpdate} = 1;
+  }
+
+  return $this->{icon};
+}
+
+###############################################################################
+sub getIcon {
+  my $this = shift;
+
+  my $icon = $this->icon || 'folder';
+  
+  # remove file extension for backwards compatibility
+  $icon =~ s/\.(png|gif)$//;
+
+  return Foswiki::Plugins::JQueryPlugin::handleJQueryIcon($Foswiki::Plugins::SESSION, {
+    _DEFAULT => $icon
+  });
+}
+
+###############################################################################
+sub getIconUrl {
+  my $this = shift;
+
+  my $icon = $this->icon || 'folder';
+
+  # remove file extension for backwards compatibility
+  $icon =~ s/\.(png|gif)$//;
+
+  return Foswiki::Plugins::JQueryPlugin::Plugins::getIconUrlPath($icon);
+}
+
+###############################################################################
+sub order {
+  my ($this, $val, $meta) = @_;
+
+  if (defined $val && ($this->{order} ne $val || defined $meta)) {
+
+    $this->{order} = $val;
+    $this->{gotUpdate} = 1;
+
+    if (defined $meta) {
+      my $field = $meta->get('FIELD', 'Order');
+      unless ($field) {
+        $field = {
+          name => "Order",
+          title => "Order", 
+          attributes => "",
+        };
+      }
+      $field->{value} = $val;
+      $meta->putKeyed('FIELD', $field);
+    }
+  }
+
+  return $this->{order};
+}
+
 
 ###############################################################################
 sub purgeCache {
@@ -158,7 +267,7 @@ sub countLeafs {
 
     my @leafs = $this->getLeafs();
     if ($filter) {
-      my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($this->{hierarchy}{web});
+      my $db = Foswiki::Plugins::DBCachePlugin::getDB($this->{hierarchy}{web});
       my $search= new Foswiki::Contrib::DBCacheContrib::Search($filter);
       $nrLeafs = 0;
       foreach my $topicName (@leafs) {
@@ -361,7 +470,7 @@ sub getParents {
 sub getParent {
   my ($this, $subsumes) = @_;
 
-  my @parents = sort {uc($a->{title}) cmp uc($b->{title})} $this->getParents($subsumes);
+  my @parents = sort {uc($a->title) cmp uc($b->title)} $this->getParents($subsumes);
 
   return unless @parents;
   return shift @parents;
@@ -402,8 +511,7 @@ sub _getAllParents {
 sub countTopics {
   my ($this, $filter) = @_;
 
-  my $topics = $this->getAllTopics();
-  my @topics = keys %$topics;
+  my @topics = $this->getAllTopics();
 
   @topics = $this->filterTopics(\@topics, $filter) if $filter;
 
@@ -416,18 +524,18 @@ sub getAllTopics {
 
   $seen ||= {};
 
-  return {} if $seen->{$this->{name}};
+  return () if $seen->{$this->{name}};
   $seen->{$this->{name}} = 1;
 
-  $this->getTopics();
-  my %topics = %{$this->{_topics}};
+  my @topics = $this->getTopics;
 
   foreach my $child ($this->getChildren()) {
     next if $child->{name} eq 'BottomCategory';
-    %topics = (%topics, %{$child->getAllTopics($seen)});
+    push @topics, $child->getAllTopics($seen);
   }
 
-  return \%topics;
+  my %topics = map {$_ => 1} @topics;
+  return keys %topics;
 }
 
 ###############################################################################
@@ -441,7 +549,19 @@ sub getTopics {
     #writeDebug("_topics found in cache of $this->{name}");
   }
 
-  my @topics = keys %{$this->{_topics}};
+  my @topics = ();
+  my $user = Foswiki::Func::getWikiName();
+  if (Foswiki::Func::isAnAdmin($user)) {
+    @topics = keys %{$this->{_topics}};
+  } else {
+    my $web = $this->{hierarchy}{web};
+    foreach my $topic (keys %{$this->{_topics}}) {
+      if (Foswiki::Func::checkAccessPermission("view", $user, undef, $topic, $web)) {
+        push @topics, $topic;
+      }
+    }
+  }
+
   return @topics unless $filter;
   return $this->filterTopics(\@topics, $filter);
 }
@@ -453,7 +573,7 @@ sub filterTopics {
   return @$topics unless $filter && @$topics;
 
   my $hierarchy = $this->{hierarchy};
-  my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($hierarchy->{web});
+  my $db = Foswiki::Plugins::DBCachePlugin::getDB($hierarchy->{web});
   my $search = new Foswiki::Contrib::DBCacheContrib::Search($filter);
 
   return grep {
@@ -470,7 +590,7 @@ sub getTagsOfTopics {
     #writeDebug("gathering tags in category $this->{name}");
     my %tags;
     my $hierarchy = $this->{hierarchy};
-    my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($hierarchy->{web});
+    my $db = Foswiki::Plugins::DBCachePlugin::getDB($hierarchy->{web});
     foreach my $topic ($this->getTopics()) {
       my $topicObj = $db->fastget($topic);
       next unless $topicObj;
@@ -517,57 +637,6 @@ sub removeChild {
 ###############################################################################
 sub getChildren {
   return values %{$_[0]->{children}};
-}
-
-###############################################################################
-sub setOrder {
-  my ($this, $order, $meta) = @_;
-
-  my $doSave = defined($meta)?1:0;
-
-  $this->{order} = $order;
-  $this->{gotUpdate} = 1;
-
-  if ($doSave) {
-    my $field = $meta->get('FIELD', 'Order');
-    unless ($field) {
-      $field = {
-        name => "Order",
-        title => "Order", 
-        attributes => "",
-      };
-    }
-    $field->{value} = $order;
-    $meta->putKeyed('FIELD', $field);
-  }
-
-  return $order;
-}
-
-###############################################################################
-sub setSummary {
-  my ($this, $summary) = @_;
-  $summary = urlDecode($summary);
-  $this->{summary} = $summary;
-  $this->{gotUpdate} = 1;
-  return $summary;
-}
-
-###############################################################################
-sub setTitle {
-  my ($this, $title) = @_;
-  $title = urlDecode($title);
-  $this->{title} = $title;
-  $this->{gotUpdate} = 1;
-  return $title;
-}
-
-###############################################################################
-sub setRedirect {
-  my ($this, $redirect) = @_;
-  $this->{redirect} = $redirect;
-  $this->{gotUpdate} = 1;
-  return $redirect;
 }
 
 ###############################################################################
@@ -665,7 +734,7 @@ sub importCategories {
     $impWeb =~ s/\//\./go;
     next unless Foswiki::Func::webExists($impWeb);
 
-    my $db = Foswiki::Plugins::DBCachePlugin::Core::getDB($impWeb);
+    my $db = Foswiki::Plugins::DBCachePlugin::getDB($impWeb);
     my $impObj = $db->fastget($impTopic);
     next unless $impObj;
 
@@ -736,11 +805,11 @@ sub import {
   $seen->{$this->{name}} = 1;
 
   my $cat = $hierarchy->createCategory($this->{name});
-  $cat->setTitle($this->{title});
-  $cat->setSummary($this->{summary});
-  $cat->setOrder($this->{order});
-  $cat->setIcon($this->{icon});
-  $cat->setRedirect($this->{redirect});
+  $cat->title($this->title);
+  $cat->summary($this->summary);
+  $cat->order($this->order);
+  $cat->icon($this->icon);
+  $cat->redirect($this->redirect);
   $cat->{origWeb} = $hierarchy->{web};
 
   # import all children
@@ -753,41 +822,6 @@ sub import {
   } 
 
   return $cat;
-}
-
-###############################################################################
-sub setIcon {
-  my ($this, $icon) = @_;
-
-  $this->{icon} = $icon;
-  $this->{gotUpdate} = 1;
-  return $icon;
-}
-
-###############################################################################
-sub getIcon {
-  my $this = shift;
-
-  my $icon = $this->{icon} || 'folder';
-  
-  # remove file extension for backwards compatibility
-  $icon =~ s/\.(png|gif)$//;
-
-  return Foswiki::Plugins::JQueryPlugin::handleJQueryIcon($Foswiki::Plugins::SESSION, {
-    _DEFAULT => $icon
-  });
-}
-
-###############################################################################
-sub getIconUrl {
-  my $this = shift;
-
-  my $icon = $this->{icon} || 'folder';
-
-  # remove file extension for backwards compatibility
-  $icon =~ s/\.(png|gif)$//;
-
-  return Foswiki::Plugins::JQueryPlugin::Plugins::getIconUrlPath($icon);
 }
 
 ###############################################################################
@@ -853,7 +887,7 @@ sub getLink {
     if ($baseWeb eq $this->{hierarchy}{web} && $baseTopic eq $this->{name}) || $request->param("catname");
 
   my $class = $currentTopic?" class='$currentTopic'":"";
-  return "<a href='".$this->getUrl($doRedirect)."'$class><noautolink>$this->{title}</noautolink></a>";
+  return "<a href='".$this->getUrl($doRedirect)."'$class><noautolink>".$this->title."</noautolink></a>";
 }
 
 ###############################################################################
@@ -864,8 +898,8 @@ sub getUrl {
 
   $doRedirect = 1 unless defined $doRedirect;
 
-  if ($doRedirect && $this->{redirect}) {
-    return Foswiki::Func::getScriptUrlPath($hierWeb, $this->{redirect}, 'view');
+  if ($doRedirect && $this->redirect) {
+    return Foswiki::Func::getScriptUrlPath($hierWeb, $this->redirect, 'view');
   } 
 
   my $url;
@@ -950,7 +984,7 @@ sub traverse {
   $this->{hierarchy}->sortCategories(\@children, $sort);
   my $nrChildren = scalar(@children);
 
-  #writeDebug("traverse() nrCalls=$$nrCalls, depth=$depth, name=$this->{name} order=$this->{order}");
+  #writeDebug("traverse() nrCalls=$$nrCalls, depth=$depth, name=$this->{name} order=".$this->order);
   #writeDebug("children=".join(', ', map {$_->{name}} @children));
 
   my $doChildren = (@children)?1:0;
@@ -962,14 +996,14 @@ sub traverse {
     if (defined $params->{_openers}) {
       %openers = %{$params->{_openers}};
     } else {
-      my $openers = Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($params->{open},
+      my $openers = Foswiki::Plugins::ClassificationPlugin::Core::_expandVariables($params->{open},
         'web'=>$this->{hierarchy}{web}, 
         'origweb'=>$this->{origWeb} || '', 
         'topic'=>$this->{name},
         'name'=>$this->{name},
-        'summary'=>$this->{summary},
-        'title'=>$this->{title},
-        'order'=>$this->{order},
+        'summary'=>$this->summary,
+        'title'=>$this->title,
+        'order'=>$this->order,
       );
       $openers = Foswiki::Func::expandCommonVariables($openers);
       my $isCacheable = ($params->{open} eq $openers)?1:0;
@@ -996,7 +1030,7 @@ sub traverse {
   #print STDERR "$this->{name}: isOpener=$isOpener, isExpanded=$isExpanded, doChildren=$doChildren\n";
 
   if (!$isOpener && !$isExpanded && $params->{hideclosed} && $params->{hideclosed} eq 'on') {
-    #writeDebug("hideclosed $this->{name} / $this->{title}");
+    #writeDebug("hideclosed $this->{name} / ".$this->title);
     return '';
   }
 
@@ -1004,10 +1038,13 @@ sub traverse {
   my @subResult;
   my $childIndex = 1;
   if ($doChildren) {
-    #writeDebug("doing children of $this->{name}/$this->{title}");
+    #writeDebug("doing children of $this->{name}/".$this->title");
+    my $user = Foswiki::Func::getWikiName();
+    my $web = $this->{hierarchy}{web};
     foreach my $child (@children) {
       next if $child->{name} eq 'BottomCategory';
-      my $childResult = $child->traverse($params, $nrCalls, $childIndex, $nrChildren, $seen, $isExpanded?$depth:$depth+1, $this->{title});
+      next unless Foswiki::Func::checkAccessPermission("view", $user, undef, $child->{name}, $web);
+      my $childResult = $child->traverse($params, $nrCalls, $childIndex, $nrChildren, $seen, $isExpanded?$depth:$depth+1, $this->title);
       push @subResult, $childResult if $childResult;
       $childIndex++;
     }
@@ -1021,7 +1058,7 @@ sub traverse {
 
   my $subResult = '';
   if (@subResult) {
-    $separator = Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($separator);
+    $separator = Foswiki::Plugins::ClassificationPlugin::Core::_expandVariables($separator);
     $subResult = join($separator, @subResult);
   }
 
@@ -1147,17 +1184,17 @@ sub traverse {
     $breadCrumbs = join(", ", map {$_->{name}} $this->getBreadCrumbs());
   }
 
-  my $truncTitle = $this->{title};
+  my $truncTitle = $this->title;
   $truncTitle =~ s/^$parentTitle\b\s*[\-,\/]?\s*// if $parentTitle;
 
   if ($subResult) {
-    $header = Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($header,
+    $header = Foswiki::Plugins::ClassificationPlugin::Core::_expandVariables($header,
       'web'=>$this->{hierarchy}{web}, 
       'origweb'=>$this->{origWeb} || '', 
       'topic'=>$this->{name},
       'name'=>$this->{name},
-      'summary'=>$this->{summary},
-      'title'=>$this->{title},
+      'summary'=>$this->summary,
+      'title'=>$this->title,
       'trunctitle'=>$truncTitle,
       'siblings'=>$nrSiblings,
       'count'=>$nrTopics,
@@ -1173,16 +1210,16 @@ sub traverse {
       'tags'=>$tags,
       'parents'=>$parents,
       'breadcrumbs'=>$breadCrumbs,
-      'order'=>$this->{order},
+      'order'=>$this->order,
       'isexpanded'=>$isExpanded?'true':'false',
     );
-    $footer = Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($footer,
+    $footer = Foswiki::Plugins::ClassificationPlugin::Core::_expandVariables($footer,
       'web'=>$this->{hierarchy}{web}, 
       'origweb'=>$this->{origWeb} || '', 
       'topic'=>$this->{name},
       'name'=>$this->{name},
-      'summary'=>$this->{summary},
-      'title'=>$this->{title},
+      'summary'=>$this->summary,
+      'title'=>$this->title,
       'trunctitle'=>$truncTitle,
       'siblings'=>$nrSiblings,
       'count'=>$nrTopics,
@@ -1198,17 +1235,17 @@ sub traverse {
       'tags'=>$tags,
       'parents'=>$parents,
       'breadcrumbs'=>$breadCrumbs,
-      'order'=>$this->{order},
+      'order'=>$this->order,
       'isexpanded'=>$isExpanded?'true':'false',
     );
     $subResult = $header.$subResult.$footer;
   }
 
-  return Foswiki::Plugins::ClassificationPlugin::Core::expandVariables($format, 
+  return Foswiki::Plugins::ClassificationPlugin::Core::_expandVariables($format, 
     'link'=>($this->{name} =~ /^(TopCategory|BottomCategory)$/)?
-      "<b>$this->{title}</b>":$this->getLink(),
+      "<b>".$this->title."</b>":$this->getLink(),
     'origlink'=>($this->{name} =~ /^(TopCategory|BottomCategory)$/)?
-      "<b>$this->{title}</b>":$this->getLink(0),
+      "<b>".$this->title."</b>":$this->getLink(0),
     'url'=>($this->{name} =~ /^(TopCategory|BottomCategory)$/)?"":
       $this->getUrl(),
     'origurl'=>($this->{name} =~ /^(TopCategory|BottomCategory)$/)?"":
@@ -1217,8 +1254,8 @@ sub traverse {
     'origweb'=>$this->{origWeb} || '', 
     'topic'=>$this->{name},
     'name'=>$this->{name},
-    'summary'=>$this->{summary},
-    'title'=>$this->{title},
+    'summary'=>$this->summary,
+    'title'=>$this->title,
     'trunctitle'=>$truncTitle,
     'children'=>$subResult,
     'siblings'=>$nrSiblings,
@@ -1235,7 +1272,7 @@ sub traverse {
     'tags'=>$tags,
     'parents'=>$parents,
     'breadcrumbs'=>$breadCrumbs,
-    'order'=>$this->{order},
+    'order'=>$this->order,
     'isexpanded'=>$isExpanded?'true':'false',
   );
 }

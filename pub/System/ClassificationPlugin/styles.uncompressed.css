@@ -237,6 +237,9 @@ a.clsTagClose:hover {
   color:#F9E9A1;
   text-shadow:1px 1px #aaa;
 }
+.clsIndexItem .clsLikeInfo .jqIcon {
+  margin:inherit;
+}
 
 /* icon selector */
 .clsIconContainer {
@@ -280,6 +283,7 @@ a.clsTagClose:hover {
 a.clsTopicInfoMoreClicked:hover {
   background-color:transparent;
 }
+
 
 /* styles for special tags */
 a.tag_todo,

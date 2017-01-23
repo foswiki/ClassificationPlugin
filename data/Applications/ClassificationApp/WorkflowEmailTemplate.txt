@@ -1,0 +1,53 @@
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICPARENT{name="TopicType"}%
+%DBCALL{"Applications.RenderTopicInstaller" TEXT="Install '%TOPIC%' TopicType" TYPE="TopicType"}%
+
+---++ Documentation
+%STARTSECTION{"documentation"}%
+See also:
+
+   * [[%TOPIC%ViewTemplate]]
+   * [[%TOPIC%EditTemplate]]
+   * [[%TOPIC%Template]]
+
+%ENDSECTION{"documentation"}%
+
+---++ Topics of type '%TOPIC%'
+%STARTINCLUDE%
+%DBCALL{"Applications.RenderSimpleTopicCreator"
+  LABEL="%MAKETEXT{"Title"}%"
+  BUTTONTEXT="%MAKETEXT{"New"}%"
+  TEXT="%MAKETEXT{"Create a new [_1]" args="%TOPIC%"}%"
+  VALUE=""
+  TEMPLATE="Applications.ClassificationApp.WorkflowEmailTemplateTemplate"
+}%
+
+%DBCALL{"Applications.RenderTopicsOfType" 
+  FIELDS="TopicTitle, From, To, Subject, Changed"
+  ROWS="20"
+}%
+%STOPINCLUDE%
+
+---++ %TOPIC% form
+| *Name:*| *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
+| TopicType | label | 1 | WorkflowEmailTemplate, WikiTopic | topic type  | | |
+| <nop>TopicTitle | text | 75 | | title of this template | | |
+| Summary | text | 75 | | short description of this templaet | | |
+| From | text | 75 | | sender | | |
+| To | text | 75 | | recipient | | |
+| Cc | text | 75 | | carbon copy recipient | | |
+| Subject | text | 75 | | subject of email | | |
+| Related Workflow | topic | 20 | TopicType="WorkflowDefinition" | workflow this email template is used in | c | |
+| Plain Text | natedit | 80x5 | minHeight="300" autoMaxExpand="true" | plain text email text |  | |
+| HTML Text | natedit | 80x5 | minHeight="300" autoMaxExpand="true" | html text email text | | |
+
+
+%META:FORM{name="Applications.TopicType"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicType, DataForm, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value="Workflow Email Template"}%
+%META:FIELD{name="Summary" title="Summary" value="a template for email notifications in a workflow"}%
+%META:FIELD{name="Icon" title="Icon" value="fa-paste"}%
+%META:FIELD{name="Editor" title="Editor" value=""}%
+%META:FIELD{name="Template" title="Template" value="Applications.ClassificationApp.WorkflowEmailTemplateTemplate"}%
+%META:FIELD{name="TopicNaming" title="Topic Naming" value=""}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 ---+!! %TOPICTITLE%
 
 ---++ %MAKETEXT{"Welcome"}%
@@ -7,25 +7,16 @@
 %BEGINGRID{border="on"}%
 %BEGINCOL{"8"}%
 ---++ %MAKETEXT{"Categories"}%
-<verbatim class="jqLoader {section:'parties'}">
-%STARTSECTION{"parties"}%<!-- -->
 %DBCALL{"Applications.ClassificationApp.RenderCategory" 
    CAT="TopCategory"
 }%
-<!-- -->%ENDSECTION{"parties"}%
-</verbatim>
 %STOPCHAPTER%
 ---
 ---++ %MAKETEXT{"Tags"}%
-%STARTSECTION{"tagcloud"}%<!-- -->
-<div class="hyphenate">
 %DBCALL{"Applications.ClassificationApp.RenderSolrTagCloud" 
   LIMIT="100"
   THEWEB="%BASEWEB%"
 }%
-</div>
-%CLEAR%
-<!-- -->%ENDSECTION{"tagcloud"}%
 %STOPCHAPTER%
 %BEGINCOL{"4"}%
 ---++ %MAKETEXT{"Recent changes"}%
@@ -74,9 +65,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam aliquam molestie
 
 %STOPCHAPTER%
 %ENDGRID%
-<!-- %JQREQUIRE{"hyphenator, loader, infinitescroll, sameheight" warn="off"}% %REDDOTINIT% %IMAGE% -->
+<!-- %JQREQUIRE{"reddot, loader, infinitescroll, sameheight, reddot" warn="off"}% %IMAGE% -->
 <!--
-   * Set CACHEEXPIRE = +5min
    * Set CACHEABLE = on
    * Set REDDOT_REDIRECT = %BASEWEB%.%BASETOPIC%
 -->
@@ -84,4 +74,3 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam aliquam molestie
 %META:PREFERENCE{name="NATSKIN_SIDEBAR" title="NATSKIN_SIDEBAR" type="Local" value="off"}%
 %META:PREFERENCE{name="DISPLAYREVISIONINFO" title="DISPLAYREVISIONINFO" type="Local" value="off"}%
 %META:PREFERENCE{name="NOWYSIWYG" title="NOWYSIWYG" type="Set" value="on"}%
-%META:PREFERENCE{name="TOPICTITLE" title="TOPICTITLE" type="Local" value="_ClassificationTemplate"}%

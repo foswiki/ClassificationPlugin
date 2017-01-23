@@ -1,6 +1,6 @@
 # Module of Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 # 
-# Copyright (C) 2007-2015 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2007-2017 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -41,6 +41,16 @@ sub renderForDisplay {
     return $this->SUPER::renderForDisplay($format, $value, $attrs);
 }
 
+sub getDefaultValue {
+    my $this = shift;
+
+    my $value =
+      ( exists( $this->{default} ) ? $this->{default} : $this->{value} );
+    $value = '' unless defined $value;    # allow 0 values
+
+    return $value;
+}
+
 sub getDisplayValue {
     my ( $this, $value) = @_;
 
@@ -54,17 +64,14 @@ sub getDisplayValue {
     foreach my $tag (split(/\s*,\s*/, $value)) {
       my $url = '';
       if ($context->{SolrPluginEnabled}) {
-        $url = Foswiki::Func::getScriptUrl($web, "WebSearch", "view", 
-          filter=>"tag:$tag",
-          origtopic=>"$baseWeb.$baseTopic"
-        );
+        $url = '<noautolink>%SOLRSCRIPTURL{topic="'.$web.'.WebSearch" tag="'.$tag.'" web="'.$web.'" union="web" separator="&&"}%</noautolink>';
       } else {
         $url = Foswiki::Func::getScriptUrl($web, "WebTagCloud", "view", tag=>$tag);
       }
 
-      push @value, "<a href='$url'>$tag</a>";
+      push @value, "<a href='$url' class='tag'>$tag</a>";
     }
-    $value = join(', ', @value);
+    $value = join("<span class='tagSep'>, </span>", @value);
 
     return $value;
 }
@@ -86,7 +93,7 @@ sub renderForEdit {
     $topic = $param2;
     $value = $param3;
   }
-  $value = '' unless defined $value;
+  $value = $this->getDefaultValue() || '' unless defined $value;
 
   Foswiki::Func::readTemplate("classificationplugin");
   my $baseWeb = $this->{session}->{webName};

@@ -1,39 +1,9 @@
-%META:TOPICINFO{author="micha" comment="reprev" date="1437135511" format="1.1" reprev="3" version="3"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="ControlledTopic"}%
-1234
+%WORKFLOWHISTORY%
 
 %META:FORM{name="Applications/ClassificationApp.ControlledTopic"}%
-%META:FIELD{name="TopicType" title="TopicType" value="WikiTopic, ControlledTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="ControlledTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value="Controlled Test Topic"}%
 %META:FIELD{name="Summary" title="Summary" value=""}%
 %META:FIELD{name="Workflow" title="Workflow" value="SimpleApprovalWorkflow"}%
-%META:PREFERENCE{name="WORKFLOW" title="WORKFLOW" type="Set" value="SimpleApprovalWorkflow"}%
-%META:PREFERENCE{name="WORKFLOWHISTORYFORMAT" title="WORKFLOWHISTORYFORMAT" type="Set" value="$nstate=$state;rev=$rev;user=$wikiusername;date=$date"}%
-%META:WORKFLOW{name="draft" LASTTIME_approved="13 Mar 2015 - 17:27" LASTTIME_draft="17 Jul 2015 - 14:18" LASTTIME_outdated="13 Mar 2015 - 17:33" LASTTIME_rejected="13 Mar 2015 - 17:27" LASTTIME_requesting approval="13 Mar 2015 - 17:27" LASTUSER_approved="Home.MichaelDaum" LASTUSER_draft="Home.MichaelDaum" LASTUSER_outdated="Home.MichaelDaum" LASTUSER_rejected="Home.MichaelDaum" LASTUSER_requesting approval="Home.MichaelDaum" LASTVERSION_approved="35" LASTVERSION_draft="3" LASTVERSION_outdated="36" LASTVERSION_rejected="32" LASTVERSION_requesting approval="34"}%
-%META:WORKFLOWHISTORY{name="11" author="Home.MichaelDaum" date="1426259161" state="requesting approval"}%
-%META:WORKFLOWHISTORY{name="12" author="Home.MichaelDaum" date="1426259171" state="approved"}%
-%META:WORKFLOWHISTORY{name="13" author="Home.MichaelDaum" date="1426259196" state="outdated"}%
-%META:WORKFLOWHISTORY{name="14" author="Home.MichaelDaum" date="1426259284" state="draft"}%
-%META:WORKFLOWHISTORY{name="15" author="Home.MichaelDaum" date="1426259300" state="requesting approval"}%
-%META:WORKFLOWHISTORY{name="16" author="Home.MichaelDaum" date="1426259327" state="rejected"}%
-%META:WORKFLOWHISTORY{name="17" author="Home.MichaelDaum" date="1426259366" state="draft"}%
-%META:WORKFLOWHISTORY{name="18" author="Home.MichaelDaum" date="1426261178" state="requesting approval"}%
-%META:WORKFLOWHISTORY{name="19" author="Home.MichaelDaum" date="1426262226" state="approved"}%
-%META:WORKFLOWHISTORY{name="20" author="Home.MichaelDaum" date="1426262838" state="draft"}%
-%META:WORKFLOWHISTORY{name="21" author="Home.MichaelDaum" date="1426262884" state="requesting approval"}%
-%META:WORKFLOWHISTORY{name="22" author="Home.MichaelDaum" date="1426262898" state="rejected"}%
-%META:WORKFLOWHISTORY{name="23" author="Home.MichaelDaum" date="1426263241" state="draft"}%
-%META:WORKFLOWHISTORY{name="24" author="Home.MichaelDaum" date="1426263460" state="requesting approval"}%
-%META:WORKFLOWHISTORY{name="25" author="Home.MichaelDaum" date="1426263464" state="rejected"}%
-%META:WORKFLOWHISTORY{name="26" author="Home.MichaelDaum" date="1426263469" state="outdated"}%
-%META:WORKFLOWHISTORY{name="27" author="Home.MichaelDaum" date="1426263858" state="draft"}%
-%META:WORKFLOWHISTORY{name="28" author="Home.MichaelDaum" date="1426263862" state="requesting approval"}%
-%META:WORKFLOWHISTORY{name="29" author="Home.MichaelDaum" date="1426263865" state="approved"}%
-%META:WORKFLOWHISTORY{name="30" author="Home.MichaelDaum" date="1426264017" state="draft"}%
-%META:WORKFLOWHISTORY{name="31" author="Home.MichaelDaum" date="1426264034" state="requesting approval"}%
-%META:WORKFLOWHISTORY{name="32" author="Home.MichaelDaum" date="1426264045" state="rejected"}%
-%META:WORKFLOWHISTORY{name="33" author="Home.MichaelDaum" date="1426264057" state="draft"}%
-%META:WORKFLOWHISTORY{name="34" author="Home.MichaelDaum" date="1426264060" state="requesting approval"}%
-%META:WORKFLOWHISTORY{name="35" author="Home.MichaelDaum" date="1426264072" state="approved"}%
-%META:WORKFLOWHISTORY{name="36" author="Home.MichaelDaum" date="1426264084" state="outdated"}%
-%META:WORKFLOWHISTORY{name="37" author="Home.MichaelDaum" date="1426264433" state="draft"}%

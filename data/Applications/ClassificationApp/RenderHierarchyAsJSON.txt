@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -24,18 +24,17 @@ for the hierarchy browsers.
 <verbatim class="tml">
 %STARTINCLUDE%[
 %HIERARCHY{
-   web="%IF{"defined web" then="%web%" else="%BASEWEB%"}%"
-   top="%IF{"defined root" then="%root%" else="TopCategory"}%"
-   depth="%IF{"defined depth" then="%depth%"}%"
-   exclude="%IF{"defined root" then="%root%" else="TopCategory"}%%IF{"defined exclude" then="|%exclude%"}%"
-   hidenull="%IF{"defined hidenull" then="%hidenull%" else="off"}%"
-   %IF{"defined nrleafs" then="nrleafs=\"%nrleafs%\""}%
-   %IF{"defined nrtopics" then="nrtopics=\"%nrtopics%\""}%
-   %IF{"defined search" then="hideclosed=\"on\""}%
-   open="%IF{"defined root" 
-     then="%root%" 
-     else="TopCategory"
-   }%%IF{"defined open" 
+   web="%web{default="%BASEWEB%"}%"
+   top="%root{default="TopCategory"}%"
+   depth="%depth{default="2"}%"
+   exclude="%root{default="TopCategory"}%%IF{"defined exclude" then="|%exclude%"}%"
+   hidenull="%hidenull{default="off"}%"%IF{"defined nrleafs" 
+      then="nrleafs=\"%nrleafs%\""
+   }%%IF{"defined nrtopics" 
+      then="nrtopics=\"%nrtopics%\""
+   }%%IF{"defined search" 
+      then="hideclosed=\"on\""
+   }% open="%root{default="TopCategory"}%%IF{"defined open" 
      then=", %open%"
    }%%IF{"defined search"
      then="$percntCATINFO{
@@ -52,8 +51,8 @@ for the hierarchy browsers.
    format="$indent{
 $indent  \"text\": \"%DBCALL{
       "%WEB%.%TOPIC%"
-      section="%IF{"not isempty format" then="%format%" else="browser"}%"
-      depth="%depth%"
+      section="%format{default="browser"}%"
+      depth="%depth{default="2"}%"
       fieldname="%fieldname%"
 }%\",
 $indent  \"expanded\": $isexpanded,
@@ -110,19 +109,28 @@ $indent}"
 
 ---++ Test
 ---+++ Plain
-<pre>
+[[%WEB%.%TOPIC%?section=test1&skin=text&contenttype=text/plain][run test1]]
+<verbatim>
+%STARTSECTION{"test1"}%
 %DBCALL{"%TOPIC%" format="plain"}%
-</pre>
+%ENDSECTION{"test1"}%
+</verbatim>
 
 ---+++ Browser
-<pre>
+[[%WEB%.%TOPIC%?section=test2&skin=text&contenttype=text/plain][run test2]]
+<verbatim>
+%STARTSECTION{"test2"}%
 %DBCALL{"%TOPIC%" format="browser"}%
-</pre>
+%ENDSECTION{"test2"}%
+</verbatim>
 
 ---+++ Editor
-<pre>
+[[%WEB%.%TOPIC%?section=test3&skin=text&contenttype=text/plain][run test3]]
+<verbatim>
+%STARTSECTION{"test3"}%
 %DBCALL{"%TOPIC%" format="editor" exclude="TestCategory5"}%
-</pre>
+%ENDSECTION{"test3"}%
+</verbatim>
 
 ---+++ Leaf select
 <pre>
@@ -136,7 +144,7 @@ $indent}"
 
 
 %META:FORM{name="Applications.TopicFunction"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="Renders a hierarchy as a JSON object"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Renders a hierarchy as a JSON object"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

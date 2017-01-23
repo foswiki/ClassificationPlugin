@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicType"}%
 %DBCALL{"Applications.RenderTopicInstaller" TEXT="Install '%TOPIC%' TopicType" TYPE="TopicType"}%
 
@@ -33,18 +33,18 @@ see also:
 
 ---++ <nop>%TOPIC% form
 | *Name:*| *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
-| TopicType | label | 1 | WikiTopic, TaggedTopic, CategorizedTopic, ClassifiedTopic, WorkflowDefinition | structural type  | | WikiTopic, TaggedTopic, CategorizedTopic, ClassifiedTopic, WorkflowDefinition |
+| TopicType | label | 1 | WorkflowDefinition, ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic | structural type  | | WorkflowDefinition, ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic |
 | <nop>TopicTitle | text | 75 | |  | | |
 | Summary | text | 75 | | short description or tagline | c | |
 | Tag | tag | 30 | | keywords for this topic | | |
 | Category | cat | 1 |  | categories this topic is field to |  | |
 
 %META:FORM{name="Applications.TopicType"}%
-%META:FIELD{name="TopicType" title="TopicType" value="TopicType, DataForm, DocuTopic, ApplicationTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicType, DataForm, DocuTopic, ApplicationTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value="Workflow Definition"}%
-%META:FIELD{name="Inheritance" title="Inheritance" value="WikiTopic"}%
-%META:FIELD{name="Summary" title="Summary" value="define a workflow for controlled topics"}%
+%META:FIELD{name="Summary" title="Summary" value="defines a workflow for controlled topics"}%
 %META:FIELD{name="Icon" title="Icon" value="fa-cogs"}%
-%META:FIELD{name="Editor" title="Editor" value="Applications/ClassificationApp.WorkflowDefinitionEditTemplate"}%
-%META:FIELD{name="Template" title="Template" value="Applications/ClassificationApp.WorkflowDefinitionTemplate"}%
+%META:FIELD{name="Editor" title="Editor" value="Applications.ClassificationApp.WorkflowDefinitionEditTemplate"}%
+%META:FIELD{name="Template" title="Template" value="Applications.ClassificationApp.WorkflowDefinitionTemplate"}%
+%META:FIELD{name="TopicNaming" title="Topic Naming" value=""}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

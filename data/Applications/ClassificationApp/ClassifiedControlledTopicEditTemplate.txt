@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" date="1437132754" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class='tml'>}%
 %TMPL:INCLUDE{"Applications.ClassificationApp.ClassifiedTopicEdit"}%
@@ -9,7 +9,11 @@
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"topictype"}%%TRANSLATE{"controlled topic" web="Applications.ClassificationApp"}%%TMPL:END%
+%TMPL:DEF{"topictype"}%%TRANSLATE{"controlled topic"}%%TMPL:END%
+%{</verbatim>}%
+
+%{<verbatim class="tml">}%
+%TMPL:DEF{"detailstab::exclude"}%TopicType|TopicTitle|Summary|Category|Tag|Workflow%TMPL:END%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
@@ -21,11 +25,36 @@
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"detailstab"}%%TAB{"%TRANSLATE{"Details" web="Applications.ClassificationApp"}%"}%
+%TMPL:DEF{"detailstab"}%%RENDERFOREDIT{
+   exclude="%TMPL:P{"detailstab::exclude"}%"
+   header="$percntTAB{\"%TRANSLATE{"Details"}%\"}$percnt<div class='foswikiFormSteps'>"
+   format="<div class='foswikiFormStep'>
+             <h3> $title:$mandatory </h3>
+             $edit
+             $extra <!-- -->
+             <div class='foswikiFormDescription'>$description</div>
+           </div>"
+   footer="</div>$percntENDTAB$percnt"
+   hideempty="on"
+}%%TMPL:END%
+%{</verbatim>}%
+
+%{<verbatim class="tml">}%
+%TMPL:DEF{"settings"}%%TMPL:P{"topicsettings"}%%TMPL:P{"workflowsettings"}%%TMPL:P{"editsettings"}%%TMPL:P{"skinsettings"}%%TMPL:P{"displaysettings"}%%TMPL:P{"commentsettings"}%%TMPL:END%
+%{</verbatim>}%
+
+%{<verbatim class="tml">}%
+%TMPL:DEF{"workflowsettings"}%<h2>%TRANSLATE{"Workflow settings"}%</h2>
+<div class="foswikiFormSteps">
+<div class="foswikiFormStep">
 %RENDERFOREDIT{
-   exclude="TopicType|TopicTitle|Summary|Category|Tag"
+   fields="Workflow"
+   header="<table class='foswikiLayoutTable'>"
+   format="<tr><th>$title</th><td>$edit</td></tr>"
+   footer="</table>"
 }%
-%ENDTAB%%TMPL:END%
+</div>
+</div>%TMPL:END%
 %{</verbatim>}%
 
 %META:FORM{name="Applications.TopicView"}%

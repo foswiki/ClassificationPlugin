@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicType"}%
 %DBCALL{"Applications.RenderTopicInstaller" TEXT="Install '%TOPIC%' TopicType" TYPE="TopicType"}%
 
@@ -25,18 +25,18 @@ see also:
 
 ---++ <nop>%TOPIC% form
 | *Name:*| *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
-| TopicType | label | 1 | WikiTopic, ControlledTopic | structural type  | | WikiTopic, ControlledTopic |
+| TopicType | label | 1 | ControlledTopic, WikiTopic | structural type  | | ControlledTopic, WikiTopic |
 | <nop>TopicTitle | text | 75 | |  | | |
 | Summary | text | 75 | | short description or tagline | c | |
 | Workflow | topic | 20 | TopicType="WorkflowDefinition" | assign a workflow to this topic | c | |
 
 
 %META:FORM{name="Applications.TopicType"}%
-%META:FIELD{name="TopicType" title="TopicType" value="TopicType, DataForm, DocuTopic, ApplicationTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicType, DataForm, DocuTopic, ApplicationTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Inheritance" title="Inheritance" value="WikiTopic"}%
-%META:FIELD{name="Summary" title="Summary" value="Topics that are controlled by a workflow"}%
+%META:FIELD{name="Summary" title="Summary" value="content under workflow control"}%
 %META:FIELD{name="Icon" title="Icon" value="fa-check"}%
-%META:FIELD{name="Editor" title="Editor" value="Applications/ClassificationApp.ControlledTopicEditTemplate"}%
+%META:FIELD{name="Editor" title="Editor" value="Applications.ClassificationApp.ControlledTopicEditTemplate"}%
 %META:FIELD{name="Template" title="Template" value=""}%
+%META:FIELD{name="TopicNaming" title="Topic Naming" value=""}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

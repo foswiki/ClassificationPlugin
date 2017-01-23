@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -25,7 +25,7 @@ a summary for an object of type ClassifiedTopic.
    morechildren="<a href='$url' title='%MAKETEXT{"more"}%'>...</a>"
    format="<div class='clsIndexItem clsCategoryItem clearfix'>
      $icon<!-- -->
-     <a href='$url'>%IF{"defined TITLE" then="%TITLE%" else="$title"}%</a>$percntIF{
+     <a href='$url'>%TITLE{default="$title"}%</a>$percntIF{
        \"'$count'>'0'\" then=\"&nbsp;($count)\"
      }$percnt<!-- -->
      $percntIF{\"'$percntENCODE{\"$summary\" type=\"entity\"}$percnt'!=''\" then=\"<div class='foswikiTopicInfo'>$summary</div>\"}$percnt<!-- -->

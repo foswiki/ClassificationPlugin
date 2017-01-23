@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
  %TOC{depth="2"}%
 
@@ -21,7 +21,7 @@
 ---++ Implementation
 <verbatim class="tml">
 %STARTINCLUDE%<!-- -->
-<div class="jqHierarchy clsBrowser" data-web="%THEWEB{default="%BASEWEB%"}%" data-root="%TOP{default="TopCategory"}%" %IF{"'%MODE%'='select'" then="data-input-field-name='%NAME{default="Category"}%'"}% data-mode="%MODE{default="browse"}%" data-display-counts="true" data-container=".jqHierarchyContainer" data-sort="title">
+<div class="jqHierarchy clsBrowser" data-web="%THEWEB{default="%BASEWEB%"}%" data-root="%TOP{default="TopCategory"}%" %IF{"'%MODE%'='select'" then="data-input-field-name='%NAME{default="Category"}%'"}% data-mode="%MODE{default="browse"}%" data-display-counts="true" data-container=".jqHierarchyContainer" data-sort="on">
     %IF{"'%MODE%'='select'"
       then="<input type='hidden' name='%NAME{default="Category"}%' value='%VALUE{default=""}%' />"
       else="<!-- -->"
@@ -39,7 +39,7 @@
 %STARTSECTION{"init"}%%JQREQUIRE{"jstree, pnotify, wikiword, ui::tooltip, blockui"}%<!-- -->
 %ADDTOZONE{"script" 
   id="JQUERYPLUGIN::HIERARCHY"
-  text="<script src='%PUBURLPATH%/System/ClassificationPlugin/jquery.hierarchy.js'></script>" 
+  text="<script type='text/javascript' src='%PUBURLPATH%/System/ClassificationPlugin/jquery.hierarchy.js'></script>" 
   requires="JQUERYPLUGIN::JSTREE, JQUERYPLUGIN::PNOTIFY, JQUERYPLUGIN::WIKIWORD, JQUERYPLUGIN::UI::TOOLTIP, JQUERYPLUGIN::BLOCKUI"
 }%<!-- -->%ENDSECTION{"init"}%
 </verbatim>
@@ -75,7 +75,7 @@
 %DBCALL{"%TOPIC%" MODE="edit" BUTTONS="filter, refresh"}%
 
 %META:FORM{name="Applications.TopicFunction"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="Renders a hierarchical browser for categories"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Renders a hierarchical browser for categories"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

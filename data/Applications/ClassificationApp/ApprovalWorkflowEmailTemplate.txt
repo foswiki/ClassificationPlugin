@@ -1,0 +1,16 @@
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICPARENT{name="WorkflowEmailTemplate"}%
+%DBCALL{"Applications.ClassificationApp.RenderWorkflowEmail"}%
+
+%META:FORM{name="Applications/ClassificationApp.WorkflowEmailTemplate"}%
+%META:FIELD{name="TopicType" title="TopicType" value="WorkflowEmailTemplate, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value=""}%
+%META:FIELD{name="From" title="From" value="foo@bar.com"}%
+%META:FIELD{name="To" title="To" value="baz@bar.com"}%
+%META:FIELD{name="Cc" title="Cc" value=""}%
+%META:FIELD{name="Subject" title="Subject" value="This is a test"}%
+%META:FIELD{name="RelatedWorkflow" title="Related Workflow" value="SimpleApprovalWorkflow"}%
+%META:FIELD{name="PlainText" title="Plain Text" value="qwe%0d%0a%0d%0aqweqweq"}%
+%META:FIELD{name="HTMLText" title="HTML Text" value=""}%
+%META:WORKFLOW{name="draft" LASTCOMMENT_draft="" LASTTIME_draft="06 Nov 2015 - 17:23" LASTUSER_draft="Home.MichaelDaum" LASTVERSION_draft="3"}%

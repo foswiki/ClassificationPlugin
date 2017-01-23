@@ -1,13 +1,10 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="WebHome"}%
-%DBCALL{
-  "Applications.ClassificationApp.RenderUncategorizedTopics"
-  EXCLUDE="UncategorizedTopics|WebTopicEditTemplate"
-}%
+---+!! %TOPICTITLE%
+%DBCALL{"Applications.ClassificationApp.RenderUncategorizedTopics"}%
 
-%META:FORM{name="Applications.ClassificationApp.ClassifiedTopic"}%
-%META:FIELD{name="TopicType" title="TopicType" value="ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value="Uncategorized Topics"}%
-%META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
-%META:FIELD{name="Tag" attributes="" title="Tag" value=""}%
-%META:FIELD{name="Category" attributes="" title="Category" value=""}%
+%META:PREFERENCE{name="TOPICTITLE" title="TOPICTITLE" type="Local" value="Uncategorized Topics"}%
+%META:PREFERENCE{name="DISPLAYREVISIONINFO" title="DISPLAYREVISIONINFO" type="Local" value="off"}%
+%META:PREFERENCE{name="DISPLAYFORM" title="DISPLAYFORM" type="Local" value="off"}%
+%META:PREFERENCE{name="DISPLAYATTACHMENTS" title="DISPLAYATTACHMENTS" type="Local" value="off"}%
+%META:PREFERENCE{name="DISPLAYCOMMENTS" title="DISPLAYCOMMENTS" type="Local" value="off"}%

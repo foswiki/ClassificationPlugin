@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1437132754" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
 %META:TOPICPARENT{name="Applications/ClassificationApp.TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -17,7 +17,7 @@ a summary for an object listed within the TaggedTopic.
 %STARTINCLUDE%%DBQUERY{topic="%OBJECT%"
   format="<div class='clsIndexItem clsTopicItem clsTaggedTopicItem clearfix'>
     $percntDBCALL{\"$web.$topic->Applications.RenderTopicThumbnail\" TYPE=\"plain\"}$percnt<!-- -->
-    [[$web.$topic][$expand(topictitle)]]&nbsp;$percntREDDOT{\"$web.$topic\"}$percnt
+    [[$web.$topic][$expand(topictitle)]]%IF{"context RedDotPluginEnabled" then="$dollarpercntREDDOT{\\"$web.$topic\\"}$dollarpercnt"}%
     $expand('<div class=\"foswikiTopicSummary\">' and Summary and '</div>')<!-- -->
     <div class='foswikiTopicInfo'>
       <span class='clsAuthorDateInfo'>
@@ -35,6 +35,9 @@ a summary for an object listed within the TaggedTopic.
         limit=\"5\"
         footer=\"</span>\"
       }$percnt<!-- -->
+      $percntIF{\"'$expand(total_likes)'>0\"
+         then=\"<span class='foswikiRevisionSep'>&#124;</span> <span class='clsLikeInfo'>$percntTRANSLATE{\"[quant,_1,like,likes]\" args=\"$expand(total_likes)\"}$percnt</span>\"
+      }$percnt<!-- -->
    </div>
   </div>"
 }%%STOPINCLUDE%
@@ -44,7 +47,7 @@ a summary for an object listed within the TaggedTopic.
 %DBCALL{"%TOPIC%" OBJECT="TestTopic0"}%
 
 %META:FORM{name="Applications.TopicFunction"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="Renders an index item for TaggedTopics"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Renders an index item for TaggedTopics"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%
