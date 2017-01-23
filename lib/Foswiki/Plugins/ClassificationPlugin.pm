@@ -30,7 +30,7 @@ BEGIN {
     }
 }
 
-our $VERSION = '6.00';
+our $VERSION = '6.01';
 our $RELEASE = '23 Jan 2017';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'A topic classification plugin and application';
@@ -154,7 +154,7 @@ sub initPlugin {
 
   Foswiki::Func::addToZone('head', 'CLASSIFICATIONPLUGIN::CSS', $css, 'JQUERYPLUGIN::FOSWIKI');
 
-  if ($Foswiki::cfg{Plugins}{SolrPlugin}{Enabled}) {
+  if ($Foswiki::cfg{Plugins}{SolrPlugin} && $Foswiki::cfg{Plugins}{SolrPlugin}{Enabled}) {
     require Foswiki::Plugins::SolrPlugin;
     Foswiki::Plugins::SolrPlugin::registerIndexTopicHandler(\&indexTopicHandler);
     Foswiki::Plugins::SolrPlugin::registerIndexAttachmentHandler(\&indexAttachmentHandler);
