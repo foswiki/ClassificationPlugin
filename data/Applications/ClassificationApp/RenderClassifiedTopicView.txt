@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -26,26 +26,23 @@ showing its category and tagging info in the top.
 
 ---++ Revision Info
 <verbatim class="tml">
-%STARTSECTION{"revinfo"}%<!-- -->
+%STARTSECTION{"revinfo"}%<span class='foswikiRevision'>
 %CATINFO{
   "%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" 
   exclude="TopCategory"
-  header="<span class='foswikiRevisionSep'>&#124;</span> %JQICON{"fa-folder"}% "
+  header=" <span class='foswikiRevisionSep'>&#124;</span> %JQICON{"fa-folder"}% "
   format="<a href='$origurl' rel='tag' itemprop='keywords' class='$name'><noautolink>$title</noautolink></a>"
-}% <!-- -->
-%TAGINFO{
+}%%TAGINFO{
   "%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"
-  header="<span class='foswikiRevisionSep'>&#124;</span> %JQICON{"fa-tag"}% "
+  header=" <span class='foswikiRevisionSep'>&#124;</span> %JQICON{"fa-tag"}% "
   format="<a href='$url' rel='tag' itemprop='keywords' class='$class'><noautolink>$name</noautolink></a>"
   limit="30"
   footer="$percntIF{\"$count > $index\" 
     then=\"<span class='clsTopicInfoMoreContainer'> &#8230; 
-      <a href='#' class='clsTopicInfoMore' title='%MAKETEXT{"Show all tags"}%'>%MAKETEXT{"more"}%</a>
+      <a href='#' class='clsTopicInfoMore' title='%TRANSLATE{"Show all tags"}%'>%TRANSLATE{"more"}%</a>
       </span>\"
     }$percnt"
-}% <!-- -->
-%JQREQUIRE{"ui"}%<!-- -->
-%ADDTOZONE{
+}%</span>%JQREQUIRE{"ui"}%%ADDTOZONE{
   "script"
   requires="JQUERYPLUGIN, JQUERYPLUGIN::UI"
   text="<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/jquery.classifiedtopic.js'></script>"

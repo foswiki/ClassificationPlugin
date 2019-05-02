@@ -1,6 +1,6 @@
 # Module of Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 # 
-# Copyright (C) 2007-2017 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2007-2019 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -79,15 +79,15 @@ sub renderForDisplay {
 }
 
 sub getDisplayValue {
-    my ($this, $value) = @_;
+    my ($this, $value, $web, $topic) = @_;
 
-    my $web = $this->{session}->{webName};
-
-    my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($web);
-    return $value unless $hierarchy;
+    $web ||= $this->{session}{webName};
 
     my @value = ();
     foreach my $catName (split(/\s*,\s*/, $value)) {
+      my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($web);
+      next $value unless $hierarchy;
+
       my $cat = $hierarchy->getCategory($catName);
       if (defined $cat) {
         push @value, $cat->getLink();
@@ -96,10 +96,14 @@ sub getDisplayValue {
       }
     }
     $value = join(', ', @value);
+
+    return $value;
 }
 
 sub renderForEdit {
   my $this = shift;
+
+  Foswiki::Plugins::JQueryPlugin->getIconService()->loadAllIconFonts();
 
   # get args in a backwards compatible manor:
   my $metaOrWeb = shift;
@@ -134,9 +138,11 @@ sub renderForEdit {
 
   $web = $params{web} if defined $params{web};
   my $baseWeb = $this->{session}->{webName};
+  my $buttons = $params{buttons} || 'on';
 
   Foswiki::Func::readTemplate("classificationplugin");
 
+  my $classes = $this->cssClasses() || '';
   my $widget = Foswiki::Func::expandTemplate("categoryeditor");
   $widget =~ s/\$baseweb/$baseWeb/g;
   $widget =~ s/\$web/$web/g;
@@ -148,6 +154,8 @@ sub renderForEdit {
   $widget =~ s/\$type/$this->{type}/g;
   $widget =~ s/\$size/$this->{size}/g;
   $widget =~ s/\$attrs/$this->{attributes}/g;
+  $widget =~ s/\$classes/$classes/g;
+  $widget =~ s/\$buttons/$buttons/g;
   $widget =~ s/\$(name|type|size|value|attrs)//g;
 
   #print STDERR "widget=$widget\n";

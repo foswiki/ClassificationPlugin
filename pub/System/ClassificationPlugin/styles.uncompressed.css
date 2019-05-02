@@ -10,6 +10,14 @@
 .clsCatSelector h3 a:hover {
   color:#fff;
 }
+.jqHierarchy {
+  position:relative;
+}
+.jqHierarchy label.error {
+  position:absolute;
+  bottom:0;
+  right:0;
+}
 .jqHierarchyButtons {
   position:relative;
   float:right;
@@ -21,6 +29,9 @@
 }
 .jstree-count {
   margin-left:0.3em;
+}
+.jqTopicCreator .jqHierarchyButtons {
+  display:none;
 }
 .jqHierarchy a,
 .clsBrowser a {
@@ -199,14 +210,8 @@ a.clsTagClose:hover {
 
 /* indexes */
 .clsIndexItem {
-  min-height:16px;
-  background-repeat:no-repeat;
   margin-bottom:1em;
 }
-.fltMakeIndexWrapper .clsIndexItem {
-  margin-bottom:0;
-}
-
 .clsTopicItem {
   background-repeat:no-repeat;
 }
@@ -217,44 +222,26 @@ a.clsTagClose:hover {
 }
 .clsTopicItem .imageSimple_left,
 .clsTopicItem .imagePlain_left {
-  margin:4px 1em 1em 0px;
+  margin:4px 1em 4px 0;
 }
 .clsTopicItem .imageSimple_right,
 .clsTopicItem .imagePlain_right {
-  margin:4px 0px 1em 1em;
+  margin:4px 0 4px 1em;
 }
-/*
-.clsCategoryItem {
-  padding-left:20px;
-  background-repeat:no-repeat;
-}
-*/
 .clsIndexItem .fa {
   font-size:110%;
   margin-right:2px;
 }
+/*
+h1.clsCategoryTitle .fa-folder,
+.jqHierarchy .fa-folder,
 .clsCategoryItem .fa-folder {
   color:#F9E9A1;
   text-shadow:1px 1px #aaa;
 }
+*/
 .clsIndexItem .clsLikeInfo .jqIcon {
   margin:inherit;
-}
-
-/* icon selector */
-.clsIconContainer {
-  margin:0px 5px 5px 0px;
-  border:2px solid transparent;
-  padding:1px;
-  display:block;
-  float:left;
-}
-.clsIconContainer.selected {
-  border:2px solid red;
-  background:#eee;
-}
-.clsIconSelector input {
-  display:none;
 }
 
 .clsCategoryLink:hover,
@@ -288,14 +275,14 @@ a.clsTopicInfoMoreClicked:hover {
 /* styles for special tags */
 a.tag_todo,
 span.tag_todo {
-  background-color:#FBE3E4;
+  background-color:#FBE3E4 !important;
   color:#b22222 !important;
-  border-color:#E2ADB0;
+  border-color:#E2ADB0 !important;
 }
 a:hover.tag_todo {
-  background-color:#b22222;
-  border-color:#b22222;
+  background-color:#b22222 !important;
   color:#fff !important;
+  border-color:#b22222 !important;
 }
 
 .clsHilight {
@@ -306,6 +293,54 @@ a:hover.tag_todo {
 /* workflow css */
 .clsWorkflowInfo select {
   margin-right:1em;
+}
+.clsWorkflowMessage:before {
+  display: inline-block;
+  margin: 0 8px 0 0;
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration:none;
+}
+
+.clsWorkflowState.approved, 
+.clsWorkflowState.approved a {
+  color:green;
+}
+.clsWorkflowState.approved .clsWorkflowMessage:before {
+  content: "\f058"; /* fa-check-circle */
+}
+
+.clsWorkflowState.draft,
+.clsWorkflowState.draft a {
+  color:red;
+}
+.clsWorkflowState.draft .clsWorkflowMessage:before {
+  content: "\f071"; /* fa-warning */
+}
+
+.clsWorkflowState.rejected,
+.clsWorkflowState.rejected a {
+  color:#b22222;
+}
+.clsWorkflowState.rejected .clsWorkflowMessage:before {
+  content: "\f165"; /* fa-thumbs-down */
+}
+
+.clsWorkflowState.submitted,
+.clsWorkflowState.submitted a {
+  color:#ff9900;
+}
+.clsWorkflowState.submitted .clsWorkflowMessage:before {
+  content: "\f013"; /* fa-cog */
+}
+
+.clsWorkflowState.outdated,
+.clsWorkflowState.outdated a {
+  color:#b22222;
+}
+.clsWorkflowState.outdated .clsWorkflowMessage:before {
+  content: "\f1f8"; /* fa-trash */
 }
 
 /* pattern skin tweaks */

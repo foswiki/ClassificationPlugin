@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.WikiTopicView"}%
@@ -7,8 +7,12 @@
 %{<verbatim class="tml">}%
 %TMPL:DEF{"beforetext"}%%TMPL:PREV%%IF{
    "Workflow!=''" 
-   then="$percntDBCALL{\"Applications.ClassificationApp.RenderWorkflowInfo\"}$percnt"
+   then="$percntDBCALL{\"%WEB%.%TOPIC%->RenderWorkflowInfo\"}$percnt"
 }%%TMPL:END%
+%{</verbatim>}%
+
+%{<verbatim class="tml">}%
+%TMPL:DEF{"aftertext"}%%DBCALL{"%WEB%.%TOPIC%->RenderWorkflowHistory"}%%TMPL:END%
 %{</verbatim>}%
 
 %META:FORM{name="Applications.TopicView"}%

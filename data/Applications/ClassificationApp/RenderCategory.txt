@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -6,7 +6,14 @@
 %STARTSECTION{name="documentation" type="section"}%
 This function is called in Category topics.
 
-See the CategoryTemplate.
+See the also
+
+   * [[CategoryTemplate]]
+   * [[CategoryRenderCategoryItem]]
+   * [[Applications.RenderIndexItem]]
+   * [[ClassifiedTopicRenderIndexItem]]
+   * [[RenderCategoryTiles]]
+
 ---+++++ Parameters
    * CAT: category to be rendered, defaults to URLPARM{"catname" default="BASETOPIC"}
    * KEYWORDS: keywords to filter for
@@ -15,12 +22,18 @@ See the CategoryTemplate.
    * SHOWHEADER: switch on/off display anchors, defaults to off
    * SHOWTOPICS: switch on/off display of topics in this category; defaults to on
    * SHOWGROUPS: switch on/off alphabetic headers; defaults to off
+   * SHOWFILTER: switch on/off the input field to filter the list items, defaults to =off=
+   * SHOWSUBCATS: switch on/off display of subcategories, defaults to on
+   * COLS: number of columns, defaults to =CLASSIFICATIONPLUGIN_NRCOLS= which itself defaults to 3
 
 %ENDSECTION{name="documentation" type="section"}%
 
 ---++ Implementation
 <verbatim class="tml">
 %STARTINCLUDE%<noautolink><div class='clsMakeIndexWrapper'>
+%IF{"'%SHOWFILTER{default="off"}%'='on'"
+   then="$percntDBCALL{\"%WEB%.%TOPIC%\" section=\"filter\"}$percnt"
+}%<!-- -->
 %MAKEINDEX{
   "%HIERARCHY{
      web="%BASEWEB%"
@@ -30,12 +43,19 @@ See the CategoryTemplate.
      sort="on"
      format="($title);$topic;$origweb$n"
    }%"
-  cols="%CLASSIFICATIONPLUGIN_NRCOLS{default="3"}%"
+  cols="%COLS{default="%CLASSIFICATIONPLUGIN_NRCOLS{default="3"}%"}%"
   split="\n"
   pattern="\((.*)\);(.*);(.*)"
   sort="off"
   %IF{"'%SHOWGROUPS{default="off"}%'!='on'" then="group=\"\""}%
-  format="$percntDBCALL{\"Applications.ClassificationApp.CategoryRenderIndexItem\" TITLE=\"$1\" THEWEB=\"%BASEWEB%\" OBJECT=\"$2\"}$percnt"
+  format="$percntDBCALL{
+            \"$percntIF{\"istopic '%BASEWEB%.$2'\"
+               then=\"%BASEWEB%.$2->RenderCategoryItem\"
+               else=\"Applications.ClassificationApp.CategoryRenderCategoryItem\"
+            }$percnt\" 
+            TITLE=\"$1\" 
+            OBJECT=\"$2\"
+         }$percnt"
 }%<!-- -->
 %IF{"'%SHOWTOPICS{default="%IF{"'%CAT{default="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%'='TopCategory'" then="off" else="on"}%"}%'='on'"
    then="$percntDBCALL{\"%WEB%.%TOPIC%\" 
@@ -49,7 +69,7 @@ See the CategoryTemplate.
 </verbatim>
 
 <verbatim class="tml">
-%STARTSECTION{"topicindex"}%<!-- -->
+%STARTSECTION{"topicindex"}%
 %MAKEINDEX{
   "%DBQUERY{
     "!(TopicType=~'\bCategory\b') AND 
@@ -70,14 +90,13 @@ See the CategoryTemplate.
     format="($expand(TopicTitle or topic));$topic;$web"
     separator="$n"
   }%"
-  cols="%CLASSIFICATIONPLUGIN_NRCOLS{default="3"}%"
+  cols="%COLS{default="%CLASSIFICATIONPLUGIN_NRCOLS{default=""}%"}%"
   split="\n"
   pattern="\((.*)\);(.*);(.*)"
   sort="nocase"
   %IF{"'%SHOWHEADER%'='on'" then="header=\"$anchors\""}%
   format="$percntDBCALL{\"$3.$2->RenderIndexItem\"}$percnt"
-}%<!-- -->
-<!--  -->%ENDSECTION{"topicindex"}%%
+}%%ENDSECTION{"topicindex"}%%
 </verbatim>
 
 ---++ Toolbar 
@@ -94,7 +113,7 @@ See the CategoryTemplate.
   }%" 
   title="Create a new topic in %CATINFO{cat="%BASEWEB%.%URLPARAM{"catname" default="%BASETOPIC%"}%" format="<nop>$title"}%"
 }%
-%IF'%USERSWEB%.AdminGroup' allows 'change'"
+%IF{"'%USERSWEB%.AdminGroup' allows 'change'"
   then="%BUTTON{"Manage" href="%SCRIPTURLPATH{view}%/%BASEWEB%/Category" title="Manage categories"}%  
         %BUTTON{"Browse" href="%SCRIPTURLPATH{view}%/%BASEWEB%/CategoryBrowser" title="Browse the hierarchy"}%"
 }%
@@ -102,8 +121,45 @@ See the CategoryTemplate.
 %CLEAR%%ENDSECTION{"toolbar"}%
 </verbatim>
 
+---++ Filter
+<verbatim class="tml">
+%STARTSECTION{"filter"}%*%TRANSLATE{"Filter"}%* <input type="text" size="30" class="clsFilter foswikiInputField" />
+%ADDTOZONE{"script" 
+   id="%TOPIC%" 
+   requires="JQUERYPLUGIN" 
+   text="<script type='text/javascript' src='%PUBURLPATH%/Applications/ClassificationApp/RenderCategory/filter.js'></script>"
+}%%STARTATTACH{"filter.js" hidecontent="on"}%
+"use strict"
+jQuery(function($) {
+   var $container = $(".clsMakeIndexWrapper"), timer;
+   function updateCategoryIndex(val) {
+      $container.find(".fltMakeIndexItem").each(function() { 
+         var $this = $(this), text = $this.text(); 
+         if (!regex.test(text)) { 
+            $this.fadeOut(); 
+         } else {
+            if (!$this.is(":visible")) {
+               $this.fadeIn();
+            }
+         }
+      });
+   }
+   $("input.clsFilter").on("keyup", function(ev) { 
+      var $this = $(this), val = $this.val(); 
+      if (typeof(timer) !== 'undefined') {
+         window.clearTimeout(timer);
+      }
+      timer = window.setTimeout(function() { 
+         updateCategoryIndex(val); 
+         timer = undefined;
+      }, 500);
+   });
+});
+%ENDATTACH%%ENDSECTION{"filter"}%
+</verbatim>
+
 ---++ Test
-%DBCALL{"%TOPIC%"}%
+%DBCALL{"%TOPIC%" CAT="%URLPARAM{"catname" default="TopCategory"}%"}%
 
 
 %META:FORM{name="Applications.TopicFunction"}%
@@ -111,3 +167,4 @@ See the CategoryTemplate.
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value="Render tools to handle categories"}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%
+%META:FILEATTACHMENT{name="filter.js" attachment="filter.js" attr="" comment="Generated by <nop>AttachContentPlugin" date="1556791161" path="filter.js" size="758" user="ProjectContributor" version="1"}%

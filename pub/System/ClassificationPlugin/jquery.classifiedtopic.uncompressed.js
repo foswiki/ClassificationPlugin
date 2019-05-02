@@ -1,5 +1,5 @@
-jQuery(function($) {
 "use strict";
+jQuery(function($) {
 
   $(document).on("click", ".clsTopicInfoMore", function() {
     var $this = $(this),

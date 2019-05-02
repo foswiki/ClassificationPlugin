@@ -1,6 +1,6 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
-%META:TOPICPARENT{name="TestCategory5"}%
-%DBCALL{"Applications.ClassificationApp.RenderCategory"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
+%META:TOPICPARENT{name="TestCategory8"}%
+%DBCALL{"%CLASSIFICATIONPLUGIN_RENDERCATEGORY{default="Applications.ClassificationApp.RenderCategory"}%"}%
 
 FORMFIELD=%FORMFIELD{"Category"}%
 
@@ -13,7 +13,7 @@ CATINFO=%CATINFO{topic="%TOPIC%"}%
 %META:FIELD{name="TopicType" title="TopicType" value="Category, CategorizedTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" attributes="" title="Summary" value="blabla"}%
-%META:FIELD{name="Category" title="Category" value="TestCategory5"}%
+%META:FIELD{name="Category" title="Category" value="TestCategory8"}%
 %META:FIELD{name="Icon" attributes="" title="Icon" value=""}%
 %META:FIELD{name="ImportedCategory" attributes="" title="<nop>ImportedCategory" value=""}%
-%META:FIELD{name="Order" attributes="" title="Order" value=""}%
+%META:FIELD{name="Order" attributes="" title="Order" value="20"}%

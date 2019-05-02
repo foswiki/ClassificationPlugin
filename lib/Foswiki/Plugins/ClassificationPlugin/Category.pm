@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2017 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2019 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -119,12 +119,13 @@ sub icon {
 sub getIcon {
   my $this = shift;
 
-  my $icon = $this->icon || 'folder';
+  my $icon = $this->icon || 'fa-folder-o';
   
   # remove file extension for backwards compatibility
   $icon =~ s/\.(png|gif)$//;
 
-  return Foswiki::Plugins::JQueryPlugin::handleJQueryIcon($Foswiki::Plugins::SESSION, {
+  return Foswiki::Plugins::JQueryPlugin::getIconService()->renderIcon({
+    class => $icon =~ /^fa\-/ ? "fa-fw" : "",
     _DEFAULT => $icon
   });
 }
@@ -133,12 +134,12 @@ sub getIcon {
 sub getIconUrl {
   my $this = shift;
 
-  my $icon = $this->icon || 'folder';
+  my $icon = $this->icon || 'fa-folder-o';
 
   # remove file extension for backwards compatibility
   $icon =~ s/\.(png|gif)$//;
 
-  return Foswiki::Plugins::JQueryPlugin::Plugins::getIconUrlPath($icon);
+  return Foswiki::Plugins::JQueryPlugin::getIconService()->getIconUrlPath($icon);
 }
 
 ###############################################################################
@@ -731,7 +732,7 @@ sub importCategories {
   foreach my $impCat (split(/\s*,\s*/, $impCats)) {
 
     my ($impWeb, $impTopic) = Foswiki::Func::normalizeWebTopicName($thisWeb, $impCat);
-    $impWeb =~ s/\//\./go;
+    $impWeb =~ s/\//\./g;
     next unless Foswiki::Func::webExists($impWeb);
 
     my $db = Foswiki::Plugins::DBCachePlugin::getDB($impWeb);
@@ -973,7 +974,7 @@ sub traverse {
   $matchAttr = 'name' unless $matchAttr =~ /^(name|title)$/;
   my $matchCase = $params->{matchcase} || 'on';
 
-  $format = '<ul><li><img src="$icon" /> <a href="$url">$title</a> $children</li></ul>' 
+  $format = '<ul><li>$icon <a href="$url">$title</a> $children</li></ul>' 
     unless defined $format;
 
   # get sub-categories
@@ -1152,7 +1153,7 @@ sub traverse {
   my $indent = $params->{indent} || '   ';
   $indent = $indent x $depth;
 
-  my $iconUrl = $this->getIconUrl();
+  my $icon = $this->getIcon();
 
   my $tags = '';
   if ($header =~ /\$tags/ ||
@@ -1206,7 +1207,7 @@ sub traverse {
       'id'=>$this->{id},
       'depth'=>$distToRoot,
       'indent'=>$indent,
-      'icon'=>$iconUrl,
+      'icon'=>$icon,
       'tags'=>$tags,
       'parents'=>$parents,
       'breadcrumbs'=>$breadCrumbs,
@@ -1231,7 +1232,7 @@ sub traverse {
       'id'=>$this->{id},
       'depth'=>$distToRoot,
       'indent'=>$indent,
-      'icon'=>$iconUrl,
+      'icon'=>$icon,
       'tags'=>$tags,
       'parents'=>$parents,
       'breadcrumbs'=>$breadCrumbs,
@@ -1268,7 +1269,7 @@ sub traverse {
     'id'=>$this->{id},
     'depth'=>$distToRoot,
     'indent'=>$indent,
-    'icon'=>$iconUrl,
+    'icon'=>$icon,
     'tags'=>$tags,
     'parents'=>$parents,
     'breadcrumbs'=>$breadCrumbs,

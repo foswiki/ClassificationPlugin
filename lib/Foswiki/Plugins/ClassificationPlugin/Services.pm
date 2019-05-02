@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2017 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2019 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -97,7 +97,7 @@ sub printJSONRPC {
 sub normalizeTags {
   my ($this, $session, $subject, $verb, $response) = @_;
 
-  my $query = Foswiki::Func::getCgiQuery();
+  my $query = Foswiki::Func::getRequestObject();
   my $theWeb = $query->param('web') || $session->{webName};
   $theWeb = Foswiki::Sandbox::untaintUnchecked($theWeb);
 
@@ -148,12 +148,12 @@ sub normalizeTags {
 sub renameTag {
   my ($this, $session, $subject, $verb, $response) = @_;
 
-  my $query = Foswiki::Func::getCgiQuery();
+  my $query = Foswiki::Func::getRequestObject();
   my $theWeb = $query->param('web') || $session->{webName};
   $theWeb = Foswiki::Sandbox::untaintUnchecked($theWeb);
 
   unless (Foswiki::Func::webExists($theWeb)) {
-    $this->printJSONRPC($response, 300, "web $theWeb does not exist");
+    $this->printJSONRPC($response, 300, "web does not exist");
     return;
   }
 
@@ -208,14 +208,14 @@ sub splitFacet {
     return;
   }
 
-  my $query = Foswiki::Func::getCgiQuery();
+  my $query = Foswiki::Func::getRequestObject();
   $debug = Foswiki::Func::isTrue($query->param('debug'), 0);
 
   my $theWeb = $query->param('web') || $session->{webName};
   $theWeb = Foswiki::Sandbox::untaintUnchecked($theWeb);
 
   unless (Foswiki::Func::webExists($theWeb)) {
-    $this->printJSONRPC($response, 300, "web $theWeb does not exist");
+    $this->printJSONRPC($response, 300, "web does not exist");
     return;
   }
 
@@ -230,7 +230,7 @@ sub splitFacet {
 
   my $theNewForm = $query->param('form');
   unless (Foswiki::Func::topicExists(undef, $theNewForm)) {
-    $this->printJSONRPC($response, 500, "form definition $theNewForm not found");
+    $this->printJSONRPC($response, 500, "form definition not found");
     return;
   }
 
@@ -251,14 +251,14 @@ sub splitFacet {
       my $categoryName = $2;
       my $cat = $hierarchy->getCategory($categoryName);
       unless ($cat) {
-        $this->printJSONRPC($response, 600, "unknwon category $categoryName");
+        $this->printJSONRPC($response, 600, "unknwon category");
         return;
       }
 
       _writeDebug("mapping facet '$fieldName' to '$categoryName'");
       $map{$fieldName} = $cat;
     } else {
-      $this->printJSONRPC($response, 700, "invalid map format $theMap at '$mapItem'");
+      $this->printJSONRPC($response, 700, "invalid map format");
       return;
     }
   }
@@ -293,7 +293,7 @@ sub splitFacet {
     foreach my $catName (@$cats) {
       my $cat = $hierarchy->getCategory($catName);
       unless ($cat) {
-	$this->printJSONRPC($response, 800, "topic $topicName has got an unknown category $catName");
+	$this->printJSONRPC($response, 800, "topic has got an unknown category");
         return;
       }
       my $foundFacet = 0;
@@ -305,7 +305,7 @@ sub splitFacet {
 	}
       }
       unless ($foundFacet) {
-        $this->printJSONRPC($response, 900, "oops, $catName not mapped onto any facet");
+        $this->printJSONRPC($response, 900, "oops, category not mapped onto any facet");
         return;
       }
     }
@@ -358,7 +358,7 @@ sub deployTopicType {
     return;
   }
 
-  my $query = Foswiki::Func::getCgiQuery();
+  my $query = Foswiki::Func::getRequestObject();
 
   $debug = Foswiki::Func::isTrue($query->param('debug'), 0);
   my $dry = Foswiki::Func::isTrue($query->param('dry'), 0);
@@ -511,7 +511,7 @@ sub deployTopicType {
       #_writeDebug("adding form $dataForm");
       $meta->put('FORM', { name => $dataForm });
 
-      my $topicTitle = _getTopicTitle(undef, undef, $meta);
+      my $topicTitle = Foswiki::Plugins::Func::getTopicTitle($web, $topic, undef, $meta);
       if (defined $topicTitle) {
         $meta->remove('PREFERENCE', 'TOPICTITLE');
         $meta->putKeyed( 'FIELD', { 
@@ -576,51 +576,6 @@ sub deployTopicType {
 sub _writeDebug {
   print STDERR $_[0]."\n" if $debug;
   #Foswiki::Func::writeDebug('- ClassificationPlugin::Services - '.$_[0]) if $debug;
-}
-
-###############################################################################
-sub _getTopicTitle {
-  my ($web, $topic, $meta) = @_;
-
-  my $topicTitle;
-
-  ($meta) = Foswiki::Func::readTopic($web, $topic) unless $meta;
-  $web = $meta->web unless $web;
-  $topic = $meta->topic unless $topic;
-
-  # get from form
-  my $field = $meta->get('FIELD', 'TopicTitle');
-  $topicTitle = $field->{value} if $field && $field->{value};
-
-  # get from preferences
-  unless ($topicTitle) {
-    $field = $meta->get('PREFERENCE', 'TOPICTITLE');
-    $topicTitle = $field->{value} if $field && $field->{value};
-  }
-
-  # get from first h1
-# unless ($topicTitle) {
-#   my $text = $meta->text;
-#   if ($text =~ /^\-\-\-\+([^\+].*?)$/sm) {
-#     $topicTitle = $1;
-#     $topicTitle =~ s/^!+//;
-#     $topicTitle =~ s/<nop>//;
-#     $topicTitle =~ s/^\s+//;
-#     $topicTitle =~ s/\s+$//;
-#     if ($topicTitle =~ /%TOPIC%/ or $topicTitle eq $topic) {
-#       $topicTitle = undef;
-#     } else {
-#       _writeDebug("found topicTitle='$topicTitle' in h1 of $web.$topic");
-#     }
-#   }
-# }
-  
-  return unless $topicTitle;
-
-  # bit of cleanup
-  $topicTitle =~ s/<!--.*?-->//g;
-
-  return $topicTitle;
 }
 
 1;

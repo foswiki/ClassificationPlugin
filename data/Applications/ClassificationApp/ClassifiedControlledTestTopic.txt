@@ -1,20 +1,14 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
-%META:TOPICPARENT{name="TestCategory0"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
+%META:TOPICPARENT{name="WebHome"}%
 
 
 %META:FORM{name="Applications/ClassificationApp.ClassifiedControlledTopic"}%
 %META:FIELD{name="TopicType" title="TopicType" value="ClassifiedControlledTopic, ControlledTopic, ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value="Classified Controlled Test Topic"}%
 %META:FIELD{name="Summary" title="Summary" value=""}%
-%META:FIELD{name="Workflow" title="Workflow" value="SimpleApprovalWorkflow"}%
-%META:FIELD{name="Tag" title="Tag" value="bar, foo, test"}%
-%META:FIELD{name="Category" title="Category" value="TestCategory0, TestCategory16"}%
-%META:PREFERENCE{name="WORKFLOW" title="WORKFLOW" type="Set" value="SimpleApprovalWorkflow"}%
-%META:PREFERENCE{name="ALLOWTOPICVIEW" title="ALLOWTOPICVIEW" type="Set" value="AdminGroup"}%
-%META:PREFERENCE{name="PERMSET_VIEW" title="PERMSET_VIEW" type="Local" value="details"}%
-%META:PREFERENCE{name="PERMSET_VIEW_DETAILS" title="PERMSET_VIEW_DETAILS" type="Local" value="AdminGroup"}%
-%META:WORKFLOW{name="requesting approval" LASTACTION="request approval" LASTCOMMENT_approved="" LASTCOMMENT_draft="" LASTCOMMENT_requesting_approval="" LASTSTATE="draft" LASTTIME_approved="04 Jul 2016 - 13:02" LASTTIME_draft="04 Jul 2016 - 17:13" LASTTIME_requesting_approval="04 Jul 2016 - 17:13" LASTUSER_approved="Home.MichaelDaum" LASTUSER_draft="Home.MichaelDaum" LASTUSER_requesting_approval="Home.MichaelDaum" LASTVERSION_approved="13" LASTVERSION_draft="15" LASTVERSION_requesting_approval="16"}%
-%META:WORKFLOWHISTORY{name="13" author="Home.MichaelDaum" comment="" date="1467626184" state="requesting approval"}%
-%META:WORKFLOWHISTORY{name="14" author="Home.MichaelDaum" comment="" date="1467630152" state="approved"}%
-%META:WORKFLOWHISTORY{name="16" author="Home.MichaelDaum" comment="" date="1467645190" state="draft"}%
-%META:WORKFLOWHISTORY{name="17" author="Home.MichaelDaum" comment="" date="1467645194" state="requesting approval"}%
+%META:FIELD{name="Workflow" title="Workflow" value="Applications.ClassificationApp.SimpleApprovalWorkflow"}%
+%META:FIELD{name="Tag" title="Tag" value=""}%
+%META:FIELD{name="Category" title="Category" value=""}%
+%META:WORKFLOW{name="approved" LASTACTION="approve" LASTCOMMENT_approved="yqweqwe qweyyyyy" LASTCOMMENT_submitted="qweqweqe qweq weq weqeq we qwe qweqeq" LASTSTATE="submitted" LASTTIME_approved="14. Juni 2018" LASTTIME_submitted="14. Juni 2018" LASTUSER_approved="Home.MichaelDaum" LASTUSER_submitted="Home.MichaelDaum" LASTVERSION_approved="3" LASTVERSION_submitted="2"}%
+%META:WORKFLOWHISTORY{name="2" author="Home.MichaelDaum" comment="qweqweqe qweq weq weqeq we qwe qweqeq" date="1528977527" state="submitted"}%
+%META:WORKFLOWHISTORY{name="3" author="Home.MichaelDaum" comment="yqweqwe qweyyyyy" date="1528977539" state="approved"}%

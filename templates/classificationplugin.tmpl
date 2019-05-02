@@ -3,28 +3,29 @@
 %TMPL:DEF{"categoryeditor::jstree"}%%DBCALL{
   "Applications.ClassificationApp.RenderCategoryBrowser"
   NAME="$name"
-  VALUE="$value"
+  VALUE="$value" 
   TOP="$top"
   THEWEB="$baseweb"
   MODE="select"
+  CLASSES="$classes"
+  BUTTONS="$buttons"
 }%<!-- -->%TMPL:END%
 
-%TMPL:DEF{"categoryeditor::jstreeview"}%%DBCALL{
-  "Applications.ClassificationApp.RenderCategoryEditor" 
-  NAME="$name" 
-  VALUE="$value" 
-  TOP="$top" 
-  THEWEB="$baseweb"
-}%%TMPL:END%
-
-%TMPL:DEF{"tageditor"}%%DBCALL{
-  "Applications.ClassificationApp.RenderTagEditor"
-  NAME="$name" 
-  VALUE="$value" 
-  THEWEB="$baseweb"
-  THETOPIC="$topic"
-  SIZE="$size"
-}%%TMPL:END%
+%TMPL:DEF{"tageditor"}%<div class="jqTagEditor" data-tag-suggestion-url="%SCRIPTURLPATH{"rest"}%/RenderPlugin/template?topic=$web.$topic;name=classificationplugin;expand=suggesttags;contenttype=application/json">
+<noautolink>
+<input type="text" class="foswikiInputField jqTextboxList" autocomplete="%SCRIPTURL{"rest"}%/RenderPlugin/template?topic=$web.$topic;name=classificationplugin;expand=querytags;contenttype=application/json" name="$name" id="$name" size="$size" value="$value" />
+<div class='jqTagSuggestions' style='display:none'>
+<hr />
+<h3 >%TRANSLATE{"Related tags"}%:</h3>
+<ol></ol>
+</div>
+</noautolink>%ADDTOZONE{
+  "script" 
+  id="TAGEDITOR" 
+  requires="JQUERYPLUGIN::BLOCKUI" 
+  text="<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/jquery.tageditor.js'></script>"
+}%%JQREQUIRE{"ui, blockui"}%
+</div>%TMPL:END%
 
 %TMPL:DEF{"querytags"}%%TMPL:P{context="SolrPluginEnabled" then="querytags::solr" else="querytags::default"}%%TMPL:END%
 
@@ -48,3 +49,47 @@
   LIMIT="%URLPARAM{"limit" default="10"}%"
   THEWEB="%URLPARAM{"web" default="%BASEWEB%"}%"
 }%%TMPL:END%
+
+%TMPL:DEF{"suggesttags"}%%TMPL:P{context="DISSolrPluginEnabled" then="suggesttags::solr" else="suggesttags::default"}%%TMPL:END%
+
+%{ disabled solr tag suggestion. see https://issues.apache.org/jira/browse/SOLR-7883 }%
+%TMPL:DEF{"suggesttags::solr"}%[%FORMATLIST{
+  "%SOLRSIMILAR{
+     "id:%THEWEB%.%THETOPIC%"
+     like="category,tag"
+     facets="tag"
+     facetlimit="20"
+     facetmincount="5"
+     mindocumentfrequency="10"
+     rows="0"
+     filter="type:topic web:%THEWEB%"
+     format_tag="$key=$count"
+     separator_tag=","
+  }%"
+  exclude="%FORMATLIST{"%VALUE%" split="\s*,\s*" format="\b($1=\d+)\b" separator="|" replace="-=\-,\[=\\[,\]=\\]"}%"
+  split="\s*,\s*"
+  pattern="(.*)=(.*)"
+  format="{\"key\": \"$1\", \"count\": \"$2\"}"
+  separator=",$n"
+}%]%TMPL:END%
+
+%TMPL:DEF{"suggesttags::default"}%[%DBSTATS{
+   web="%URLPARAM{"theweb" default="%BASEWEB%"}%"
+   topics="%SIMILARTOPICS{
+      tags="%URLPARAM{"tags" multiple="on" default="%FORMFIELD{"Tag"}%"}%"
+      web="%URLPARAM{"theweb" default="%BASEWEB%"}%"
+      format="$topic" 
+      exclude="%BASETOPIC%"
+      separator="," 
+      limit="20"
+      threshold="30"
+   }%, no_such_thing"
+   exclude="%FORMATLIST{"%URLPARAM{"tags" multiple="on" default="%FORMFIELD{"Tag"}%"}%" separator="|" header="^(" footer=")$"}%"
+   field="Tag"
+   sort="count"
+   reverse="on"
+   limit="10"
+   format="{\"key\": \"$key\", \"count\": \"$count\"}"
+   separator=",$n"
+}%]%TMPL:END%
+

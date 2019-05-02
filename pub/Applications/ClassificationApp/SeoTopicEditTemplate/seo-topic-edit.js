@@ -1,7 +1,7 @@
 "use strict";
 jQuery(function($) {
   $(document).on("click", "#clsGenerateTitle", function() {
-    $(this).parents(".foswikiFormStep:first").find("input").val($("input[name=TopicTitle]").val() + ' - ' + 'Localhost');
+    $(this).parents(".foswikiFormStep:first").find("input").val($("input[name=TopicTitle]").val());
     return false;
   });
 

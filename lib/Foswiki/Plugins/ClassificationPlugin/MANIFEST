@@ -1,3 +1,4 @@
+!noci
 data/Applications/ClassificationApp/AdministrationForum.txt 0644
 data/Applications/ClassificationApp/ApplicationLicense.txt 0644
 data/Applications/ClassificationApp/ApplicationTopic.txt 0644
@@ -14,6 +15,7 @@ data/Applications/ClassificationApp/CategorizedTopic.txt 0644
 data/Applications/ClassificationApp/CategorizedTopicViewTemplate.txt 0644
 data/Applications/ClassificationApp/CategoryBrowser.txt 0644
 data/Applications/ClassificationApp/CategoryEditTemplate.txt 0644
+data/Applications/ClassificationApp/CategoryRenderCategoryItem.txt 0644
 data/Applications/ClassificationApp/CategoryRenderIndexItem.txt 0644
 data/Applications/ClassificationApp/CategoryTemplate.txt 0644
 data/Applications/ClassificationApp/Category.txt 0644
@@ -92,8 +94,8 @@ data/Applications/ClassificationApp/RenderCategoryBreadcrumbs.txt 0644
 data/Applications/ClassificationApp/RenderCategoryBrowser.txt 0644
 data/Applications/ClassificationApp/RenderCategoryCloud.txt 0644
 data/Applications/ClassificationApp/RenderCategoryEditor.txt 0644
-data/Applications/ClassificationApp/RenderCategoryFactory.txt 0644
 data/Applications/ClassificationApp/RenderCategorySettings.txt 0644
+data/Applications/ClassificationApp/RenderCategoryTiles.txt 0644
 data/Applications/ClassificationApp/RenderCategory.txt 0644
 data/Applications/ClassificationApp/RenderClassifiedTopicView.txt 0644
 data/Applications/ClassificationApp/RenderHierarchyAsJSON.txt 0644
@@ -102,7 +104,6 @@ data/Applications/ClassificationApp/RenderKnownTagsSolr.txt 0644
 data/Applications/ClassificationApp/RenderKnownTags.txt 0644
 data/Applications/ClassificationApp/RenderSideBar.txt 0644
 data/Applications/ClassificationApp/RenderSolrTagCloud.txt 0644
-data/Applications/ClassificationApp/RenderTagEditor.txt 0644
 data/Applications/ClassificationApp/RenderUncategorizedTopics.txt 0644
 data/Applications/ClassificationApp/RenderUntaggedTopics.txt 0644
 data/Applications/ClassificationApp/RenderWebTagCloud.txt 0644
@@ -125,8 +126,8 @@ data/Applications/ClassificationApp/TaggedTopicEditTemplate.txt 0644
 data/Applications/ClassificationApp/TaggedTopicRenderIndexItem.txt 0644
 data/Applications/ClassificationApp/TaggedTopic.txt 0644
 data/Applications/ClassificationApp/TaggedTopicViewTemplate.txt 0644
+data/Applications/ClassificationApp/Test0Category.txt 0644
 data/Applications/ClassificationApp/TestCategorizedTopic1.txt 0644
-data/Applications/ClassificationApp/TestCategory0.txt 0644
 data/Applications/ClassificationApp/TestCategory10.txt 0644
 data/Applications/ClassificationApp/TestCategory11.txt 0644
 data/Applications/ClassificationApp/TestCategory12.txt 0644
@@ -143,6 +144,7 @@ data/Applications/ClassificationApp/TestCategory7.txt 0644
 data/Applications/ClassificationApp/TestCategory8.txt 0644
 data/Applications/ClassificationApp/TestCategory9.txt 0644
 data/Applications/ClassificationApp/TestCategory.txt 0644
+data/Applications/ClassificationApp/TestControlledTopic.txt 0644
 data/Applications/ClassificationApp/TestSeoTopic.txt 0644
 data/Applications/ClassificationApp/TestTagging.txt 0644
 data/Applications/ClassificationApp/TestTopic0.txt 0644
@@ -177,7 +179,6 @@ data/Applications/ClassificationApp/WikiApplication.txt 0644
 data/Applications/ClassificationApp/WikisCategory.txt 0644
 data/Applications/ClassificationApp/WikiTopic.txt 0644
 data/Applications/ClassificationApp/WishListForum.txt 0644
-data/Applications/ClassificationApp/WorkflowDefinitionEditTemplate.txt 0644
 data/Applications/ClassificationApp/WorkflowDefinitionTemplate.txt 0644
 data/Applications/ClassificationApp/WorkflowDefinition.txt 0644
 data/Applications/ClassificationApp/WorkflowDefinitionViewTemplate.txt 0644
@@ -200,7 +201,6 @@ data/_ClassificationTemplate/WebNotify.txt 0644
 data/_ClassificationTemplate/WebPreferences.txt 0644
 data/_ClassificationTemplate/WebRss.txt 0644
 data/_ClassificationTemplate/WebSearch.txt 0644
-data/_ClassificationTemplate/WebTagCloud.txt 0644
 data/_ClassificationTemplate/WebTagList.txt 0644
 data/_ClassificationTemplate/WebTopicEditTemplate.txt 0644
 data/_ClassificationTemplate/WebTopicList.txt 0644
@@ -243,6 +243,10 @@ locale/ClassificationPlugin/uk.po 0644
 locale/ClassificationPlugin/zh-cn.po 0644
 locale/ClassificationPlugin/zh-tw.po 0644
 pub/Applications/ClassificationApp/CategoryEditTemplate/category-edit.js 0644
+pub/Applications/ClassificationApp/RenderCategory/filter.js 0644
+pub/Applications/ClassificationApp/RenderCategoryTiles/script.js 0644
+pub/Applications/ClassificationApp/RenderCategoryTiles/styles.css 0644
+pub/Applications/ClassificationApp/RenderCategoryTiles/tilefixer.js 0644
 pub/Applications/ClassificationApp/RenderSideBar/render-sidebar.js 0644
 pub/Applications/ClassificationApp/SeoTopicEditTemplate/seo-topic-edit.js 0644
 pub/System/ClassificationPlugin/ClassificationPluginSnap1.png 0644
@@ -265,11 +269,10 @@ pub/System/ClassificationPlugin/jquery.hierarchy.uncompressed.js 0644
 pub/System/ClassificationPlugin/jquery.tagcloud.js 0644
 pub/System/ClassificationPlugin/jquery.tagcloud.js.gz 0644
 pub/System/ClassificationPlugin/jquery.tagcloud.uncompressed.js 0644
-pub/System/ClassificationPlugin/jquery.tagselector.js 0644
-pub/System/ClassificationPlugin/jquery.tagselector.js.gz 0644
+pub/System/ClassificationPlugin/jquery.tageditor.js 0644
+pub/System/ClassificationPlugin/jquery.tageditor.js.gz 0644
+pub/System/ClassificationPlugin/jquery.tageditor.uncompressed.js 0644
 pub/System/ClassificationPlugin/jquery.tagselector.uncompressed.js 0644
-pub/System/ClassificationPlugin/jquery.tagsuggestion.js 0644
-pub/System/ClassificationPlugin/jquery.tagsuggestion.js.gz 0644
 pub/System/ClassificationPlugin/jquery.tagsuggestion.uncompressed.js 0644
 pub/System/ClassificationPlugin/Makefile 0644
 pub/System/ClassificationPlugin/renametag.js 0644

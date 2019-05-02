@@ -20,40 +20,52 @@ msgstr ""
 "X-Poedit-Country: Taiwan\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: data/Applications/ClassificationApp/WebTagList.txt:16
-msgid "%1 tags found"
-msgstr ""
-
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:12
 msgid "... and finally delete this message."
 msgstr ""
+
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:53
+msgid "Action"
+msgstr "功能"
 
 #: data/_ClassificationTemplate/WebHome.txt:62
 msgid "Add more text here"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:72
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:68
 msgid "Cancel"
 msgstr "取消"
 
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:20
+#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:12
 #: data/_ClassificationTemplate/WebHome.txt:9
 msgid "Categories"
 msgstr "類別"
 
+#: data/Applications/ClassificationApp/CategorizedTopic.txt:20
+#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:29
+#: data/Applications/ClassificationApp/ClassifiedTopic.txt:24
+#: data/Applications/ClassificationApp/ControlledTopic.txt:25
+#: data/Applications/ClassificationApp/SeoTopic.txt:19
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:28
+#, fuzzy
+msgid "Category"
+msgstr "類別"
+
 #: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:19
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:50
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:46
 #, fuzzy
 msgid "Change State"
 msgstr "變更語言"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:67
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:66
 #, fuzzy
 msgid "Clear"
 msgstr "全部清除"
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:67
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:25
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:30
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:63
 msgid "Comment"
 msgstr "評論"
 
@@ -64,16 +76,11 @@ msgstr ""
 
 #: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:22
 #: data/Applications/ClassificationApp/ControlledTopic.txt:18
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:22
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:21
 #: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:20
 #, fuzzy
 msgid "Create a new %1"
 msgstr "建立新群組"
-
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:28
-#, fuzzy
-msgid "Create a new category in the %1 web"
-msgstr "在 %1 子網中建立新主題"
 
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:8
 msgid ""
@@ -81,15 +88,18 @@ msgid ""
 "heading. It will display a pencil icon."
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:18
-#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:30
-#: data/Applications/ClassificationApp/WorkflowDefinitionEditTemplate.txt:24
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:16
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:26
+msgid "Date"
+msgstr "日期"
+
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:13
+#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:22
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:8
 #, fuzzy
 msgid "Details"
 msgstr "詳細:"
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:45
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:41
 msgid "Diff"
 msgstr ""
 
@@ -99,35 +109,36 @@ msgid ""
 "linking to this web, e.g. in breadcrumbs and search interfaces."
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
 #, fuzzy
 msgid "Empty the selection"
 msgstr "功能"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:69
+#: data/Applications/ClassificationApp/RenderCategory.txt:126
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:49
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:68
 msgid "Filter"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopic.txt:28
+#: data/Applications/ClassificationApp/SeoTopic.txt:31
 #, fuzzy
 msgid "Generate description"
 msgstr "描述"
 
-#: data/Applications/ClassificationApp/SeoTopic.txt:29
+#: data/Applications/ClassificationApp/SeoTopic.txt:32
 msgid "Generate keywords"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopic.txt:27
+#: data/Applications/ClassificationApp/SeoTopic.txt:30
 msgid "Generate title"
 msgstr ""
 
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:46
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:38
 #, fuzzy
 msgid "HTML Text"
 msgstr "內容"
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:34
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:26
 #, fuzzy
 msgid "HTML Title"
 msgstr "標題:"
@@ -140,7 +151,7 @@ msgstr "歷史"
 msgid "Icon"
 msgstr "圖標"
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:48
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:43
 msgid "Import"
 msgstr ""
 
@@ -155,49 +166,35 @@ msgid ""
 "readability of your content."
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:44
-#, fuzzy
-msgid "Last in %1"
-msgstr "姓:"
-
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:25
-msgid "Message"
-msgstr ""
-
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:39
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:31
 #, fuzzy
 msgid "Meta Image"
 msgstr "圖片"
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:36
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:28
 #, fuzzy
 msgid "Meta desciption"
 msgstr "描述"
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:35
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:27
 msgid "Meta keywords"
 msgstr ""
 
-#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:79
+#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:89
 msgid ""
 "Multiple heading 1 detected. Please only use heading 2, 3, ... inside the "
 "content area."
 msgstr ""
 
-#: data/Applications/ClassificationApp/Category.txt:28
 #: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:21
 #: data/Applications/ClassificationApp/ControlledTopic.txt:17
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:21
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:20
 #: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:19
 #, fuzzy
 msgid "New"
 msgstr "新"
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:57
-msgid "New State"
-msgstr ""
-
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:37
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:32
 #, fuzzy
 msgid "Notes"
 msgstr "注意:"
@@ -211,7 +208,11 @@ msgstr ""
 msgid "Parent topic"
 msgstr "建立主題"
 
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:36
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:23
+msgid "Person"
+msgstr ""
+
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:28
 msgid "Plain Text"
 msgstr ""
 
@@ -230,39 +231,43 @@ msgstr "最近更新的主題"
 msgid "Recent changes"
 msgstr "最近更新的主題"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
 msgid "Refresh"
 msgstr "更新"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
 msgid "Refresh hierarchy cache on the backend"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderTagEditor.txt:43
+#: templates/classificationplugin.tmpl:19
 #, fuzzy
 msgid "Related tags"
 msgstr "相關主題:"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:61
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
 #, fuzzy
 msgid "Reset the selection"
 msgstr "功能"
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:29
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:22
+msgid "Rev"
+msgstr ""
+
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:21
 msgid "SEO"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:30
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:22
 #, fuzzy
 msgid "Search engine optimization"
 msgstr "搜尋選項"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:49
 #, fuzzy
 msgid "Search for matching categories"
 msgstr "搜尋更新"
 
-#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:43
+#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:42
 msgid "Show all tags"
 msgstr ""
 
@@ -270,23 +275,37 @@ msgstr ""
 msgid "Some tips:"
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:45
+#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:30
+#: data/Applications/ClassificationApp/ControlledTopic.txt:26
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:24
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:25
+msgid "State"
+msgstr ""
+
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:40
 #, fuzzy
 msgid "Sub-Categories"
 msgstr "類別"
 
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:34
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:71
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:67
 msgid "Submit"
 msgstr "提交"
 
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:24
-#: data/Applications/ClassificationApp/ClassifiedTopicRenderRss.txt:31
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:186
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:340
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:387
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:459
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:497
+msgid "Success"
+msgstr ""
+
+#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:16
+#: data/Applications/ClassificationApp/ClassifiedTopicRenderRss.txt:34
 #: data/_ClassificationTemplate/WebHome.txt:15
 msgid "Tags"
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:49
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:44
 msgid "Text"
 msgstr "內容"
 
@@ -309,24 +328,23 @@ msgstr ""
 "的服務，所以您不用常常回來查看是否有更新。若要訂閱，請將您的 %2 依字母順序加"
 "入以下清單:"
 
-#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:57
+#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:67
 msgid ""
 "This page needs tagging. Please add keywords describing what this page is "
 "about."
 msgstr ""
 
-#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:68
+#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:78
 msgid ""
 "This page needs to be categorized. Please file it to an appropriate category."
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:21
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:16
 #: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:20
 #: data/Applications/ClassificationApp/ControlledTopic.txt:16
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:30
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:20
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:19
 #: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:18
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:23
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:15
 #, fuzzy
 msgid "Title"
 msgstr "標題:"
@@ -340,12 +358,12 @@ msgstr "工具箱"
 msgid "Topics tagged \"%1\""
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:61
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:68
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:67
 msgid "Undo"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:45
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:41
 msgid "View"
 msgstr "瀏覽"
 
@@ -353,8 +371,8 @@ msgstr "瀏覽"
 msgid "Welcome"
 msgstr ""
 
-#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:47
-#: data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt:20
+#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:39
+#: data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt:12
 msgid "Workflow settings"
 msgstr ""
 
@@ -376,50 +394,76 @@ msgstr "禁止瀏覽主題"
 msgid "access not allowed on category"
 msgstr "不允許瀏覽主題"
 
-#: data/Applications/ClassificationApp/CategorizedTopicEditTemplate.txt:5
+#. ($newTitle)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:388
 #, fuzzy
-msgid "categorized topic"
-msgstr "還原主題"
+msgid "changed title to %1"
+msgstr "為 %1 附檔"
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:8
+#. ($title)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:460
 #, fuzzy
-msgid "category"
-msgstr "類別"
+msgid "created category %1"
+msgstr "建立新群組"
 
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:8
+#. ($cat->title)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:498
 #, fuzzy
-msgid "classified topic"
-msgstr "相關主題:"
+msgid "deleted category %1"
+msgstr "刪除附件 %1"
 
-#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:12
-#: data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt:8
-#, fuzzy
-msgid "controlled topic"
-msgstr "回到主題"
-
-#: data/Applications/ClassificationApp/RenderTagEditor.txt:45
-msgid "found in %1 other topic(s)"
-msgstr ""
-
-#: data/Applications/ClassificationApp/CategoryRenderIndexItem.txt:25
-#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:43
+#: data/Applications/ClassificationApp/CategoryRenderCategoryItem.txt:26
+#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:42
 #, fuzzy
 msgid "more"
 msgstr "(更多)"
+
+#. ($cat->title, $newParent->title)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:341
+#, fuzzy
+msgid "moved %1 to %2"
+msgstr "行: %1 到 %2"
+
+#. ($hierarchy->{web})
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:187
+msgid "refreshed hierarchy in web %1"
+msgstr ""
 
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:8
 msgid "requires Foswiki:Extensions/EditChapterPlugin"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:16
 #, fuzzy
-msgid "seo topic"
-msgstr "到主題"
+#~ msgid "Status"
+#~ msgstr "統計"
 
-#: data/Applications/ClassificationApp/WorkflowDefinitionEditTemplate.txt:8
 #, fuzzy
-msgid "workflow definition"
-msgstr "表單定義"
+#~ msgid "Create a new category in the %1 web"
+#~ msgstr "在 %1 子網中建立新主題"
+
+#, fuzzy
+#~ msgid "Last in %1"
+#~ msgstr "姓:"
+
+#, fuzzy
+#~ msgid "categorized topic"
+#~ msgstr "還原主題"
+
+#, fuzzy
+#~ msgid "classified topic"
+#~ msgstr "相關主題:"
+
+#, fuzzy
+#~ msgid "controlled topic"
+#~ msgstr "回到主題"
+
+#, fuzzy
+#~ msgid "seo topic"
+#~ msgstr "到主題"
+
+#, fuzzy
+#~ msgid "workflow definition"
+#~ msgstr "表單定義"
 
 #~ msgid "!WikiName"
 #~ msgstr "!主題名稱"
@@ -883,9 +927,6 @@ msgstr "表單定義"
 #~ msgid "Access keys:"
 #~ msgstr "快捷鍵："
 
-#~ msgid "Action"
-#~ msgstr "功能"
-
 #~ msgid "Action %1: %2 by user %3."
 #~ msgstr "功能 %1: %2 由使用者 %."
 
@@ -1000,9 +1041,6 @@ msgstr "表單定義"
 #~ msgid ""
 #~ "Attach an image or document to this topic; manage existing attachments (a)"
 #~ msgstr "為這個主題增加圖片或檔案；管理現存附件 (a)"
-
-#~ msgid "Attach file to %1"
-#~ msgstr "為 %1 附檔"
 
 #~ msgid "Attach image or document on %1"
 #~ msgstr "為 %1 附圖"
@@ -1384,9 +1422,6 @@ msgstr "表單定義"
 #~ msgid "Data rows"
 #~ msgstr "資料行"
 
-#~ msgid "Date"
-#~ msgstr "日期"
-
 #~ msgid "Dear %1"
 #~ msgstr "親愛的 %1"
 
@@ -1401,9 +1436,6 @@ msgstr "表單定義"
 
 #~ msgid "Delete"
 #~ msgstr "刪除"
-
-#~ msgid "Delete attachment %1"
-#~ msgstr "刪除附件 %1"
 
 #~ msgid "Delete last row"
 #~ msgstr "刪除最後一行"
@@ -2158,9 +2190,6 @@ msgstr "表單定義"
 
 #~ msgid "Line: %1"
 #~ msgstr "行: %1"
-
-#~ msgid "Line: %1 to %2"
-#~ msgstr "行: %1 到 %2"
 
 #~ msgid "Link"
 #~ msgstr "連結"
@@ -3118,9 +3147,6 @@ msgstr "表單定義"
 
 #~ msgid "State change from *%1* to *%2* (see [[%3][workflow definition]])."
 #~ msgstr "說明由  *%1* 到 *%2* 的改變（參考 [[%3][工作流程定義]])。"
-
-#~ msgid "Statistics"
-#~ msgstr "統計"
 
 #~ msgid "Strikethrough"
 #~ msgstr "刪除線"

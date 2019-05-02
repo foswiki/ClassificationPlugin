@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
 %META:TOPICPARENT{name="Applications/ClassificationApp.TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -16,19 +16,18 @@ a summary for an object listed within the TaggedTopic.
 <verbatim class="tml">
 %STARTINCLUDE%%DBQUERY{topic="%OBJECT%"
   format="<div class='clsIndexItem clsTopicItem clsTaggedTopicItem clearfix'>
-    $percntDBCALL{\"$web.$topic->Applications.RenderTopicThumbnail\" TYPE=\"plain\"}$percnt<!-- -->
+    $percntDBCALL{\"$web.$topic->Applications.RenderTopicThumbnail\" 
+      TYPE=\"plain\"
+      ALIGN=\"right\"
+      CROP=\"west\"
+    }$percnt<!-- -->
     [[$web.$topic][$expand(topictitle)]]%IF{"context RedDotPluginEnabled" then="$dollarpercntREDDOT{\\"$web.$topic\\"}$dollarpercnt"}%
     $expand('<div class=\"foswikiTopicSummary\">' and Summary and '</div>')<!-- -->
     <div class='foswikiTopicInfo'>
-      <span class='clsAuthorDateInfo'>
-        <!-- -->$formatTime(info.date)
-        <span class='foswikiRevisionSep'>&#124;</span> 
-        <nop>$percntGETTOPICTITLE{\"
-             $percntUSERINFO{\"$expand(info.author)\"
-               format=\"$wikiusername\"
-             }$percnt\"
-        }$percnt
-      </span>
+      <!-- -->$formatTime(info.date)
+      <!-- -->$percntUSERINFO{\"$expand(info.author)\"
+        format=\"<span class='foswikiRevisionSep'>&#124;</span> <nop>$dollarpercntGETTOPICTITLE{\\"$wikiusername\\"}$dollarpercnt\"
+      }$percnt
       $percntTAGINFO{\"$web.$topic\" 
         header=\" <span class='foswikiRevisionSep'>&#124;</span> <span class='clsTagInfo'>\" 
         separator=\"&#44; \"

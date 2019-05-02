@@ -1,6 +1,6 @@
 # Module of Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 # 
-# Copyright (C) 2007-2017 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2007-2019 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -98,6 +98,7 @@ sub renderForEdit {
   Foswiki::Func::readTemplate("classificationplugin");
   my $baseWeb = $this->{session}->{webName};
 
+  my $classes = $this->cssClasses("foswikiInputField jqTextboxList") || '';
   my $widget = Foswiki::Func::expandTemplate("tageditor");
   $widget =~ s/\$baseweb/$baseWeb/g;
   $widget =~ s/\$web/$web/g;
@@ -108,6 +109,7 @@ sub renderForEdit {
   $widget =~ s/\$type/$this->{type}/g;
   $widget =~ s/\$size/$this->{size}/g;
   $widget =~ s/\$attrs/$this->{attributes}/g;
+  $widget =~ s/\$classes/$classes/g;
   $widget =~ s/\$(name|type|size|value|attrs)//g;
 
   return ('', Foswiki::Func::expandCommonVariables($widget, $topic, $web));

@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -19,15 +19,15 @@ settings tab in the category editor
 <literal>
 <table class="foswikiLayoutTable">
 <tr>
-  <th>%MAKETEXT{"Parent topic"}%:</th>
+  <th>%TRANSLATE{"Parent topic"}%:</th>
   <td><input class="foswikiInputField" type="text" name="topicparent" size="80" value="%TOPICPARENT{default=""}%" /></td>
 </tr>
 <tr>
-  <th>%MAKETEXT{"Imported Categories"}%:</th>
+  <th>%TRANSLATE{"Imported Categories"}%:</th>
   <td><input class="foswikiInputField" type="text" name="ImportedCategory" size="80" value="%FORMFIELD{topic="%BASEWEB%.%BASETOPIC%" "ImportedCategory"}%" /></td>
 </tr>
 <tr>
-  <th valign="top">%MAKETEXT{"Icon"}%:</th>
+  <th valign="top">%TRANSLATE{"Icon"}%:</th>
   <td>
     %DBCALL{"Applications.ClassificationApp.RenderIconSelector"
       VALUE="%URLPARAM{"Icon" default="%FORMFIELD{topic="%BASEWEB%.%BASETOPIC%" "Icon"}%"}%"

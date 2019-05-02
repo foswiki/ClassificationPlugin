@@ -7,7 +7,6 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "PO-Revision-Date: 2015-07-30 20:25+0200\n"
-"Last-Translator: Lieven L. Litaer <qephom@gmx.de>\n"
 "Language-Team: TURKCE <yamant@gmail.com>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -16,39 +15,51 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 2.1\n"
 
-#: data/Applications/ClassificationApp/WebTagList.txt:16
-msgid "%1 tags found"
-msgstr ""
-
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:12
 msgid "... and finally delete this message."
 msgstr ""
+
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:53
+#, fuzzy
+msgid "Action"
+msgstr "Dikkat"
 
 #: data/_ClassificationTemplate/WebHome.txt:62
 msgid "Add more text here"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:72
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:68
 msgid "Cancel"
 msgstr "İptal"
 
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:20
+#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:12
 #: data/_ClassificationTemplate/WebHome.txt:9
 msgid "Categories"
 msgstr ""
 
+#: data/Applications/ClassificationApp/CategorizedTopic.txt:20
+#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:29
+#: data/Applications/ClassificationApp/ClassifiedTopic.txt:24
+#: data/Applications/ClassificationApp/ControlledTopic.txt:25
+#: data/Applications/ClassificationApp/SeoTopic.txt:19
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:28
+msgid "Category"
+msgstr ""
+
 #: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:19
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:50
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:46
 #, fuzzy
 msgid "Change State"
 msgstr "Değiştiren"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:67
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:66
 msgid "Clear"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:67
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:25
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:30
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:63
 msgid "Comment"
 msgstr "Yorum"
 
@@ -59,16 +70,11 @@ msgstr ""
 
 #: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:22
 #: data/Applications/ClassificationApp/ControlledTopic.txt:18
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:22
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:21
 #: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:20
 #, fuzzy
 msgid "Create a new %1"
 msgstr "Yeni grup oluştur"
-
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:28
-#, fuzzy
-msgid "Create a new category in the %1 web"
-msgstr "%1 Web'de Yeni Konu Oluştur"
 
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:8
 msgid ""
@@ -76,14 +82,17 @@ msgid ""
 "heading. It will display a pencil icon."
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:18
-#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:30
-#: data/Applications/ClassificationApp/WorkflowDefinitionEditTemplate.txt:24
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:16
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:26
+msgid "Date"
+msgstr "Tarih"
+
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:13
+#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:22
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:8
 msgid "Details"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:45
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:41
 msgid "Diff"
 msgstr ""
 
@@ -93,34 +102,35 @@ msgid ""
 "linking to this web, e.g. in breadcrumbs and search interfaces."
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
 msgid "Empty the selection"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:69
+#: data/Applications/ClassificationApp/RenderCategory.txt:126
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:49
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:68
 msgid "Filter"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopic.txt:28
+#: data/Applications/ClassificationApp/SeoTopic.txt:31
 #, fuzzy
 msgid "Generate description"
 msgstr "Kayıt"
 
-#: data/Applications/ClassificationApp/SeoTopic.txt:29
+#: data/Applications/ClassificationApp/SeoTopic.txt:32
 msgid "Generate keywords"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopic.txt:27
+#: data/Applications/ClassificationApp/SeoTopic.txt:30
 msgid "Generate title"
 msgstr ""
 
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:46
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:38
 #, fuzzy
 msgid "HTML Text"
 msgstr "Metin içinde"
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:34
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:26
 msgid "HTML Title"
 msgstr ""
 
@@ -132,7 +142,7 @@ msgstr ""
 msgid "Icon"
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:48
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:43
 msgid "Import"
 msgstr ""
 
@@ -146,47 +156,33 @@ msgid ""
 "readability of your content."
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:44
-#, fuzzy
-msgid "Last in %1"
-msgstr "Soyad"
-
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:25
-msgid "Message"
-msgstr ""
-
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:39
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:31
 msgid "Meta Image"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:36
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:28
 #, fuzzy
 msgid "Meta desciption"
 msgstr "Kayıt"
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:35
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:27
 msgid "Meta keywords"
 msgstr ""
 
-#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:79
+#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:89
 msgid ""
 "Multiple heading 1 detected. Please only use heading 2, 3, ... inside the "
 "content area."
 msgstr ""
 
-#: data/Applications/ClassificationApp/Category.txt:28
 #: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:21
 #: data/Applications/ClassificationApp/ControlledTopic.txt:17
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:21
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:20
 #: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:19
 msgid "New"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:57
-msgid "New State"
-msgstr ""
-
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:37
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:32
 #, fuzzy
 msgid "Notes"
 msgstr "Notlar:"
@@ -200,7 +196,11 @@ msgstr ""
 msgid "Parent topic"
 msgstr "Konuyu sil"
 
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:36
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:23
+msgid "Person"
+msgstr ""
+
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:28
 msgid "Plain Text"
 msgstr ""
 
@@ -218,37 +218,41 @@ msgstr "Yakın zamanda değişiklik yapılan konular"
 msgid "Recent changes"
 msgstr "Yakın zamanda değişiklik yapılan konular"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
 msgid "Refresh"
 msgstr "Yenile"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
 msgid "Refresh hierarchy cache on the backend"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderTagEditor.txt:43
+#: templates/classificationplugin.tmpl:19
 #, fuzzy
 msgid "Related tags"
 msgstr "İlgili Konular:"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:61
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
 msgid "Reset the selection"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:29
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:22
+msgid "Rev"
+msgstr ""
+
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:21
 msgid "SEO"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:30
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:22
 msgid "Search engine optimization"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:49
 #, fuzzy
 msgid "Search for matching categories"
 msgstr "Tüm weblerde ara"
 
-#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:43
+#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:42
 msgid "Show all tags"
 msgstr ""
 
@@ -256,22 +260,36 @@ msgstr ""
 msgid "Some tips:"
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:45
+#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:30
+#: data/Applications/ClassificationApp/ControlledTopic.txt:26
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:24
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:25
+msgid "State"
+msgstr ""
+
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:40
 msgid "Sub-Categories"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:34
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:71
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:67
 msgid "Submit"
 msgstr ""
 
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:24
-#: data/Applications/ClassificationApp/ClassifiedTopicRenderRss.txt:31
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:186
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:340
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:387
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:459
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:497
+msgid "Success"
+msgstr ""
+
+#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:16
+#: data/Applications/ClassificationApp/ClassifiedTopicRenderRss.txt:34
 #: data/_ClassificationTemplate/WebHome.txt:15
 msgid "Tags"
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:49
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:44
 #, fuzzy
 msgid "Text"
 msgstr "Metin içinde"
@@ -292,24 +310,23 @@ msgid ""
 "list:"
 msgstr ""
 
-#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:57
+#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:67
 msgid ""
 "This page needs tagging. Please add keywords describing what this page is "
 "about."
 msgstr ""
 
-#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:68
+#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:78
 msgid ""
 "This page needs to be categorized. Please file it to an appropriate category."
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:21
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:16
 #: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:20
 #: data/Applications/ClassificationApp/ControlledTopic.txt:16
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:30
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:20
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:19
 #: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:18
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:23
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:15
 #, fuzzy
 msgid "Title"
 msgstr "Konu başlığında"
@@ -322,12 +339,12 @@ msgstr ""
 msgid "Topics tagged \"%1\""
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:61
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:68
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:67
 msgid "Undo"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:45
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:41
 msgid "View"
 msgstr ""
 
@@ -335,8 +352,8 @@ msgstr ""
 msgid "Welcome"
 msgstr ""
 
-#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:47
-#: data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt:20
+#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:39
+#: data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt:12
 msgid "Workflow settings"
 msgstr ""
 
@@ -358,47 +375,70 @@ msgstr "(erişim reddedildi)"
 msgid "access not allowed on category"
 msgstr "Konuya erişime izin verilmiyor"
 
-#: data/Applications/ClassificationApp/CategorizedTopicEditTemplate.txt:5
+#. ($newTitle)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:388
 #, fuzzy
-msgid "categorized topic"
-msgstr "İlgili Konular:"
+msgid "changed title to %1"
+msgstr "%1 e dosya ekle"
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:8
-msgid "category"
-msgstr ""
-
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:8
+#. ($title)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:460
 #, fuzzy
-msgid "classified topic"
-msgstr "İlgili Konular:"
+msgid "created category %1"
+msgstr "Yeni grup oluştur"
 
-#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:12
-#: data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt:8
+#. ($cat->title)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:498
 #, fuzzy
-msgid "controlled topic"
-msgstr "Konuya geri dön"
+msgid "deleted category %1"
+msgstr "Eklentiyi sil"
 
-#: data/Applications/ClassificationApp/RenderTagEditor.txt:45
-msgid "found in %1 other topic(s)"
-msgstr ""
-
-#: data/Applications/ClassificationApp/CategoryRenderIndexItem.txt:25
-#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:43
+#: data/Applications/ClassificationApp/CategoryRenderCategoryItem.txt:26
+#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:42
 msgid "more"
+msgstr ""
+
+#. ($cat->title, $newParent->title)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:341
+msgid "moved %1 to %2"
+msgstr ""
+
+#. ($hierarchy->{web})
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:187
+msgid "refreshed hierarchy in web %1"
 msgstr ""
 
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:8
 msgid "requires Foswiki:Extensions/EditChapterPlugin"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:16
 #, fuzzy
-msgid "seo topic"
-msgstr "Konuyu kopyala"
+#~ msgid "Status"
+#~ msgstr "İstatistikler"
 
-#: data/Applications/ClassificationApp/WorkflowDefinitionEditTemplate.txt:8
-msgid "workflow definition"
-msgstr ""
+#, fuzzy
+#~ msgid "Create a new category in the %1 web"
+#~ msgstr "%1 Web'de Yeni Konu Oluştur"
+
+#, fuzzy
+#~ msgid "Last in %1"
+#~ msgstr "Soyad"
+
+#, fuzzy
+#~ msgid "categorized topic"
+#~ msgstr "İlgili Konular:"
+
+#, fuzzy
+#~ msgid "classified topic"
+#~ msgstr "İlgili Konular:"
+
+#, fuzzy
+#~ msgid "controlled topic"
+#~ msgstr "Konuya geri dön"
+
+#, fuzzy
+#~ msgid "seo topic"
+#~ msgstr "Konuyu kopyala"
 
 #, fuzzy
 #~ msgid "!WikiName"
@@ -515,10 +555,6 @@ msgstr ""
 #~ msgstr "Erişim Engellendi"
 
 #, fuzzy
-#~ msgid "Actions"
-#~ msgstr "Dikkat"
-
-#, fuzzy
 #~ msgid "Add Members to %1"
 #~ msgstr "Kullanıcı ekle"
 
@@ -575,9 +611,6 @@ msgstr ""
 #~ "Attach an image or document to this topic; manage existing attachments (a)"
 #~ msgstr ""
 #~ "title='Bu konuya bir imaj veya döküman ekle' accesskey='a'>&DosyaEkle"
-
-#~ msgid "Attach file to %1"
-#~ msgstr "%1 e dosya ekle"
 
 #~ msgid "Attach image or document on %1"
 #~ msgstr "%1 e imaj veya döküman ekle"
@@ -698,9 +731,6 @@ msgstr ""
 #~ msgid "Current password:"
 #~ msgstr "Şimdiki Şifreniz"
 
-#~ msgid "Date"
-#~ msgstr "Tarih"
-
 #~ msgid "Dear %1"
 #~ msgstr "Sayın %1"
 
@@ -713,10 +743,6 @@ msgstr ""
 
 #~ msgid "Delete"
 #~ msgstr "Sil"
-
-#, fuzzy
-#~ msgid "Delete attachment %1"
-#~ msgstr "Eklentiyi sil"
 
 #~ msgid "Delete last row"
 #~ msgstr "Son satırı sil"
@@ -1338,9 +1364,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Kişisel bilgilerinizi, favori linklerinizi, ne üzerine çalıştığınızı "
 #~ "paylaşacağınız kişisel bir portal olarak kullanabilirsiniz veya."
-
-#~ msgid "Statistics"
-#~ msgstr "İstatistikler"
 
 #~ msgid "Submitted content:"
 #~ msgstr "Girilen Bilgiler:"

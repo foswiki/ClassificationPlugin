@@ -1,0 +1,9 @@
+%META:TOPICINFO{author="micha" comment="reprev" date="1517332676" format="1.1" reprev="1" version="1"}%
+%META:TOPICPARENT{name="TestCategory16"}%
+%DBCALL{"%CLASSIFICATIONPLUGIN_RENDERCATEGORY{default="Applications.ClassificationApp.RenderCategory"}%"}%
+
+%META:FORM{name="Applications.ClassificationApp.Category"}%
+%META:FIELD{name="TopicType" title="TopicType" value="Category, CategorizedTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value="Test 1"}%
+%META:FIELD{name="Category" title="Category" value="TestCategory16"}%
+%META:FIELD{name="Order" title="Order" value=""}%

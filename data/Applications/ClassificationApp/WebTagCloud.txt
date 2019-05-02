@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="micha" comment="reprev" date="1474825795" format="1.1" reprev="1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="WebHome"}%
 See also: [[RenderWebTagCloud]], [[RenderSolrTagCloud]]
 
@@ -6,8 +6,9 @@ See also: [[RenderWebTagCloud]], [[RenderSolrTagCloud]]
 
 <verbatim class="tml">
 %STARTINCLUDE%%DBCALL{"Applications.ClassificationApp.RenderWebTagCloud" 
-   TAG="%URLPARAM{"tag"}%" 
+   TAG="%URLPARAM{"tag" multiple="on" separator=", "}%" 
    MIN="%URLPARAM{"min" default="%MIN%"}%"
+   LIMIT="0"
 }%%STOPINCLUDE%
 </verbatim>
 

@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -8,7 +8,7 @@ This TopicFunction renders the header of a ControlledTopic.
 
 ---+++++ Parameters
    * OBJECT the topic to render the info block for
-   * APPROVE_STATE, the state where the controlled topic is approved/live/ready to be used, defaults to =approved=
+   * APPROVED_STATE, the state where the controlled topic is approved/live/ready to be used, defaults to =approved=
 
 %ENDSECTION{"documentation"}%
 
@@ -17,22 +17,18 @@ This TopicFunction renders the header of a ControlledTopic.
 %STARTINCLUDE%<div class="foswikiPageForm foswikiHideOnPrint clearfix %ENCODE{"%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" rev="%URLPARAM{"rev"}%"}%" old=" " new="_"}%">
 %IF{"$'URLPARAM{rev}'='' and '%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" format="$numactions"}%'>0" 
    then="<div class='foswikiRight'>$percntBUTTON{\"%TRANSLATE{"Change State"}%\" href=\"#changeStateDialog\" class=\"jqUIDialogLink\"}$percnt</div>"
-}%<table class='foswikiLayoutTable foswikiHideOnPrint'>
+}%<table class='foswikiLayoutTable'>
 %WORKFLOWSTATE{
    "%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" 
    rev="%URLPARAM{"rev"}%" 
    format="<tr class='message'>
-      <th>%TRANSLATE{"Message"}%</th>
-      $percntIF{
-         \"'$state'!='%APPROVED_STATE{default="approved"}%'\" 
-         then=\"<td class='foswikiAlert'> $percntJQICON{\"fa-exclamation-triangle\"}$percnt\" 
-         else=\"<td class='foswikiOK'>$percntJQICON{\"fa-check-circle\"}$percnt\"
-      }$percnt $percntTRANSLATE{\"$message\"}$percnt</td>
+      <th>%TRANSLATE{"State"}%</th>
+      <td class='clsWorkflowState $state'><span class='clsWorkflowMessage'>$percntTRANSLATE{\"$message\"}$percnt</span></td>
    </tr>$percntIF{
       \"'$percntENCODE{\"$comment\" type=\"quote\"}$percnt'!=''\"
       then=\"<tr>
-               <th>Comment</th>
-               <td>$comment</th>
+               <th>%TRANSLATE{"Comment"}%</th>
+               <td>$percntENCODE{\"$comment\" type=\"quote\"}$percnt</th>
             </tr>\"
    }$percnt"
 }%%WORKFLOWSTATE{
@@ -40,42 +36,44 @@ This TopicFunction renders the header of a ControlledTopic.
    rev="%URLPARAM{"rev"}%" 
    state="%APPROVED_STATE{default="approved"}%"
    hidenull="on"
-   format="<tr class='last'>
-      <th>%TRANSLATE{"Last in [_1]" args="$state"}%</th>
-      <td>$time &#124; [[$user]] &#124; <a href='%SCRIPTURLPATH{"view"}%/$web/$topic?rev=$rev'>%TRANSLATE{"View"}%</a> &#124; <a href='%SCRIPTURLPATH{"compare"}%/$web/$topic?rev1=$rev&rev2=%NATMAXREV%'>%TRANSLATE{"Diff"}%</a></td>
+   format="<tr class='last $percntIF{\"'%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" rev="%URLPARAM{"rev"}%"}%'='%APPROVED_STATE{default="approved"}%'\" then=\"foswikiHidden\"}$percnt'>
+      <th>$percntTRANSLATE{\"Last [_1]\" args=\"$percntTRANSLATE{\"$state\"}$percnt\"}$percnt</th>
+      <td>$time &#124; [[$user]] &#124; <a href='%SCRIPTURLPATH{"view"}%/$web/$topic?rev=$rev'>%TRANSLATE{"View"}%</a> &#124; <a href='%SCRIPTURLPATH{"diff"}%/$web/$topic?rev1=$rev&rev2=%NATMAXREV%'>%TRANSLATE{"Diff"}%</a></td>
    </tr>"
 }%</table>
 </div>
 
-<div id="changeStateDialog" title="%TRANSLATE{"Change State"}%" class="jqUIDialog foswikiHideOnPrint" style="display:none" data-modal="true" data-position="center" data-width="540" data-cached="true">
+<div id="changeStateDialog" title="%TRANSLATE{"Change State"}%" class="jqUIDialog foswikiHideOnPrint" style="display:none" data-modal="true" data-width="540">
 <form class="workflowChangeStateForm" action="%SCRIPTURLPATH{"rest"}%/WorkflowPlugin/changeState" method="post">
   <input type='hidden' name='WORKFLOWSTATE' value='%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"}%' />
   <input type='hidden' name='topic' value='%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%' />
   <input type='hidden' name='t' value='%GMTIME{"$epoch"}%' />
   <div class="foswikiFormSteps">
     <div class="foswikiFormStep">
-      <h3>%TRANSLATE{"New State"}%:</h3>
+      <h3>%TRANSLATE{"Action"}%:</h3>
       %FORMATLIST{"%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" format="$actions"}%"
          split="\s*,\s*"
          selection="^(%FORMATLIST{"%WORKFLOWSTATE{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" format="$actions"}%" split="\s*,\s*" limit="1"}%)$"
          marker="checked='checked'"
-         format="<label><input type='radio' name='WORKFLOWACTION' $marker value='$1'>$1</label>"
+         format="<label><input type='radio' name='WORKFLOWACTION' $marker value='$1'>$percntTRANSLATE{\"$1\"}$percnt</label>"
          separator="$n"
       }%
     </div>
     <div class='foswikiFormStep'>
       <h3>%TRANSLATE{"Comment"}%:</h3>
-      <input type="text" name="WORKFLOWCOMMENT" size="60" class="foswikiInputField" />
+      <textarea name="WORKFLOWCOMMENT" rows="3" cols="75" class="foswikiTextArea"></textarea>
     </div>
   </div>
-  <a class="jqUIDialogButton jqUIDialogSubmit {icon:'ui-icon-circle-check'}">%MAKETEXT{"Submit"}%</a>
-  <a class="jqUIDialogButton jqUIDialogClose {icon:'ui-icon-cancel'}">%MAKETEXT{"Cancel"}%</a>
+  <a class="jqUIDialogButton jqUIDialogSubmit {icon:'ui-icon-circle-check'}">%TRANSLATE{"Submit"}%</a>
+  <a class="jqUIDialogButton jqUIDialogClose {icon:'ui-icon-cancel'}">%TRANSLATE{"Cancel"}%</a>
 </form>
 </div>%STOPINCLUDE%
 </verbatim>
 
 ---++ Test
 %DBCALL{"%TOPIC%" OBJECT="ControlledTestTopic"}%
+
+[[ControlledTestTopic]]
 
 %META:FORM{name="Applications.TopicFunction"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%

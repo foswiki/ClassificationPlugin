@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2017 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2019 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,8 +30,8 @@ BEGIN {
     }
 }
 
-our $VERSION = '6.01';
-our $RELEASE = '23 Jan 2017';
+our $VERSION = '7.00';
+our $RELEASE = '02 May 2019';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'A topic classification plugin and application';
 
@@ -66,7 +66,6 @@ sub initPlugin {
     return getCore()->handleSUBSUMES(@_);
   });
 
-  # WARNING: use SolrPlugin instead
   Foswiki::Func::registerTagHandler('SIMILARTOPICS', sub {
     return getCore()->handleSIMILARTOPICS(@_);
   });
@@ -107,7 +106,7 @@ sub initPlugin {
       return getServices()->renameTag(@_);
     }, 
     authenticate => 1,
-    validate => 0,
+    validate => 1,
     http_allow => 'GET,POST',
   );
 
@@ -123,13 +122,13 @@ sub initPlugin {
     return getServices()->deployTopicType(@_);
   }, 
     authenticate => 1,
-    validate => 0,
+    validate => 1,
     http_allow => 'GET,POST',
   );
 
   Foswiki::Func::registerRESTHandler('updateCache', \&restUpdateCache, 
     authenticate => 1,
-    validate => 0,
+    validate => 1,
     http_allow => 'GET,POST',
   );
 

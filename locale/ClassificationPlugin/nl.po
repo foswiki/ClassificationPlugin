@@ -10,7 +10,6 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "PO-Revision-Date: 2016-01-09 09:29+0200\n"
-"Last-Translator: Lieven L. Litaer <qephom@gmx.de>\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
@@ -19,40 +18,52 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2.1\n"
 
-#: data/Applications/ClassificationApp/WebTagList.txt:16
-msgid "%1 tags found"
-msgstr ""
-
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:12
 msgid "... and finally delete this message."
 msgstr ""
+
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:53
+msgid "Action"
+msgstr "Actie"
 
 #: data/_ClassificationTemplate/WebHome.txt:62
 msgid "Add more text here"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:72
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:68
 msgid "Cancel"
 msgstr "Afbreken"
 
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:20
+#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:12
 #: data/_ClassificationTemplate/WebHome.txt:9
 msgid "Categories"
 msgstr "Categorie&&euml;n"
 
+#: data/Applications/ClassificationApp/CategorizedTopic.txt:20
+#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:29
+#: data/Applications/ClassificationApp/ClassifiedTopic.txt:24
+#: data/Applications/ClassificationApp/ControlledTopic.txt:25
+#: data/Applications/ClassificationApp/SeoTopic.txt:19
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:28
+#, fuzzy
+msgid "Category"
+msgstr "Categorie&&euml;n"
+
 #: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:19
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:50
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:46
 #, fuzzy
 msgid "Change State"
 msgstr "Wijzig taal"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:67
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:66
 #, fuzzy
 msgid "Clear"
 msgstr "Vink uit"
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:67
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:25
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:30
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:63
 msgid "Comment"
 msgstr "Toelichting"
 
@@ -63,16 +74,11 @@ msgstr ""
 
 #: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:22
 #: data/Applications/ClassificationApp/ControlledTopic.txt:18
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:22
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:21
 #: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:20
 #, fuzzy
 msgid "Create a new %1"
 msgstr "Nieuwe groep aanmaken"
-
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:28
-#, fuzzy
-msgid "Create a new category in the %1 web"
-msgstr "Nieuwe pagina aanmaken in %1 Web"
 
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:8
 msgid ""
@@ -80,15 +86,18 @@ msgid ""
 "heading. It will display a pencil icon."
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:18
-#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:30
-#: data/Applications/ClassificationApp/WorkflowDefinitionEditTemplate.txt:24
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:16
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:26
+msgid "Date"
+msgstr "Datum"
+
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:13
+#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:22
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:8
 #, fuzzy
 msgid "Details"
 msgstr "Details:"
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:45
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:41
 msgid "Diff"
 msgstr ""
 
@@ -98,35 +107,36 @@ msgid ""
 "linking to this web, e.g. in breadcrumbs and search interfaces."
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
 #, fuzzy
 msgid "Empty the selection"
 msgstr "Actie"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:69
+#: data/Applications/ClassificationApp/RenderCategory.txt:126
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:49
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:68
 msgid "Filter"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopic.txt:28
+#: data/Applications/ClassificationApp/SeoTopic.txt:31
 #, fuzzy
 msgid "Generate description"
 msgstr "Beschrijving"
 
-#: data/Applications/ClassificationApp/SeoTopic.txt:29
+#: data/Applications/ClassificationApp/SeoTopic.txt:32
 msgid "Generate keywords"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopic.txt:27
+#: data/Applications/ClassificationApp/SeoTopic.txt:30
 msgid "Generate title"
 msgstr ""
 
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:46
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:38
 #, fuzzy
 msgid "HTML Text"
 msgstr "Tekst"
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:34
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:26
 #, fuzzy
 msgid "HTML Title"
 msgstr "Titel:"
@@ -139,7 +149,7 @@ msgstr "Geschiedenis"
 msgid "Icon"
 msgstr "Pictogram"
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:48
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:43
 msgid "Import"
 msgstr ""
 
@@ -154,49 +164,35 @@ msgid ""
 "readability of your content."
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:44
-#, fuzzy
-msgid "Last in %1"
-msgstr "Achternaam:"
-
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:25
-msgid "Message"
-msgstr ""
-
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:39
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:31
 #, fuzzy
 msgid "Meta Image"
 msgstr "Afbeelding"
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:36
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:28
 #, fuzzy
 msgid "Meta desciption"
 msgstr "Beschrijving"
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:35
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:27
 msgid "Meta keywords"
 msgstr ""
 
-#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:79
+#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:89
 msgid ""
 "Multiple heading 1 detected. Please only use heading 2, 3, ... inside the "
 "content area."
 msgstr ""
 
-#: data/Applications/ClassificationApp/Category.txt:28
 #: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:21
 #: data/Applications/ClassificationApp/ControlledTopic.txt:17
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:21
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:20
 #: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:19
 #, fuzzy
 msgid "New"
 msgstr "nieuw"
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:57
-msgid "New State"
-msgstr ""
-
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:37
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:32
 #, fuzzy
 msgid "Notes"
 msgstr "Opmerkingen:"
@@ -210,7 +206,11 @@ msgstr ""
 msgid "Parent topic"
 msgstr "Maak deze pagina aan"
 
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:36
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:23
+msgid "Person"
+msgstr ""
+
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:28
 msgid "Plain Text"
 msgstr ""
 
@@ -229,39 +229,43 @@ msgstr "Recent gewijzigd"
 msgid "Recent changes"
 msgstr "Recent gewijzigd"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
 msgid "Refresh"
 msgstr "Verversen"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
 msgid "Refresh hierarchy cache on the backend"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderTagEditor.txt:43
+#: templates/classificationplugin.tmpl:19
 #, fuzzy
 msgid "Related tags"
 msgstr "Gerelateerde pagina&#39;s:"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:61
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
 #, fuzzy
 msgid "Reset the selection"
 msgstr "Actie"
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:29
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:22
+msgid "Rev"
+msgstr ""
+
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:21
 msgid "SEO"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:30
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:22
 #, fuzzy
 msgid "Search engine optimization"
 msgstr "Zoekopties"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:49
 #, fuzzy
 msgid "Search for matching categories"
 msgstr "Updates zoeken"
 
-#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:43
+#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:42
 msgid "Show all tags"
 msgstr ""
 
@@ -269,23 +273,37 @@ msgstr ""
 msgid "Some tips:"
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:45
+#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:30
+#: data/Applications/ClassificationApp/ControlledTopic.txt:26
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:24
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:25
+msgid "State"
+msgstr ""
+
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:40
 #, fuzzy
 msgid "Sub-Categories"
 msgstr "Categorie&&euml;n"
 
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:34
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:71
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:67
 msgid "Submit"
 msgstr "Versturen"
 
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:24
-#: data/Applications/ClassificationApp/ClassifiedTopicRenderRss.txt:31
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:186
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:340
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:387
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:459
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:497
+msgid "Success"
+msgstr ""
+
+#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:16
+#: data/Applications/ClassificationApp/ClassifiedTopicRenderRss.txt:34
 #: data/_ClassificationTemplate/WebHome.txt:15
 msgid "Tags"
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:49
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:44
 msgid "Text"
 msgstr "Tekst"
 
@@ -310,24 +328,23 @@ msgstr ""
 "gewijzigd. Om je aan te melden voeg je een _bullet point_ toe met je %2 in "
 "alfabetische volgorde van deze lijst:"
 
-#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:57
+#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:67
 msgid ""
 "This page needs tagging. Please add keywords describing what this page is "
 "about."
 msgstr ""
 
-#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:68
+#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:78
 msgid ""
 "This page needs to be categorized. Please file it to an appropriate category."
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:21
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:16
 #: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:20
 #: data/Applications/ClassificationApp/ControlledTopic.txt:16
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:30
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:20
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:19
 #: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:18
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:23
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:15
 #, fuzzy
 msgid "Title"
 msgstr "Titel:"
@@ -341,12 +358,12 @@ msgstr "Gereedschappen"
 msgid "Topics tagged \"%1\""
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:61
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:68
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:67
 msgid "Undo"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:45
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:41
 msgid "View"
 msgstr "bekijken"
 
@@ -354,8 +371,8 @@ msgstr "bekijken"
 msgid "Welcome"
 msgstr ""
 
-#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:47
-#: data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt:20
+#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:39
+#: data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt:12
 msgid "Workflow settings"
 msgstr ""
 
@@ -377,50 +394,76 @@ msgstr "toegang tot pagina niet toegestaan"
 msgid "access not allowed on category"
 msgstr "toegang tot pagina niet toegestaan"
 
-#: data/Applications/ClassificationApp/CategorizedTopicEditTemplate.txt:5
+#. ($newTitle)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:388
 #, fuzzy
-msgid "categorized topic"
-msgstr "Pagina herstellen"
+msgid "changed title to %1"
+msgstr "Voeg bijlage toe aan pagina %1"
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:8
+#. ($title)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:460
 #, fuzzy
-msgid "category"
-msgstr "Categorie&&euml;n"
+msgid "created category %1"
+msgstr "Nieuwe groep aanmaken"
 
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:8
+#. ($cat->title)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:498
 #, fuzzy
-msgid "classified topic"
-msgstr "Gerelateerde pagina&#39;s:"
+msgid "deleted category %1"
+msgstr "Bijlage %1 verwijderen"
 
-#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:12
-#: data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt:8
-#, fuzzy
-msgid "controlled topic"
-msgstr "Terug naar pagina"
-
-#: data/Applications/ClassificationApp/RenderTagEditor.txt:45
-msgid "found in %1 other topic(s)"
-msgstr ""
-
-#: data/Applications/ClassificationApp/CategoryRenderIndexItem.txt:25
-#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:43
+#: data/Applications/ClassificationApp/CategoryRenderCategoryItem.txt:26
+#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:42
 #, fuzzy
 msgid "more"
 msgstr "(meer)"
+
+#. ($cat->title, $newParent->title)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:341
+#, fuzzy
+msgid "moved %1 to %2"
+msgstr "Regel: %1 tot %2"
+
+#. ($hierarchy->{web})
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:187
+msgid "refreshed hierarchy in web %1"
+msgstr ""
 
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:8
 msgid "requires Foswiki:Extensions/EditChapterPlugin"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:16
 #, fuzzy
-msgid "seo topic"
-msgstr "Naar pagina"
+#~ msgid "Status"
+#~ msgstr "Statistieken"
 
-#: data/Applications/ClassificationApp/WorkflowDefinitionEditTemplate.txt:8
 #, fuzzy
-msgid "workflow definition"
-msgstr "Formulierdefinitie"
+#~ msgid "Create a new category in the %1 web"
+#~ msgstr "Nieuwe pagina aanmaken in %1 Web"
+
+#, fuzzy
+#~ msgid "Last in %1"
+#~ msgstr "Achternaam:"
+
+#, fuzzy
+#~ msgid "categorized topic"
+#~ msgstr "Pagina herstellen"
+
+#, fuzzy
+#~ msgid "classified topic"
+#~ msgstr "Gerelateerde pagina&#39;s:"
+
+#, fuzzy
+#~ msgid "controlled topic"
+#~ msgstr "Terug naar pagina"
+
+#, fuzzy
+#~ msgid "seo topic"
+#~ msgstr "Naar pagina"
+
+#, fuzzy
+#~ msgid "workflow definition"
+#~ msgstr "Formulierdefinitie"
 
 #~ msgid "!WikiName"
 #~ msgstr "!WikiNaam"
@@ -900,9 +943,6 @@ msgstr "Formulierdefinitie"
 #~ msgid "Access keys:"
 #~ msgstr "Sneltoetsen:"
 
-#~ msgid "Action"
-#~ msgstr "Actie"
-
 #~ msgid "Action %1: %2 by user %3."
 #~ msgstr "Actie %1: %2 door gebruiker %3."
 
@@ -1033,9 +1073,6 @@ msgstr "Formulierdefinitie"
 #~ msgstr ""
 #~ "Voeg een afbeelding of document toe aan deze pagina; beheer bestaande "
 #~ "bijlagen (a)"
-
-#~ msgid "Attach file to %1"
-#~ msgstr "Voeg bijlage toe aan pagina %1"
 
 #~ msgid "Attach image or document on %1"
 #~ msgstr "Voeg afbeelding of document toe aan %1"
@@ -1420,9 +1457,6 @@ msgstr "Formulierdefinitie"
 #~ msgid "Data rows"
 #~ msgstr "Data rijen"
 
-#~ msgid "Date"
-#~ msgstr "Datum"
-
 #~ msgid "Dear %1"
 #~ msgstr "Beste %1"
 
@@ -1437,9 +1471,6 @@ msgstr "Formulierdefinitie"
 
 #~ msgid "Delete"
 #~ msgstr "Verwijder"
-
-#~ msgid "Delete attachment %1"
-#~ msgstr "Bijlage %1 verwijderen"
 
 #~ msgid "Delete last row"
 #~ msgstr "Laatste rij weg"
@@ -2168,9 +2199,6 @@ msgstr "Formulierdefinitie"
 
 #~ msgid "Line: %1"
 #~ msgstr "Regel: %1"
-
-#~ msgid "Line: %1 to %2"
-#~ msgstr "Regel: %1 tot %2"
 
 #~ msgid "Link"
 #~ msgstr "Link"
@@ -2975,9 +3003,6 @@ msgstr "Formulierdefinitie"
 
 #~ msgid "Spaces are replaced by underscores"
 #~ msgstr "Spaties zijn vervangen door liggende streepjes"
-
-#~ msgid "Statistics"
-#~ msgstr "Statistieken"
 
 #~ msgid "Submitted content:"
 #~ msgstr "Verstuurde gegevens:"

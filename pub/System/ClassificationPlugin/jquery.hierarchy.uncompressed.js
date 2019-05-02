@@ -1,16 +1,14 @@
 /*
- * jQuery hierarchy plugin 1.10
+ * jQuery hierarchy plugin 2.00
  *
- * Copyright (c) 2013-2017 Michael Daum http://michaeldaumconsulting.com
+ * Copyright (c) 2013-2019 Michael Daum http://michaeldaumconsulting.com
  *
- * Dual licensed under the MIT and GPL licenses:
- *   http://www.opensource.org/licenses/mit-license.php
- *   http://www.gnu.org/licenses/gpl.html
+ * Licensed under the GPL license http://www.gnu.org/licenses/gpl.html
  *
  */
 
-(function($, window, document) {
 "use strict";
+(function($, window) {
 
   /***************************************************************************
    * defaults
@@ -22,11 +20,11 @@
         url: undefined,
         root: "",
         displayCounts: true,
-        mode: "select" /* browse, select, edit */,
+        mode: "select" /* select, browse or edit */,
         searchButton: ".jqHierarchySearchButton",
         searchField: ".jqHierarchySearchField",
         clearButton: ".jqHierarchyClearButton",
-        resetButton: ".jqHierarchyResetButton",
+        undoButton: ".jqHierarchyUndoButton",
         refreshButton: ".jqHierarchyRefreshButton",
         inputFieldName: undefined,
         container: undefined,
@@ -34,107 +32,6 @@
         sort: 'index'
       };
 
-  /***************************************************************************
-   * multi word search method for jstree (
-   */
-  $.expr[':'].jstree_contains_all = function(a,i,m) {
-    var word, words = [],
-        searchFor = m[3].toLowerCase().replace(/^\s+/g,'').replace(/\s+$/g,''),
-        j;
-
-    if (searchFor.indexOf(' ') >= 0) {
-      words = searchFor.split(' ');
-    } else {
-      words = [searchFor];
-    }
-
-    for (j = 0; j < words.length; j++) {
-      word = words[j];
-      if ((a.textContent || a.innerText || "").toLowerCase().indexOf(word) == -1) {
-        return false;
-      }
-    }
-
-    return true;
-  };
-
-  $.expr[':'].jstree_contains_any = function(a,i,m) {
-    var word, words = [],
-        searchFor = m[3].toLowerCase().replace(/^\s+/g,'').replace(/\s+$/g,''),
-        j;
-
-    if (searchFor.indexOf(' ') >= 0) {
-      words = searchFor.split(' ');
-    } else {
-      words = [searchFor];
-    }
-
-    for (j = 0; j < words.length; j++) {
-      word = words[j];
-      if ((a.textContent || a.innerText || "").toLowerCase().indexOf(word) >= 0) {
-        return true;
-      }
-    }
-
-    return false;
-  };
-
-  /***************************************************************************
-   * jstree plugin to display counts in nodes
-   */
-  $.jstree.plugin("counts", { 
-    _fn: {
-      get_text: function(obj) {
-        var s, result;
-
-        obj = this._get_node(obj);
-        if (!obj.length) { 
-          return false; 
-        }
-        obj = obj.children("a:eq(0)");
-
-        s = this._get_settings().core.html_titles;
-        if (s) {
-          obj = obj.clone();
-          obj.children("ins,span").remove();
-          return obj.html();
-        } else {
-          obj = obj.contents().filter(function() { return this.nodeType == 3; })[0];
-          return obj.nodeValue;
-        }
-      },
-      set_text: function (obj, val) {
-        var tmp, count;
-
-        if (typeof(val) === 'undefined') {
-          val = obj.data("name");
-        }
-
-        obj = this._get_node(obj);
-        count = obj.data("nrTopics");
-        
-        if (count) {
-          val += "<span class='jstree-count'>("+count+")</span>";
-        }
-
-        if(!obj.length) { 
-          return false; 
-        }
-        obj = obj.children("a:eq(0)");
-
-        if(this._get_settings().core.html_titles) {
-          tmp = obj.children("INS").clone();
-          obj.html(val).prepend(tmp);
-          this.__callback({ "obj" : obj, "name" : val });
-          return true;
-        } else {
-          obj = obj.contents().filter(function() { return this.nodeType == 3; })[0];
-          this.__callback({ "obj" : obj, "name" : val });
-          return (obj.nodeValue = val);
-        }
-      }
-    }    
-  });
 
   /***************************************************************************
    * constructor 
@@ -150,358 +47,7 @@
    * initializer 
    */
   Hierarchy.prototype.init = function () {
-    var self = this, plugins = ["themes", "json_data", "search", "counts"];
-
-    if (typeof(self.opts.container) !== 'undefined') {
-      self.container = self.elem.find(self.opts.container);
-    } else {
-      self.container = self.elem;
-    }
-
-    if (self.opts.mode === "select") {
-      plugins.push("ui");
-    }
-
-    if (self.opts.mode === "edit") {
-      plugins.push("ui", "contextmenu", "crrm", "dnd");
-    }
-
-    // nuke defaults as things get merged otherwise
-    $.jstree.defaults.contextmenu.items = {};
-
-    self.worker = $("<div />").appendTo(self.container).jstree({
-      "plugins": plugins,
-      "themes": {
-         "url": foswiki.getPubUrl("System", "JSTreeContrib", "themes/minimal/style.css"),
-         "theme":"minimal", 
-         "icons": true
-      }, 
-      "ui": {
-         "select_limit":self.opts.multiSelect?-1:1,
-         "selected_parent_close":false
-      },
-      "core": {
-        "animation":100,
-        "html_titles": true
-      },
-      "json_data": {
-        "ajax": {
-          "url": self.opts.url,
-          "data": function(node) {
-            return {
-              "action": "get_children",
-              "web": self.opts.web,
-              "topic": self.opts.topic,
-              "cat": node.attr ? node.data("name") : self.opts.root,
-              "select": self.inputField.val(),
-              "counts": self.opts.displayCounts,
-              "sort": self.opts.sort,
-              "t": (new Date()).getTime()
-            };
-          },
-          "success": function(data) {
-            window.setTimeout(function() {
-              self.setSelection(self.inputField.val().split(/\s*,\s*/));
-            });
-          }
-        }
-      },
-      "search": {
-        "search_method": "jstree_contains_all",
-        //"show_only_matches": true,
-        "ajax": {
-          "url": self.opts.url,
-          "data": function(term) {
-            return {
-              "action": "search",
-              "web": self.opts.web,
-              "topic": self.opts.topic,
-              "title": term,
-              "t": (new Date()).getTime()
-            };
-          }
-        }
-      },
-      "contextmenu": {
-        "items": {
-          "create" : {
-            "separator_before": false,
-            "separator_after": true,
-            "icon": defaults.pubUrlPath+"/"+defaults.systemWeb+"/FamFamFamSilkIcons/page_white_add.png",
-            "label": "New",
-            "action": function(obj) { 
-              this.create(obj); 
-            }
-          },
-          "edit" : {
-            "separator_before": false,
-            "separator_after": false,
-            "icon": defaults.pubUrlPath+"/"+defaults.systemWeb+"/FamFamFamSilkIcons/pencil.png",
-            "label": "Edit",
-            "action": function(obj) { 
-              var href= $(obj).data("editUrl");
-              if (href) {
-                window.location.href = href;
-              }
-            }
-          },
-          "view" : {
-            "separator_before": false,
-            "separator_after": true,
-            "label": "View",
-            "icon": defaults.pubUrlPath+"/"+defaults.systemWeb+"/FamFamFamSilkIcons/eye.png",
-            "action": function(obj) { 
-              var href= $(obj.context).attr("href");
-              if (href) {
-                window.location.href = href;
-              }
-            }
-          },
-          "rename" : {
-            "separator_before": false,
-            "separator_after": false,
-            "label": "Rename",
-            "icon": defaults.pubUrlPath+"/"+defaults.systemWeb+"/FamFamFamSilkIcons/page_white_go.png",
-            "action": function(obj) { 
-              this.rename(obj); 
-            }
-          },
-          "remove" : {
-            "separator_before": false,
-            "separator_after": false,
-            "label": "Delete",
-            "icon": defaults.pubUrlPath+"/"+defaults.systemWeb+"/FamFamFamSilkIcons/bin.png",
-            "action": function(obj) { 
-              if(this.is_selected(obj)) { 
-                this.remove(); 
-              } else { 
-                this.remove(obj); 
-              } 
-            }
-          }
-        }
-      }
-    });
-
-    if (self.opts.mode === "edit") {
-
-      /* moving a node */
-      self.worker.bind("move_node.jstree", function(e, data) {
-        var node = $(data.rslt.o),
-            catName = node.data("name"),
-            catTitle = node.data("title"),
-            newParent = data.rslt.np.data("name"),
-            newParentTitle = data.rslt.np.data("title"),
-            oldParent = data.rslt.op.data("name"),
-            oldParentTitle = data.rslt.op.data("title"),
-            nextCat = node.next().data("name"),
-            prevCat = node.prev().data("name"),
-            position = data.rslt.p,
-            copy = data.rslt.cy ? 1 : 0;
-
-        //console.log("data=",data);
-        //console.log("catName=",catName,"newParent=",newParent,"oldParent=",oldParent,"nextCat=",nextCat,"prevCat=",prevCat,"position=",position,"copy=",copy);
-
-        $.vakata.context.hide();
-
-        self.confirm({
-            message:"<div class='foswikiCenter'>Are you sure that you want to move <br />" +
-                    "<b>"+catTitle+"</b><br/>" +
-                    "to<br />" +
-                    "<b>"+(newParent?newParentTitle:'TOP')+"</b>?</div>",
-            okayText: "Yes, move it.",
-            cancelText: "No, thanks."
-          }).then(function() {
-          data.rslt.o.each(function(i) {
-            $.ajax({
-              async: false,
-              type: "POST",
-              dataType: "json",
-              url: self.opts.url,
-              data: { 
-                "action": "move_node", 
-                "web": self.opts.web,
-                "topic": self.opts.topic,
-                "cat": catName,
-                "parent":newParent,
-                "oldParent":oldParent,
-                "next": nextCat,
-                "prev": prevCat,
-                "copy": copy,
-                "t": (new Date()).getTime()
-              },
-              error: function() {
-                $.jstree.rollback(data.rlbk);
-              },
-              success: function (response) {
-                $(data.rslt.oc).data("name", response.id).addClass(response.id);
-                if(copy && $(data.rslt.oc).children("UL").length) {
-                  data.inst.refresh(data.inst._get_parent(data.rslt.oc));
-                }
-              },
-              complete: function(xhr) {
-                var response = $.parseJSON(xhr.responseText);
-                //console.log(response);
-                $.pnotify({
-                  type: response.type,
-                  title: response.title,
-                  text: response.message
-                });
-              }
-            });
-          });
-        }, function() {
-          $.jstree.rollback(data.rlbk);
-        });
-      })
-
-      /* renaming a node */
-      .bind("rename.jstree", function (e, data) {
-        var catName = data.rslt.obj.data("name"),
-            newTitle = data.rslt.new_name,
-            oldTitle = data.rslt.old_name;
-
-        if (typeof(newTitle) === 'undefined' || newTitle === '') {
-          newTitle = catName;
-        }
-
-        if (newTitle === oldTitle) {
-          return;
-        }
-
-        //console.log("renaming '"+catName+"' to '"+newTitle+"'");
-        //console.log("rslt=",data.rslt);
-
-        $.ajax({
-          async: false,
-          type: "POST",
-          dataType: "json",
-          url: self.opts.url,
-          data: { 
-            "action" : "rename_node", 
-            "web": self.opts.web,
-            "topic": self.opts.topic,
-            "cat" : catName,
-            "title": newTitle,
-            "t": (new Date()).getTime()
-          },
-          error: function() {
-            $.jstree.rollback(data.rlbk);
-          },
-          complete: function(xhr) {
-            var response = $.parseJSON(xhr.responseText);
-            //console.log(response);
-            $.pnotify({
-              type: response.type,
-              title: response.title,
-              text: response.message
-            });
-          }
-        });
-      })
-      .delegate("a", "dblclick", function(event, data) {
-        var catName = $(event.target).parent().data("name");
-        self.worker.jstree("rename", "."+catName);
-        return false;
-      })
-
-      /* creating a node */
-      .bind("create.jstree", function (e, data) {
-        var parentName = data.rslt.parent.data("name"),
-            title = data.rslt.name,
-            pos = data.rslt.position,
-            catName = title;
-
-        if (!title.match(/Category$/)) {
-          catName += "Category";
-        }
-
-        catName = $.wikiword.wikify(catName);
-
-        //console.log("creating '"+catName+"', title='"+title+"' in '"+parentName+"'");
-        //console.log("rslt=",data.rslt);
-
-        $.ajax({
-          async: false,
-          type: "POST",
-          dataType: "json",
-          url: self.opts.url,
-          data: {
-            "action" : "create_node", 
-            "web": self.opts.web,
-            "topic": self.opts.topic,
-            "cat": catName,
-            "title": title,
-            "parent": parentName,
-            "t": (new Date()).getTime()
-            //, "position": pos
-          }, 
-          error: function() {
-            $.jstree.rollback(data.rlbk);
-          },
-          success: function(response) {
-            $(data.rslt.obj).data("name", response.id).data("title", title).addClass(response.id);
-            //self.worker.jstree("refresh", -1);
-          },
-          complete: function(xhr) {
-            var response = $.parseJSON(xhr.responseText);
-            //console.log(response);
-            $.pnotify({
-              type: response.type,
-              title: response.title,
-              text: response.message
-            });
-          }
-        });
-      })
-
-      /* removing a node */
-      .bind("remove.jstree", function (e, data) {
-        var catName = data.rslt.obj.data("name"),
-            catTitle = data.rslt.obj.data("title");
-
-        $.vakata.context.hide();
-
-        self.confirm({
-          message: "<div class='foswikiCenter'>Are you sure that you want to delete<br /><b>"+catTitle+"</b>?",
-          okayText: "Yes, delete it.",
-          okayIcon: "ui-icon-trash",
-          cancelText: "No, thanks."
-        }).then(function() {
-          data.rslt.obj.each(function () {
-            $.ajax({
-              async : false,
-              type: 'POST',
-              url: self.opts.url,
-              data : { 
-                "action" : "remove_node", 
-                "web": self.opts.web,
-                "topic": self.opts.topic,
-                "cat": catName,
-                "t": (new Date()).getTime()
-              }, 
-              error: function() {
-                $.jstree.rollback(data.rlbk);
-              },
-              success: function() {
-                self.removeVal(this.id);
-              },
-              complete: function(xhr) {
-                var response = $.parseJSON(xhr.responseText);
-                //console.log(response);
-                $.pnotify({
-                  type: response.type,
-                  title: response.title,
-                  text: response.message
-                });
-              }
-            });
-        });
-        }, function() {
-          $.jstree.rollback(data.rlbk);
-        });
-      });
-    } // end if edit
+    var self = this, plugins = ["search"]; 
 
     self.searchButton = self.elem.find(self.opts.searchButton);
     self.searchField = self.elem.find(self.opts.searchField);
@@ -518,13 +64,11 @@
       if(event.keyCode == 13) {
         val = $this.val();
         if (val.length === 0) {
-          self.worker.jstree("close_all", -1, 0);
-          self.worker.jstree("refresh", -1);
+          self.jstree.clear_search();
           $this.hide(); 
         } else {
           $this.effect('highlight');
-          self.worker.jstree("close_all", -1, 0);
-          self.worker.jstree("search", val);
+          self.jstree.search(val);
         }
         event.preventDefault();
         return false;
@@ -537,8 +81,8 @@
       return false;
     });
 
-    self.resetButton = self.elem.find(self.opts.resetButton);
-    self.resetButton.click(function() {
+    self.undoButton = self.elem.find(self.opts.undoButton);
+    self.undoButton.click(function() {
       self.reset();
       return false;
     });
@@ -565,38 +109,258 @@
 
     self.origSelection = self.inputField.val();
 
-    self.worker.bind("select_node.jstree", function(event, data) {
-      var name = data.rslt.obj.data("name");
+    if (typeof(self.opts.container) !== 'undefined') {
+      self.container = self.elem.find(self.opts.container);
+    } else {
+      self.container = self.elem;
+    }
 
-      //console.log("select '"+name+"'");
+    if (self.opts.mode === "edit") {
+      plugins.push("contextmenu", "dnd");
+    }
 
-      self.addVal(name);
-      self.inputField.trigger("change");
-      self.elem.find("."+name).each(function() {
-        var $this = $(this);
-        if(!$this.data("_seen")) {
-          $this.data("_seen", true);
-          self.worker.jstree("select_node", this);
+    // nuke defaults as things get merged otherwise
+    $.jstree.defaults.contextmenu.items = {};
+
+    self.treeElem = $("<div />").appendTo(self.container).jstree({
+      "plugins": plugins,
+      "core": {
+        "animation":100,
+        "check_callback": true,
+        "multiple": true,
+        "themes": {
+           "url": foswiki.getPubUrl("System", "JSTreeContrib", "themes/minimal/style.css"),
+           "name":"minimal", 
+           "icons": true
+        }, 
+        "data": {
+          "url": self.opts.url,
+          "data": function(node) {
+            return {
+              "action": "get_children",
+              "web": self.opts.web,
+              "topic": self.opts.topic,
+              "cat": (node.id && node.id !== '#' )? node.id : self.opts.root,
+              "select": self.inputField.val(),
+              "counts": self.opts.displayCounts,
+              "sort": self.opts.sort,
+              "t": (new Date()).getTime()
+            };
+          }
         }
-      }).each(function() {
-        $(this).data("_seen", false);
-      });
-    }).bind("deselect_node.jstree", function(event, data) {
-      var name = data.rslt.obj.data("name");
-
-      //console.log("deselect '"+name+"'");
-
-      self.removeVal(name);
-      self.inputField.trigger("change");
-      self.elem.find("."+name).each(function() {
-        var $this = $(this);
-        if(!$this.data("_seen")) {
-          $this.data("_seen", true);
-          self.worker.jstree("deselect_node", this);
+      },
+      "search": {
+        "show_only_matches": true,
+        "show_only_matches_children": true,
+        "ajax": {
+          "url": self.opts.url,
+          "data": function(term) {
+            return {
+              "action": "search",
+              "web": self.opts.web,
+              "topic": self.opts.topic,
+              "title": term,
+              "t": (new Date()).getTime()
+            };
+          }
         }
-      }).each(function() {
-        $(this).data("_seen", false);
+      },
+      "dnd": {
+        "copy": false
+      },
+      "contextmenu": {
+        "select_node": false,
+        "items": {
+          "create" : {
+            "separator_before": false,
+            "separator_after": true,
+            "icon": self.opts.pubUrlPath+"/"+self.opts.systemWeb+"/FamFamFamSilkIcons/page_white_add.png",
+            "label": $.i18n("New"),
+            "action": function(obj) { 
+              var par = self.jstree.get_node(obj.reference);
+              self.jstree.open_node(par, function() {
+                var node = self.jstree.create_node(par, { "icon": "fa fa-folder" });
+                self.jstree.edit(node);
+              });
+            }
+          },
+          "edit" : {
+            "separator_before": false,
+            "separator_after": false,
+            "icon": self.opts.pubUrlPath+"/"+self.opts.systemWeb+"/FamFamFamSilkIcons/pencil.png",
+            "label": $.i18n("Edit"),
+            "action": function(obj) { 
+              var href= obj.reference.data("editUrl");
+              if (href) {
+                window.location.href = href;
+              }
+            }
+          },
+          "view" : {
+            "separator_before": false,
+            "separator_after": true,
+            "label": $.i18n("View"),
+            "icon": self.opts.pubUrlPath+"/"+self.opts.systemWeb+"/FamFamFamSilkIcons/eye.png",
+            "action": function(obj) { 
+              var href= obj.reference.attr("href");
+              if (href) {
+                window.location.href = href;
+              }
+            }
+          },
+          "rename" : {
+            "separator_before": false,
+            "separator_after": false,
+            "label": $.i18n("Rename"),
+            "icon": self.opts.pubUrlPath+"/"+self.opts.systemWeb+"/FamFamFamSilkIcons/page_white_go.png",
+            "action": function(obj) { 
+              var node = self.jstree.get_node(obj.reference),
+                  title = obj.reference.data("title");
+              self.jstree.edit(node, title, function(node, sts, cancel) {
+                if (cancel) {
+                  return false;
+                }
+              });
+            }
+          },
+          "remove" : {
+            "separator_before": false,
+            "separator_after": false,
+            "label": $.i18n("Remove"),
+            "icon": self.opts.pubUrlPath+"/"+self.opts.systemWeb+"/FamFamFamSilkIcons/bin.png",
+            "action": function(obj) { 
+              self.confirm({
+                message: "<div class='foswikiCenter'>" + 
+                  $.i18n("Are you sure that you want to delete<br /><b>%title%</b>?", {
+                    title: obj.reference.data("title")
+                  }) + "</div>",
+                okayText: $.i18n("Yes, delete it."),
+                okayIcon: "ui-icon-trash",
+                cancelText: $.i18n("No, thanks.")
+              }).then(function() {
+                var node = self.jstree.get_node(obj.reference);
+                self.jstree.delete_node(node);
+              });
+            }
+          }
+        }
+      }
+    });
+    self.jstree = self.treeElem.jstree(true);
+
+    if (self.opts.mode === "edit") {
+
+      /* moving a node */
+      self.treeElem.bind("move_node.jstree", function(e, data) {
+        var parNode, parTitle, nodeTitle;
+
+        if (self._ignore_move_node) {
+          return;
+        }
+
+        if (data.parent === '#') {
+          parTitle = "TOP";
+        } else {
+          parNode = self.jstree.get_node(data.parent);
+          parTitle = parNode.a_attr["data-title"];
+        }
+
+        nodeTitle = data.node.a_attr["data-title"];
+
+        self.confirm({
+          message:"<div class='foswikiCenter'>" + 
+                  $.i18n("Are you sure that you want to move <br /><b>%cat%</b><br/>to<br /><b>%to%</b>?", {
+                    cat: nodeTitle,
+                    to: parTitle
+                  }) + 
+                  "</div>",
+          okayText: $.i18n("Yes, move it."),
+          cancelText: $.i18n("No, thanks.")
+        }).then(function() {
+          self.moveNode(data.node, data.parent, data.position, data.old_parent);
+        }, function() {
+          self._ignore_move_node = true;
+          self.jstree.move_node(data.node, data.old_parent, data.old_position);
+          self._ignore_move_node = false;
+        });
+      })
+
+      /* renaming a node */
+      .bind("rename_node.jstree", function(ev, data) {
+        if (data.node.a_attr.href === '#') {
+          self.createNode(data.node);
+        } else if (data.text !== data.old) {
+          self.renameNode(data.node, data.text);
+        }
+      })
+
+      /* removing a node */
+      .bind("delete_node.jstree", function (e, obj) {
+        $.ajax({
+          type: 'POST',
+          url: self.opts.url,
+          data : { 
+            "action" : "remove_node", 
+            "web": self.opts.web,
+            "topic": self.opts.topic,
+            "cat": obj.node.id,
+            "t": (new Date()).getTime()
+          }, 
+          error: function() {
+            // error
+          },
+          success: function() {
+            self.removeVal(this.id);
+          },
+          complete: function(xhr) {
+            var response = $.parseJSON(xhr.responseText);
+            //console.log(response);
+            $.pnotify({
+              type: response.type,
+              title: response.title,
+              text: response.message
+            });
+          }
+        });
       });
+    } // end if edit
+
+
+    self.treeElem.bind("loaded.jstree", function() {
+      self.reset();
+    }).bind("select_node.jstree", function(e, obj) {
+      var node = obj.node, 
+          id = node.id, 
+          href = node.a_attr.href,
+          baseTopic = foswiki.getPreference("TOPIC");
+
+      if (self.opts.mode === 'select') {
+        if (id === baseTopic) {
+          /*
+          $.pnotify({
+            type: "error",
+            text: $.i18n("Don't select yourself."),
+            delay: 2000
+          });*/
+          self.jstree.deselect_node(id);
+        } else {
+          self.addVal(id);
+        }
+      } 
+
+      if (self.opts.mode === 'browse') {
+        if (obj.event.ctrlKey) {
+          window.open(href);
+        } else {
+          window.location.href = href;
+        }
+        e.preventDefault();
+        return false; 
+      }
+
+    }).bind("deselect_node.jstree", function(e, obj) {
+      var node = obj.node, id = node.id;
+      self.removeVal(id);
     });
   }; 
 
@@ -604,16 +368,15 @@
    * get selected categories 
    */
   Hierarchy.prototype.getSelection = function() {
-    var self = this, selection = [];
+    var self = this, vals = [];
 
-    $.each(self.worker.jstree("get_selected"), function(i, item) {
-      var name = $(item).data("name");
-      if ($.inArray(name, selection) < 0) {
-        selection.push(name);
+    $.each(self.jstree.get_selected(), function(i, item) {
+      if ( $.inArray(item, vals) < 0) {
+        vals.push(item);
       }
     });
 
-    return selection;
+    return vals;
   };
 
 
@@ -623,13 +386,16 @@
   Hierarchy.prototype.setSelection = function(vals) {
     var self = this;
 
-    $.each(vals, function(i, item) {
-      if (item !== '') {
-        self.elem.find("."+item).each(function() {
-          self.worker.jstree("select_node", this);
-        });
-      }
-    });
+    if (typeof(vals) === 'string') {
+      vals = vals.split(/\s*,\s*/);
+    } else {
+      vals = vals || [];
+    }
+
+    self.inputField.val(vals.sort().join(", ")).trigger("change");
+    self.jstree.select_node(vals);
+
+    return vals;
   };
 
   /***************************************************************************
@@ -637,12 +403,13 @@
    */
   Hierarchy.prototype.addVal = function(val) {
     var self = this,
-        newValues = self.removeVal(val);
+        vals = self.getSelection();
 
-    newValues.push(val);
-    self.inputField.val(newValues.sort().join(', '));
+    if ($.inArray(val, vals) < 0) {
+      vals.push(val);
+    }
 
-    return newValues;
+    return self.setSelection(vals);
   };
 
   /***************************************************************************
@@ -650,33 +417,150 @@
    */
   Hierarchy.prototype.removeVal = function(val) {
     var self = this,
-        values = $.trim(self.inputField.val() || ''),
-        newValues, i, value;
+        vals = self.getSelection(),
+        newVals = [], i, value;
 
-    values = values.split(/\s*,\s*/);
-    newValues = [];
-    for (i = 0; i < values.length; i++)  {
-      value = values[i];
+    for (i = 0; i < vals.length; i++)  {
+      value = vals[i];
       if (!value) {
         continue;
       }
       if (value != val) {
-        newValues.push(value);
+        newVals.push(value);
       }
     }
 
-    self.inputField.val(newValues.sort().join(', '));
-
-    return newValues;
+    return self.setSelection(newVals);
   };
 
   /***************************************************************************
-   * reset to original selection
+   * rename a node's title
    */
-  Hierarchy.prototype.reset = function() {
+  Hierarchy.prototype.renameNode = function(node, title) {
     var self = this;
-    self.inputField.val(self.origSelection).trigger("change");
-    self.worker.jstree("refresh", -1);
+
+    return $.ajax({
+      type: "POST",
+      dataType: "json",
+      url: self.opts.url,
+      data: { 
+        "action" : "rename_node", 
+        "web": self.opts.web,
+        "topic": self.opts.topic,
+        "cat" : node.id,
+        "title": title,
+        "t": (new Date()).getTime()
+      },
+      error: function() {
+        //$.jstree.rollback(data.rlbk);
+      },
+      complete: function(xhr) {
+        var response = $.parseJSON(xhr.responseText);
+        //console.log(response);
+        $.pnotify({
+          type: response.type,
+          title: response.title,
+          text: response.message
+        });
+      }
+    });
+  };
+
+  /***************************************************************************
+   * move a node to a new parent category
+   */
+  Hierarchy.prototype.moveNode = function(node, par, pos, old) {
+    var self = this,
+        obj = self.jstree.get_node(node.id, true),
+        next = self.jstree.get_next_dom(obj, true),
+        prev = self.jstree.get_prev_dom(obj, true);
+
+    if (par === "#") {
+      par = "TopCategory";
+    }
+
+    if (old === "#") {
+      old = "TopCategory";
+    }
+
+    $.ajax({
+      type: "POST",
+      dataType: "json",
+      url: self.opts.url,
+      data: { 
+        "action": "move_node", 
+        "web": self.opts.web,
+        "topic": self.opts.topic,
+        "cat": node.id,
+        "parent": par,
+        "oldParent": old,
+/*
+        "next": next?next.attr("id"):undefined,
+        "prev": prev?prev.attr("id"):undefined,
+*/
+        "t": (new Date()).getTime()
+      },
+      error: function() {
+        //$.jstree.rollback(data.rlbk);
+      },
+      success: function (response) {
+        self.jstree.refresh();
+      },
+      complete: function(xhr) {
+        var response = $.parseJSON(xhr.responseText);
+        //console.log(response);
+        $.pnotify({
+          type: response.type,
+          title: response.title,
+          text: response.message
+        });
+      }
+    });
+  };
+
+  /***************************************************************************
+   * create a node
+   */
+  Hierarchy.prototype.createNode = function(node) {
+    var self = this,
+        par = node.parent,
+        title = node.text,
+        id = $.wikiword.wikify(title, {
+          suffix: "Category",
+          transliterate: true
+        });
+        
+    $.ajax({
+      type: "POST",
+      dataType: "json",
+      url: self.opts.url,
+      data: {
+        "action" : "create_node", 
+        "web": self.opts.web,
+        "topic": self.opts.topic,
+        "cat": id,
+        "title": title,
+        "parent": par,
+        "t": (new Date()).getTime()
+        //, "position": pos
+      }, 
+      error: function() {
+        //$.jstree.rollback(data.rlbk); 
+      },
+      success: function(response) {
+        //$(data.rslt.obj).data("name", response.id).data("title", title).addClass(response.id);
+        self.jstree.refresh();
+      },
+      complete: function(xhr) {
+        var response = $.parseJSON(xhr.responseText);
+        //console.log(response);
+        $.pnotify({
+          type: response.type,
+          title: response.title,
+          text: response.message
+        });
+      }
+    });
   };
 
   /***************************************************************************
@@ -686,7 +570,6 @@
     var self = this;
 
     $.ajax({
-      async: false,
       type: "POST",
       dataType: "json",
       url: self.opts.url,
@@ -697,7 +580,7 @@
         "t": (new Date()).getTime()
       },
       beforeSend: function() {
-        $.blockUI({message:"<h1>Refreshing ...</h1>"});
+        $.blockUI({message:"<h1>"+$.i18n("Refreshing ...")+"</h1>"});
       },
       complete: function(xhr) {
         var response = $.parseJSON(xhr.responseText);
@@ -708,6 +591,7 @@
           title: response.title,
           text: response.message
         });
+        self.jstree.refresh();
         self.reset();
       }
     });
@@ -719,8 +603,18 @@
   Hierarchy.prototype.clear = function() {
     var self = this;
     self.inputField.val("").trigger("change");
-    self.worker.jstree("refresh", -1);
+    self.jstree.deselect_all();
   };
+
+  /***************************************************************************
+   * reset to original selection
+   */
+  Hierarchy.prototype.reset = function() {
+    var self = this;
+    self.clear();
+    self.setSelection(self.origSelection);
+  };
+
 
   /***************************************************************************
    * confirm dialog
@@ -729,9 +623,9 @@
     var defaults = {
       message: "",
       title: "Confirmation required",
-      okayText: "Ok",
+      okayText: $.i18n("Ok"),
       okayIcon: "ui-icon-check",
-      cancelText: "Cancel",
+      cancelText: $.i18n("Cancel"),
       cancelIcon: "ui-icon-cancel",
       width: 'auto'
     };
@@ -794,7 +688,7 @@
     defaults.systemWeb = foswiki.getPreference("SYSTEMWEB");
     defaults.web = foswiki.getPreference("WEB");
     defaults.topic = defaults.web+'.'+foswiki.getPreference("TOPIC");
-    defaults.url = foswiki.getPreference("SCRIPTURL")+"/rest/ClassificationPlugin/jsTreeConnector";
+    defaults.url = foswiki.getScriptUrl("rest", "ClassificationPlugin", "jsTreeConnector");
 
     /* enable class-based instantiation  */
     $(".jqHierarchy").livequery(function() {
@@ -802,4 +696,4 @@
     });
   });
 
-})(jQuery, window, document);
+})(jQuery, window);

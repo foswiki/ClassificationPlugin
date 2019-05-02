@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="WebHome"}%
 
 
@@ -8,22 +8,21 @@
 %META:LEXICON{name="id2" Comment="" Englishen="" Frenchfr="" Germande="Schlüsselworte" String="Tags"}%
 %META:LEXICON{name="id3" Comment="" Englishen="" Frenchfr="" Germande="Kategorie" String="Category"}%
 %META:LEXICON{name="id4" Comment="" Englishen="" Frenchfr="" Germande="Schlüsselwort" String="Tag"}%
-%META:LEXICON{name="id5" Comment="" Englishen="" Frenchfr="" Germande="Workflow, an dem dieses Topic teilnimmt" String="workflow for this topic"}%
-%META:LEXICON{name="id6" Comment="" Englishen="" Frenchfr="" Germande="Kategorien dieses Topics" String="categories this topic is field to"}%
+%META:LEXICON{name="id5" Comment="" Englishen="" Frenchfr="" Germande="Workflow, an dem dieser Artikel teilnimmt" String="workflow for this topic"}%
+%META:LEXICON{name="id6" Comment="" Englishen="" Frenchfr="" Germande="Kategorien dieses Artikels" String="categories this topic is field to"}%
 %META:LEXICON{name="id7" Comment="SimpleApprovalWorkflow" Englishen="" Frenchfr="" Germande="Dieses Dokument ist in Bearbeitung." String="This document is being worked on."}%
 %META:LEXICON{name="id8" Comment="" Englishen="" Frenchfr="" Germande="Details anzeigen" String="Show details"}%
-%META:LEXICON{name="id9" Comment="RenderWorkflowInfo" Englishen="" Frenchfr="" Germande="Aktion:" String="Action:"}%
+%META:LEXICON{name="id9" Comment="RenderWorkflowInfo" Englishen="" Frenchfr="" Germande="Aktion" String="Action" author="micha" date="1551355232"}%
 %META:LEXICON{name="id10" Comment="SimpleApprovalWorkflow" Englishen="" Frenchfr="" Germande="Dieses Dokument liegt zur Begutachtung vor." String="This document is waiting for approval."}%
-%META:LEXICON{name="id11" Comment="SimpleApprovalWorkflow" Englishen="" Frenchfr="" Germande="Dieses Dokument ist genehmigt." String="This document is approved."}%
-%META:LEXICON{name="id12" Comment="SimpleApprovalWorkflow" Englishen="" Frenchfr="" Germande="Die Genehmigung für dieses Dokument wurde zurückgezogen." String="Approval for this document has been rejected."}%
+%META:LEXICON{name="id11" Comment="SimpleApprovalWorkflow" Englishen="" Frenchfr="" Germande="Dieses Dokument ist freigegeben." String="This document is approved." author="micha" date="1530278941"}%
+%META:LEXICON{name="id12" Comment="SimpleApprovalWorkflow" Englishen="" Frenchfr="" Germande="Die Freigabe für dieses Dokument wurde zurückgezogen." String="Approval for this document has been rejected." author="micha" date="1530278929"}%
 %META:LEXICON{name="id13" Comment="SimpleApprovalWorkflow" Englishen="" Frenchfr="" Germande="Dieses Dokument ist nicht mehr in Benutzung." String="This document is not in use anymore."}%
-%META:LEXICON{name="id14" Comment="RenderWorkflowInfo" Englishen="" Frenchfr="" Germande="Aktueller Status:" String="Current State:"}%
-%META:LEXICON{name="id15" Comment="RenderWorkflowInfo" Englishen="" Frenchfr="" Germande="Details ausblenden" String="Hide details"}%
+%META:LEXICON{name="id14" Comment="RenderWorkflowInfo" Englishen="" Frenchfr="" Germande="Status" String="State" author="micha" date="1551355201"}%
 %META:LEXICON{name="id16" Comment="Category" Englishen="" Frenchfr="" Germande="Verantwortlicher für diese Kategorie" String="person taking care of this category"}%
 %META:LEXICON{name="id17" Comment="Category" Englishen="" Frenchfr="" Germande="Verantwortlicher" String="Responsible Person"}%
 %META:LEXICON{name="id18" Comment="Category" Englishen="" Frenchfr="" Germande="Erläuterung zu dieser Kategorie" String="short description of this category"}%
 %META:LEXICON{name="id19" Comment="Category" Englishen="" Frenchfr="" Germande="Weiterleitung" String="Redirect"}%
-%META:LEXICON{name="id20" Comment="Category" Englishen="" Frenchfr="" Germande="Seite, auf die von dieser Kategorie aus weitergeleitet werden soll" String="topic where to redirect to when visiting this category, e.g. a portal page representing this category"}%
+%META:LEXICON{name="id20" Comment="Category" Englishen="" Frenchfr="" Germande="Artikel, auf den von dieser Kategorie aus weitergeleitet werden soll" String="topic where to redirect to when visiting this category, e.g. a portal page representing this category"}%
 %META:LEXICON{name="id21" Comment="" Englishen="" Frenchfr="" Germande="Ein oder mehrere Eltern-Kategorien" String="one or more parent categories that this category is filed to"}%
 %META:LEXICON{name="id22" Comment="Category" Englishen="" Frenchfr="" Germande="Dargestelltes Symbol für diese Kategorie" String="icon to be displayed listing this category"}%
 %META:LEXICON{name="id23" Comment="Category" Englishen="" Frenchfr="" Germande="Logische Nummerierung für die sortierte Darstellung" String="number used in sorting categories"}%
@@ -32,10 +31,28 @@
 %META:LEXICON{name="id26" Comment="CategoryEditTemplate" Englishen="" Frenchfr="" Germande="Details" String="Details"}%
 %META:LEXICON{name="id27" Comment="CategoryEditTemplate" Englishen="" Frenchfr="" Germande="Unter-Kategorien" String="Sub-Categories"}%
 %META:LEXICON{name="id28" Comment="CategoryEditTemplate" Englishen="" Frenchfr="" Germande="Importieren" String="Import"}%
-%META:LEXICON{name="id29" Comment="" Englishen="" Frenchfr="" Germande="Diese Seite benötigt eine Verschlagwortung. Bitte fügen Sie Schlüsselworte hinzu, um zu beschreiben, worum es auf dieser Seite geht." String="This page needs tagging. Please add keywords describing what this page is about."}%
-%META:LEXICON{name="id30" Comment="" Englishen="" Frenchfr="" Germande="Diese Seite benötigt eine Kategorisierung. Bitte stellen Sie sie in eine adäquate Kategorie." String="This page needs to be categorized. Please file it to an appropriate category."}%
+%META:LEXICON{name="id29" Comment="" Englishen="" Frenchfr="" Germande="Dieser Artikel benötigt eine Verschlagwortung. Bitte fügen Sie Schlüsselworte hinzu, um zu beschreiben, wovon dieser Artikel handelt." String="This page needs tagging. Please add keywords describing what this page is about."}%
+%META:LEXICON{name="id30" Comment="" Englishen="" Frenchfr="" Germande="Dieser Artikel benötigt eine Kategorisierung. Bitte stellen Sie ihn in eine adäquate Kategorie." String="This page needs to be categorized. Please file it to an appropriate category."}%
 %META:LEXICON{name="id31" Comment="" Englishen="" Frenchfr="" Germande="Mehrere Überschriften h1 erkannt. Bitte benutzen Sie nur Überschriften h2, h3, .... innerhalb des Inhaltsbereiches." String="Multiple heading 1 detected. Please only use heading 2, 3, ... inside the content area."}%
-%META:LEXICON{name="id32" Comment="" Englishen="" Frenchfr="" Germande="Bitte geben Sie einen Titel für dieses Topic an." String="enter a title for this topic"}%
+%META:LEXICON{name="id32" Comment="" Englishen="" Frenchfr="" Germande="Bitte geben Sie einen Titel für diesen Artikel an." String="enter a title for this topic"}%
 %META:LEXICON{name="id33" Comment="" Englishen="" Frenchfr="" Germande="Kurzbeschreibung oder Untertitel" String="short description or tagline"}%
-%META:LEXICON{name="id34" Comment="" Englishen="" Frenchfr="" Germande="Schlüsselworte für dieses Topic" String="keywords for this topic"}%
+%META:LEXICON{name="id34" Comment="" Englishen="" Frenchfr="" Germande="Schlüsselworte für diesen Artikel" String="keywords for this topic"}%
+%META:LEXICON{name="id35" Comment="" Englishen="" Frenchfr="" Germande="Klassifizierung eines Wissensbereich" String="a classification in a field of knowledge"}%
+%META:LEXICON{name="id36" Comment="" Englishen="" Frenchfr="" Germande="Inhalt, der in Kategorien organisiert werden kann" String="Inhalt, der in Kategorien organisiert werden kann"}%
+%META:LEXICON{name="id37" Comment="" Englishen="" Frenchfr="" Germande="Zuletzt [_1]" String="Last [_1]" author="micha" createauthor="micha" createdate="1530278956" date="1530279025"}%
+%META:LEXICON{name="id38" Comment="" Englishen="" Frenchfr="" Germande="freigegeben" String="approved" author="micha" createauthor="micha" createdate="1530279064" date="1530279064"}%
+%META:LEXICON{name="id39" Comment="" Englishen="" Frenchfr="" Germande="wiederaufnehmen" String="resume" author="micha" createauthor="micha" createdate="1530279808" date="1530279808"}%
+%META:LEXICON{name="id40" Comment="" Englishen="" Frenchfr="" Germande="abschließen" String="finish" author="micha" createauthor="micha" createdate="1530279843" date="1530279843"}%
+%META:LEXICON{name="id41" Comment="" Englishen="" Frenchfr="" Germande="Freigabe beantragen" String="request approval" author="micha" createauthor="micha" createdate="1530279911" date="1530279911"}%
+%META:LEXICON{name="id42" Comment="" Englishen="" Frenchfr="" Germande="zurückziehen" String="withdraw" author="micha" createauthor="micha" createdate="1530279946" date="1530279946"}%
+%META:LEXICON{name="id43" Comment="" Englishen="" Frenchfr="" Germande="ablehnen" String="reject" author="micha" createauthor="micha" createdate="1530279987" date="1530279987"}%
+%META:LEXICON{name="id44" Comment="" Englishen="" Frenchfr="" Germande="freigeben" String="approve" author="micha" createauthor="micha" createdate="1530280027" date="1530280027"}%
+%META:LEXICON{name="id45" Comment="" Englishen="" Frenchfr="" Germande="vorgelegt" String="submitted" author="micha" createauthor="micha" createdate="1530280661" date="1530280661"}%
+%META:LEXICON{name="id46" Comment="" Englishen="" Frenchfr="" Germande="Entwurf" String="draft" author="micha" createauthor="micha" createdate="1530280677" date="1530280763"}%
+%META:LEXICON{name="id47" Comment="" Englishen="" Frenchfr="" Germande="abgelehnt" String="rejected" author="micha" createauthor="micha" createdate="1530280693" date="1530280693"}%
+%META:LEXICON{name="id48" Comment="" Englishen="" Frenchfr="" Germande="veraltet" String="outdated" author="micha" createauthor="micha" createdate="1530280715" date="1530280715"}%
+%META:LEXICON{name="id49" Comment="" Englishen="" Frenchfr="" Germande="Klassifiziertes Topic" String="ClassifiedTopic" author="micha" createauthor="micha" createdate="1539170970" date="1539170970"}%
+%META:LEXICON{name="id50" Comment="" Englishen="" Frenchfr="" Germande="Verschlagwortetes Topic" String="TaggedTopic" author="micha" createauthor="micha" createdate="1539171009" date="1539171009"}%
+%META:LEXICON{name="id51" Comment="" Englishen="" Frenchfr="" Germande="Kontrolliertes Topic" String="ControlledTopic" author="micha" createauthor="micha" createdate="1539171121" date="1539171121"}%
+%META:LEXICON{name="id52" Comment="" Englishen="" Frenchfr="" Germande="Klassifiziertes kontrolliertes Topic" String="ClassifiedControlledTopic" author="micha" createauthor="micha" createdate="1539171976" date="1539171976"}%
 %META:PREFERENCE{name="VIEW_TEMPLATE" title="VIEW_TEMPLATE" type="Set" value="Applications.WebLexiconView"}%

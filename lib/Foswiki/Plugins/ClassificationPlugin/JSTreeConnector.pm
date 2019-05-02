@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2013-2017 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2013-2019 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -52,22 +52,30 @@ sub dispatchAction {
   my $result;
   try {
     my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($theWeb);
-    throw Error::Simple("Hierarchy not found for web '$theWeb'") unless defined $hierarchy;
+    throw Error::Simple("Hierarchy not found") unless defined $hierarchy;
 
     my $theAction = $request->param('action');
     throw Error::Simple("No action specified") unless defined $theAction;
 
     my $method = "handle_".$theAction;
-    throw Error::Simple("Unknown action '$theAction'") unless $this->can($method);
+    throw Error::Simple("Unknown action") unless $this->can($method);
 
     $result = $this->$method($session, $hierarchy);
+
+    $response->header(
+      -status => 200,
+      -content_type => "text/json",
+    );
+
   } catch Error::Simple with {
     my $error = shift;
+
     $result = {
       "type" => "error",
       "title" => "Error",
       "message" => $error->{-text}
     };
+
     $response->header(
       -status => 500,
       -content_type => "text/plain",
@@ -114,39 +122,42 @@ sub getChildren {
     next if $child->{name} eq 'BottomCategory';
     my $nrChildren = scalar(grep {!/^BottomCategory$/} keys %{$child->{children}});
     my $nrTopics = $displayCounts?$child->countTopics():0;
-    my $state = $nrChildren?"closed":"";
+    my %state = ();
     foreach my $selCat (@$selected) {
-      if ($child ne $selCat && $child->subsumes($selCat)) {
-        $state = "open";
-        last;
+      if ($child eq $selCat) {
+        $state{"selected"} = $JSON::true;
+      } else {
+        if ($child->subsumes($selCat)) {
+          $state{"opened"} = $JSON::true;
+        }
       }
     }
+
+    my $icon = $child->getIconUrl() || $child->icon || "fa-folder-o";
+    $icon = "fa $icon" if $icon =~ /^fa\-/;
+    $icon = "ma $icon" if $icon =~ /^ma\-/;
+
     my $record = {
-      data => {
-        "title" => $child->title.($nrTopics?"<span class='jstree-count'>($nrTopics)</span>":""),
-        "icon" => $child->getIconUrl(),
-        "attr" => {
-          "href" => $child->getUrl(),
-          "title" => $child->summary,
-        },
-      },
-      "attr" => {
+      "text" => $child->title.($nrTopics?"<span class='jstree-count'>($nrTopics)</span>":""),
+      "icon" => $icon,
+      "id" => $child->{name},
+      "a_attr" => {
+        "href" => $child->getUrl(),
         "class" => $child->{name},
-      },
-      "metadata" => {
-        "name" => $child->{name},
-        "title" => $child->title,
-        "nrChildren" => int($nrChildren),
-        "nrTopics" => int($nrTopics),
-        "editUrl" => Foswiki::Func::getScriptUrl($child->{origWeb}, $child->{name}, "edit", 
+        "data-edit-url" =>  Foswiki::Func::getScriptUrl($child->{origWeb}, $child->{name}, "edit", 
           t => time(),
           #redirectto => Foswiki::Func::getScriptUrl($session->{webName}, $session->{topicName}, "view")
         ), 
+        "data-title" => $child->title(),
       },
-      state => $state,
+      state => \%state,
     };
-    if ($state eq 'open') {
+    if ($state{"opened"}) {
       $record->{children} = $this->getChildren($session, $child, $selected, $depth-1, $displayCounts, $sort, $seen);
+    } else {
+      if ($nrChildren) {
+        $record->{children} = $JSON::true;
+      }
     }
     push @result, $record;
   }
@@ -172,8 +183,8 @@ sub handle_refresh {
 
   return {
     type => "notice",
-    title => "Success",
-    message => "refreshed hierarchy in web $hierarchy->{web}",
+    title => $session->i18n->maketext("Success"),
+    message => $session->i18n->maketext("refreshed hierarchy in web [_1]", $hierarchy->{web}),
   };
 }
 
@@ -198,7 +209,7 @@ sub handle_get_children {
   #writeDebug("select=@select") if @select;
 
   my $cat = $hierarchy->getCategory($catName);
-  throw Error::Simple("Unknown category '$catName' in hierarchy ".$hierarchy->{web}) 
+  throw Error::Simple("Unknown category") 
     unless defined $cat;
 
   my %select = ();
@@ -227,9 +238,9 @@ sub handle_search {
     title => $search,
     callback => sub {
       my $cat = shift;
-      $cats{".".$cat->{name}} = 1;
+      $cats{$cat->{name}} = 1;
       foreach my $parent ($cat->getAllParents) {
-        $cats{".".$parent} = 1;
+        $cats{$parent} = 1;
       }
     }
   });
@@ -249,71 +260,73 @@ sub handle_move_node {
   throw Error::Simple("No category") unless defined $catName;
 
   my $cat = $hierarchy->getCategory($catName);
-  throw Error::Simple("Unknown category '$catName'") unless defined $cat;
+  throw Error::Simple("Unknown category") unless defined $cat;
 
   my $newParentName = $request->param("parent") || "TopCategory";
   my $newParent = $hierarchy->getCategory($newParentName);
-  throw Error::Simple("Unknown category '$newParentName'") unless defined $newParent;
+  throw Error::Simple("Unknown category") unless defined $newParent;
 
   my $oldParentName = $request->param("oldParent") || "TopCategory";
   my $oldParent = $hierarchy->getCategory($oldParentName);
-  throw Error::Simple("Unknown category '$oldParentName'") unless defined $oldParent;
+  throw Error::Simple("Unknown category") unless defined $oldParent;
 
   my $doCopy = $request->param("copy") || 0;
   throw Error::Simple("Copy not implemented yet") if $doCopy;
 
   # reparent
   my ($meta) = Foswiki::Func::readTopic($cat->{origWeb}, $cat->{name});
-  throw Error::Simple("Woops, category not found: $cat->{origWeb}.$cat->{name}")
+  throw Error::Simple("Woops, category not found")
     unless Foswiki::Func::topicExists($cat->{origWeb}, $cat->{name});
 
   $meta = $cat->reparent($newParent, $oldParent, $meta);
-  throw Error::Simple("Woops, can't reparent $catName") unless defined $meta;
+  throw Error::Simple("Woops, can't reparent category") unless defined $meta;
   
   # reorder 
-  my $nextCatName = $request->param("next") || '';
+  my $nextCatName = $request->param("next");
   my $nextCat;
   if ($nextCatName) {
     $nextCat = $hierarchy->getCategory($nextCatName);
-    throw Error::Simple("Unknown category '$nextCatName'") unless defined $nextCat;
+    throw Error::Simple("Unknown category") unless defined $nextCat;
   }
 
-  my $prevCatName = $request->param("prev") || '';
+  my $prevCatName = $request->param("prev");
   my $prevCat;
   if ($prevCatName) {
     $prevCat = $hierarchy->getCategory($prevCatName);
-    throw Error::Simple("Unknown category '$prevCatName'") unless defined $prevCat;
+    throw Error::Simple("Unknown category") unless defined $prevCat;
   }
 
-  #writeDebug("catName=$catName, newParentName=$newParentName, oldParentName=$oldParentName, nextCatName=$nextCatName, prevCatName=$prevCatName, doCopy=$doCopy");
+  if (defined $nextCat && defined $prevCat) {
+    #writeDebug("catName=$catName, newParentName=$newParentName, oldParentName=$oldParentName, nextCatName=$nextCatName, prevCatName=$prevCatName, doCopy=$doCopy");
 
-  my @sortedCats = 
-    sort {
-      (defined($prevCat) && $a->{name} eq $catName && $b->{name} eq $prevCatName)?1:
-      (defined($prevCat) && $a->{name} eq $prevCatName && $b->{name} eq $catName)?-1:
-      (defined($nextCat) && $a->{name} eq $catName && $b->{name} eq $nextCatName)?-1:
-      (defined($nextCat) && $a->{name} eq $nextCatName && $b->{name} eq $catName)?1:
-      $a->order <=> $b->order || $a->title cmp $b->title;
-    } grep {$_->{name} !~ /^BottomCategory$/} values %{$newParent->{children}};
+    my @sortedCats = 
+      sort {
+        ($a->{name} eq $catName && $b->{name} eq $prevCatName)?1:
+        ($a->{name} eq $prevCatName && $b->{name} eq $catName)?-1:
+        ($a->{name} eq $catName && $b->{name} eq $nextCatName)?-1:
+        ($a->{name} eq $nextCatName && $b->{name} eq $catName)?1:
+        $a->order <=> $b->order || $a->title cmp $b->title;
+      } grep {$_->{name} !~ /^BottomCategory$/} values %{$newParent->{children}};
 
-  #print STDERR "sortedCats=".join(", ", map {$_->{name}} @sortedCats)."\n";
+    #print STDERR "sortedCats=".join(", ", map {$_->{name}} @sortedCats)."\n";
 
-  my $index = 10;
-  foreach my $item (@sortedCats) {
-    try {
-      my ($meta) = Foswiki::Func::readTopic($item->{origWeb}, $item->{name});
-      $item->order($index, $meta);
-      Foswiki::Func::saveTopic($item->{origWeb}, $item->{name}, $meta);
-    } catch Foswiki::AccessControlException with {
-      throw Error::Simple("No write access to $item->{origWeb}.$item->{name}");  
-    };
-    $index+= 10;
+    my $index = 10;
+    foreach my $item (@sortedCats) {
+      try {
+        my ($meta) = Foswiki::Func::readTopic($item->{origWeb}, $item->{name});
+        $item->order($index, $meta);
+        Foswiki::Func::saveTopic($item->{origWeb}, $item->{name}, $meta);
+      } catch Foswiki::AccessControlException with {
+        throw Error::Simple("No write access");  
+      };
+      $index+= 10;
+    }
   }
 
   try {
     Foswiki::Func::saveTopic($cat->{origWeb}, $cat->{name}, $meta);
   } catch Foswiki::AccessControlException with {
-    throw Error::Simple("No write access to $cat->{origWeb}.$cat->{name}");  
+    throw Error::Simple("No write access");  
   };
 
   # init'ing hierarchy 
@@ -324,8 +337,8 @@ sub handle_move_node {
 
   return {
     type => "notice",
-    title => "Success",
-    message => "moved ".$cat->title." to ".$newParent->title,
+    title => $session->i18n->maketext("Success"),
+    message => $session->i18n->maketext("moved [_1] to [_2]", $cat->title, $newParent->title),
     id => $cat->{name},
   };
 }
@@ -342,7 +355,7 @@ sub handle_rename_node {
   throw Error::Simple("No category") unless defined $catName;
 
   my $cat = $hierarchy->getCategory($catName);
-  throw Error::Simple("Unknown category '$catName'") unless defined $cat;
+  throw Error::Simple("Unknown category") unless defined $cat;
 
   my $newTitle = $request->param("title");
   $newTitle = $cat->{name} if !defined($newTitle) || $newTitle eq "";
@@ -350,7 +363,7 @@ sub handle_rename_node {
 
   my ($meta) = Foswiki::Func::readTopic($cat->{origWeb}, $cat->{name});
   my $field = $meta->get('FIELD', 'TopicTitle'); 
-  throw Error::Simple("No TopicTitle field in $cat->{origWeb}.$cat->{name}") unless $field;
+  throw Error::Simple("No TopicTitle field") unless $field;
 
   my $oldTitle = $field->{value};
   $field->{value} = $newTitle;
@@ -360,7 +373,7 @@ sub handle_rename_node {
   try {
     Foswiki::Func::saveTopic($cat->{origWeb}, $cat->{name}, $meta);
   } catch Foswiki::AccessControlException with {
-    throw Error::Simple("No write access to $cat->{origWeb}.$cat->{name}");  
+    throw Error::Simple("No write access");  
   };
 
   # init'ing hierarchy 
@@ -371,8 +384,8 @@ sub handle_rename_node {
 
   return {
     type => "notice",
-    title => "Success",
-    message => "changed title to $newTitle",
+    title => $session->i18n->maketext("Success"),
+    message => $session->i18n->maketext("changed title to [_1]", $newTitle),
     id => $cat->{name},
   };
 }
@@ -391,11 +404,11 @@ sub handle_create_node {
   my $title = $request->param("title") || $catName;
 
   my $cat = $hierarchy->getCategory($catName);
-  throw Error::Simple("Category '$catName' already exists") if defined $cat;
+  throw Error::Simple("Category already exists") if defined $cat;
 
   my $parentName = $request->param("parent") || '';
   if ($parentName) {
-    throw Error::Simple("Parent category '$parentName' does not exists") 
+    throw Error::Simple("Parent category does not exists") 
       unless defined $hierarchy->getCategory($parentName);
   }
 
@@ -443,8 +456,8 @@ sub handle_create_node {
 
   return {
     type => "notice",
-    title => "Success",
-    message => "created category '$title'",
+    title => $session->i18n->maketext("Success"),
+    message => $session->i18n->maketext("created category [_1]", $title),
     id => $catName
   };
 }
@@ -461,7 +474,7 @@ sub handle_remove_node {
   throw Error::Simple("No category") unless defined $catName;
 
   my $cat = $hierarchy->getCategory($catName); 
-  throw Error::Simple("Unknown category '$catName' in hierarchy ".$hierarchy->{web}) 
+  throw Error::Simple("Unknown category") 
     unless defined $cat;
 
   # SMELL: duplicates code in with Foswiki::UI::Rename
@@ -481,8 +494,8 @@ sub handle_remove_node {
 
   return {
     type => "notice",
-    title => "Success",
-    message => "deleted category '".$cat->title."'",
+    title => $session->i18n->maketext("Success"),
+    message => $session->i18n->maketext("deleted category [_1]", $cat->title),
     id => $catName
   };
 }

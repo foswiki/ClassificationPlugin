@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -15,9 +15,25 @@
 <verbatim class="tml">
 %STARTINCLUDE%%WORKFLOWHISTORY{
    "%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"
-   header="<h2 >%MAKETEXT{"History"}%</h2>$n<div class='foswikiFlatTable foswikiFullWidth'>$n| *Rev* | *User* | *State* | *Comment* | *Date* |$n"
-   format="| *$rev* | [[$wikiusername]] | $state | $comment | $date |"
-   footer="$n</div>"
+   header="<h2 >%TRANSLATE{"History"}%</h2>
+<table class='foswikiTable foswikiFlatTable foswikiFullWidth foswikiStripes foswikiLayoutTable'>
+<thead>
+   <tr>
+      <th>%TRANSLATE{"Rev"}%</th>
+      <th>%TRANSLATE{"Person"}%</th>
+      <th>%TRANSLATE{"State"}%</th>
+      <th>%TRANSLATE{"Comment"}%</th>
+      <th>%TRANSLATE{"Date"}%</th>
+   </tr>
+<thead><tbody>"
+   format="<tr>
+      <td> <b>[[%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%?rev=$rev][$rev]]</b> </td>
+      <td> [[$wikiusername]] </td>
+      <td> $percntTRANSLATE{\"$state\"}$percnt </td>
+      <td> $comment </td>
+      <td> $date </td>
+   </tr>"
+   footer="</tbody></table>"
    separator="$n"
 }%%STOPINCLUDE%
 </verbatim>
@@ -33,5 +49,5 @@
 %META:FORM{name="Applications.TopicFunction"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" title="Summary" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="render a table of the workflow history"}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="WikiWorkbench"}%

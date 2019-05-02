@@ -1,13 +1,23 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.WikiTopicView"}%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"beforetext"}%<div class="foswikiTopicInfo">
-%DBCALL{"%WEB%.%TOPIC%->RenderClassifiedTopicView" TITLE_EXTRA="%TMPL:P{"titleextra"}%"}%
-</div>%TMPL:P{"qualitychecks"}%%TMPL:END%
+%TMPL:DEF{"beforetext"}%%IF{
+   "$'DISPLAYTOPICTITLE'!='off'"
+   then="$percntTMPL:P{\"beforetext::title\"}$percnt"
+}%%TMPL:P{"qualitychecks"}%%TMPL:END%
+%{</verbatim>}%
+
+%{<verbatim class="tml">}%
+%TMPL:DEF{"beforetext::title"}%<div class="foswikiTopicInfo">
+%DBCALL{"%WEB%.%TOPIC%->RenderClassifiedTopicView"
+   TITLE_EXTRA="%TMPL:P{"titleextra"}%" 
+   TITLE_PREFIX="%TMPL:P{"titleicon"}%"  
+}%
+</div>%TMPL:END%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
@@ -40,7 +50,7 @@
   topic="%BASEWEB%.%BASETOPIC%"
   header="$percntBREADCRUMBS{recurse=\"topicoff\" separator=\"%TMPL:P{"sep"}%\"}$percnt%TMPL:P{"sep"}%" 
   format="$breadcrumb" 
-  separator="%TMPL:P{"sep"}%"
+  separator="%TMPL:P{"sep"}% "
   exclude="TopCategory"
   null="$percntTMPL:P{\"breadcrumbs::default\"}$percnt"
 }%%TMPL:END%

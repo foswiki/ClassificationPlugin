@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicType"}%
 %DBCALL{"Applications.RenderTopicInstaller" TEXT="Install '%TOPIC%' TopicType" TYPE="TopicType"}%
 
@@ -13,14 +13,18 @@ see also:
 ---++ Topics of type '%TOPIC%'
 %STARTINCLUDE%
 %DBCALL{"Applications.RenderSimpleTopicCreator"
-  LABEL="%MAKETEXT{"Title"}%"
-  BUTTONTEXT="%MAKETEXT{"New"}%"
-  TEXT="%MAKETEXT{"Create a new [_1]" args="<nop>%TOPIC%"}%"
+  LABEL="%TRANSLATE{"Title"}%"
+  BUTTONTEXT="%TRANSLATE{"New"}%"
+  TEXT="%TRANSLATE{"Create a new [_1]" args="<nop>%TOPIC%"}%"
   VALUE=""
   EDITOR="Applications.ClassificationApp.ControlledTopicEdit"
 }%
 
-%DBCALL{"Applications.RenderTopicsOfType"}%
+%DBCALL{"Applications.RenderTopicsOfType" 
+   FIELDS="TopicTitle, Summary, Workflow, Category, Changed"
+   Category_title="%TRANSLATE{"Category"}%"
+   Workflow_title="%TRANSLATE{"State"}%"
+}%
 %STOPINCLUDE%
 
 ---++ <nop>%TOPIC% form
@@ -28,7 +32,7 @@ see also:
 | TopicType | label | 1 | ControlledTopic, WikiTopic | structural type  | | ControlledTopic, WikiTopic |
 | <nop>TopicTitle | text | 75 | |  | | |
 | Summary | text | 75 | | short description or tagline | c | |
-| Workflow | topic | 20 | TopicType="WorkflowDefinition" | assign a workflow to this topic | c | |
+| Workflow | topic | 20 | TopicType="WorkflowDefinition" | assign a workflow to this topic | c | %CLASSIFICATIONPLUGIN_DEFAULTWORKFLOW{default=""}% |
 
 
 %META:FORM{name="Applications.TopicType"}%
@@ -38,5 +42,10 @@ see also:
 %META:FIELD{name="Icon" title="Icon" value="fa-check"}%
 %META:FIELD{name="Editor" title="Editor" value="Applications.ClassificationApp.ControlledTopicEditTemplate"}%
 %META:FIELD{name="Template" title="Template" value=""}%
-%META:FIELD{name="TopicNaming" title="Topic Naming" value=""}%
+%META:FIELD{name="TopicNamingMode" title="Topic Naming Mode" value="default"}%
+%META:FIELD{name="TopicNameTemplate" title="Topic Name Template" value=""}%
+%META:FIELD{name="TopicNameSource" title="Topic Name Source" value="[name=TopicTitle]"}%
+%META:FIELD{name="TopicNamePrefix" title="Topic Name Prefix" value=""}%
+%META:FIELD{name="TopicNameSuffix" title="Topic Name Suffix" value=""}%
+%META:FIELD{name="TopicNameTransliterate" title="Topic Name Transliterate" value="true"}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

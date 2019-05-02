@@ -1,6 +1,5 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicType"}%
-%TOC{depth="2"}%
 %DBCALL{"Applications.RenderTopicInstaller" TYPE="TopicType" PARENT="TopicType"}%
 ---++ Documentation
 %STARTSECTION{"documentation"}%
@@ -37,5 +36,10 @@ See also: [[ClassifiedTopic]], [[CategorizedTopic]], [[TaggedTopicViewTemplate]]
 %META:FIELD{name="Icon" title="Icon" value="fa-tags"}%
 %META:FIELD{name="Editor" title="Editor" value="Applications.ClassificationApp.TaggedTopicEditTemplate"}%
 %META:FIELD{name="Template" title="Template" value=""}%
-%META:FIELD{name="TopicNaming" title="Topic Naming" value=""}%
+%META:FIELD{name="TopicNamingMode" title="Topic Naming Mode" value="default"}%
+%META:FIELD{name="TopicNameTemplate" title="Topic Name Template" value=""}%
+%META:FIELD{name="TopicNameSource" title="Topic Name Source" value="[name=TopicTitle]"}%
+%META:FIELD{name="TopicNamePrefix" title="Topic Name Prefix" value=""}%
+%META:FIELD{name="TopicNameSuffix" title="Topic Name Suffix" value=""}%
+%META:FIELD{name="TopicNameTransliterate" title="Topic Name Transliterate" value="true"}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

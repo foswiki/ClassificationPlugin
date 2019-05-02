@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
 %META:TOPICPARENT{name="WikiApplication"}%
 %TOC{depth="4"}%
 ---++ Description
@@ -23,8 +23,8 @@
 %META:FIELD{name="TopicType" title="TopicType" value="WikiApplication, ApplicationTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value="Categorization and folksomony application"}%
-%META:FIELD{name="Version" title="Version" value="0.7"}%
+%META:FIELD{name="Version" title="Version" value="7.00"}%
 %META:FIELD{name="Author" title="Author" value="Michael Daum"}%
-%META:FIELD{name="Copyright" title="Copyright" value="&copy; 2006-2017 Michael Daum http://michaeldaumconsulting.com"}%
+%META:FIELD{name="Copyright" title="Copyright" value="&copy; 2006-2019 Michael Daum http://michaeldaumconsulting.com"}%
 %META:FIELD{name="License" title="License" value="Applications.GnuGeneralPublicLicense"}%
 %META:FIELD{name="Dependencies" title="Dependencies" value=""}%

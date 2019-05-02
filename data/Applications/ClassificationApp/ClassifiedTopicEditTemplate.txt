@@ -1,19 +1,11 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.WikiTopicEdit"}%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"topictype"}%%TRANSLATE{"classified topic" web="Applications.ClassificationApp"}%%TMPL:END%
-%{</verbatim>}%
-
-%{<verbatim class="tml">}%
 %TMPL:DEF{"catfield"}%Category%TMPL:END%
-%{</verbatim>}%
-
-%{<verbatim class="tml">}%
-%TMPL:DEF{"formdefinition"}%Applications.ClassificationApp.ClassifiedTopic%TMPL:END%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
@@ -26,11 +18,10 @@
 
 %{<verbatim class="tml">}%
 %TMPL:DEF{"categoriestab"}%<!-- -->
-%TAB{
-  "%TMPL:P{"categorieslabel"}%"
-  url="%SCRIPTURL{"rest"}%/RenderPlugin/tag?topic=%BASEWEB%.%BASETOPIC%;name=RENDERFOREDIT;field=%TMPL:P{"catfield"}%;form=%TMPL:P{"formdefinition"}%;%IF{"defined '%TMPL:P{"catfield"}%'" then="value=%URLPARAM{"%TMPL:P{"catfield"}%" multiple="on" encode="url"}%;"}%render=on;t=%GMTIME{"$epoch"}%"
+%TAB{"%TMPL:P{"categorieslabel"}%"
+  url="%SCRIPTURL{"rest"}%/RenderPlugin/tag?topic=%BASEWEB%.%BASETOPIC%;name=RENDERFOREDIT;formstyle=above;field=%TMPL:P{"catfield"}%;form=%TMPL:P{"formdefinition"}%;%IF{"defined '%TMPL:P{"catfield"}%'" then="value=%URLPARAM{"%TMPL:P{"catfield"}%" multiple="on" encode="url" separator=","}%;"}%render=on;t=%GMTIME{"$epoch"}%"
 }%
-<span class="jqAjaxLoader">&nbsp;</span>
+%JQICON{"fa-spinner" animate="spin"}%
 <noautolink>
 <input type="hidden" name="%TMPL:P{"catfield"}%" value="%URLPARAM{"%TMPL:P{"catfield"}%" multiple="on" separator="," default="%ENCODE{"%FORMFIELD{"%TMPL:P{"catfield"}%"}%" type="entity"}%"}%" />
 </noautolink>
@@ -42,16 +33,10 @@
 %TMPL:DEF{"tagstab"}%<!-- -->
 %TAB{
   "%TMPL:P{"tagslabel"}%" 
-  url="%SCRIPTURL{"rest"}%/RenderPlugin/tag?topic=%BASEWEB%.%BASETOPIC%;name=RENDERFOREDIT;field=Tag;form=%TMPL:P{"formdefinition"}%;%IF{"defined 'Tag'" then="value=%URLPARAM{"Tag" multiple="on" separator="," encode="url"}%;"}%render=on;t=%GMTIME{"$epoch"}%"
+  url="%SCRIPTURL{"rest"}%/RenderPlugin/tag?topic=%BASEWEB%.%BASETOPIC%;name=RENDERFOREDIT;formstyle=above;field=Tag;form=%TMPL:P{"formdefinition"}%;%IF{"defined 'Tag'" then="value=%URLPARAM{"Tag" multiple="on" separator="," encode="url"}%;"}%render=on;t=%GMTIME{"$epoch"}%"
 }%
-<span class="jqAjaxLoader">&nbsp;</span>
-%JQREQUIRE{"ui"}%<!-- -->
-%ADDTOZONE{
-  "script"
-  tag="tagsuggestion"
-  text="<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/jquery.tagsuggestion.js'></script>"
-  requires="JQUERYPLUGIN::UI"
-}%<!-- -->
+%JQICON{"fa-spinner" animate="spin"}%
+%JQREQUIRE{"ui, blockui"}%<!-- -->
 <noautolink>
 <input type="hidden" name="Tag" value="%URLPARAM{"Tag" multiple="on" separator="," default="%ENCODE{"%FORMFIELD{"Tag"}%" type="entity"}%"}%" />
 </noautolink>

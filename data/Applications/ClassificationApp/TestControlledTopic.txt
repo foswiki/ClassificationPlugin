@@ -1,0 +1,12 @@
+%META:TOPICINFO{author="micha" comment="reprev" date="1531745707" format="1.1" reprev="10" version="10"}%
+%META:TOPICPARENT{name="ClassifiedControlledTestTopic"}%
+
+
+%META:FORM{name="ControlledTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="ControlledTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value="Test Controlled Topic"}%
+%META:FIELD{name="Summary" title="Summary" value=""}%
+%META:FIELD{name="Workflow" title="Workflow" value="SimpleApprovalWorkflow"}%
+%META:PREFERENCE{name="ALLOWTOPICVIEW" title="ALLOWTOPICVIEW" type="Set" value="AdminGroup"}%
+%META:WORKFLOW{name="submitted" LASTACTION="request approval" LASTCOMMENT_submitted="" LASTSTATE="draft" LASTTIME_submitted="16. Juli 2018" LASTUSER_submitted="Home.MichaelDaum" LASTVERSION_submitted="10"}%
+%META:WORKFLOWHISTORY{name="10" author="Home.MichaelDaum" comment="" date="1531745707" state="submitted"}%

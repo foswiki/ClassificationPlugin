@@ -17,40 +17,52 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 2.1\n"
 
-#: data/Applications/ClassificationApp/WebTagList.txt:16
-msgid "%1 tags found"
-msgstr ""
-
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:12
 msgid "... and finally delete this message."
 msgstr ""
+
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:53
+msgid "Action"
+msgstr "Akce"
 
 #: data/_ClassificationTemplate/WebHome.txt:62
 msgid "Add more text here"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:72
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:68
 msgid "Cancel"
 msgstr "Přerušit"
 
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:20
+#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:12
 #: data/_ClassificationTemplate/WebHome.txt:9
 msgid "Categories"
 msgstr "Kategorie"
 
+#: data/Applications/ClassificationApp/CategorizedTopic.txt:20
+#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:29
+#: data/Applications/ClassificationApp/ClassifiedTopic.txt:24
+#: data/Applications/ClassificationApp/ControlledTopic.txt:25
+#: data/Applications/ClassificationApp/SeoTopic.txt:19
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:28
+#, fuzzy
+msgid "Category"
+msgstr "Kategorie"
+
 #: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:19
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:50
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:46
 #, fuzzy
 msgid "Change State"
 msgstr "Změň jazyk"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:67
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:66
 #, fuzzy
 msgid "Clear"
 msgstr "Vymaž vše"
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:67
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:25
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:30
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:63
 msgid "Comment"
 msgstr "Komentář"
 
@@ -61,16 +73,11 @@ msgstr ""
 
 #: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:22
 #: data/Applications/ClassificationApp/ControlledTopic.txt:18
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:22
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:21
 #: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:20
 #, fuzzy
 msgid "Create a new %1"
 msgstr "Vytvoř novou skupinu"
-
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:28
-#, fuzzy
-msgid "Create a new category in the %1 web"
-msgstr "Nový článek v %1"
 
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:8
 msgid ""
@@ -78,15 +85,18 @@ msgid ""
 "heading. It will display a pencil icon."
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:18
-#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:30
-#: data/Applications/ClassificationApp/WorkflowDefinitionEditTemplate.txt:24
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:16
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:26
+msgid "Date"
+msgstr "Datum"
+
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:13
+#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:22
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:8
 #, fuzzy
 msgid "Details"
 msgstr "Detaily:"
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:45
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:41
 msgid "Diff"
 msgstr ""
 
@@ -96,35 +106,36 @@ msgid ""
 "linking to this web, e.g. in breadcrumbs and search interfaces."
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
 #, fuzzy
 msgid "Empty the selection"
 msgstr "Akce"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:69
+#: data/Applications/ClassificationApp/RenderCategory.txt:126
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:49
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:68
 msgid "Filter"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopic.txt:28
+#: data/Applications/ClassificationApp/SeoTopic.txt:31
 #, fuzzy
 msgid "Generate description"
 msgstr "Popis"
 
-#: data/Applications/ClassificationApp/SeoTopic.txt:29
+#: data/Applications/ClassificationApp/SeoTopic.txt:32
 msgid "Generate keywords"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopic.txt:27
+#: data/Applications/ClassificationApp/SeoTopic.txt:30
 msgid "Generate title"
 msgstr ""
 
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:46
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:38
 #, fuzzy
 msgid "HTML Text"
 msgstr "Text"
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:34
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:26
 #, fuzzy
 msgid "HTML Title"
 msgstr "Název:"
@@ -137,7 +148,7 @@ msgstr "Historie"
 msgid "Icon"
 msgstr "Ikona"
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:48
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:43
 msgid "Import"
 msgstr ""
 
@@ -152,49 +163,35 @@ msgid ""
 "readability of your content."
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:44
-#, fuzzy
-msgid "Last in %1"
-msgstr "Poslední název:"
-
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:25
-msgid "Message"
-msgstr ""
-
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:39
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:31
 #, fuzzy
 msgid "Meta Image"
 msgstr "Obraz"
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:36
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:28
 #, fuzzy
 msgid "Meta desciption"
 msgstr "Popis"
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:35
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:27
 msgid "Meta keywords"
 msgstr ""
 
-#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:79
+#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:89
 msgid ""
 "Multiple heading 1 detected. Please only use heading 2, 3, ... inside the "
 "content area."
 msgstr ""
 
-#: data/Applications/ClassificationApp/Category.txt:28
 #: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:21
 #: data/Applications/ClassificationApp/ControlledTopic.txt:17
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:21
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:20
 #: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:19
 #, fuzzy
 msgid "New"
 msgstr "nové"
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:57
-msgid "New State"
-msgstr ""
-
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:37
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:32
 #, fuzzy
 msgid "Notes"
 msgstr "Poznámky:"
@@ -208,7 +205,11 @@ msgstr ""
 msgid "Parent topic"
 msgstr "Vytvořit článek"
 
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:36
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:23
+msgid "Person"
+msgstr ""
+
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:28
 msgid "Plain Text"
 msgstr ""
 
@@ -227,39 +228,43 @@ msgstr "Naposledy změněné články"
 msgid "Recent changes"
 msgstr "Naposledy změněné články"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
 msgid "Refresh"
 msgstr "Obnov"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
 msgid "Refresh hierarchy cache on the backend"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderTagEditor.txt:43
+#: templates/classificationplugin.tmpl:19
 #, fuzzy
 msgid "Related tags"
 msgstr "Podobné články:"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:61
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
 #, fuzzy
 msgid "Reset the selection"
 msgstr "Akce"
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:29
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:22
+msgid "Rev"
+msgstr ""
+
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:21
 msgid "SEO"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:30
+#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:22
 #, fuzzy
 msgid "Search engine optimization"
 msgstr "Možnosti prohledávání"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:49
 #, fuzzy
 msgid "Search for matching categories"
 msgstr "Vyhledej aktualizace"
 
-#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:43
+#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:42
 msgid "Show all tags"
 msgstr ""
 
@@ -267,23 +272,37 @@ msgstr ""
 msgid "Some tips:"
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:45
+#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:30
+#: data/Applications/ClassificationApp/ControlledTopic.txt:26
+#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:24
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:25
+msgid "State"
+msgstr ""
+
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:40
 #, fuzzy
 msgid "Sub-Categories"
 msgstr "Kategorie"
 
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:34
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:71
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:67
 msgid "Submit"
 msgstr "Potvrdit"
 
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:24
-#: data/Applications/ClassificationApp/ClassifiedTopicRenderRss.txt:31
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:186
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:340
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:387
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:459
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:497
+msgid "Success"
+msgstr ""
+
+#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:16
+#: data/Applications/ClassificationApp/ClassifiedTopicRenderRss.txt:34
 #: data/_ClassificationTemplate/WebHome.txt:15
 msgid "Tags"
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:49
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:44
 msgid "Text"
 msgstr "Text"
 
@@ -306,24 +325,23 @@ msgstr ""
 "článek v tomto %1 webu. Pro přihlášení, prosím přidejte odrážku s Vaším %2 v "
 "abecedním pořádku do tohoto seznamu:"
 
-#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:57
+#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:67
 msgid ""
 "This page needs tagging. Please add keywords describing what this page is "
 "about."
 msgstr ""
 
-#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:68
+#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:78
 msgid ""
 "This page needs to be categorized. Please file it to an appropriate category."
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:21
+#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:16
 #: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:20
 #: data/Applications/ClassificationApp/ControlledTopic.txt:16
-#: data/Applications/ClassificationApp/RenderCategoryFactory.txt:30
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:20
+#: data/Applications/ClassificationApp/WorkflowDefinition.txt:19
 #: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:18
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:23
+#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:15
 #, fuzzy
 msgid "Title"
 msgstr "Název:"
@@ -337,12 +355,12 @@ msgstr "Nástroje"
 msgid "Topics tagged \"%1\""
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:61
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:68
+#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
+#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:67
 msgid "Undo"
 msgstr ""
 
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:45
+#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:41
 msgid "View"
 msgstr "Náhled"
 
@@ -350,8 +368,8 @@ msgstr "Náhled"
 msgid "Welcome"
 msgstr ""
 
-#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:47
-#: data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt:20
+#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:39
+#: data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt:12
 msgid "Workflow settings"
 msgstr ""
 
@@ -373,50 +391,76 @@ msgstr "přístup ke článku nepovolen"
 msgid "access not allowed on category"
 msgstr "přístup ke článku nepovolen"
 
-#: data/Applications/ClassificationApp/CategorizedTopicEditTemplate.txt:5
+#. ($newTitle)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:388
 #, fuzzy
-msgid "categorized topic"
-msgstr "Obnov článek"
+msgid "changed title to %1"
+msgstr "Připoj soubor k %1"
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:8
+#. ($title)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:460
 #, fuzzy
-msgid "category"
-msgstr "Kategorie"
+msgid "created category %1"
+msgstr "Vytvoř novou skupinu"
 
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:8
+#. ($cat->title)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:498
 #, fuzzy
-msgid "classified topic"
-msgstr "Podobné články:"
+msgid "deleted category %1"
+msgstr "Smazat přílohu %1"
 
-#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:12
-#: data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt:8
-#, fuzzy
-msgid "controlled topic"
-msgstr "Zpět na článek"
-
-#: data/Applications/ClassificationApp/RenderTagEditor.txt:45
-msgid "found in %1 other topic(s)"
-msgstr ""
-
-#: data/Applications/ClassificationApp/CategoryRenderIndexItem.txt:25
-#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:43
+#: data/Applications/ClassificationApp/CategoryRenderCategoryItem.txt:26
+#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:42
 #, fuzzy
 msgid "more"
 msgstr "(více)"
+
+#. ($cat->title, $newParent->title)
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:341
+#, fuzzy
+msgid "moved %1 to %2"
+msgstr "Řádek: %1 až %2"
+
+#. ($hierarchy->{web})
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:187
+msgid "refreshed hierarchy in web %1"
+msgstr ""
 
 #: data/Applications/ClassificationApp/WelcomeMessage.txt:8
 msgid "requires Foswiki:Extensions/EditChapterPlugin"
 msgstr ""
 
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:16
 #, fuzzy
-msgid "seo topic"
-msgstr "Na článek"
+#~ msgid "Status"
+#~ msgstr "Statistiky"
 
-#: data/Applications/ClassificationApp/WorkflowDefinitionEditTemplate.txt:8
 #, fuzzy
-msgid "workflow definition"
-msgstr "Definice formuláře"
+#~ msgid "Create a new category in the %1 web"
+#~ msgstr "Nový článek v %1"
+
+#, fuzzy
+#~ msgid "Last in %1"
+#~ msgstr "Poslední název:"
+
+#, fuzzy
+#~ msgid "categorized topic"
+#~ msgstr "Obnov článek"
+
+#, fuzzy
+#~ msgid "classified topic"
+#~ msgstr "Podobné články:"
+
+#, fuzzy
+#~ msgid "controlled topic"
+#~ msgstr "Zpět na článek"
+
+#, fuzzy
+#~ msgid "seo topic"
+#~ msgstr "Na článek"
+
+#, fuzzy
+#~ msgid "workflow definition"
+#~ msgstr "Definice formuláře"
 
 #~ msgid "!WikiName"
 #~ msgstr "!WikiJméno"
@@ -898,9 +942,6 @@ msgstr "Definice formuláře"
 #~ msgid "Access keys:"
 #~ msgstr "Přístupové klíče:"
 
-#~ msgid "Action"
-#~ msgstr "Akce"
-
 #~ msgid "Action %1: %2 by user %3."
 #~ msgstr "Akce %1: %2 uživatelem %3."
 
@@ -1027,9 +1068,6 @@ msgstr "Definice formuláře"
 #~ "Attach an image or document to this topic; manage existing attachments (a)"
 #~ msgstr ""
 #~ "Připoj obrázek nebo soubor k tomuto ćlánku; spravuj existující přílohy (a)"
-
-#~ msgid "Attach file to %1"
-#~ msgstr "Připoj soubor k %1"
 
 #~ msgid "Attach image or document on %1"
 #~ msgstr "Připoj obrázek nebo soubor k %1"
@@ -1429,9 +1467,6 @@ msgstr "Definice formuláře"
 #~ msgid "Data rows"
 #~ msgstr "Záznamy"
 
-#~ msgid "Date"
-#~ msgstr "Datum"
-
 #~ msgid "Dear %1"
 #~ msgstr "Vážený %1"
 
@@ -1446,9 +1481,6 @@ msgstr "Definice formuláře"
 
 #~ msgid "Delete"
 #~ msgstr "Smazat"
-
-#~ msgid "Delete attachment %1"
-#~ msgstr "Smazat přílohu %1"
 
 #~ msgid "Delete last row"
 #~ msgstr "Vymazat poslední řádek"
@@ -2257,9 +2289,6 @@ msgstr "Definice formuláře"
 
 #~ msgid "Line: %1"
 #~ msgstr "Řádek: %1"
-
-#~ msgid "Line: %1 to %2"
-#~ msgstr "Řádek: %1 až %2"
 
 #~ msgid "Link"
 #~ msgstr "Odkaz"
@@ -3261,9 +3290,6 @@ msgstr "Definice formuláře"
 
 #~ msgid "State change from *%1* to *%2* (see [[%3][workflow definition]])."
 #~ msgstr "Změna stavu z *%1* na *%2* (viz [[%3][workflow definition]])."
-
-#~ msgid "Statistics"
-#~ msgstr "Statistiky"
 
 #~ msgid "Strikethrough"
 #~ msgstr "Přeškrtnuto"

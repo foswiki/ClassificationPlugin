@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %TOC%
 
 ---++ Naming
@@ -19,14 +19,19 @@ using a kind of tagline:
 
 ---++ Application Pointer
    * Set CLASSIFICATIONPLUGIN_AUTOREPARENT = 1
+   * Set CLASSIFICATIONPLUGIN_NRCOLS = 3
+   * Set CLASSIFICATIONPLUGIN_RENDERCATEGORY = Applications.ClassificationApp.RenderCategoryTiles
+   * Set CLASSIFICATIONPLUGIN_DEFAULTWORKFLOW = SimpleApprovalWorkflow
 
 ---++ Wiki application settings
 
    * Set WEBFORMS = Applications.WikiTopic
+   * Set APPROVED_STATE = approved
+   * Set INITIAL_STATE = draft
 
 ---++ Translations
 
-   * Set CONTENT_LEXICON = Applications.ClassificationApp.WebLexicon, %VAR{"CONTENT_LEXICON" web="Applications"}%
+   * Set WEBLEXICON = Applications.WebLexicon
    * Set WEBMETADATA = Applications.LexiconForm
 
 

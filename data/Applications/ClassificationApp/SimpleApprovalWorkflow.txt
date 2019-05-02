@@ -1,22 +1,23 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="WebHome"}%
 ---++ States
-| *State* | *Allow Edit* | *Allow View* | *Message* |
-| draft   |              |              | This document is being worked on. |
-| requesting approval |  |  AdminGroup  | This document is waiting for approval. |
-| approved |             |              | This document is approved. |
-| rejected |             |              | Approval for this document has been rejected. |
-| outdated |             |              | This document is not in use anymore. |
+| *State*   | *Allow Edit* | *Allow View* | *Message* |
+| draft     |              |              | This document is being worked on. |
+| submitted |              |  AdminGroup  | This document is waiting for approval. |
+| approved  |              |              | This document is approved. |
+| rejected  |              |              | Approval for this document has been rejected. |
+| outdated  |              |              | This document is not in use anymore. |
 
 ---++ Transitions
-| *State*             | *Action*         | *Next State*        | *Allowed* | *Form* | *Notify* |
-| draft               | request approval | requesting approval |           |        |          |
-| requesting approval | approve          | approved            |           |        |          |
-| requesting approval | reject           | rejected            |           |        |          |
-| approved            | resume           | draft               |           |        |          |
-| approved            | finish           | outdated            |           |        |          |
-| rejected            | resume           | draft               |           |        |          |
-| rejected            | finish           | outdated            |           |        |          |
+| *State*   | *Action*         | *Next State* | *Allowed* | *Form* | *Notify* |
+| draft     | request approval | submitted    |           |        |          |
+| draft     | withdraw         | outdated     |           |        |          |
+| submitted | approve          | approved     |           |        |          |
+| submitted | reject           | rejected     |           |        |          |
+| approved  | resume           | draft        |           |        |          |
+| approved  | finish           | outdated     |           |        |          |
+| rejected  | resume           | draft        |           |        |          |
+| rejected  | finish           | outdated     |           |        |          |
 
 %META:FORM{name="Applications/ClassificationApp.WorkflowDefinition"}%
 %META:FIELD{name="TopicType" title="TopicType" value="WorkflowDefinition, ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic"}%

@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -33,7 +33,7 @@ Renders an index of all known categories, top categories first.
   split="\n"
   pattern="(.*);(.*);(.*)"
   unique="on"
-  format="$percntDBCALL{\"Applications.ClassificationApp.CategoryRenderIndexItem\" OBJECT=\"$2\" THEWEB=\"$3\"}$percnt"
+  format="$percntDBCALL{\"Applications.ClassificationApp.CategoryRenderCategoryItem\" OBJECT=\"$2\" THEWEB=\"$3\"}$percnt"
 }%
 
 %MAKEINDEX{

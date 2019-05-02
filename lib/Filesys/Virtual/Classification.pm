@@ -3,13 +3,17 @@ package Filesys::Virtual::Classification;
 use strict;
 use warnings;
 
+use Foswiki::Func ();
+use Foswiki::Plugins::ClassificationPlugin ();
 use Filesys::Virtual::Attachments ();
 our @ISA = ('Filesys::Virtual::Attachments');
 
 #use Data::Dump qw(dump);
-
 use constant NOCAT => '00.uncategorized';
 use constant NOTAG => '00.untagged';
+use constant NOCLA => '00.unclassified';
+use constant CATS => '01.categories';
+use constant TAGS => '02.tags';
 
 sub new {
   my $class = shift;
@@ -57,7 +61,7 @@ sub _parseResource {
   }
 
   # strip off hidden attribute from filename
-  @path = map {$_ =~ s/^\.//; $_} @path if $this->{hideEmpty};
+  @path = map { $_ =~ s/^\.//; $_ } @path if $this->{hideEmptyAttachmentDirs};
 
   # rebuild normalized resource
   $resource = join("/", @path);
@@ -68,7 +72,7 @@ sub _parseResource {
     last if $web && Foswiki::Func::topicExists($web, $path[0]);
     if (Foswiki::Func::webExists($web)) {
       my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($web);
-      last if $path[0] eq NOCAT || $path[0] eq NOTAG || $path[0]=~ /^[[:lower:]]/ || $hierarchy->getCategory($path[0]);
+      last if $path[0] eq NOCAT || $path[0] eq NOTAG || $path[0] eq NOCLA || $hierarchy->getCategory($path[0]); # TODO: or path[0] is a tag
     }
     $web .= ($web ? '/' : '') . shift(@path);
   }
@@ -79,17 +83,19 @@ sub _parseResource {
     resource => $resource,
   );
 
+  my $catPath = '';
+  my $tagPath = '';
   if (Foswiki::Func::webExists($web)) {
     my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($web);
+    #my $tags = $hierarchy->getTags();
 
     my $branch = shift(@path);
 
-    if ($branch eq '00.topics') {
+    if ($branch eq NOCLA) {
       # nop
-    } elsif ($branch eq '01.categories') {
+    } elsif ($branch eq CATS) {
 
       # get category part
-      my $catPath = '';
       my $cat = '';
       while (@path && ($path[0] eq NOCAT || $hierarchy->getCategory($path[0]))) {
         $cat = shift(@path);
@@ -97,10 +103,9 @@ sub _parseResource {
       }
       $info{category} = $cat if $cat;
 
-    } elsif ($branch eq '02.tags') {
+    } elsif ($branch eq TAGS) {
 
       # get tags part
-      my $tagPath = '';
       # TODO
     }
   }
@@ -134,7 +139,7 @@ sub _parseResource {
     if ($info{attachment}) {
       push @path, $info{attachment};
       $info{type} = 'A';
-    } 
+    }
   }
 
   # init topic for compatibility with upper level
@@ -162,7 +167,7 @@ sub _W_list {
     push(@list, $sweb);
   }
 
-  push @list '00.topics', '01.categories', '03.tags', '.', '..';
+  push @list, NOCLA, '01.categories', '03.tags', '.', '..';
 
   return \@list;
 }

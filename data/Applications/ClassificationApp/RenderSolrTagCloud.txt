@@ -1,21 +1,21 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
 ---++ Documentation
 %STARTSECTION{name="documentation" type="section"}%
-%RED%TODO%ENDCOLOR%
+This renders a tag cloud getting tags from a solr search on recently changed data.
 
 ---+++++ Parameters
    * DAYS: number of recent days of changes to take under consideration, defaults to unlimited
    * RECENCY: maximum number of topics to harvest tags from, defaults to 100; a value of "all" will render a tag cloud considering all matching documents
    * LIMIT: maximum number of tags in the could, defaults to 100
    * MIN: minimum frequency of a tags to be shown
-   * TAG: comma separated list of tags to be searched for in the archive
-   * CAT: restrict tag cloud to this category; displays all tags of all categories if unspecified
+   * TAG: comma separated list of tags to be searched for in the archive; tags may be preceded with a dash (-) to exclude results containing this tag
+   * CAT: comma separated list of categories to search for; categories may be preceded with a dash (-) to exclude results containing this tag
    * KEYWORDS: keywords to filter for
    * THEWEB: web to restrict search to, defaults to all
-   * TYPE: content type to restrict results to, e.g. "topic" (default), "image", "video", "pdf", "zip", ...
+   * TYPE: content type to restrict results to, e.g. "topic" (default), "image", "video", "pdf", "zip", ..., defaults to "topic"
 %ENDSECTION{name="documentation" type="section"}%
 
 ---++ Implementation
@@ -29,9 +29,9 @@
   filter="type:%TYPE{default="topic"}% %IF{"defined THEWEB and $THEWEB!='all'" 
             then="web:%SUBST{text="%THEWEB{default=""}%" pattern="/" format="."}%"
           }% %IF{"defined TAG" 
-            then="$percntFORMATLIST{\"%TAG%\" split=\"\*s,\s*\" format=\"tag:$1\" separator=\", \"}$percnt"
+            then="$percntFORMATLIST{\"%TAG%\" split=\"\s*,\s*\" pattern=\"^(\-)?(.*)$\" format=\"$1tag:$2\" separator=\" \"}$percnt"
           }% %IF{"defined CAT" 
-            then="$percntFORMATLIST{\"%CAT%\" split=\"\*s,\s*\" format=\"category:$1\" separator=\", \"}$percnt"
+            then="$percntFORMATLIST{\"%CAT%\" split=\"\s*,\s*\" patttern=\"^(\-)?(.*)$\" format=\"$1category:$2\" separator=\" \"}$percnt"
           }% %IF{"defined DAYS"
             then="date:\\"[NOW/DAY-%DAYS%DAY TO NOW]\\""
           }%"
@@ -42,7 +42,14 @@
     separator_tag=" "
   }%"
   header="<div class='solrTagCloud clsTagCloud'>"
-  format="<span style='font-size:$weightpx;line-height:110%'><a href='$percntSOLRSCRIPTURL{topic=\"%BASEWEB%.WebSearch\" tag=\"$term\" category=\"%CAT{default=""}%\" web=\"%SUBST{text="%THEWEB{default=""}%" pattern="/" format="."}%\" type=\"%TYPE{default=""}%\"}$percnt' style='color:$fadeRGB(%TAGCLOUD_START{default="111,169,255"}%,%TAGCLOUD_END{default="0,89,224"}%);' class='solrFacetValue' name='tag_$term' value='$term'>$term</a></span>"
+  format="<span style='font-size:$weightpx;line-height:110%'><a href='$percntSOLRSCRIPTURL{
+                                                                        topic=\"%BASEWEB%.WebSearch\" 
+                                                                        tag=\"$term\" 
+                                                                        category=\"%CAT{default=""}%\" 
+                                                                        web=\"%SUBST{text="%THEWEB{default=""}%" pattern="/" format="."}%\" 
+                                                                        union=\"web\"
+                                                                        type=\"%TYPE{default="topic"}%\"
+                                                                      }$percnt' style='color:$fadeRGB(%TAGCLOUD_START{default="111,169,255"}%,%TAGCLOUD_END{default="0,89,224"}%);' class='solrFacetValue tag_$term' name='tag_$term' value='$term'>$term</a></span>"
   footer="</div>"
   group="<strong>$group</strong>&nbsp;"
   split="\s*,\s*"
@@ -50,13 +57,11 @@
   offset="13"
   warn="off"
   min="%MIN{default="0"}%"
-}%
-</noautolink>%STOPINCLUDE%
+}%</noautolink>%STOPINCLUDE%
 </verbatim>
 
 <verbatim class="tml">
-%STARTSECTION{"search"}%<!-- -->
-%SOLRSEARCH{
+%STARTSECTION{"search"}%%SOLRSEARCH{
   "%keywords%"
   id="solrtagcloud1"
   sort="date desc"
@@ -64,7 +69,7 @@
   fields=""
   web="%theweb%"
   filter="%filter% %IF{"$RECENCY != 'all'"
-    then="$percntSOLRSEARCH{\"%keywords%\"
+    then="$percntSOLRSEARCH{\"%keywords% tag:*\"
       sort=\"date desc\"
       type=\"edismax\"
       fields=\"id\"
@@ -79,12 +84,12 @@
   facets="tag"
   facetlimit="%limit%"
   rows="30"
-}%<!--  -->%ENDSECTION{"search"}%
+}%%ENDSECTION{"search"}%
 </verbatim>
 
 ---++ Test
 %STARTSECTION{"test"}%
-%DBCALL{"%TOPIC%" THEWEB="%URLPARAM{"theweb"}%"}%
+%DBCALL{"%TOPIC%" TAG="-foo, bar"}%
 %ENDSECTION{"test"}%
 
 %META:FORM{name="Applications.TopicFunction"}%

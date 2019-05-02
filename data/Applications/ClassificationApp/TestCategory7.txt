@@ -1,15 +1,17 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TestCategory"}%
-%DBCALL{"Applications.ClassificationApp.RenderCategory"}%
+%DBCALL{"%CLASSIFICATIONPLUGIN_RENDERCATEGORY{default="Applications.ClassificationApp.RenderCategory"}%"}%
+
+%HIERARCHY{top="TestCategory"}%
 
 %META:FORM{name="Applications.ClassificationApp.Category"}%
 %META:FIELD{name="TopicType" title="TopicType" value="Category, CategorizedTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" title="Summary" value="foo bar summary"}%
+%META:FIELD{name="Summary" title="Summary" value=""}%
 %META:FIELD{name="Redirect" title="Redirect" value=""}%
 %META:FIELD{name="Category" title="Category" value="TestCategory, TopCategory"}%
-%META:FIELD{name="Icon" title="Icon" value=""}%
+%META:FIELD{name="Icon" title="Icon" value="fa-cube"}%
 %META:FIELD{name="ImportedCategory" title="<nop>ImportedCategory" value=""}%
 %META:FIELD{name="SubCategories" title="<nop>SubCategories" value=""}%
 %META:FIELD{name="Order" title="Order" value="10"}%
-%META:FIELD{name="ResponsiblePerson" title="Responsible Person" value="MichaelDaum"}%
+%META:FIELD{name="ResponsiblePerson" title="Responsible Person" value=""}%

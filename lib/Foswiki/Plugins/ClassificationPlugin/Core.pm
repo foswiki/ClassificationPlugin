@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2017 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2019 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -75,6 +75,7 @@ sub OP_subsumes {
   my $session = $Foswiki::Plugins::SESSION;
   my $web = Foswiki::Plugins::DBCachePlugin::getCore->currentWeb() || $session->{webName};
   my $hierarchy = $this->getHierarchy($web);
+  return 0 unless defined $hierarchy;
   return $hierarchy->subsumes($lval, $rval);
 }
 
@@ -89,6 +90,7 @@ sub OP_isa {
   my $session = $Foswiki::Plugins::SESSION;
   my $web = Foswiki::Plugins::DBCachePlugin::getCore->currentWeb() || $session->{webName};
   my $hierarchy = $this->getHierarchy($web);
+  return 0 unless defined $hierarchy;
   my $cat = $hierarchy->getCategory($rval);
   return 0 unless $cat;
 
@@ -106,8 +108,9 @@ sub OP_distance {
   my $session = $Foswiki::Plugins::SESSION;
   my $web = Foswiki::Plugins::DBCachePlugin::getCore->currentWeb() || $session->{webName};
   my $hierarchy = $this->getHierarchy($web);
-  my $dist = $hierarchy->distance($lval, $rval);
+  return 0 unless defined $hierarchy;
 
+  my $dist = $hierarchy->distance($lval, $rval);
   return $dist || 0;
 }
 
@@ -116,34 +119,52 @@ sub handleSIMILARTOPICS {
   my ($this, $session, $params, $theTopic, $theWeb) = @_;
 
   #_writeDebug("called handleSIMILARTOPICS()");
-  my $thisTopic = $params->{_DEFAULT} || $params->{topic} || $session->{topicName};
+  my $thisTopic = $params->{_DEFAULT} || $params->{topic} || $theTopic;
   my $thisWeb = $params->{web} || $session->{webName};
+
+  ($thisWeb, $thisTopic) = Foswiki::Func::normalizeWebTopicName($thisWeb, $thisTopic);
+
   my $theFormat = $params->{format} || '$topic';
   my $theHeader = $params->{header} || '';
   my $theFooter = $params->{footer} || '';
   my $theSep = $params->{separator};
   my $theLimit = $params->{limit};
   my $theSkip = $params->{skip};
-  my $theThreshold = $params->{threshold} || 0.3;
+  my $theThreshold = $params->{threshold};
+  my $theTags = $params->{tags};
+  my $theExclude = $params->{exclude};
+  my $theInclude = $params->{include};
 
-  $theThreshold =~ s/[^\d\.]//go;
-  $theThreshold = 0.3 unless $theThreshold;
+  $theThreshold = 10 unless defined $theThreshold;
+  $theThreshold =~ s/[^\d\.]//g;
   $theThreshold = $theThreshold/100 if $theThreshold > 1.0;
   $theSep = ', ' unless defined $theSep;
   $theLimit = 10 unless defined $theLimit;
 
   my $hierarchy = $this->getHierarchy($thisWeb);
-  my @similarTopics = $hierarchy->getSimilarTopics($thisTopic, $theThreshold);
-  return '' unless @similarTopics;
+  return '' unless defined $hierarchy;
 
-  my %wmc = ();
-  map {$wmc{$_} = $hierarchy->computeSimilarity($thisTopic, $_)} @similarTopics;
-  @similarTopics = sort {$wmc{$b} <=> $wmc{$a}} @similarTopics;
+  my $similarTopics;
+  my $wmc;
+
+  if (defined $theTags) {
+    # tag mode
+    my @tags = split(/\s*,\s*/, $theTags);
+    ($similarTopics, $wmc) = $hierarchy->getSimilarTopicsOfTags(\@tags, $theThreshold);
+  } else {
+    # topic mode
+    ($similarTopics, $wmc) = $hierarchy->getSimilarTopics($thisTopic, $theThreshold);
+  }
+  @$similarTopics = grep {!/$theInclude/} @$similarTopics if defined $theInclude;
+  @$similarTopics = grep {!/$theExclude/} @$similarTopics if defined $theExclude;
+  return '' unless @$similarTopics;
+  
+  @$similarTopics = sort {$wmc->{$b} <=> $wmc->{$a}} @$similarTopics;
 
   # format result
   my @lines;
   my $index = 0;
-  foreach my $topic (@similarTopics) {
+  foreach my $topic (@$similarTopics) {
     $index++;
     next if $theSkip && $index <= $theSkip;
     last if $theLimit && $index > $theLimit;
@@ -151,7 +172,7 @@ sub handleSIMILARTOPICS {
       'topic'=>$topic,
       'web'=>$thisWeb,
       'index'=>$index,
-      'similarity'=> int($wmc{$topic}*1000)/10,
+      'similarity'=> int($wmc->{$topic}*1000)/10,
     );
   }
 
@@ -170,9 +191,10 @@ sub handleHIERARCHY {
   #_writeDebug("called handleHIERARCHY(".$params->stringify().")");
 
   my $thisWeb = $params->{_DEFAULT} || $params->{web} || $session->{webName};
-  $thisWeb =~ s/\./\//go;
+  $thisWeb =~ s/\./\//g;
 
   my $hierarchy = $this->getHierarchy($thisWeb);
+  return '' unless defined $hierarchy;
   return $hierarchy->traverse($params);
 }
 
@@ -195,6 +217,7 @@ sub handleISA {
     Foswiki::Func::normalizeWebTopicName($thisWeb, $thisTopic);
 
   my $hierarchy = $this->getHierarchy($thisWeb);
+  return 0 unless defined $hierarchy;
 
   foreach my $catName (split(/\s*,\s*/, $theCategory)) {
     #_writeDebug("testing $catName");
@@ -220,6 +243,7 @@ sub handleSUBSUMES {
   return 0 unless $theCat2;
 
   my $hierarchy = $this->getHierarchy($thisWeb);
+  return 0 unless defined $hierarchy;
   my $cat1 = $hierarchy->getCategory($theCat1);
   return 0 unless $cat1;
 
@@ -253,6 +277,7 @@ sub handleDISTANCE {
   #_writeDebug("called handleDISTANCE($theFrom, $theTo)");
 
   my $hierarchy = $this->getHierarchy($thisWeb);
+  return 0 unless defined $hierarchy;
   my $distance = $hierarchy->distance($theFrom, $theTo);
 
   return $theUndef unless defined $distance;
@@ -299,7 +324,7 @@ sub handleCATINFO {
   $theMatchAttr = 'name' unless $theMatchAttr =~ /^(name|title)$/;
 
   $theSep = ', ' unless defined $theSep;
-  $theMaxChildren =~ s/[^\d]//go;
+  $theMaxChildren =~ s/[^\d]//g;
   $theMaxChildren = 0 unless defined $theMaxChildren;
 
   my $hierarchy;
@@ -334,17 +359,20 @@ sub handleCATINFO {
   my @result;
   my $doneBreadCrumbs = 0;
   my $index = 0;
-  $theSubsumes =~ s/^\s+//go;
-  $theSubsumes =~ s/\s+$//go;
-  $theParentSubsumes =~ s/^\s+//go;
-  $theParentSubsumes =~ s/\s+$//go;
+  $theSubsumes =~ s/^\s+|\s+$//g;
+  $theParentSubsumes =~ s/^\s+|\s+$//g;
   my $subsumesCat = $hierarchy->getCategory($theSubsumes);
   my $parentSubsumesCat = $hierarchy->getCategory($theParentSubsumes);
 
-  foreach my $catName (sort @$categories) {
+  my @categories = ();
+  foreach my $catName (@$categories) {
+    my $cat = $hierarchy->getCategory($catName);
+    push @categories, $cat if defined $cat;
+  }
+
+  foreach my $category (sort {uc($a->title) cmp uc($b->title)} @categories) {
+    my $catName = $category->{name};
     next if $theCat && $theCat ne 'TopCategory' && $catName =~ /BottomCategory|TopCategory/;
-    my $category = $hierarchy->getCategory($catName);
-    next unless $category;
 
     if ($theMatchCase eq 'on') {
       next if $theExclude && $category->{$theMatchAttr} =~ /^($theExclude)$/;
@@ -442,9 +470,11 @@ sub handleCATINFO {
 
     my @children;
     my $moreChildren = '';
+    my $user = Foswiki::Func::getWikiName();
     if ($line =~ /\$children/) {
       @children = sort {uc($a->title) cmp uc($b->title)} $category->getChildren();
       @children = grep {$_->{name} ne 'BottomCategory'} @children;
+      @children = grep {Foswiki::Func::checkAccessPermission("view", $user, undef, $_->{name}, $_->{origWeb})} @children;
 
       if ($theHideNull eq 'on') {
         @children = grep {$_->countLeafs() > 0} 
@@ -452,10 +482,13 @@ sub handleCATINFO {
       }
 
       if ($theSortChildren eq 'on') {
-        @children = 
-          sort {$b->countLeafs() <=> $a->countLeafs() || 
-                $a->title cmp $b->title} 
-            @children;
+        @children = sort { 
+          $a->order <=> $b->order || 
+          $a->title cmp $b->title 
+        } @children;
+#          sort {$b->countLeafs() <=> $a->countLeafs() || 
+#                $a->title cmp $b->title} 
+#            @children;
       }
 
       if ($theMaxChildren && $theMaxChildren < @children) {
@@ -524,6 +557,7 @@ sub handleCATINFO {
     my $url = $category->getUrl();
     my $summary = $category->summary || '';
 
+    my $iconName = $category->icon();
     my $icon = $category->getIcon();
     my $iconUrl = $category->getIconUrl();
 
@@ -558,6 +592,7 @@ sub handleCATINFO {
     $line =~ s/\$childrenurls?/$childrenUrls/g;
     $line =~ s/\$children(links?)?/$children/g;
     $line =~ s/\$iconurl/$iconUrl/g;
+    $line =~ s/\$iconname/$iconName/g;
     $line =~ s/\$icon/$icon/g;
     $line =~ s/\$tags/$tags/g;
     $line =~ s/,/&#44;/g; # hack around MAKETEXT where args are comma separated accidentally
@@ -615,8 +650,7 @@ sub handleTAGINFO {
   my $context = Foswiki::Func::getContext();
   my $index = 0;
   foreach my $tag (sort @tags) {
-    $tag =~ s/^\s+//go;
-    $tag =~ s/\s+$//go;
+    $tag =~ s/^\s+|\s+$//g;
     next if $theExclude && $tag =~ /^($theExclude)$/;
     next if $theInclude && $tag !~ /^($theInclude)$/;
     $index++;
@@ -665,8 +699,6 @@ sub beforeSaveHandler {
   # remember responsiblePerson
   my ($prevMeta) = Foswiki::Func::readTopic($web, $topic);
   $this->{beforeResponsiblePerson} = _getResponsiblePerson($prevMeta);
-
-  my $doAutoReparent = Foswiki::Func::getPreferencesFlag('CLASSIFICATIONPLUGIN_AUTOREPARENT', $web);
 
   my $session = $Foswiki::Plugins::SESSION;
   unless ($meta) {
@@ -825,8 +857,7 @@ sub beforeSaveHandler {
         my $cats = $form->fastget($field);
         next unless $cats;
         foreach my $cat (split(/\s*,\s*/,$cats)) {
-          $cat =~ s/^\s+//go;
-          $cat =~ s/\s+$//go;
+          $cat =~ s/^\s+|\s+$//g;
           $oldCats{$cat} = 1;
         }
       }
@@ -851,14 +882,15 @@ sub beforeSaveHandler {
     }
 
     foreach my $cat (split(/\s*,\s*/,$cats)) {
-      $cat =~ s/^\s+//go;
-      $cat =~ s/\s+$//go;
+      $cat =~ s/^\s+|\s+$//g;
       $newCats{$cat} = 1;
     }
   }
 
   # set the new parent topic
-  if ($doAutoReparent) {
+  my $doAutoReparent = Foswiki::Func::getPreferencesFlag('CLASSIFICATIONPLUGIN_AUTOREPARENT', $web);
+
+  if ($doAutoReparent && $topicType =~ /CategorizedTopic/) {
     #_writeDebug("autoreparenting");
     my $newParentCat;
     foreach my $cat (sort keys %newCats) {
@@ -927,7 +959,7 @@ sub afterSaveHandler {
     #_writeDebug("detected a move from $session->{webName} to trash");
     $web = $session->{webName};# operations are on the baseWeb
   }
-  $web =~ s/\//./go;
+  $web =~ s/\//./g;
  
   if ($this->{purgeMode}) {
     #_writeDebug("purging hierarchy $web");
@@ -1030,9 +1062,8 @@ sub afterRenameHandler {
 sub getCacheFile {
   my ($this, $web, $topic) = @_;
 
-  $web =~ s/^\s+//go;
-  $web =~ s/\s+$//go;
-  $web =~ s/[\/\.]/_/go;
+  $web =~ s/^\s+|\s+$//g;
+  $web =~ s/[\/\.]/_/g;
 
   my $key = $web;
   $key .= '.'.$topic if defined $topic;
@@ -1065,11 +1096,11 @@ sub getHierarchy {
   die "no web defined" unless defined $web;
 
   unless (Foswiki::Func::webExists($web)) {
-    cluck("ERROR: can't get hierarchy for non-existing web '$web'");
+    confess("ERROR: can't get hierarchy for non-existing web '$web'");
     return;
   }
 
-  $web =~ s/\//\./go;
+  $web =~ s/\//\./g;
   if (!$this->{loadTimeStamps}{$web} || $this->{loadTimeStamps}{$web} < $this->getModificationTime($web)) {
     #_writeDebug("constructing hierarchy for $web");
     require Foswiki::Plugins::ClassificationPlugin::Hierarchy;
@@ -1087,7 +1118,7 @@ sub getHierarchy {
 sub getHierarchyFromTopic {
   my ($this, $web, $topic) = @_;
 
-  $web =~ s/\//\./go;
+  $web =~ s/\//\./g;
   my $key = $web.'.'.$topic;
   my $timeStap = $this->{loadTimeStamps}{$key};
 
@@ -1441,11 +1472,11 @@ sub _expandVariables {
     #die "params{$key} undefined" unless defined($params{$key});
     $theFormat =~ s/\$$key\b/$params{$key}/g;
   }
-  $theFormat =~ s/\$percnt/\%/go;
-  $theFormat =~ s/\$nop//go;
-  $theFormat =~ s/\$n/\n/go;
-  $theFormat =~ s/\$t\b/\t/go;
-  $theFormat =~ s/\$dollar/\$/go;
+  $theFormat =~ s/\$percnt/\%/g;
+  $theFormat =~ s/\$nop//g;
+  $theFormat =~ s/\$n/\n/g;
+  $theFormat =~ s/\$t\b/\t/g;
+  $theFormat =~ s/\$dollar/\$/g;
 
   #_writeDebug("result='$theFormat'");
 

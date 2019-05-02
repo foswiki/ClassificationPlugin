@@ -1,15 +1,12 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.ClassificationApp.ClassifiedTopicEdit"}%
-%TMPL:DEF{"topictype"}%tagged topic%TMPL:END%
-%TMPL:DEF{"formfields"}%<!-- formfields -->
-%TMPL:P{"tagstab"}%
-<!-- //formfields -->%TMPL:END%
+%TMPL:DEF{"formfields"}%%TMPL:P{"tagstab"}%%TMPL:END%
 %{</verbatim>}%
 
 %META:FORM{name="Applications.TopicView"}%
-%META:FIELD{name="TopicType" title="TopicType" value="TopicView"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="" title="Summary" value="Editor for TaggedTopics"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Editor for TaggedTopics"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.ClassificationApp.CategoryView"}%
@@ -7,13 +7,13 @@
 %{<verbatim class="tml">}%
 %TMPL:DEF{"breadcrumb"}%%TMPL:P{"breadcrumb:title"}%%TMPL:P{"breadcrumb:wikitoolname"}%%TMPL:P{"breadcrumb:separator"}%%DBCALL{
   "Applications.ClassificationApp.RenderCategoryBreadcrumbs"
-  CAT="%URLPARAM{"catname"}%"
+  CAT="%URLPARAM{"catname" default="%TOPIC%"}%"
   SEP="%TMPL:P{"breadcrumb:separator"}%"
 }%%TMPL:END%
 %{</verbatim>}%
 
 %META:FORM{name="Applications.TopicView"}%
-%META:FIELD{name="TopicType" title="TopicType" value="TopicView"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="c" title="Summary" value="View for categories (PatternSkin variation)"}%
-%META:FIELD{name="WikiApplication" attributes="" title="WikiApplication" value="ClassificationApp"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="View for categories (PatternSkin variation)"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

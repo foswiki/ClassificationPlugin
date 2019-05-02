@@ -1,15 +1,13 @@
 /*
  * jQuery CatSelector plugin 2.01
  *
- * Copyright (c) 2008-2017 Michael Daum http://michaeldaumconsulting.com
+ * Copyright (c) 2008-2019 Michael Daum http://michaeldaumconsulting.com
  *
- * Dual licensed under the MIT and GPL licenses:
- *   http://www.opensource.org/licenses/mit-license.php
- *   http://www.gnu.org/licenses/gpl.html
+ * Licensed under the GPL license http://www.gnu.org/licenses/gpl.html
  *
  */
-jQuery(function($) {
 "use strict";
+jQuery(function($) {
 
   /***************************************************************************
    * plugin constructor 

@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
 %META:TOPICPARENT{name="WebHome"}%
 ---+!! <nop>%WEB% Web Preferences
 
@@ -26,8 +26,8 @@
 
 ---++ Access rights
 *Web*:
-   * #Set DENYWEBVIEW = 
-   * Set ALLOWWEBVIEW = %USERSWEB%.AdminGroup
+   * Set DENYWEBVIEW = %USERSWEB%.WikiGuest
+   * #Set ALLOWWEBVIEW = 
    * Set DENYWEBCHANGE = %USERSWEB%.WikiGuest
    * Set ALLOWWEBCHANGE = %USERSWEB%.AdminGroup
    * #Set DENYWEBRENAME = 

@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2017 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2019 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@ use Foswiki::Func ();
 use JSON ();
 use Carp qw(cluck confess);
 
-use constant OBJECTVERSION => 0.91;
+use constant OBJECTVERSION => 0.92;
 use constant CATWEIGHT => 1.0; # used in computeSimilarity()
 use constant TRACE => 0; # toggle me
 
@@ -52,7 +52,7 @@ sub new {
   my $query = Foswiki::Func::getCgiQuery();
 
   if (defined $web) {
-    $web =~ s/\//\./go;
+    $web =~ s/\//\./g;
     my $cacheFile = Foswiki::Plugins::ClassificationPlugin::getCore()->getCacheFile($web, $topic);
     
     my $refresh = '';
@@ -374,13 +374,14 @@ sub initFromText {
     $lastItem = $item;
   }
 
-
+  my $order = 0;
   foreach my $item (@list) {
     my $cat = $this->createCategory($item->{name});
     my $parentName = $item->{parent}?$item->{parent}{name}:'TopCategory';
 
     $cat->setParents($parentName);
     $cat->title($item->{title});
+    $cat->order($order++);
   }
 
   return 1;
@@ -415,51 +416,48 @@ sub initFromWeb {
     # get topic types
     my $topicType = $form->fastget("TopicType");
     next unless $topicType;
+    next unless $topicType =~ /\bCategory\b/;
 
-    if ($topicType =~ /\bCategory\b/) {
-      # this topic is a category in itself
-      writeDebug("found category '$topicName' in web $key");
-      my $cat = $this->{_categories}{$topicName};
-      $cat = $this->createCategory($topicName) unless $cat;
+    # this topic is a category in itself
+    writeDebug("found category '$topicName' in web $key");
+    my $cat = $this->{_categories}{$topicName};
+    $cat = $this->createCategory($topicName) unless $cat;
 
-      my $cats = $this->getCategoriesOfTopic($topicObj);
-      if ($cats && @$cats) {
-        $cat->setParents(@$cats);
-      } else {
-        $cat->setParents('TopCategory') if $cat->{name} ne 'TopCategory';
-      }
-
-      my $summary = $form->fastget("Summary") || '';
-      $summary =~ s/<nop>//go;
-      $summary =~ s/^\s+//go;
-      $summary =~ s/\s+$//go;
-
-      my $order = $form->fastget("Order");
-      if (defined($order) && $order =~ /([+-]?\d+(?:\.\d)*)/) {
-        $order = $1;
-      } else {
-        $order = 99999999;
-      }
-
-      my $title = $form->fastget("TopicTitle") || $topicName;
-      $title =~ s/<nop>//go;
-      $title =~ s/^\s+//go;
-      $title =~ s/\s+$//go;
-      $cat->summary($summary);
-      $cat->order($order);
-      $cat->title($title);
-      $cat->icon($form->fastget("Icon"));
-      $cat->redirect($form->fastget("Redirect"));
-
-      #writeDebug("$topicName has got title '$title'");
-
-      # import foregin categories from another web
-      my $impCats = $form->fastget("ImportedCategory");
-      $cat->importCategories($impCats, $seenImport) if $impCats;
-
-      my $text = $form->fastget("SubCategories");
-      $cat->importCategoriesFromText($text, $this) if $text;
+    my $cats = $this->getCategoriesOfTopic($topicObj);
+    if ($cats && @$cats) {
+      $cat->setParents(@$cats);
+    } else {
+      $cat->setParents('TopCategory') if $cat->{name} ne 'TopCategory';
     }
+
+    my $summary = $form->fastget("Summary") || '';
+    $summary =~ s/<nop>//g;
+    $summary =~ s/^\s+|\s+$//g;
+
+    my $order = $form->fastget("Order");
+    if (defined($order) && $order =~ /([+-]?\d+(?:\.\d)*)/) {
+      $order = $1;
+    } else {
+      $order = 99999999;
+    }
+
+    my $title = $form->fastget("TopicTitle") || $topicName;
+    $title =~ s/<nop>//g;
+    $title =~ s/^\s+|\s+$//g;
+    $cat->summary($summary);
+    $cat->order($order);
+    $cat->title($title);
+    $cat->icon($form->fastget("Icon"));
+    $cat->redirect($form->fastget("Redirect"));
+
+    #writeDebug("$topicName has got title '$title'");
+
+    # import foregin categories from another web
+    my $impCats = $form->fastget("ImportedCategory");
+    $cat->importCategories($impCats, $seenImport) if $impCats;
+
+    my $text = $form->fastget("SubCategories");
+    $cat->importCategoriesFromText($text, $this) if $text;
   }
   
   return 1;
@@ -671,59 +669,103 @@ sub getSimilarTopics {
   my $db = Foswiki::Plugins::DBCachePlugin::getDB($this->{web});
   return () unless $db;
 
+  my %wmc = ();
   my @foundTopics = ();
   my $tagsA = $this->getTagsOfTopic($topicA);
   my $catsA = $this->getCategoriesOfTopic($topicA);
   foreach my $topicB ($db->getKeys()) {
     next if $topicB eq $topicA;
-    my $similarity = $this->computeSimilarity($topicA, $topicB, $tagsA, $catsA);
-    push @foundTopics, $topicB if $similarity >= $threshold;
+    my $similarity = $this->computeSimilarity({
+      topicA => $topicA, 
+      topicB => $topicB, 
+      tagsA => $tagsA, 
+      catsA => $catsA
+    });
+    next if $similarity < $threshold;
+    $wmc{$topicB} = $similarity;
+    push @foundTopics, $topicB;
   }
 
-  return @foundTopics;
+  return wantarray ? (\@foundTopics, \%wmc) : \@foundTopics;
+}
+
+################################################################################
+sub getSimilarTopicsOfTags {
+  my ($this, $tags, $threshold) = @_;
+
+  my $db = Foswiki::Plugins::DBCachePlugin::getDB($this->{web});
+  return () unless $db;
+
+  my %wmc = ();
+  my @foundTopics = ();
+  foreach my $topic ($db->getKeys()) {
+    my $similarity = $this->computeSimilarity({
+      topicA => $topic, 
+      tagsB => $tags
+    });
+    next if $similarity < $threshold;
+    $wmc{$topic} = $similarity;
+    push @foundTopics, $topic if $similarity >= $threshold;
+  }
+
+  return wantarray ? (\@foundTopics, \%wmc) : \@foundTopics;
 }
 
 ################################################################################
 sub computeSimilarity {
-  my ($this, $topicA, $topicB, $tagsA, $catsA, $tagsB, $catsB) = @_;
-
-  #writeDebug("called computeSimilarity($topicA, $topicB)");
+  my ($this, $params) = @_;
 
   # lookup cache
-  my $similarity = $this->{_similarity}{$topicA}{$topicB};
-  return $similarity if defined $similarity;
+  my $similarity;
+  if (defined($params->{topicA}) && defined($params->{topicB})) {
+    $similarity = $this->{_similarity}{$params->{topicA}}{$params->{topicB}};
+    return $similarity if defined $similarity;
+  }
 
   # get missing info
-  $tagsA = $this->getTagsOfTopic($topicA) unless $tagsA;
-  $tagsB = $this->getTagsOfTopic($topicB) unless $tagsB;
-  $catsA = $this->getCategoriesOfTopic($topicA) unless $catsA;
-  $catsB = $this->getCategoriesOfTopic($topicB) unless $catsB;
+  if (defined $params->{topicA}) {
+    $params->{tagsA} = $this->getTagsOfTopic($params->{topicA}) unless $params->{tagsA};
+    $params->{catsA} = $this->getCategoriesOfTopic($params->{topicA}) unless $params->{catsA};
+  }
+
+  if (defined $params->{topicB}) {
+    $params->{tagsB} = $this->getTagsOfTopic($params->{topicB}) unless $params->{tagsB};
+    $params->{catsB} = $this->getCategoriesOfTopic($params->{topicB}) unless $params->{catsB};
+  }
 
   # compute
-  my %tagsA = map {$_ => 1} @$tagsA;
-  my %tagsB = map {$_ => 1} @$tagsB;
-  my %catsA = map {$_ => 1} @$catsA;
-  my %catsB = map {$_ => 1} @$catsB;
+  my (%tagsA, %tagsB, %catsA, %catsB);
+
+  %tagsA = map {$_ => 1} @{$params->{tagsA}} if defined $params->{tagsA};
+  %tagsB = map {$_ => 1} @{$params->{tagsB}} if defined $params->{tagsB};
+  %catsA = map {$_ => 1} @{$params->{catsA}} if defined $params->{catsA};
+  %catsB = map {$_ => 1} @{$params->{catsB}} if defined $params->{catsB};
 
   my $onlyA = 0;
   my $onlyB = 0;
   my $intersection = 0;
 
-  map {defined($tagsB{$_})?$intersection++:$onlyA++} @$tagsA;
-  map {$onlyB++ unless defined $tagsA{$_}} @$tagsB;
-  map {defined($catsB{$_})?$intersection+=CATWEIGHT:$onlyA+=CATWEIGHT} @$catsA;
-  map {$onlyB+=CATWEIGHT unless defined $catsA{$_}} @$catsB;
+  if (defined $params->{tagsA} && defined $params->{tagsB}) {
+    map {defined($tagsB{$_})?$intersection++:$onlyA++} @{$params->{tagsA}};
+    map {$onlyB++ unless defined $tagsA{$_}} @{$params->{tagsB}};
+  }
+  if (defined $params->{catsA} && defined $params->{catsB}) {
+    map {defined($catsB{$_})?$intersection+=CATWEIGHT:$onlyA+=CATWEIGHT} @{$params->{catsA}};
+    map {$onlyB+=CATWEIGHT unless defined $catsA{$_}} @{$params->{catsB}};
+  }
 
   my $total = $onlyA + $onlyB + $intersection;
   $similarity = $total?$intersection/$total:0;
   #if (TRACE && $similarity) {
-  #  writeDebug("similarity($topicA, $topicB) = $similarity");
+  #  writeDebug("similarity($param->{topicA}, $params->{topicB}) = $similarity");
   #  writeDebug("onlyA=$onlyA, onlyB=$onlyB, intersection=$intersection, total=$total");
   #}
 
   # cache
-  $this->{_similarity}{$topicA}{$topicB} = $similarity;
-  $this->{gotUpdate} = 1;
+  if (defined($params->{topicA}) && defined($params->{topicB})) {
+    $this->{_similarity}{$params->{topicA}}{$params->{topicB}} = $similarity;
+    $this->{gotUpdate} = 1;
+  }
 
   return $similarity;
 }
@@ -758,10 +800,46 @@ sub getTagsOfTopic {
   $form = $topicObj->fastget($form);
   return undef unless $form;
 
+  # SMELL: do we need to filter for TaggedTopic?
+
   my $tags = $form->fastget('Tag');
   return undef unless $tags;
 
+  $tags =~ s/^\s+|\s+$//g;
   my @tags = split(/\s*,\s*/, $tags);
+  return \@tags;
+}
+
+################################################################################
+sub getTags {
+  my ($this) = @_;
+
+  #writeDebug("called getTags");
+  # allow topicName or topicObj
+  my $db = Foswiki::Plugins::DBCachePlugin::getDB($this->{web});
+  return undef unless $db;
+
+  my %tags = ();
+  foreach my $topic ($db->getKeys()) {
+    my $topicObj = $db->fastget($topic);
+
+    my $form = $topicObj->fastget("form");
+    next unless $form;
+
+    $form = $topicObj->fastget($form);
+    next unless $form;
+
+    # SMELL: do we need to filter for TaggedTopic?
+
+    my $tags = $form->fastget('Tag');
+    next unless $tags;
+
+    $tags =~ s/^\s+|\s+$//g;
+    $tags{$_} = 1 foreach split(/\s*,\s*/, $tags);
+  }
+
+  my @tags = sort keys %tags;
+
   return \@tags;
 }
 
@@ -808,9 +886,8 @@ sub getCategoriesOfTopic {
     next unless $cats;
     #writeDebug("$catField=$cats");
     foreach my $cat (split(/\s*,\s*/, $cats)) {
-      $cat =~ s/^\s+//go;
-      $cat =~ s/\s+$//go;
-      $cats{$cat} = 1 if $cat;
+      $cat =~ s/^\s+|\s+$//g;
+      $cats{$cat} = 1 if $cat && $cat ne 'TopCategory';
     }
   }
   @$cats = keys %cats;
@@ -887,10 +964,9 @@ sub getCatFields {
           map { s/\007/|/g; $_ } split( /\s*\|\s*/, $line );
         $type ||= '';
         $type = lc $type;
-        $type =~ s/^\s*//go;
-        $type =~ s/\s*$//go;
+        $type =~ s/^\s+|\s+$//g;
         next if !$title or $type ne 'cat';
-        $title =~ s/<nop>//go;
+        $title =~ s/<nop>//g;
         push @$catFields, $title;
       } else {
         $inBlock = 0;
@@ -1060,8 +1136,7 @@ sub getPreferences {
     $prefs = new Foswiki::Prefs::PrefsCache($prefs, undef, 'CAT'); 
 
     foreach my $cat (@cats) {
-      $cat =~ s/^\s+//go;
-      $cat =~ s/\s+$//go;
+      $cat =~ s/^\s+|\s+$//g;
       my $catObj = $this->getCategory($cat);
       $prefs = $catObj->getPreferences($prefs);
     }
@@ -1213,12 +1288,16 @@ sub translate {
 
   return "" unless defined $text && $text ne "";
 
-  return $text unless Foswiki::Func::getContext()->{MultiLingualPluginEnabled};
-
-#  unless (defined $this->{_translate}{"$text"}) {
-    require Foswiki::Plugins::MultiLingualPlugin;
-    $this->{_translate}{"$text"} = Foswiki::Plugins::MultiLingualPlugin::translate($text, $this->{hierarchy}{web});
-#  }
+  unless (defined $this->{_translate}{"$text"}) {
+    if (Foswiki::Func::getContext()->{MultiLingualPluginEnabled}) {
+      require Foswiki::Plugins::MultiLingualPlugin;
+      $text = Foswiki::Plugins::MultiLingualPlugin::translate($text, $this->{hierarchy}{web});
+    } else {
+      my $session = $Foswiki::Plugins::SESSION;
+      $text = $session->i18n->maketext($text);
+    }
+    $this->{_translate}{"$text"} = $text;
+  }
 
   return $this->{_translate}{"$text"};
 }

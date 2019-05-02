@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.WikiTopicView"}%
@@ -8,36 +8,42 @@
 %{<verbatim class="tml">}%
 %TMPL:DEF{"breadcrumbs::contents"}%%DBCALL{
   "Applications.ClassificationApp.RenderCategoryBreadcrumbs"
-  CAT="%URLPARAM{"catname"}%"
+  CAT="%URLPARAM{"catname" default="%TOPIC%"}%"
   SEP="%TMPL:P{"sep"}%"
 }%%TMPL:END%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"beforetext"}%<!-- -->
+%TMPL:DEF{"beforetext::title"}%<!-- -->
 %CATINFO{
    cat="%URLPARAM{"catname" default="%BASETOPIC%"}%"
-   format="<h1>$link 
+   format="<h1 class='clsCategoryTitle'>$icon $link 
      $percntIF{\"'$percntENCODE{\"$summary\" type=\"entity\"}$percnt'!=''\"
        then=\"<br /><span class='foswikiTopicSummary'>$summary</span>\"
      }$percnt</h1>"
 }%
-%IF{"'%DISPLAYREVISIONINFO{default="on"}%'='on'"
+%IF{"'%DISPLAYREVISIONINFO{default="on"}%'='on' and '%TOPIC%' != 'TopCategory'"
    then="$percntTMPL:P{\"catrevinfo\"}$percnt"
 }%<!-- -->%TMPL:END%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"catrevinfo"}%<!-- -->
+%TMPL:DEF{"catrevinfo"}%<div class='foswikiTopicInfo'>
 %CATINFO{
   cat="%URLPARAM{"catname" default="%BASETOPIC%"}%" 
   format="$percntFORMATLIST{\"$parentlinks\" 
          split=\"\s*,\s*\" 
          separator=\"&#44; \" 
-         header=\"<div class='foswikiTopicInfo'>%JQICON{"fa-share fa-rotate-270"}% \"
-         footer=\"</div>\"
+         header=\"%JQICON{"fa-share fa-rotate-270"}% \"
       }$percnt"
-}%<!-- -->%TMPL:END%
+}%%RENDERFORDISPLAY{
+   field="ResponsiblePerson"
+   topic="%URLPARAM{"catname" default="%BASETOPIC%"}%"
+   header=" <span class='foswikiRevisionSep'>&#124;</span> $percntJQICON{\"fa-user\"}$percnt "
+   footer=""
+   format="$value"
+   hideempty="on"
+}%</div>%TMPL:END%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%

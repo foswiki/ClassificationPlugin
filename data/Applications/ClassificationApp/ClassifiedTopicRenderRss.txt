@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -26,13 +26,17 @@ See [[Applications.RssViewTemplate]], [[Applications.RenderRss]]
            <rdf:value>$expand(@createauthor.topictitle)</rdf:value>
          </rdf:Description>
        </dc:contributor>
-      <description> <![CDATA[ $percntDBCALL{\"$web.$topic\"}$percnt$percntTAGINFO{
-           \"$web.$topic\"
-           header=\"<p>%MAKETEXT{"Tags"}%: \"
-           format=\"$dollarname\"
-           separator=\", \"
-           footer=\"</p>\"
-         }$percnt
+      <description> <![CDATA[ 
+$percntDBCALL{\"$web.$topic\"}$percnt
+<!-- -->
+$percntTAGINFO{
+  \"$web.$topic\"
+  header=\"<p>%TRANSLATE{"Tags"}%: \"
+  format=\"$dollarname\"
+  separator=\", \"
+  footer=\"</p>\"
+}$percnt
+<!-- -->
        ]]></description>
     </item>"
 }%%STOPINCLUDE%

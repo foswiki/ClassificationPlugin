@@ -1,26 +1,18 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.WikiTopicEdit"}%
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"topictype"}%email template%TMPL:END%
-%{</verbatim>}%
-
-%{<verbatim class="tml">}%
-%TMPL:DEF{"formdefinition"}%Applications.ClassificationApp.WorkflowEmailTemplate%TMPL:END%
-%{</verbatim>}%
-
-%{<verbatim class="tml">}%
-%TMPL:DEF{"firsttab"}%%TAB{"%MAKETEXT{"Details"}%"}%
+%TMPL:DEF{"firsttab"}%%TAB{"%TRANSLATE{"Details"}%"}%
 %RENDERFOREDIT{
    form="%TMPL:P{"formdefinition"}%"
    exclude="TopicType|PlainText|HTMLText"
    header="<div class='foswikiPageForm'><table class='foswikiLayoutTable'>"
    format="<tr><th>$title$mandatory:</th><td>$edit<div class='foswikiFormDescription'>$description</div></td></tr>"
    footer="</table></div>"
-   TopicTitle_title="%MAKETEXT{"Title"}%"
+   TopicTitle_title="%TRANSLATE{"Title"}%"
 }%
 %ENDTAB%%TMPL:END%
 %{</verbatim>}%
@@ -33,7 +25,7 @@
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"plaintexttab"}%%TAB{"%MAKETEXT{"Plain Text"}%"}%
+%TMPL:DEF{"plaintexttab"}%%TAB{"%TRANSLATE{"Plain Text"}%"}%
 %RENDERFOREDIT{
    form="%TMPL:P{"formdefinition"}%"
    field="PlainText"
@@ -43,7 +35,7 @@
 %{</verbatim>}%
 
 %{<verbatim class="tml">}%
-%TMPL:DEF{"htmltexttab"}%%TAB{"%MAKETEXT{"HTML Text"}%"}%
+%TMPL:DEF{"htmltexttab"}%%TAB{"%TRANSLATE{"HTML Text"}%"}%
 %RENDERFOREDIT{
    form="%TMPL:P{"formdefinition"}%"
    field="HTMLText"

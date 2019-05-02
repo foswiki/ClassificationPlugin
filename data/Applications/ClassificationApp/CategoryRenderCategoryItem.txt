@@ -1,0 +1,46 @@
+%META:TOPICINFO{author="micha" comment="reprev" date="1521811281" format="1.1" reprev="3" version="3"}%
+%META:TOPICPARENT{name="TopicFunction"}%
+%TOC{depth="2"}%
+
+---++ Documentation
+%STARTSECTION{name="documentation" type="section"}%
+This method is called by RenderCategory to display
+a summary for an object of type ClassifiedTopic.
+
+---+++++ Parameters
+   * OBJECT
+   * TITLE
+   * THEWEB
+   * SHOWSUBCATS: switch on/off direct subcategoriesm, defaults to on
+
+%ENDSECTION{name="documentation" type="section"}%
+
+---++ Implementation
+<verbatim class="tml">
+%STARTINCLUDE%<!-- --><noautolink>
+%CATINFO{
+   cat="%OBJECT%"
+   web="%THEWEB{default=""}%"
+   maxchildren="6"
+   sortchildren="on"
+   morechildren="<a href='$url' title='%TRANSLATE{"more"}%'>...</a>"
+   format="<div class='clsIndexItem clsCategoryItem clearfix'>
+     $icon<!-- -->
+     <a href='$url'>%TITLE{default="$title"}%</a>$percntIF{
+       \"'$count'>'0'\" then=\"&nbsp;($count)\"
+     }$percnt<!-- -->
+     $percntIF{\"'$percntENCODE{\"$summary\" type=\"entity\"}$percnt'!=''\" then=\"<div class='foswikiTopicInfo'>$summary</div>\"}$percnt<!-- -->
+     %IF{"'%SHOWSUBCATS{default="on"}%'='on'" then="<div class='clsSubCategories'>$children $more</div>" else="<!-- -->"}%
+   </div>"
+}%</noautolink><!-- -->%STOPINCLUDE%
+</verbatim>
+
+---++ Test
+%DBCALL{"%TOPIC%" OBJECT="IntranetDirectory"}%
+
+%META:FORM{name="Applications.TopicFunction"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Render a summary for a Category in a category index"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%
+%META:TOPICMOVED{by="micha" date="1521811281" from="Applications/ClassificationApp.CategoryRenderIndexItem" to="Applications/ClassificationApp.CategoryRenderCategoryItem"}%

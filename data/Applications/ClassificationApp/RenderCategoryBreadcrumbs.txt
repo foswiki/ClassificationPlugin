@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -17,17 +17,17 @@ All information is extracted from BASEWEB.
 <verbatim class="tml">
 %STARTINCLUDE%%CATINFO{
   web="%BASEWEB%"
-  cat="%IF{"not isempty CAT" then="%CAT%" else="%BASETOPIC%"}%"
+  cat="%CAT{default="%BASETOPIC%"}%"
   header="$percntBREADCRUMBS{
       \"%BASEWEB%.%HOMETOPIC%\"
       recurse=\"topicoff\"
-      separator=\"%SEP%\"
-    }$percnt%SEP%" 
+      separator=\"%SEP{default="&nbsp;&#187"}%\"
+    }$percnt%SEP{default="&nbsp;&#187"}%" 
   format="$breadcrumb" 
-  separator="%SEP%"
+  separator="%SEP{default="&nbsp;&#187"}%"
   null="$percntBREADCRUMBS{
     \"%BASEWEB%.%BASETOPIC%\"
-    separator=\"%SEP%\"
+    separator=\"%SEP{default="&nbsp;&#187"}%\"
     }$percnt"
 }%%STOPINCLUDE%
 </verbatim>
@@ -38,7 +38,7 @@ All information is extracted from BASEWEB.
 </div>
 
 %META:FORM{name="Applications.TopicFunction"}%
-%META:FIELD{name="TopicType" title="TopicType" value="DocuTopic, TopicFunction, WikiTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value="Renders a list of parent categories for breadcrumbs navigation"}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

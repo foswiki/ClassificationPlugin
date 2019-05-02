@@ -1,0 +1,74 @@
+.clsCategoryContainer {
+  display:flex;
+  flex-wrap:wrap;
+  margin-right:-15px;
+  visibility:hidden;
+}
+.clsCategoryContainer.cols2 .clsCategoryTile {
+   flex-basis:47%;
+}
+.clsCategoryContainer.cols3 .clsCategoryTile {
+   flex-basis:31%;
+}
+.clsCategoryContainer.cols4 .clsCategoryTile {
+   flex-basis:22%;
+}
+.clsCategoryContainer.cols5 .clsCategoryTile {
+   flex-basis:17%;
+}
+.clsCategoryTile {  
+   min-width:230px;
+   flex-shrink: 1;
+   flex-grow: 1;
+   margin:0 15px 15px 0;
+   text-decoration:none; 
+   box-sizing:border-box;
+   padding:20px 20px 0 20px;
+   border:0;
+   background-color:#f6f6f6;
+   border:1px solid #dddddd;
+   border-radius:3px;
+}
+.clsCategoryTile.empty {
+   background:transparent;
+   border:0;
+}
+.clsCategoryTile h3 { 
+   margin:-20px -20px 0 !important;
+   font-weight:normal;
+   color:inherit;
+}
+.clsCategoryTile h3 a {
+   text-decoration:none;
+   padding:15px 15px 10px;
+}
+.clsCategoryTile h3 .clsCategoryCount {
+   font-size:90%;
+   color:#818181;
+   float:right;
+   margin:15px 15px 0 5px;
+}
+.clsCategoryTile h3 .jqIcon {
+   float:left;
+   font-size:100%;
+   line-height:1.5em;
+   margin:16px 5px 0 15px;
+}
+.clsCategoryTile a {
+   display:block;
+   font-weight:normal;
+   color:inherit;
+}
+.clsCategoryTile h3 a:hover {
+   text-decoration:underline;
+}
+.clsCategoryTile ul {
+   margin:5px 0 15px;
+   padding:0 0 0 25px;
+}
+.clsCategoryTile li {
+   padding-left:0;
+}
+.clsCategoryTile li a:hover {
+   text-decoration:underline;
+}

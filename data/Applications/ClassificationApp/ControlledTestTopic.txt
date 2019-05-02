@@ -1,9 +1,19 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="ControlledTopic"}%
-%WORKFLOWHISTORY%
+
 
 %META:FORM{name="Applications/ClassificationApp.ControlledTopic"}%
 %META:FIELD{name="TopicType" title="TopicType" value="ControlledTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value="Controlled Test Topic"}%
 %META:FIELD{name="Summary" title="Summary" value=""}%
 %META:FIELD{name="Workflow" title="Workflow" value="SimpleApprovalWorkflow"}%
+%META:WORKFLOWHISTORY{name="2" author="Home.MichaelDaum" comment="" date="1530282347" state="submitted"}%
+%META:WORKFLOWHISTORY{name="3" author="Home.MichaelDaum" comment="" date="1530282361" state="rejected"}%
+%META:WORKFLOWHISTORY{name="4" author="Home.MichaelDaum" comment="" date="1530282382" state="draft"}%
+%META:WORKFLOWHISTORY{name="6" author="Home.MichaelDaum" comment="" date="1542793642" state="submitted"}%
+%META:WORKFLOWHISTORY{name="7" author="Home.MichaelDaum" comment="" date="1542793646" state="approved"}%
+%META:WORKFLOWHISTORY{name="8" author="Home.MichaelDaum" comment="" date="1542793658" state="draft"}%
+%META:WORKFLOWHISTORY{name="9" author="Home.MichaelDaum" comment="" date="1542794593" state="submitted"}%
+%META:WORKFLOWHISTORY{name="10" author="Home.MichaelDaum" comment="" date="1542794597" state="approved"}%
+%META:WORKFLOWHISTORY{name="12" author="Home.MichaelDaum" comment="" date="1542798723" state="draft"}%
+%META:WORKFLOW{name="draft" LASTACTION="resume" LASTCOMMENT_approved="" LASTCOMMENT_draft="" LASTCOMMENT_rejected="" LASTCOMMENT_submitted="" LASTSTATE="approved" LASTTIME_approved="21. November 2018" LASTTIME_draft="21. November 2018" LASTTIME_rejected="29. Juni 2018" LASTTIME_submitted="21. November 2018" LASTUSER_approved="Home.MichaelDaum" LASTUSER_draft="Home.MichaelDaum" LASTUSER_rejected="Home.MichaelDaum" LASTUSER_submitted="Home.MichaelDaum" LASTVERSION_approved="10" LASTVERSION_draft="12" LASTVERSION_rejected="3" LASTVERSION_submitted="9"}%
