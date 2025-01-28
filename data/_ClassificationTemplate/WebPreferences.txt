@@ -1,6 +1,6 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="WebHome"}%
----+!! <nop>%WEB% Web Preferences
+---+!! %TOPIC%
 
 %TOC%
 
@@ -10,30 +10,48 @@
    * Set NOSEARCHALL = 
 
 ---++ Supplemental topics
-   * WebTopicEditTemplate: template for new topics
-   * WebMenu: horizontal navitation (overrides %USERSWEB%.SiteMenu or %SYSTEMWEB%.SiteMenu)
-   * WebLinks: sidebar links (overrides %USERSWEB%.SiteLinks or %SYSTEMWEB%.SiteLinks)
-   * WebSideBar: sidebar navigation: (overrides %USERSWEB%.SiteSideBar or %SYSTEMWEB%.SiteSideBar)
+   * [[WebMenu]]: horizontal navitation (overrides [[%USERSWEB%.SiteMenu]] or [[%SYSTEMWEB%.SiteMenu]])
+   * [[WebLinks]]: sidebar links (overrides [[%USERSWEB%.SiteLinks]] or [[%SYSTEMWEB%.SiteLinks]])
+   * [[WebSideBar]]: sidebar navigation: (overrides [[%USERSWEB%.SiteSideBar]] or [[%SYSTEMWEB%.SiteSideBar]])
 
 ---++ Application settings
    * Set WEBFORMS = Applications.WikiTopic
 
+---++ Topic creator settings
+
+*TopicType step:*
+
+   * Set TOPICCREATOR_SHOW_DEFAULT_TYPE = off
+   * Set TOPICCREATOR_SELECT_TYPE = ClassifiedTopic
+   * #Set TOPICCREATOR_EXCLUDE_TYPE = 
+   * #Set TOPICCREATOR_INCLUDE_TYPE = 
+
+*<nop>TopicTemplate step:*
+
+   * #Set TOPICCREATOR_SHOW_DEFAULT_TEMPLATE = off
+   * #Set TOPICCREATOR_SELECT_TEMPLATE = 
+   * #Set TOPICCREATOR_EXCLUDE_TEMPLATE =
+   * #Set TOPICCREATOR_INCLUDE_TEMPLATE = 
+
 ---++ !ClassificationPlugin settings
-   * #Set CLASSIFICATIONPLUGIN_AUTOREPARENT = on
+   * Set CLASSIFICATIONPLUGIN_AUTOREPARENT = on
+   * Set CLASSIFICATIONPLUGIN_RENDERCATEGORY = Applications.ClassificationApp.RenderCategoryTiles
+   * Set ENABLEQUALITYCHECK = on
+      * possible values: on, tags, cats, h1, href, br
 
 ---++ Cache settings
    * Set WEBDEPENDENCIES = WebHome, WebTopicList, WebChanges, WebRss, WebAtom, WebSearch
 
 ---++ Access rights
 *Web*:
-   * Set DENYWEBVIEW = %USERSWEB%.WikiGuest
+   * Set DENYWEBVIEW = WikiGuest
    * #Set ALLOWWEBVIEW = 
-   * Set DENYWEBCHANGE = %USERSWEB%.WikiGuest
-   * Set ALLOWWEBCHANGE = %USERSWEB%.AdminGroup
+   * Set DENYWEBCHANGE = WikiGuest
+   * Set ALLOWWEBCHANGE = AdminGroup
    * #Set DENYWEBRENAME = 
-   * Set ALLOWWEBRENAME = %USERSWEB%.AdminGroup
-   * Set DENYWEBCOMMENT = %USERSWEB%.WikiGuest
+   * Set ALLOWWEBRENAME = AdminGroup
+   * Set DENYWEBCOMMENT = WikiGuest
 
 *Topic*
-   * Set ALLOWTOPICCHANGE = %USERSWEB%.AdminGroup
-   * Set ALLOWTOPICRENAME = %USERSWEB%.AdminGroup
+   * Set ALLOWTOPICCHANGE = AdminGroup
+   * Set ALLOWTOPICRENAME = AdminGroup

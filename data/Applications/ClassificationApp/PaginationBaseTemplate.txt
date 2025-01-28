@@ -1,0 +1,50 @@
+%META:TOPICINFO{author="micha" comment="reprev" date="1732615401" format="1.1" reprev="17" version="17"}%
+%META:TOPICPARENT{name="TopicView"}%
+%TMPL:DEF{"aftertext"}%%IF{"%TMPL:P{"pagination::enabled"}%" then="$percntTMPL:P{\"pagination\"}$percnt"}%%TMPL:END%
+
+%TMPL:DEF{"pagination"}%%CLEAR%<div class='clsPagination foswikiHideOnPrint'>%TMPL:P{"pagination::default"}%</div>%TMPL:END%
+%TMPL:DEF{"pagination::default"}%%TMPL:P{"pagination::prev"}%%TMPL:P{"pagination::separator"}%%TMPL:P{"pagination::next"}%%TMPL:END%
+%TMPL:DEF{"pagination::separator"}%%TMPL:END%
+%TMPL:DEF{"pagination::enabled"}%'%DISPLAYPAGINATION{default="off"}%'='on' and Category and TopicType=~'\bCategorizedTopic\b'%TMPL:END%
+%TMPL:DEF{"pagination::order"}%translate(topictitle)%TMPL:END%
+%TMPL:DEF{"pagination::reverse"}%off%TMPL:END%
+%TMPL:DEF{"pagination::url"}%$percntSCRIPTURLPATH{\"view\" topic=\"$web.$topic\"}$percnt?paginate=%ENCODE{"%TMPL:P{"pagination::urlparam"}%"}%%TMPL:END%
+%TMPL:DEF{"pagination::urlparam"}%%URLPARAM{"paginate" default="%FORMFIELD{"Category" default="TopCategory" alttext="TopCategory"}%"}%%TMPL:END%
+
+%TMPL:DEF{"pagination::query"}%%TMPL:P{"pagination::query::topictype"}%%TMPL:P{"pagination::query::category"}%%TMPL:P{"pagination::query::exclude"}%%TMPL:END%
+%TMPL:DEF{"pagination::query::topictype"}%TopicType=~'%FORMATLIST{"%FORMFIELD{"TopicType"}%" limit="1" format="\b$1\b"}%'%TMPL:END%
+%TMPL:DEF{"pagination::query::category"}%%FORMATLIST{
+   "%TMPL:P{"pagination::urlparam"}%" 
+   header=" AND ("
+   format="'$1' DISTANCE topic = 1"
+   separator=" OR " 
+   footer=")"
+   _limit="1"
+}%%TMPL:END%
+%TMPL:DEF{"pagination::query::exclude"}% AND TopicType!~'\bCategory\b' AND topic!='TopCategory' AND topic!='BottomCategory'%TMPL:END%
+
+%TMPL:DEF{"pagination::prev"}%%DBPREV{
+   "%TMPL:P{"pagination::query"}%"
+   web="%BASEWEB%"
+   order="%TMPL:P{"pagination::order"}%"
+   reverse="%TMPL:P{"pagination::reverse"}%"
+   format="<a href='%TMPL:P{"pagination::url"}%' class='clsPaginationPrev'>$percntGETTOPICTITLE{\"$web.$topic\" translate=\"on\"}$percnt</a>"
+   nullformat="<span class='clsPaginationPrev clsPaginationDisabled'></span>"
+}%%TMPL:END%
+
+%TMPL:DEF{"pagination::next"}%%DBNEXT{
+   "%TMPL:P{"pagination::query"}%"
+   web="%BASEWEB%"
+   order="%TMPL:P{"pagination::order"}%"
+   reverse="%TMPL:P{"pagination::reverse"}%"
+   format="<a href='%TMPL:P{"pagination::url"}%' class='clsPaginationNext'>$percntGETTOPICTITLE{\"$web.$topic\" translate=\"on\"}$percnt</a>"
+   nullformat="<span class='clsPaginationNext clsPaginationDisabled'></span>"
+}%%TMPL:END%
+
+%META:FORM{name="Applications.TopicView"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="definitions to establish a navigation among likewise topics"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%
+%META:TOPICMOVED{by="micha" date="1715785862" from="Applications/ClassificationApp.NavigationBaseTemplate" to="Applications/ClassificationApp.PaginationBaseTemplate"}%
+%META:PREFERENCE{name="CREATED_WITH_TEMPLATETOPIC" title="CREATED_WITH_TEMPLATETOPIC" type="Local" value="Applications.TopicViewTemplate"}%

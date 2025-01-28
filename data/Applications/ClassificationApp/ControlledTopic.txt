@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicType"}%
 %DBCALL{"Applications.RenderTopicInstaller" TEXT="Install '%TOPIC%' TopicType" TYPE="TopicType"}%
 
@@ -21,19 +21,22 @@ see also:
 }%
 
 %DBCALL{"Applications.RenderTopicsOfType" 
-   FIELDS="TopicTitle, Summary, Workflow, Category, Changed"
+   FIELDS="TopicTitle, qmstate, qmstate_pendingReviewers, qmstate_reviewers, qmstate_comments, Category, Changed"
    Category_title="%TRANSLATE{"Category"}%"
-   Workflow_title="%TRANSLATE{"State"}%"
+   qmstate_title="%TRANSLATE{"Status"}%"
+   qmstate_pendingReviewers_title="%TRANSLATE{"Pending Reviewers"}%"
+   qmstate_reviewers_title="%TRANSLATE{"Reviewers"}%"
+   qmstate_comments_title="%TRANSLATE{"Comments"}%"
 }%
 %STOPINCLUDE%
 
 ---++ <nop>%TOPIC% form
-| *Name:*| *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
-| TopicType | label | 1 | ControlledTopic, WikiTopic | structural type  | | ControlledTopic, WikiTopic |
-| <nop>TopicTitle | text | 75 | |  | | |
+| *Name:* | *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
+| TopicType | type | 1 | ControlledTopic, WikiTopic | structural type | h | |
+| <nop>TopicTitle | text | 75 | | | | |
 | Summary | text | 75 | | short description or tagline | c | |
-| Workflow | topic | 20 | TopicType="WorkflowDefinition" | assign a workflow to this topic | c | %CLASSIFICATIONPLUGIN_DEFAULTWORKFLOW{default=""}% |
-
+| Workflow | qmworkflow | 35 | web="%WORKFLOWWEB{default="%BASEWEB%"}%" | assign a workflow to this topic | c | |
+| Responsible Persons | user+multi | 35 | | people that take part in an ongoing approval workflow | | |
 
 %META:FORM{name="Applications.TopicType"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicType, DataForm, DocuTopic, ApplicationTopic, WikiTopic"}%
@@ -42,6 +45,7 @@ see also:
 %META:FIELD{name="Icon" title="Icon" value="fa-check"}%
 %META:FIELD{name="Editor" title="Editor" value="Applications.ClassificationApp.ControlledTopicEditTemplate"}%
 %META:FIELD{name="Template" title="Template" value=""}%
+%META:FIELD{name="CreateAction" title="Create Action" value="edit"}%
 %META:FIELD{name="TopicNamingMode" title="Topic Naming Mode" value="default"}%
 %META:FIELD{name="TopicNameTemplate" title="Topic Name Template" value=""}%
 %META:FIELD{name="TopicNameSource" title="Topic Name Source" value="[name=TopicTitle]"}%
@@ -49,3 +53,4 @@ see also:
 %META:FIELD{name="TopicNameSuffix" title="Topic Name Suffix" value=""}%
 %META:FIELD{name="TopicNameTransliterate" title="Topic Name Transliterate" value="true"}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%
+%META:PREFERENCE{name="NATSKIN_LAYOUT" title="NATSKIN_LAYOUT" type="Local" value="fluid"}%

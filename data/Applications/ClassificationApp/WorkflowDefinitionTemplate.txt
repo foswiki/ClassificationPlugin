@@ -1,14 +1,30 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicTemplate"}%
----++ States
-| *State* | *Allow Edit* | *Allow View* | *Message* |
+---++ Roles 
+| *ID* | *Members* | 
+| Creator  | %IF{"istopic '%WEB%.%TOPIC%'" then="$percntREVINFO{\"$username\" rev=\"1\"}$percnt" else="%USERNAME%"}% | 
+| Approver | %FORMFIELD{"ResponsiblePersons"}%  | 
+| Admin*   | AdminGroup | 
 
----++ Transitions
-| *State*  | *Action* | *Next State* | *Allowed* | *Form* | *Notify *|
+---++ Nodes 
+| *ID*       | *Title*              | *Allow Edit* | *Allow View*      | *Message* | 
+| created    | Created              | Creator      | Creator           | %TRANSLATE{"This document has just been created."}% | 
+| inprogress | In Progress          | Creator      | Creator, Approver | %TRANSLATE{"This document is being worked on."}% | 
+| submitted  | Waiting for Approval | Nobody       | Creator, Approver | %BLUE%%TRANSLATE{"This document is waiting for approval."}%%ENDCOLOR% | 
+| approved*  | Approved             | Nobody       |                   | %GREEN%%TRANSLATE{"This document is approved."}%%ENDCOLOR% | 
+| rejected   | Rejected             | Creator      | Creator, Approver | %RED%%TRANSLATE{"Approval for this document has been rejected."}%%ENDCOLOR% | 
+
+---++ Edges 
+| *From*     | *Action*          | *Title*          | *To*       | *Allowed* | *Notify* | 
+| created    | request approval  | Request approval | submitted  | Creator   | Approver | 
+| inprogress | request approval  | Request approval | submitted  | Creator   | Approver |
+| submitted  | approve           | Approve          | approved   | Approver  | |
+| submitted  | reject            | Reject           | rejected   | Approver  | Creator | 
+| approved   | start revision    | Start revision   | inprogress | Approver, Admin | Creator | 
+| rejected   | resume            | Resume           | inprogress | Creator   | | 
 
 %META:FORM{name="Applications.TopicTemplate"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicTemplate, ApplicationTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value="a template for WorkflowDefinitions"}%
-%META:FIELD{name="ForTopicType" title="For TopicType" value=""}%
-%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%
+%META:FIELD{name="ForTopicType" title="For <nop>TopicType" value=""}%

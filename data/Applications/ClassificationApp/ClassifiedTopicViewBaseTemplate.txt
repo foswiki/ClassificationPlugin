@@ -1,0 +1,83 @@
+%META:TOPICINFO{author="micha" comment="" date="1734358802" format="1.1" reprev="21" version="22"}%
+%META:TOPICPARENT{name="TopicView"}%
+%TMPL:INCLUDE{"inlineedit"}%
+
+%TMPL:DEF{"revinfo::more"}%%TMPL:P{"revinfo::classification"}%%TMPL:END%
+
+%TMPL:DEF{"revinfo::classification::fields"}%Category, Tag%TMPL:END%
+
+%TMPL:DEF{"revinfo::classification"}%%RENDERFORDISPLAY{
+  topic="%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"
+  fields="%TMPL:P{"revinfo::classification::fields"}%"
+  editable="on"
+  hideempty="on"
+  Tag_default="untagged"
+  header="<span class='inlineEditor' data-active-class='inlineEditActive alt' data-template='Applications.ClassificationApp.ClassifiedTopicViewBaseTemplate'>"
+  format="$percntTMPL:P{\"revinfo::sep\"}$percnt <span>$percntJQICON{\"ma-folder\"}$percnt <span class='inlineEditValue' data-formfield='$name'>$value $editicon</span></span>"
+  Tag_format="<span><span class='inlineEditValue' data-view-def='renderForDisplay::formfield' data-formfield='$name'>%TMPL:P{"format::Tag"}%</span></span>"
+  separator=" "
+  footer="</span>"
+}%%JQREQUIRE{"ui, limitlist"}%%TMPL:END%
+
+%TMPL:DEF{"renderForDisplay::formfield"}%<noautolink>%RENDERFORDISPLAY{
+   editable="on"
+   field="%URLPARAM{"formfield"}%"
+   Tag_default="untagged"
+   hideempty="on"
+   format="%TMPL:P{
+            "format::%URLPARAM{"formfield"}%"
+          }%"
+}%</noautolink>%TMPL:END%
+
+%TMPL:DEF{"format::Tag"}%$percntIF{\"'$percntENCODE{\"$origvalue\"}$percnt'='untagged'\" 
+   then=\"<span class='isEmpty'>$percntTMPL:P{\"revinfo::sep\"}$percnt $percntJQICON{\"fa-tag\"}$percnt _%TRANSLATE{"untagged"}%_ \"
+   else=\"<span>$percntTMPL:P{\"revinfo::sep\"}$percnt $percntJQICON{\"fa-tag\"}$percnt $value \"
+}$percnt $editicon</span>%TMPL:END%
+
+%TMPL:DEF{"qualitychecks"}%%TMPL:PREV%%IF{
+  "$'ENABLEQUALITYCHECK'=~'\b(on|tags?)\b'" 
+  then="$percntTMPL:P{\"qualitycheck::tags\"}$percnt"
+}%%IF{
+  "$'ENABLEQUALITYCHECK'=~'\b(on|cats?)\b'" 
+  then="$percntTMPL:P{\"qualitycheck::cats\"}$percnt"
+}%%TMPL:END%
+
+%TMPL:DEF{"breadcrumbs::contents"}%%IF{
+  "not defined CLASSIFICATIONPLUGIN_CATEGORYBREADCRUMBS or $CLASSIFICATIONPLUGIN_CATEGORYBREADCRUMBS='on'" 
+  then="$percntTMPL:P{\"breadcrumbs::catinfo\"}$percnt" 
+  else="$percntTMPL:P{\"breadcrumbs::default\"}$percnt" 
+}%%TMPL:P{"breadcrumbs::tail"}%%TMPL:END%
+
+%TMPL:DEF{"breadcrumbs::default"}%%BREADCRUMBS{
+   relation="%TMPL:P{"breadcrumbs::relation"}%"
+   separator="%TMPL:P{"sep"}%"
+}%%TMPL:END%
+
+%TMPL:DEF{"breadcrumbs::catinfo"}%%CATINFO{
+  topic="%BASEWEB%.%BASETOPIC%"
+  header="$percntBREADCRUMBS{recurse=\"topicoff\" separator=\"%TMPL:P{"sep"}%\"}$percnt%TMPL:P{"sep"}%" 
+  format="$breadcrumb" 
+  separator="%TMPL:P{"sep"}% "
+  exclude="TopCategory"
+  null="$percntTMPL:P{\"breadcrumbs::default\"}$percnt"
+}%%TMPL:END%
+
+%TMPL:DEF{"qualitycheck::tags"}%%IF{
+  "TopicType=~'TaggedTopic' and Tag=''" 
+  then="<p class='%TMPL:P{"qualitycheck::warning::class"}% foswikiHideOnPrint'>$percntTMPL:P{\"qualitycheck::tags::message\"}$percnt</p>" 
+}%%TMPL:END%
+
+%TMPL:DEF{"qualitycheck::tags::message"}%%TRANSLATE{"This page needs tagging. Please add keywords describing what this page is about." lexicon="%CONTENT_LEXICON{default="Applications.ClassificationApp.WebLexicon"}%"}%%TMPL:END%
+
+%TMPL:DEF{"qualitycheck::cats"}%%IF{
+  "TopicType=~'CategorizedTopic' and Category=''" 
+  then="<p class='%TMPL:P{"qualitycheck::warning::class"}% foswikiHideOnPrint'>$percntTMPL:P{\"qualitycheck::cats::message\"}$percnt</p>" 
+}%%TMPL:END%
+
+%TMPL:DEF{"qualitycheck::cats::message"}%%TRANSLATE{"This page needs to be categorized. Please file it to an appropriate category." lexicon="%CONTENT_LEXICON{default="Applications.ClassificationApp.WebLexicon"}%"}%%TMPL:END%
+
+%META:FORM{name="Applications.TopicView"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="base for ClassifiedTopics"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

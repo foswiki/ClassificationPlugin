@@ -1,7 +1,7 @@
 /*
- * jQuery Tag Editor 1.0
+ * jQuery Tag Editor 1.01
  *
- * Copyright (c) 2018-2019 Michael Daum http://michaeldaumconsulting.com
+ * Copyright (c) 2018-2025 Michael Daum http://michaeldaumconsulting.com
  *
  * Licensed under the GPL license http://www.gnu.org/licenses/gpl.html
  *
@@ -90,10 +90,9 @@
 
   // Enable declarative widget instanziation
   $(function() {
-    $(".jqTagEditor:not(.jqTagEditorInited)").livequery(function() {
-      $(this).addClass("jqTagEditorInited").tagEditor();
+    $(".jqTagEditor").livequery(function() {
+      $(this).tagEditor();
     });
   });
 
 })(jQuery);
-

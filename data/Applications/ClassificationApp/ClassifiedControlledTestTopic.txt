@@ -1,14 +1,13 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
-%META:TOPICPARENT{name="WebHome"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
+%META:TOPICPARENT{name="TestCategory13"}%
 
 
 %META:FORM{name="Applications/ClassificationApp.ClassifiedControlledTopic"}%
 %META:FIELD{name="TopicType" title="TopicType" value="ClassifiedControlledTopic, ControlledTopic, ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value="Classified Controlled Test Topic"}%
 %META:FIELD{name="Summary" title="Summary" value=""}%
-%META:FIELD{name="Workflow" title="Workflow" value="Applications.ClassificationApp.SimpleApprovalWorkflow"}%
+%META:FIELD{name="Workflow" title="Workflow" value="SimpleApprovalWorkflow"}%
 %META:FIELD{name="Tag" title="Tag" value=""}%
-%META:FIELD{name="Category" title="Category" value=""}%
-%META:WORKFLOW{name="approved" LASTACTION="approve" LASTCOMMENT_approved="yqweqwe qweyyyyy" LASTCOMMENT_submitted="qweqweqe qweq weq weqeq we qwe qweqeq" LASTSTATE="submitted" LASTTIME_approved="14. Juni 2018" LASTTIME_submitted="14. Juni 2018" LASTUSER_approved="Home.MichaelDaum" LASTUSER_submitted="Home.MichaelDaum" LASTVERSION_approved="3" LASTVERSION_submitted="2"}%
-%META:WORKFLOWHISTORY{name="2" author="Home.MichaelDaum" comment="qweqweqe qweq weq weqeq we qwe qweqeq" date="1528977527" state="submitted"}%
-%META:WORKFLOWHISTORY{name="3" author="Home.MichaelDaum" comment="yqweqwe qweyyyyy" date="1528977539" state="approved"}%
+%META:FIELD{name="Category" title="Category" value="TestCategory13"}%
+%META:PREFERENCE{name="ALLOWTOPICAPPROVE" title="ALLOWTOPICAPPROVE" type="Set" value="MichaelDaum"}%
+%META:QMSTATE{author="micha" changed="0" date="1581606927" id="created" workflow="Applications/ClassificationApp.SimpleApprovalWorkflow"}%

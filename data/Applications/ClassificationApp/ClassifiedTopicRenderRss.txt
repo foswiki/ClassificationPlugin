@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -14,18 +14,22 @@ See [[Applications.RssViewTemplate]], [[Applications.RenderRss]]
 
 ---++ Implementation
 <verbatim class="tml">
-%STARTINCLUDE%%DBQUERY{topic="%OBJECT%"
-   format="<item rdf:about=\"%SCRIPTURL{"view"}%/$web/$topic\">
+%STARTINCLUDE%%DBQUERY{
+   topic="%OBJECT%"
+   datelanguage="en"
+   format="<item>
        <title>$expand(topictitle)</title>
-       <link>%SCRIPTURL{"view"}%/$web/$topic</link>
-       <dc:creator>$expand(@createauthor.topictitle)</dc:creator>
-       <dc:date>$formatTime(createdate, '$year-$mo-$dayT$hour:$minute:$secondsZ')</dc:date>
-       <dc:subject>$percntCATINFO{\"$web.$topic\" format=\"$dollartitle\"}$percnt, $expand(Tag)</dc:subject>
-       <dc:contributor>
-         <rdf:Description link=\"%SCRIPTURL{"view"}%/%USERSWEB%/$expand(Author or createauthor)\">
-           <rdf:value>$expand(@createauthor.topictitle)</rdf:value>
-         </rdf:Description>
-       </dc:contributor>
+       <link>$percntSCRIPTURL{\"view\" topic=\"$web/$topic\"}$percnt</link>
+       <guid>$percntSCRIPTURL{\"view\" topic=\"$web/$topic\"}$percnt</guid>
+       <dc:creator>$percntGETTOPICTITLE{\"$percntUSERINFO{\"$expand(info.author)\" format=\"$wikiusername\"}$percnt\"}$percnt</dc:creator>
+       <dc:date>$formatTime(info.date, '$year-$mo-$dayT$hour:$minute:$secondsZ')</dc:date>
+       $percntCATINFO{\"$web.$topic\" 
+         format=\"<category>$dollartitle</category>\"
+         separator=\"$n\"
+       }$percnt $percntTAGINFO{\"$web.$topic\"
+         format=\"<category>$dollartitle</category>\"
+         separator=\"$n\"
+       }$percnt<!-- -->
       <description> <![CDATA[ 
 $percntDBCALL{\"$web.$topic\"}$percnt
 <!-- -->

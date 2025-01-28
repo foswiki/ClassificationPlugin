@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2019 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2025 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -310,7 +310,7 @@ sub splitFacet {
       }
     }
   
-    my ($meta, $text) = Foswiki::Func::readTopic($theWeb, $topicName);
+    my ($meta) = Foswiki::Func::readTopic($theWeb, $topicName);
     #_writeDebug("OLD meta:\n".$meta->stringify());
     
     if (%facets) {
@@ -343,7 +343,7 @@ sub splitFacet {
     }
     #_writeDebug("NEW meta:\n".$meta->stringify());
 
-    Foswiki::Func::saveTopic($theWeb, $topicName, $meta, $text);
+    $meta->save();
   }
 
   return "OK: converted $foundTopics topics\n";
@@ -427,7 +427,7 @@ sub deployTopicType {
       my %webForms = ();
       my $needsSave = 0;
       if ($text =~ /^(   )+\* Set WEBFORMS =\s+(.*?)\s*$/ms) {
-        %webForms = map {s/\//\./g; $_ => 1} grep {!/$deleteFormPattern/} split(/\s*,\s*/, $2);
+        %webForms = map {my $tmp = $_; $tmp =~ s/\//\./g; $tmp => 1} grep {!/$deleteFormPattern/} split(/\s*,\s*/, $2);
         #_writeDebug("found ".scalar(keys %webForms)." webform(s)");
         if (defined $webForms{$dataForm}) {
           #_writeDebug("dataForm already part of WEBFORMS");
@@ -443,11 +443,12 @@ sub deployTopicType {
         $text .= "\n   * Set WEBFORMS = $dataForm\n";
         $needsSave = 1;
       }
-      Foswiki::Func::saveTopic($web, "WebPreferences", $meta, $text, {
+      $meta->text($text);
+      $meta->save(
         ignorepermissions => 1,
         dontlog => 1,
         minor => 1,
-      }) unless $dry;
+      ) unless $dry;
     } else {
       _writeDebug("woops, error reading $web.WebPreferences");
     }
@@ -459,15 +460,15 @@ sub deployTopicType {
       _writeDebug("creating topicStub $web.$topicStub");
 
       #SMELL: make this configurable
-      my ($meta, $text) = Foswiki::Func::readTopic($web, $topicStub);
+      my ($meta) = Foswiki::Func::readTopic($web, $topicStub);
       $meta->put("FORM", {name=>"Applications.TopicStub"});
       $meta->put("FIELD", {name=>"TopicType", title=>"TopicType", value=>"TopicStub, TopicType"});
       $meta->put("FIELD", {name=>"Target", attributes=>"", title=>"Target", value=>"Applications/ClassificationApp.ClassifiedTopic"});
-      Foswiki::Func::saveTopic($web, $topicStub, $meta, $text, {
+      $meta->save(
         ignorepermissions => 1,
         dontlog => 1,
         minor => 1,
-      }) unless $dry;
+      ) unless $dry;
 
     } else {
       _writeDebug("topicStub $web.$topicStub already exists");
@@ -475,7 +476,7 @@ sub deployTopicType {
 
     foreach my $topic (@topics) {
 
-      my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+      my ($meta) = Foswiki::Func::readTopic($web, $topic);
       my $formName = $meta->getFormName;
       if (defined $formName) {
         if ($formName =~ /$excludeFormPattern/) {
@@ -511,7 +512,7 @@ sub deployTopicType {
       #_writeDebug("adding form $dataForm");
       $meta->put('FORM', { name => $dataForm });
 
-      my $topicTitle = Foswiki::Plugins::Func::getTopicTitle($web, $topic, undef, $meta);
+      my $topicTitle = Foswiki::Func::getTopicTitle($web, $topic, undef, $meta);
       if (defined $topicTitle) {
         $meta->remove('PREFERENCE', 'TOPICTITLE');
         $meta->putKeyed( 'FIELD', { 
@@ -536,11 +537,11 @@ sub deployTopicType {
 
         my $origCUID = $session->{user};
         $session->{user} = $lastAuthor;
-        Foswiki::Func::saveTopic($web, $topic, $meta, $text, {
+        $meta->save(
           ignorepermissions => 1,
           dontlog => 1,
           minor => 1,
-        }) unless $dry;
+        ) unless $dry;
         $session->{user} = $origCUID;
       } else {
         # using raw file access for speed

@@ -1,37 +1,23 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
-%{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.ClassificationApp.ClassifiedTopicView"}%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
-%TMPL:DEF{"metaopengraph::image::content"}%%IF{"'%WEB%.%TOPIC%'/MetaImage"
+%TMPL:DEF{"metaopengraph::image::content"}%%IF{"MetaImage"
    then="%ATTACHURL%/$percntFORMFIELD{MetaImage}$percnt"
    else="%TMPL:PREV%"
 }%%TMPL:END%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
-%TMPL:DEF{"title"}%%IF{
-   "'%TOPIC%'/HTMLTitle" 
-   then="$percntFORMFIELD{\"HTMLTitle\"}$percnt %TMPL:P{"titlesep"}% %WIKITOOLNAME%"
-   else="%TMPL:PREV%"
-}%%TMPL:END%
-%{</verbatim>}%
+%TMPL:DEF{"title"}%%FORMFIELD{"HTMLTitle" default="%TMPL:PREV%" alttext="%TMPL:PREV%"}%%TMPL:END%
 
-%{<verbatim class="tml">}%
-%TMPL:DEF{"metakeywords::content"}%%IF{"'%WEB%.%TOPIC%'/MetaKeywords" 
+%TMPL:DEF{"metakeywords::content"}%%IF{"MetaKeywords" 
   then="$percntFORMFIELD{MetaKeywords}$percnt"
   else="%TMPL:PREV%"
 }%%TMPL:END%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
-%TMPL:DEF{"metadescription::content"}%%IF{"'%WEB%.%TOPIC%'/MetaDescription" 
+%TMPL:DEF{"metadescription::content"}%%IF{"MetaDescription" 
   then="$percntFORMFIELD{MetaDescription}$percnt"
   else="%TMPL:PREV%"
 }%%TMPL:END%
-%{</verbatim>}%
 
 %META:FORM{name="Applications.TopicView"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%

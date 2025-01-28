@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -10,6 +10,7 @@ a summary for an object of type ClassifiedTopic.
 ---+++++ Parameters
    * OBJECT
    * THEICON
+   * TITLEEXTRA
 
 %ENDSECTION{name="documentation" type="section"}%
 
@@ -21,15 +22,15 @@ a summary for an object of type ClassifiedTopic.
     $percntDBCALL{\"$web.$topic->Applications.RenderTopicThumbnail\" 
       TYPE=\"plain\" 
       ALIGN=\"right\"
-      CROP=\"west\"
+      CROP=\"northwest\"
     }$percnt<!-- -->
-    <!-- -->[[$web.$topic][$expand(topictitle)]]%IF{"context RedDotPluginEnabled" then="$dollarpercntREDDOT{\\"$web.$topic\\"}$dollarpercnt"}%
-    $expand('<div class=\"foswikiTopicSummary\">' and Summary and '</div>')<!-- -->
+    [[$web.$topic]]%TITLEEXTRA{default=""}%%IF{"context RedDotPluginEnabled" then="$dollarpercntREDDOT{\\"$web.$topic\\"}$dollarpercnt"}%
+    <div class='foswikiTopicSummary'>$expand(Summary)</div>
     <div class='foswikiTopicInfo'>
-       <!-- -->$formatTime(info.date) 
-       <!-- -->$percntUSERINFO{\"$expand(info.author)\"
-         format=\"<span class='foswikiRevisionSep'>&#124;</span> <nop>$dollarpercntGETTOPICTITLE{\\"$wikiusername\\"}$dollarpercnt\"
-       }$percnt
+       <span class='foswikiRevisionDate'>$formatTime(info.date)</span>
+       $percntUSERINFO{\"$expand(info.author)\"
+         format=\"<span class='foswikiRevisionSep'>&#124;</span> <span class='foswikiRevisionAuthor'>$dollarpercntGETTOPICTITLE{\\"$wikiusername\\"}$dollarpercnt</span>\"
+       }$percnt<!-- -->
       $percntCATINFO{\"$web.$topic\" 
         header=\" <span class='foswikiRevisionSep'>&#124;</span> <span class='clsCatInfo'>\" 
         exclude=\"TopCategory|%URLPARAM{"catname" default="%BASETOPIC%"}%\"
@@ -38,7 +39,7 @@ a summary for an object of type ClassifiedTopic.
       }$percnt$percntTAGINFO{\"$web.$topic\" 
         header=\" <span class='foswikiRevisionSep'>&#124;</span> <span class='clsTagInfo'>\" 
         separator=\"&#44; \"
-        limit=\"5\"
+        limit=\"10\"
         footer=\"</span>\"
       }$percnt<!-- -->
       $percntIF{\"'$expand(total_likes)'>0\"

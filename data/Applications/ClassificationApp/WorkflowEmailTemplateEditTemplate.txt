@@ -1,30 +1,17 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
-%{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.WikiTopicEdit"}%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
 %TMPL:DEF{"firsttab"}%%TAB{"%TRANSLATE{"Details"}%"}%
 %RENDERFOREDIT{
    form="%TMPL:P{"formdefinition"}%"
-   exclude="TopicType|PlainText|HTMLText"
-   header="<div class='foswikiPageForm'><table class='foswikiLayoutTable'>"
-   format="<tr><th>$title$mandatory:</th><td>$edit<div class='foswikiFormDescription'>$description</div></td></tr>"
-   footer="</table></div>"
+   exclude="^(TopicType|PlainText|HTMLText)$"
    TopicTitle_title="%TRANSLATE{"Title"}%"
 }%
 %ENDTAB%%TMPL:END%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
-%TMPL:DEF{"formfields"}%<!-- -->
-%TMPL:P{"plaintexttab"}%<!-- -->
-%TMPL:P{"htmltexttab"}%<!-- -->
-<!-- -->%TMPL:END%
-%{</verbatim>}%
+%TMPL:DEF{"formfields"}%%TMPL:P{"plaintexttab"}%%TMPL:P{"htmltexttab"}%%TMPL:P{"hiddentextarea"}%%TMPL:END%
 
-%{<verbatim class="tml">}%
 %TMPL:DEF{"plaintexttab"}%%TAB{"%TRANSLATE{"Plain Text"}%"}%
 %RENDERFOREDIT{
    form="%TMPL:P{"formdefinition"}%"
@@ -32,9 +19,7 @@
    format="$edit"
 }%
 %ENDTAB%%TMPL:END%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
 %TMPL:DEF{"htmltexttab"}%%TAB{"%TRANSLATE{"HTML Text"}%"}%
 %RENDERFOREDIT{
    form="%TMPL:P{"formdefinition"}%"
@@ -42,7 +27,6 @@
    format="$edit"
 }%
 %ENDTAB%%TMPL:END%
-%{</verbatim>}%
 
 
 %META:FORM{name="Applications.TopicView"}%

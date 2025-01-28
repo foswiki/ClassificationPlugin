@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
+%META:TOPICINFO{author="micha" comment="reprev" date="1568544769" format="1.1" reprev="3" version="4"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -13,28 +13,10 @@
 
 ---++ Implementation
 <verbatim class="tml">
-%STARTINCLUDE%%WORKFLOWHISTORY{
-   "%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"
-   header="<h2 >%TRANSLATE{"History"}%</h2>
-<table class='foswikiTable foswikiFlatTable foswikiFullWidth foswikiStripes foswikiLayoutTable'>
-<thead>
-   <tr>
-      <th>%TRANSLATE{"Rev"}%</th>
-      <th>%TRANSLATE{"Person"}%</th>
-      <th>%TRANSLATE{"State"}%</th>
-      <th>%TRANSLATE{"Comment"}%</th>
-      <th>%TRANSLATE{"Date"}%</th>
-   </tr>
-<thead><tbody>"
-   format="<tr>
-      <td> <b>[[%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%?rev=$rev][$rev]]</b> </td>
-      <td> [[$wikiusername]] </td>
-      <td> $percntTRANSLATE{\"$state\"}$percnt </td>
-      <td> $comment </td>
-      <td> $date </td>
-   </tr>"
-   footer="</tbody></table>"
-   separator="$n"
+%STARTINCLUDE%%QMHISTORY{
+   topic="%OBJECT{default=""}%"
+   reverse="on"
+   workflow="%FORMFIELD{"Workflow" topic="%OBJECT{default=""}%"}%" 
 }%%STOPINCLUDE%
 </verbatim>
 

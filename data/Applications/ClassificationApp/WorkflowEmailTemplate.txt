@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicType"}%
 %DBCALL{"Applications.RenderTopicInstaller" TEXT="Install '%TOPIC%' TopicType" TYPE="TopicType"}%
 
@@ -23,23 +23,23 @@ See also:
 }%
 
 %DBCALL{"Applications.RenderTopicsOfType" 
-  FIELDS="TopicTitle, From, To, Subject, Changed"
-  ROWS="20"
+  FIELDS="TopicTitle, From, To, Subject, Changed, By"
 }%
 %STOPINCLUDE%
 
 ---++ %TOPIC% form
-| *Name:*| *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
-| TopicType | label | 1 | WorkflowEmailTemplate, WikiTopic | topic type  | | |
+| *Name:* | *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
+| TopicType | type | 1 | WorkflowEmailTemplate, WikiTopic | topic type | | |
 | <nop>TopicTitle | text | 75 | | title of this template | | |
 | Summary | text | 75 | | short description of this templaet | | |
 | From | text | 75 | | sender | | |
 | To | text | 75 | | recipient | | |
 | Cc | text | 75 | | carbon copy recipient | | |
 | Subject | text | 75 | | subject of email | | |
+| Priority | radio+values | 6 | undefined=0, very high=1, high=2, normal=3, low=4, very low=5 | mail priority | | 0 |
 | Related Workflow | topic | 20 | TopicType="WorkflowDefinition" | workflow this email template is used in | c | |
-| Plain Text | natedit | 80x5 | minHeight="300" autoMaxExpand="true" | plain text email text |  | |
-| HTML Text | natedit | 80x5 | minHeight="300" autoMaxExpand="true" | html text email text | | |
+| Plain Text | natedit | 0x5 | minHeight="300" autoMaxExpand="true" | plain text email text | | |
+| HTML Text | natedit | 0x5 | minHeight="300" autoMaxExpand="true" | html text email text | | |
 
 
 %META:FORM{name="Applications.TopicType"}%
@@ -49,6 +49,7 @@ See also:
 %META:FIELD{name="Icon" title="Icon" value="fa-paste"}%
 %META:FIELD{name="Editor" title="Editor" value=""}%
 %META:FIELD{name="Template" title="Template" value="Applications.ClassificationApp.WorkflowEmailTemplateTemplate"}%
+%META:FIELD{name="CreateAction" title="Create Action" value="edit"}%
 %META:FIELD{name="TopicNamingMode" title="Topic Naming Mode" value="default"}%
 %META:FIELD{name="TopicNameTemplate" title="Topic Name Template" value=""}%
 %META:FIELD{name="TopicNameSource" title="Topic Name Source" value="[name=TopicTitle]"}%

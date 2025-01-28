@@ -1,11 +1,9 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
-%{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.ClassificationApp.ClassifiedTopicEdit"}%
 %TMPL:DEF{"formfields"}%<!-- formfields -->
 %TMPL:P{"categoriestab"}%
 <!-- //formfields -->%TMPL:END%
-%{</verbatim>}%
 
 %META:FORM{name="Applications.TopicView"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%

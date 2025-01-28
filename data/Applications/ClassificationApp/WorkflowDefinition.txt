@@ -1,15 +1,16 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicType"}%
 %DBCALL{"Applications.RenderTopicInstaller" TEXT="Install '%TOPIC%' TopicType" TYPE="TopicType"}%
 
 ---++ Documentation
 %STARTSECTION{"documentation"}%
 
-This TopicType requires [[%SYSTEMWEB%.WorkflowPlugin]]
+This TopicType requires [[%SYSTEMWEB%.QMPlugin]]
 
 see also:
    * [[%TOPIC%Template]]
    * [[%TOPIC%ViewTemplate]]
+   * [[%TOPIC%EditTemplate]]
 
 %ENDSECTION{"documentation"}%
 
@@ -19,23 +20,24 @@ see also:
   LABEL="%TRANSLATE{"Title"}%"
   BUTTONTEXT="%TRANSLATE{"New"}%"
   TEXT="%TRANSLATE{"Create a new [_1]" args="<nop>%TOPIC%"}%"
-  VALUE="...Workflow"
 }%
 
 %DBCALL{"Applications.RenderTopicsOfType"
-  FIELDS="TopicTitle, Tag, Category, Changed"
+  FIELDS="TopicTitle, Summary, Tag, Category, Changed, By"
   ROWS="20"
   Category_title="%TRANSLATE{"Category"}%"
 }%
 %STOPINCLUDE%
 
 ---++ <nop>%TOPIC% form
-| *Name:*| *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
-| TopicType | label | 1 | WorkflowDefinition, ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic | structural type  | | WorkflowDefinition, ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic |
-| <nop>TopicTitle | text | 75 | |  | | |
+| *Name:* | *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
+| TopicType | type | 1 | WorkflowDefinition, ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic | structural type | h | |
+| <nop>TopicTitle | text | 75 | | | | |
 | Summary | text | 75 | | short description or tagline | c | |
 | Tag | tag | 30 | | keywords for this topic | | |
-| Category | cat | 1 |  | categories this topic is field to |  | |
+| Category | cat | 1 | | categories this topic is field to | | |
+| Notification Template | topic | 30 | TopicType="TopicView" | template for notification emails | | |
+
 
 %META:FORM{name="Applications.TopicType"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicType, DataForm, DocuTopic, ApplicationTopic, WikiTopic"}%
@@ -44,6 +46,7 @@ see also:
 %META:FIELD{name="Icon" title="Icon" value="fa-cogs"}%
 %META:FIELD{name="Editor" title="Editor" value="Applications.ClassificationApp.ClassifiedTopicEditTemplate"}%
 %META:FIELD{name="Template" title="Template" value="Applications.ClassificationApp.WorkflowDefinitionTemplate"}%
+%META:FIELD{name="CreateAction" title="Create Action" value="edit"}%
 %META:FIELD{name="TopicNamingMode" title="Topic Naming Mode" value="default"}%
 %META:FIELD{name="TopicNameTemplate" title="Topic Name Template" value=""}%
 %META:FIELD{name="TopicNameSource" title="Topic Name Source" value="[name=TopicTitle]"}%

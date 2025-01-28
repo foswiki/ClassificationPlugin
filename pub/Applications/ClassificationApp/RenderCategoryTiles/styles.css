@@ -1,8 +1,8 @@
 .clsCategoryContainer {
   display:flex;
   flex-wrap:wrap;
-  margin-right:-15px;
-  visibility:hidden;
+  margin-right:calc(var(--margin-half) * -1);
+  /*visibility:hidden;*/
 }
 .clsCategoryContainer.cols2 .clsCategoryTile {
    flex-basis:47%;
@@ -20,50 +20,52 @@
    min-width:230px;
    flex-shrink: 1;
    flex-grow: 1;
-   margin:0 15px 15px 0;
+   margin:0 var(--margin-half) var(--margin-half) 0;
    text-decoration:none; 
    box-sizing:border-box;
-   padding:20px 20px 0 20px;
+   padding:20px !important;
    border:0;
-   background-color:#f6f6f6;
-   border:1px solid #dddddd;
+   color: var(--alt-foreground, #333);
+   background-color: var(--alt-background, #f6f6f6);
+   border: 1px solid var(--alt-border, #ddd);
    border-radius:3px;
+}
+.clsCategoryTile .foswikiTopicInfo {
+   margin-bottom:0;
 }
 .clsCategoryTile.empty {
    background:transparent;
    border:0;
 }
-.clsCategoryTile h3 { 
+.clsCategoryTile h4 { 
    margin:-20px -20px 0 !important;
    font-weight:normal;
    color:inherit;
 }
-.clsCategoryTile h3 a {
+.clsCategoryTile h4 a {
    text-decoration:none;
-   padding:15px 15px 10px;
+   padding:20px 20px 0;
 }
-.clsCategoryTile h3 .clsCategoryCount {
+.clsCategoryTile h4 .clsCategoryCount {
    font-size:90%;
    color:#818181;
    float:right;
-   margin:15px 15px 0 5px;
+   margin:20px var(--margin-half) 0 5px;
 }
-.clsCategoryTile h3 .jqIcon {
+.clsCategoryTile h4 .jqIcon {
    float:left;
-   font-size:100%;
-   line-height:1.5em;
-   margin:16px 5px 0 15px;
+   margin:20px 5px 0 var(--margin-half);
 }
 .clsCategoryTile a {
    display:block;
    font-weight:normal;
    color:inherit;
 }
-.clsCategoryTile h3 a:hover {
+.clsCategoryTile h4 a:hover {
    text-decoration:underline;
 }
 .clsCategoryTile ul {
-   margin:5px 0 15px;
+   margin:5px 0 20px;
    padding:0 0 0 25px;
 }
 .clsCategoryTile li {

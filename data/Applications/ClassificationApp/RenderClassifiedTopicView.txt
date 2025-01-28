@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -10,23 +10,32 @@ showing its category and tagging info in the top.
 
 ---+++++ Parameters
    * OBJECT: the topic to render the view for, defaults to =%<nop>BASEWEB%.%<nop>BASETOPIC%=
-   * TITLE_EXTRA: optional addition to the topic title. see Applications.RenderWikiTopicView
+   * TITLE_PREFIX: optional string put before the topic title. see [[Applications.RenderWikiTopicView]]
+   * TITLE_EXTRA: optional addition to the topic title. see [[Applications.RenderWikiTopicView]]
+   * TITLE_FIELDS: fields that make up the title aera, defaults to TopicTitle, Summary
    * DISPLAYREVISIONINFO: boolean flag to switch on/off revinfo 
+   * EDITABLE: boolean flag switching on/off inline editing, defaults to on
 
 %ENDSECTION{name="documentation" type="section"}%
 
 ---++ Implementation
 <verbatim class="tml">
-%STARTINCLUDE%<!-- -->
-%DBCALL{"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%->Applications.RenderWikiTopicView" TITLE_EXTRA="%TITLE_EXTRA%"}%
-%IF{"'%DISPLAYREVISIONINFO{default="on"}%'='on'"
-   then="$percntDBCALL{\"%WEB%.%TOPIC%\" OBJECT=\"%OBJECT%\" section=\"revinfo\"}$percnt"
-}%<!-- -->%STOPINCLUDE%
+%STARTINCLUDE%<noautolink>%DBCALL{
+   "Applications.RenderWikiTopicView"
+   section="title"
+   OBJECT="%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" 
+}%%IF{"'%DISPLAYREVISIONINFO{default="on"}%'='on'"
+   then="<span class='foswikiRevision'>$percntDBCALL{
+         \"%WEB%.%TOPIC%\" 
+         OBJECT=\"%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%\" 
+         section=\"revinfo\"
+      }$percnt</span>"
+}%</noautolink>%DEPRECATED%%STOPINCLUDE%
 </verbatim>
 
----++ Revision Info
+---++ Revision Info (readonly)
 <verbatim class="tml">
-%STARTSECTION{"revinfo"}%<span class='foswikiRevision'>
+%STARTSECTION{"revinfo::readonly"}%%DBCALL{"Applications.RenderWikiTopicView" OBJECT="%OBJECT%" section="revinfo"}%
 %CATINFO{
   "%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%" 
   exclude="TopCategory"
@@ -34,21 +43,32 @@ showing its category and tagging info in the top.
   format="<a href='$origurl' rel='tag' itemprop='keywords' class='$name'><noautolink>$title</noautolink></a>"
 }%%TAGINFO{
   "%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"
-  header=" <span class='foswikiRevisionSep'>&#124;</span> %JQICON{"fa-tag"}% "
+  header=" <span class='foswikiRevisionSep'>&#124;</span> %JQICON{"fa-tag"}% <span class='jqLimitList' data-max='30'>"
   format="<a href='$url' rel='tag' itemprop='keywords' class='$class'><noautolink>$name</noautolink></a>"
-  limit="30"
-  footer="$percntIF{\"$count > $index\" 
-    then=\"<span class='clsTopicInfoMoreContainer'> &#8230; 
-      <a href='#' class='clsTopicInfoMore' title='%TRANSLATE{"Show all tags"}%'>%TRANSLATE{"more"}%</a>
-      </span>\"
-    }$percnt"
-}%</span>%JQREQUIRE{"ui"}%%ADDTOZONE{
-  "script"
-  requires="JQUERYPLUGIN, JQUERYPLUGIN::UI"
-  text="<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/jquery.classifiedtopic.js'></script>"
-  id="CLASSIFICATIONPLUGIN::JS"
-}%%ENDSECTION{"revinfo"}%
+  footer="</span>"
+}%%JQREQUIRE{"ui, limitlist"}%%DEPRECATED%%ENDSECTION{"revinfo::readonly"}%
 </verbatim>
+
+---++ Revision Info (editable)
+<verbatim class="tml">
+%STARTSECTION{"revinfo"}%%DBCALL{"Applications.RenderWikiTopicView" OBJECT="%OBJECT%" section="revinfo"}%
+%RENDERFORDISPLAY{
+  topic="%OBJECT{default="%BASEWEB%.%BASETOPIC%"}%"
+  fields="Category, Tag"
+  editable="%EDITABLE{default="on"}%"
+  hideempty="on"
+  header="<span class='inlineEditor'>"
+  Category_format="<span class='foswikiRevisionSep'>&#124;</span> <span>$percntJQICON{\"fa-folder\"}$percnt <span class='inlineEditValue' data-formfield='$name'>$value $editicon</span></span>"
+  Tag_format="<span class='foswikiRevisionSep'>&#124;</span> <span>$percntJQICON{\"fa-tag\"}$percnt <span class='inlineEditValue' data-formfield='$name'>$value $editicon</span></span>"
+  separator=" "
+  footer="</span>"
+}%%JQREQUIRE{"ui, limitlist"}%%DEPRECATED%%ENDSECTION{"revinfo"}%
+</verbatim>
+
+---++ Test
+<div class="alt">
+%DBCALL{"%TOPIC%"}%
+</div>
 
 ---++ Test
 <div class="alt">
@@ -57,6 +77,6 @@ showing its category and tagging info in the top.
 
 %META:FORM{name="Applications.TopicFunction"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
-%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" title="Summary" value="Renders the TopicView of a ClassifiedTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value="RenderClassifiedTopicView"}%
+%META:FIELD{name="Summary" title="Summary" value="Renders the TopicView of a ClassifiedTopic %25RED%25(deprecated)%25ENDCOLOR%25"}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

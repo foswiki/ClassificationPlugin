@@ -1,0 +1,16 @@
+%META:TOPICINFO{author="micha" comment="reprev" date="1718176890" format="1.1" reprev="6" version="7"}%
+%META:TOPICPARENT{name="TopicView"}%
+%TMPL:DEF{"beforetext"}%%TMPL:PREV%%IF{"'%QMSTATE{format="$workflow" ignoreerror="on"}%'!=''" 
+   then="$percntDBCALL{\"%WEB%.%TOPIC%->RenderWorkflowInfo\"}$percnt"
+   else="<!-- -->"
+}%%TMPL:END%
+
+%TMPL:DEF{"aftertext"}%%IF{"'%QMSTATE{format="$workflow" ignoreerror="on"}%'!='' AND '%DISPLAYWORKFLOWHISTORY{default="off"}%'='on'"
+   then="$percntDBCALL{\"%WEB%.%TOPIC%->RenderWorkflowHistory\"}$percnt"
+}%%TMPL:PREV%%TMPL:END%
+
+%META:FORM{name="Applications.TopicView"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="definitions for ControlledTopics"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

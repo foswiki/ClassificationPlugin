@@ -1,0 +1,10 @@
+%META:TOPICINFO{author="micha" comment="" date="1624264096" format="1.1" version="1"}%
+%META:TOPICPARENT{name="TopicView"}%
+%TMPL:INCLUDE{"qmpluginreminder"}%
+
+%META:FORM{name="Applications.TopicView"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="default reminder for workflows"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%
+%META:PREFERENCE{name="CREATED_WITH_TEMPLATETOPIC" title="CREATED_WITH_TEMPLATETOPIC" type="Local" value="Applications.TopicViewTemplate"}%

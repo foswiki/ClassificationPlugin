@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1" version="1"}%
 %META:TOPICPARENT{name="WebHome"}%
 %MAKEINDEX{
   "%DBSTATS{ 
@@ -12,8 +12,8 @@
   split="\s*,\s*"
   header="$anchors"
   format="<a href='%IF{"context SolrPluginEnabled"
-         then="$dollarpercntSOLRSCRIPTURL{tag=\\"$1\\" type=\\"topic\\" web=\\"%FORMATLIST{"%BASEWEB%" split="/" separator="."}%\\" topic=\\"WebSearch\\"}$dollarpercnt"
-         else="%SCRIPTURLPATH{"view"}%/%BASEWEB%/WebTagCloud?tag=$1"
+         then="$dollarpercntSOLRSCRIPTURL{tag=\\"$1\\" type=\\"topic\\" union=\\"type\\" web=\\"%FORMATLIST{"%BASEWEB%" split="/" separator="."}%\\" topic=\\"WebSearch\\"}$dollarpercnt"
+         else="$percntSCRIPTURLPATH{\"view\" topic=\"%BASEWEB%.WebTagCloud\" tag=\"$1\"}$percnt"
       }%'>$1 ($2)</a>"
   sort="nocase"
   footer="$n$n$percntTRANSLATE{\"[_1] tags found\" args=\"<span class='foswikiAlert'>$count</span>\"}$percnt"

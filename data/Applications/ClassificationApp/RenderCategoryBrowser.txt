@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
  %TOC{depth="2"}%
 
@@ -14,6 +14,7 @@
       * =edit=: allows to modify the hierarchy 
       * =select=: select one or more categories; specify the name of the formfield to be used in the NAME parameter
       * =browse=: navigate among categories
+   * MULTIPLE: =on=, =off= - toggle multiselect mode, defaults to =on=
    * BUTTONS: =on=, =off= - toggle the display of the buttons, defaults to =on=; you may also switch on individual buttons using a comma separated lists of ids =filter=, =refresh=, =undo= and/or =clear=
    * CLASSES: css classes to be applied to the input element
 
@@ -21,7 +22,7 @@
 
 ---++ Implementation
 <verbatim class="tml">
-%STARTINCLUDE%<div class="jqHierarchy clsBrowser" data-web="%THEWEB{default="%BASEWEB%"}%" data-root="%TOP{default="TopCategory"}%" %IF{"'%MODE%'='select'" then="data-input-field-name='%NAME{default="Category"}%'"}% data-mode="%MODE{default="browse"}%" data-display-counts="true" data-container=".jqHierarchyContainer" data-sort="on">
+%STARTINCLUDE%<div class="jqHierarchy clsBrowser" data-web="%THEWEB{default="%BASEWEB%"}%" data-root="%TOP{default="TopCategory"}%" %IF{"'%MODE%'='select'" then="data-input-field-name='%NAME{default="Category"}%'"}% data-mode="%MODE{default="browse"}%" data-display-counts="true" data-container=".jqHierarchyContainer" data-sort="on" data-multiple="%IF{"'%MULTIPLE{default="on"}%'='on'" then="true" else="false"}%">
     %IF{"'%MODE%'='select'"
       then="<input type='hidden' name='%NAME{default="Category"}%' value='%VALUE{default=""}%' class='%CLASSES{default=""}%' />"
     }%%IF{"'%BUTTONS{default="on"}%'!='off'"
@@ -36,7 +37,7 @@
 %STARTSECTION{"init"}%%JQREQUIRE{"jstree, pnotify, wikiword, ui::tooltip, blockui"}%<!-- -->
 %ADDTOZONE{"script" 
   id="JQUERYPLUGIN::HIERARCHY"
-  text="<script type='text/javascript' src='%PUBURLPATH%/System/ClassificationPlugin/jquery.hierarchy.js'></script>" 
+  text="<script src='%PUBURLPATH%/System/ClassificationPlugin/build/jquery.hierarchy.js'></script>" 
   requires="JQUERYPLUGIN::JSTREE, JQUERYPLUGIN::PNOTIFY, JQUERYPLUGIN::WIKIWORD, JQUERYPLUGIN::UI::TOOLTIP, JQUERYPLUGIN::BLOCKUI"
 }%<!-- -->%ENDSECTION{"init"}%
 </verbatim>
@@ -46,26 +47,31 @@
 %STARTSECTION{"buttons"}%<div class="jqHierarchyButtons jqUITooltip" data-theme="info" data-position="top" data-arrow="true">
  <input type="text" size="28" class="foswikiInputField jqHierarchySearchField" style="display:none" /> 
  %IF{"'%buttons%'=~'\bfilter\b' or '%buttons%'='on'"
-    then="%BUTTON{"%TRANSLATE{"Filter"}%" icon="find" class="simple jqHierarchySearchButton" title="%TRANSLATE{"Search for matching categories"}%"}%"
+    then="%BUTTON{"%TRANSLATE{"Filter"}%" icon="fa-binoculars" class="simple jqHierarchySearchButton" title="%TRANSLATE{"Search for matching categories"}%"}%"
  }%<!-- -->
  %IF{"'%USERNAME%' ingroup 'AdminGroup' and ('%buttons%'=~'\brefresh\b' or '%buttons%'='on')" 
-   then="%BUTTON{"%TRANSLATE{"Refresh"}%" icon="arrow_refresh" class="jqHierarchyRefreshButton simple" title="%TRANSLATE{"Refresh hierarchy cache on the backend"}%"}%"
+   then="%BUTTON{"%TRANSLATE{"Refresh"}%" icon="fa-refresh" class="jqHierarchyRefreshButton simple" title="%TRANSLATE{"Refresh hierarchy cache on the backend"}%"}%"
  }%<!-- -->
  %IF{"'%buttons%'=~'\bclear\b' or '%buttons%'='on'"
-    then="%BUTTON{"%TRANSLATE{"Clear"}%" icon="application" class="simple jqHierarchyClearButton" title="%TRANSLATE{"Empty the selection"}%""}%"
+    then="%BUTTON{"%TRANSLATE{"Clear"}%" icon="fa-eraser" class="simple jqHierarchyClearButton" title="%TRANSLATE{"Empty the selection"}%""}%"
  }%<!-- -->
  %IF{"'%buttons%'=~'\bundo\b' or '%buttons%'='on'"
-    then="%BUTTON{"%TRANSLATE{"Undo"}%" icon="arrow_refresh" class="simple jqHierarchyUndoButton" title="%TRANSLATE{"Reset the selection"}%""}%"
+    then="%BUTTON{"%TRANSLATE{"Undo"}%" icon="fa-undo" class="simple jqHierarchyUndoButton" title="%TRANSLATE{"Reset the selection"}%""}%"
  }%<!-- -->
  %CLEAR% 
 </div>%ENDSECTION{"buttons"}%
 </verbatim>
 
 ---++ Test
----+++ select
-%STARTSECTION{"select"}%
+---+++ select multiple
+%STARTSECTION{"select_multiple"}%
 %DBCALL{"%TOPIC%" MODE="select"}%
-%ENDSECTION{"select"}%
+%ENDSECTION{"select_multuple"}%
+
+---+++ select single
+%STARTSECTION{"select_single"}%
+%DBCALL{"%TOPIC%" MODE="select" MULTIPLE="off"}%
+%ENDSECTION{"select_single"}%
 
 ---+++ browse
 %STARTSECTION{"browse"}%

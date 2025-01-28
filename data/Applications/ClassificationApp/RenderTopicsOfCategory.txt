@@ -1,0 +1,101 @@
+%META:TOPICINFO{author="micha" comment="reprev" date="1714115782" format="1.1" reprev="9" version="9"}%
+%META:TOPICPARENT{name="TopicFunction"}%
+%TOC{depth="2"}%
+
+---++ Documentation
+%STARTSECTION{"documentation"}%
+%RED%TODO%ENDCOLOR%
+
+---+++++ Parameters
+   * cat
+   * web
+   * showfilter
+
+%ENDSECTION{"documentation"}%
+
+---++ Implementation
+<verbatim class="tml">
+%STARTINCLUDE%%DBCALL{"%WEB%.%TOPIC%"
+   section="%IF{
+      "context SolrPluginEnabled"
+      then="solr"
+      else="dbstats"
+   }%"
+   cat="%cat{default="%URLPARAM{"catname" default="%BASETOPIC%"}%"}%"
+   web="%ENCODE{"%web{default="%BASEWEB%"}%" old="/" new="."}%"
+}%%STOPINCLUDE%
+</verbatim>
+
+---++ solr impl
+
+<verbatim class="tml">
+%STARTSECTION{"solr"}%%SOLRSEARCH{
+   "field_Category_flat_lst:%cat% -field_TopicType_lst:Category web:%web% type:topic"
+   group="field_TopicType_first_s"
+   grouplimit="9999"
+   sort="field_TopicType_first_s asc"
+   groupsort="title_sort asc"
+   fields="web,topic"
+   header_group="<h2>[[%web%.$groupValue]]</h2>$n<div class='clsMakeIndexWrapper'>
+      %IF{"'%showfilter{default="%CLASSIFICATIONPLUGIN_SHOWFILTER{default="off"}%"}%'='on'"
+         then="$dollarpercntDBCALL{\\"Applications.ClassificationApp.RenderCategory\\" section=\\"filter\\"}$dollarpercnt"
+      }%<!-- -->
+      <div class='group'>"
+   format_group="<div class='fltMakeIndexItem'>$percntDBCALL{\"$web.$topic->RenderIndexItem\"}$percnt</div>"
+   footer_group="</div></div>"
+}%<style>
+.group {
+   column-gap:2em;
+   column-width:18em;
+}
+</style>%ENDSECTION{"solr"}%
+</verbatim>
+
+---++ dbstats impl
+<verbatim>
+%STARTSECTION{"dbstats"}%%DBSTATS{
+   "('%cat%' DISTANCE topic) = 1 AND ! TopicType=~'\bCategory\b'"
+   web="%web%"
+   field="TopicType"
+   process="$percntFORMATLIST{\"$value\" limit=\"1\"}$percnt"
+   format="$percntDBCALL{\"%WEB%.%TOPIC%\" 
+               section=\"topicindex\"
+               topics=\"$topics\"
+               type=\"$key\"
+               cat=\"%cat%\"
+               web=\"%web%\"
+           }$percnt"
+}%%ENDSECTION{"dbstats"}%
+</verbatim>
+
+---++ topicindex
+
+<verbatim class="tml">
+%STARTSECTION{"topicindex"}%<h2 id='%type%'>[[%web%.%type%]]</h2>
+%MAKEINDEX{
+  "%DBQUERY{
+   web="%web%"
+   topics="%topics%"
+   format="($expand(topictitle));$topic"
+  }%"
+  cols="%COLS{default="%CLASSIFICATIONPLUGIN_NRCOLS{default=""}%"}%"
+  split="\n"
+  pattern="\((.*)\);(.*)"
+  sort="nocase"
+  group=""
+  format="$percntDBCALL{\"%web%.$2->RenderIndexItem\"}$percnt"
+}%%ENDSECTION{"topicindex"}%%
+</verbatim>
+
+---++ Test
+%STARTSECTION{"test"}%
+%DBCALL{"%TOPIC%" cat="TestCategory"}%
+%ENDSECTION{"test"}%
+
+
+%META:FORM{name="Applications.TopicFunction"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="renders topics of a category groupd by type"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%
+%META:PREFERENCE{name="CREATED_WITH_TEMPLATETOPIC" title="CREATED_WITH_TEMPLATETOPIC" type="Local" value="Applications.TopicFunctionTemplate"}%

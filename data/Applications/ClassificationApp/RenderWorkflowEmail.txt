@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -7,22 +7,25 @@
 uses sections =plain_text= and =html_text= from calling topic
 
 ---+++++ Parameters
-   * TEMPLATE
+   * topic
 
 %ENDSECTION{"documentation"}%
 
 ---++ Implementation
 <verbatim class="tml">
-%STARTINCLUDE%<literal>From: %FORMFIELD{"From" topic="%TEMPLATE%"}%
-To: %FORMFIELD{"To" topic="%TEMPLATE%"}%
-Subject: =?utf-8?B?%BASE64{"$percntFORMFIELD{\"Subject\" topic=\"%TEMPLATE%\"}$percnt"}%?=
-Auto-Submitted: auto-generated
+%STARTINCLUDE%<literal>From: %FORMFIELD{"From" topic="%topic{default="%BASETOPIC%"}%" default="%WIKIWEBMASTER%" alttext="%WIKIWEBMASTER%"}%
+To: %FORMFIELD{"To" topic="%topic{default="%BASETOPIC%"}%"}%
+Subject: =?utf-8?B?%BASE64{"$percntFORMFIELD{\"Subject\" topic=\"%topic{default="%BASETOPIC%"}%\"}$percnt"}%?=
+%IF{
+   "'%FORMFIELD{"Priority" topic="%topic{default="%BASETOPIC%"}%" alttext="0" default="0"}%'!='0'" 
+   then="X-Priority: %FORMFIELD{"Priority" topic="%topic{default="%BASETOPIC%"}%"}%$n"
+}%Auto-Submitted: auto-generated
 MIME-Version: 1.0
 Content-Type: multipart/alternative; boundary="=_=0i0k0i0w0s0o0fXuOi0E0A"
 
 This is a multi-part message in MIME format.
 %RENDERFORDISPLAY{
-   topic="%TEMPLATE%"
+   topic="%topic{default="%BASETOPIC%"}%"
    fields="PlainText, HTMLText"
    hideempty="on"
    header="--=_=0i0k0i0w0s0o0fXuOi0E0A$n"
@@ -45,4 +48,3 @@ $origvalue"
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value=""}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%
-%META:TOPICMOVED{by="micha" date="1446825189" from="Applications/LessonsLearnedApp.RenderEmail" to="Applications/ClassificationApp.RenderWorkflowEmail"}%

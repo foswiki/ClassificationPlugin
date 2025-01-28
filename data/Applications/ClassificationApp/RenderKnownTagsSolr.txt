@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -23,7 +23,8 @@ if installed for better performance.
   facetlimit="tag=%LIMIT{default="10"}%"
   field="none"
   facets="tag"
-  facetprefix="%TAG{default=""}%"
+  facetcontains="%TAG{default=""}%"
+  facetignorecase="on"
   facetsort="index"
   header_tag="[$n"
   format_tag="{\"value\":\"$key\"}"

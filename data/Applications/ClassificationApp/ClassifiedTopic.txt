@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicType"}%
 %DBCALL{"Applications.RenderTopicInstaller" TEXT="Install '%TOPIC%' TopicType" TYPE="TopicType" PARENT="TopicType"}%
 
@@ -11,6 +11,7 @@ See also:
 
    * [[%TOPIC%ViewTemplate]]
    * [[%TOPIC%EditTemplate]]
+   * [[ClassifiedTopicViewBaseTemplate]] 
 
 %ENDSECTION{"documentation"}%
 
@@ -20,27 +21,28 @@ See also:
 }%
 
 %DBCALL{"Applications.RenderTopicsOfType" 
-   FIELDS="TopicTitle, Summary, Tag, Category, Changed"
+   FIELDS="TopicTitle, Summary, Tag, Category, Changed, By"
    Category_title="%TRANSLATE{"Category"}%"
 }%
 %STOPINCLUDE%
 
 ---++ <nop>%TOPIC% form
-| *Name:*| *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
-| TopicType | label | 1 | ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic | Document type  |  | ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic |
-| <nop>TopicTitle | text | 75 | | enter a title for this topic |  | |
+| *Name:* | *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
+| TopicType | type | 1 | ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic | Document type | h | |
+| <nop>TopicTitle | text | 75 | | enter a title for this topic | | |
 | Summary | text | 75 | | short description or tagline | c | |
 | Tag | tag | 30 | | keywords for this topic | c | |
-| Category | cat | 1 |  | categories this topic is field to |  | |
+| Category | cat | 1 | | categories this topic is field to | | |
 
 
 %META:FORM{name="Applications.TopicType"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicType, DataForm, DocuTopic, ApplicationTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value="content organized by categories and tags"}%
-%META:FIELD{name="Icon" title="Icon" value="fa-certificate"}%
+%META:FIELD{name="Icon" title="Icon" value="fa-file-o"}%
 %META:FIELD{name="Editor" title="Editor" value="Applications.ClassificationApp.ClassifiedTopicEditTemplate"}%
 %META:FIELD{name="Template" title="Template" value=""}%
+%META:FIELD{name="CreateAction" title="Create Action" value="edit"}%
 %META:FIELD{name="TopicNamingMode" title="Topic Naming Mode" value="default"}%
 %META:FIELD{name="TopicNameTemplate" title="Topic Name Template" value=""}%
 %META:FIELD{name="TopicNameSource" title="Topic Name Source" value="[name=TopicTitle]"}%

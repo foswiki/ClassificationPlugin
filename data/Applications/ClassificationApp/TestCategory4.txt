@@ -1,8 +1,0 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
-%META:TOPICPARENT{name="TestCategory2"}%
-%DBCALL{"%CLASSIFICATIONPLUGIN_RENDERCATEGORY{default="Applications.ClassificationApp.RenderCategory"}%"}%
-
-%META:FORM{name="Applications.ClassificationApp.Category"}%
-%META:FIELD{name="TopicType" attributes="" title="TopicType" value="Category, CategorizedTopic"}%
-%META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
-%META:FIELD{name="Category" attributes="" title="Category" value="TestCategory2"}%

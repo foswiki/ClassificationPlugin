@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2019 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2025 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -38,13 +38,13 @@ sub new {
   my $name = shift;
 
   my $this = {
-    name=>$name,
-    origWeb=>$hierarchy->{web},
-    id=>$hierarchy->{idCounter}++,
-    hierarchy=>$hierarchy,
-    summary=>'',
-    title=>$name,
-    order=>99999999,
+    name => $name,
+    origWeb => $hierarchy->{web},
+    id => $hierarchy->{idCounter}++,
+    hierarchy => $hierarchy,
+    summary => '',
+    title => $name,
+    order => 99999999,
     @_
   };
   $this->{gotUpdate} = 1;
@@ -54,7 +54,7 @@ sub new {
   # register to hierarchy
   $hierarchy->setCategory($name, $this);
 
-  #writeDebug("new category name=$this->{name} title=$this->title web=$hierarchy->{web}"); 
+  #writeDebug("new category name=$this->{name} title=$this->title web=$hierarchy->{web}");
 
   return $this;
 }
@@ -434,8 +434,7 @@ sub reparent {
 
   $field->{value} = join(", ", sort keys %cats);
   $meta->putKeyed('FIELD', $field);
-
-  Foswiki::Func::saveTopic($this->{origWeb}, $this->{name}, $meta) if $doSave;
+  $meta->save() if $doSave;
 
   return $meta;
 }
@@ -477,7 +476,6 @@ sub getParent {
   return shift @parents;
 }
 
-
 ###############################################################################
 sub getAllParents {
   my $this = shift;
@@ -486,10 +484,17 @@ sub getAllParents {
 }
 
 ###############################################################################
+sub isRoot {
+  my $this = shift;
+
+  return $this eq $this->{hierarchy}{_top} ? 1: 0;
+}
+
+###############################################################################
 sub _getAllParents {
   my ($this, $seen) = @_;
 
-  return {} if $this eq $this->{hierarchy}{_top};
+  return {} if $this->isRoot;
   $seen ||= {};
 
   if (!defined ($this->{allparents}) && !$seen->{$this->{name}}) {
@@ -499,7 +504,7 @@ sub _getAllParents {
     
     my @parents = $this->getParents();
     foreach my $parent (@parents) {
-      $this->{allparents}{$parent->{name}} = 1 unless $parent eq $this->{hierarchy}{_top};
+      $this->{allparents}{$parent->{name}} = 1 unless $parent->isRoot;
       $this->{allparents} = {%{$this->{allparents}}, %{$parent->_getAllParents($parent, $seen)}};
     }
     $this->{gotUpate} = 1;
@@ -556,8 +561,12 @@ sub getTopics {
     @topics = keys %{$this->{_topics}};
   } else {
     my $web = $this->{hierarchy}{web};
+    my $db = Foswiki::Plugins::DBCachePlugin::getDB($web);
     foreach my $topic (keys %{$this->{_topics}}) {
-      if (Foswiki::Func::checkAccessPermission("view", $user, undef, $topic, $web)) {
+      #if (Foswiki::Func::checkAccessPermission("view", $user, undef, $topic, $web)) {
+      #  push @topics, $topic;
+      #}
+      if ($db->hasAccess("VIEW", $topic, undef, $user)) {
         push @topics, $topic;
       }
     }
@@ -614,16 +623,17 @@ sub getTagsOfTopics {
 ###############################################################################
 # register a subcategory
 sub addChild {
-  my ($this, $category) = @_;
+  my ($this, $cat) = @_;
 
- unless (defined $category->{name}) {
-   my ($package, $file, $line) = caller;
-   die "no name in category called from $package, line $line";
- }
+  unless (defined $cat->{name}) {
+    my ($package, $file, $line) = caller;
+    die "no name in category called from $package, line $line";
+  }
 
-  #writeDebug("called $this->{name}->addChild($category->{name})");
-  $this->{children}{$category->{name}} = $category;
+  #writeDebug("called $this->{name}->addChild($cat->{name})");
+  $this->{children}{$cat->{name}} = $cat;
   $this->{gotUpdate} = 1;
+  $cat->{importRoot} = $this->{importRoot} if defined $this->{importRoot};
 }
 
 ###############################################################################
@@ -777,20 +787,26 @@ sub importCategories {
 sub importCategoriesFromText {
   my ($this, $text, $targetHierarchy) = @_;
 
+  writeDebug("called importCategoriesFromText()");
   die "no targert hierarchy" unless defined $targetHierarchy;
 
   my $prefix = $this->{name};
   $prefix =~ s/Category$//;
-  
-  writeDebug("called importCategoriesFromText()");
+
   my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchyFromText($text, 
-    prefix => $prefix
+    prefix => $prefix,
   );
   my $top = $hierarchy->getCategory("TopCategory");
+
+  # set import root
+  foreach my $cat ($hierarchy->getCategories()) {
+    $cat->{importRoot} = $this->{name};
+  }
 
   # import all children
   foreach my $impChild ($top->getChildren) {
     next if $impChild->{name} eq 'BottomCategory';
+    $impChild->{importRoot} = $this->{name};
     my $clone = $impChild->import($targetHierarchy);
     $clone->{parents} = {$this->{name} => 1};
     $this->addChild($clone);
@@ -812,6 +828,7 @@ sub import {
   $cat->icon($this->icon);
   $cat->redirect($this->redirect);
   $cat->{origWeb} = $hierarchy->{web};
+  $cat->{importRoot} = $this->{importRoot} if defined $this->{importRoot};
 
   # import all children
   foreach my $child ($this->getChildren()) {
@@ -841,12 +858,37 @@ sub getBreadCrumbs {
     push @breadCrumbs, $parent;
 
     $parent = $parent->getParent($subsumes);
-    last if !$parent || $parent eq $parent->{hierarchy}{_top};
+    last if !$parent || $parent->isRoot;
   }
-
 
   return reverse @breadCrumbs;
 }
+
+###############################################################################
+sub getPathsToRoot {
+  my ($this, $subsumes, $seen) = @_;
+
+  my @paths = ();
+
+  $seen ||= {};
+  return @paths if $seen->{$this->{name}};
+  $seen->{$this->{name}} = 1;
+
+  foreach my $parent ($this->getParents($subsumes)) {
+
+    if ($parent->isRoot) {
+      push @paths, [$this->{name}];
+    } else {
+      foreach my $path ($parent->getPathsToRoot($subsumes, $seen)) {
+        push @$path, $this->{name};
+        push @paths, $path;
+      }
+    }
+  }
+
+  return @paths;
+}
+
 
 ###############################################################################
 sub getAllBreadCrumbs {
@@ -907,7 +949,7 @@ sub getUrl {
   if (Foswiki::Func::topicExists($hierWeb, $this->{name})) {
     $url = Foswiki::Func::getScriptUrlPath($hierWeb, $this->{name}, 'view');
   } else {
-    $url = Foswiki::Func::getScriptUrlPath($hierWeb, 'TopCategory', 'view', catname=>$this->{name});
+    $url = Foswiki::Func::getScriptUrlPath($hierWeb, $this->{importRoot} || 'TopCategory', 'view', catname=>$this->{name});
   }
 
   return $url;
@@ -1006,7 +1048,7 @@ sub traverse {
         'title'=>$this->title,
         'order'=>$this->order,
       );
-      $openers = Foswiki::Func::expandCommonVariables($openers);
+      $openers = Foswiki::Func::expandCommonVariables($openers) if $openers =~ /%/;
       my $isCacheable = ($params->{open} eq $openers)?1:0;
       $openers =~ s/^\s*(.*?)\s*$/$1/;
       #writeDebug("openers=$openers");
@@ -1034,7 +1076,6 @@ sub traverse {
     #writeDebug("hideclosed $this->{name} / ".$this->title);
     return '';
   }
-
 
   my @subResult;
   my $childIndex = 1;
@@ -1195,6 +1236,7 @@ sub traverse {
       'topic'=>$this->{name},
       'name'=>$this->{name},
       'summary'=>$this->summary,
+      'redirect'=>$this->redirect,
       'title'=>$this->title,
       'trunctitle'=>$truncTitle,
       'siblings'=>$nrSiblings,
@@ -1220,6 +1262,7 @@ sub traverse {
       'topic'=>$this->{name},
       'name'=>$this->{name},
       'summary'=>$this->summary,
+      'redirect'=>$this->redirect,
       'title'=>$this->title,
       'trunctitle'=>$truncTitle,
       'siblings'=>$nrSiblings,
@@ -1256,6 +1299,7 @@ sub traverse {
     'topic'=>$this->{name},
     'name'=>$this->{name},
     'summary'=>$this->summary,
+    'redirect'=>$this->redirect,
     'title'=>$this->title,
     'trunctitle'=>$truncTitle,
     'children'=>$subResult,

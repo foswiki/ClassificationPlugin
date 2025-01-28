@@ -1,35 +1,53 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
-%{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.WikiTopicView"}%
-%TMPL:DEF{"sidebar"}%%TMPL:END%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
+%TMPL:INCLUDE{"Applications.ClassificationApp.PaginationBase"}%
+
+%TMPL:DEF{"pagination::enabled"}%'%DISPLAYPAGINATION{default="on"}%'='on' and TopicType=~'\bCategorizedTopic\b'%TMPL:END%
+%TMPL:DEF{"pagination::query::exclude"}% AND topic!='TopCategory' AND topic!='BottomCategory'%TMPL:END%
+%TMPL:DEF{"pagination::order"}%Order,translate(topictitle)%TMPL:END%
+
+%TMPL:DEF{"uploaderenabled"}%%CATEGORY_UPLOADERENABLED{default="on"}%%TMPL:END%
+
+%TMPL:DEF{"javascript"}%%IF{"'%TMPL:P{"uploaderenabled"}%'!='on'"
+   then="$percntSET{\"TOPICINTERACTION_UPLOADERENABLED\" value=\"off\"}$percnt"
+}%%TMPL:PREV%%TMPL:END%
+
 %TMPL:DEF{"breadcrumbs::contents"}%%DBCALL{
   "Applications.ClassificationApp.RenderCategoryBreadcrumbs"
   CAT="%URLPARAM{"catname" default="%TOPIC%"}%"
   SEP="%TMPL:P{"sep"}%"
 }%%TMPL:END%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
-%TMPL:DEF{"beforetext::title"}%<!-- -->
-%CATINFO{
+%TMPL:DEF{"topicinfo::prefix"}%%CATINFO{
    cat="%URLPARAM{"catname" default="%BASETOPIC%"}%"
-   format="<h1 class='clsCategoryTitle'>$icon $link 
-     $percntIF{\"'$percntENCODE{\"$summary\" type=\"entity\"}$percnt'!=''\"
-       then=\"<br /><span class='foswikiTopicSummary'>$summary</span>\"
-     }$percnt</h1>"
-}%
-%IF{"'%DISPLAYREVISIONINFO{default="on"}%'='on' and '%TOPIC%' != 'TopCategory'"
-   then="$percntTMPL:P{\"catrevinfo\"}$percnt"
-}%<!-- -->%TMPL:END%
-%{</verbatim>}%
+   format="<div class='foswikiTopicPrefix'>$icon</div>"
+}%%TMPL:END%
 
-%{<verbatim class="tml">}%
-%TMPL:DEF{"catrevinfo"}%<div class='foswikiTopicInfo'>
-%CATINFO{
+%TMPL:DEF{"topicinfo::title"}%%IF{"$'URLPARAM{catname}'=''"
+  then="$percntTMPL:P{\"topicinfo::title::default\"}$percnt"
+  else="$percntTMPL:P{\"topicinfo::title::urlparam\"}$percnt"
+}%%TMPL:END%
+
+%TMPL:DEF{"topicinfo::title::urlparam"}%%CATINFO{
+  cat="%URLPARAM{"catname" default="%BASETOPIC%"}%" 
+  format="$title"
+}%%TMPL:P{"topicinfo::extra"}%%TMPL:END%
+
+%TMPL:DEF{"topicinfo::title::default"}%%RENDERFORDISPLAY{
+   fields="%TMPL:P{"topicinfo::fields"}%"
+   editable="%TMPL:P{"topicinfo::editable"}%"
+   excludeattr=""
+   hideempty="on"
+   header=""
+   footer=""
+   TopicTitle_default="%TOPICTITLE{encode="entity"}%"
+   TopicTitle_format="<div class='$name'><span itemprop='name' class='inlineEditValue' data-formfield='$name' data-default='$default' data-format='$edit'><a href='%SCRIPTURLPATH{"view" topic="%WEB%.%TOPIC%"}%'>$percntTRANSLATE{\"$value\"}$percnt</a> $editicon</span> $percntTMPL:P{\"topicinfo::extra\"}$percnt</div>"
+   Summary_format="<div class='$name'><div class='foswikiTopicSummary inlineEditValue' data-formfield='$name' data-format='$edit'>$percntTRANSLATE{\"$value\"}$percnt $editicon</div></div>"
+}%%TMPL:END%
+
+%TMPL:DEF{"revinfo::impl"}%<div class='foswikiRevision'><noautolink>%CATINFO{
   cat="%URLPARAM{"catname" default="%BASETOPIC%"}%" 
   format="$percntFORMATLIST{\"$parentlinks\" 
          split=\"\s*,\s*\" 
@@ -37,32 +55,46 @@
          header=\"%JQICON{"fa-share fa-rotate-270"}% \"
       }$percnt"
 }%%RENDERFORDISPLAY{
-   field="ResponsiblePerson"
-   topic="%URLPARAM{"catname" default="%BASETOPIC%"}%"
-   header=" <span class='foswikiRevisionSep'>&#124;</span> $percntJQICON{\"fa-user\"}$percnt "
-   footer=""
-   format="$value"
+   fields="ResponsiblePerson, Tag"
+   header=" <span class='inlineEditor' data-active-class='inlineEditActive alt'>"
+   footer="</span>"
+   separator="  " 
+   Tag_default="untagged"
+   Tag_format="<span><span class='inlineEditValue' data-view-def='renderForDisplay::formfield' data-formfield='$name'>%TMPL:P{"format::Tag"}%</span></span>"
+   ResponsiblePerson_format="<span><span class='inlineEditValue' data-view-def='renderForDisplay::formfield' data-formfield='$name'>%TMPL:P{"format::ResponsiblePerson"}%</span></span>"
    hideempty="on"
-}%</div>%TMPL:END%
-%{</verbatim>}%
+   editable="on"
+}%%TMPL:P{"revinfo::more"}%%JQREQUIRE{"ui, limitlist"}%</noautolink></div>%TMPL:END%
 
-%{<verbatim class="tml">}%
 %TMPL:DEF{"title"}%%HTMLTITLE{
   separator=" %HTMLTITLESEP{default="-"}% "
   title="%TMPL:P{"categorytitle"}%"
+  translate="%TMPL:P{"title::translate"}%"
 }%%TMPL:END%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
 %TMPL:DEF{"metatitle::content"}%%TMPL:P{"categorytitle"}%%TMPL:END%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
 %TMPL:DEF{"categorytitle"}%%IF{"defined catname"
   then="$percntCATINFO{cat=\"%URLPARAM{"catname"}%\" format=\"$title\"}$percnt"
   else="%TOPICTITLE%"
 }%%TMPL:END%
-%{</verbatim>}%
+
+%TMPL:DEF{"renderForDisplay::formfield"}%%RENDERFORDISPLAY{
+   editable="on"
+   field="%URLPARAM{"formfield"}%"
+   Tag_default="untagged"
+   hideempty="on"
+   format="%TMPL:P{
+            "format::%URLPARAM{"formfield"}%"
+          }%"
+}%%TMPL:END%
+
+%TMPL:DEF{"format::Tag"}%$percntIF{\"'$percntENCODE{\"$origvalue\"}$percnt'='untagged'\" 
+   then=\"<span class='isEmpty'>$percntTMPL:P{\"revinfo::sep\"}$percnt $percntJQICON{\"fa-tag\"}$percnt _%TRANSLATE{"untagged"}%_ \"
+   else=\"<span>$percntTMPL:P{\"revinfo::sep\"}$percnt $percntJQICON{\"fa-tag\"}$percnt $value \"
+}$percnt $editicon</span>%TMPL:END%
+
+%TMPL:DEF{"format::ResponsiblePerson"}%%TMPL:P{"revinfo::sep"}% %JQICON{"ma-person"}% $value $editicon%TMPL:END%
 
 %META:FORM{name="Applications.TopicView"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%

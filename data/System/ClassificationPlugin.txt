@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 ---+!! ClassificationPlugin
 %FORMFIELD{"Description"}%
 
@@ -50,7 +50,7 @@ the <nop>WikiWorkbench. This gives you maximum flexibility in your knowledge man
 document types can be derived with ease. These will automatically participate in the overall knowledge management
 framework.
 
-*Facetted Search*: <nop>ClassificationPlugin integrates well into [[Foswiki:Extensions/SolrPlugin][SolrPlugin]] using tags and 
+*Facetted Search*: <nop>ClassificationPlugin integrates well into [[https://foswiki.org/Extensions/SolrPlugin][SolrPlugin]] using tags and 
 categories to drill down into search results.
 
 ---++ Screenshots
@@ -66,7 +66,7 @@ categories to drill down into search results.
 
 The easiest way to get started is to create a new web by using the =_ClassificationTemplate= web as a template. For this
 
-   1 go to [[System.WebCreateNewWeb]] (or [[System.ManagingWebs]] in case you are not using [[Foswiki:Extensions/NatSkin][NatSkin]])
+   1 go to [[System.WebCreateNewWeb]] (or [[System.ManagingWebs]] in case you are not using [[https://foswiki.org/Extensions/NatSkin][NatSkin]])
    2 enter the name of your new web, e.g. "Knowledge"
    4 select =_ClassificationTemplate= as a template web
    5 click Submit
@@ -77,14 +77,14 @@ This will create a new web called "Knowledge" which has got all the means preins
    * create new categorizable and taggable content either using the <nop>Knowledge.ClassifiedTopic form or by hitting the "New" button on the top of each button
 
 Customize the frontpage of the new "Knowledge" web by describing the key content and thematic fields stored in it as well as their use.
-Note that for best findability it is recommended to install [[Foswiki:Extensions/SolrPlugin][SolrPlugin]] along with ClassificationPlugin. <nop>SolrPlugin will
+Note that for best findability it is recommended to install [[https://foswiki.org/Extensions/SolrPlugin][SolrPlugin]] along with ClassificationPlugin. <nop>SolrPlugin will
 be able to automatically generate recommended links to similar content in your "Knowledge" web based on category and tagging meta data. It also lets you
 filter and trim down search results selecting tags and categories in use.
 
 For further information please contact foswiki@michaeldaumconsulting.com.
 ---++ The <nop>ClassificationApp
 
-ClassificationPlugin is based on the [[Foswiki:Extensions/WikiWorkbenchContrib][WikiWorkbench application framework]] as well as being a base for further
+ClassificationPlugin is based on the [[https://foswiki.org/Extensions/WikiWorkbenchContrib][WikiWorkbench application framework]] as well as being a base for further
 wiki applications build with ClassificationPlugin itself. It has been used to build more specific apps such as 
 
    * contacts management
@@ -159,6 +159,7 @@ Format strings such as =header=, =footer=, and =format= may contain the followin
 | =$order= | Order property of a category |
 | =$origweb= | originating web where the category was defined; this value might differ from =$web= in case the hierarchy has been (partially) imported from another web |
 | =$parents= | comma separated list of parent categories |
+| =$redirect= | topic that this category redirect to |
 | =$siblings= | number of sibling nodes |
 | =$subcats= | number of subordinated categories |
 | =$summary= | Summary property of a category |
@@ -308,7 +309,7 @@ Render tag information for a given category or topic.
 
 | *Parameter* | *Description* | *Default* |
 | =[topic]= | topic for which to render tag information | =%!BASETOPIC%= |
-| =format= | format string to render tag information; see the list of possible variables below | =$title= |
+| =format= | format string to render tag information; see the list of possible variables below | =$link= |
 | =separator= | format string used to separate list items | =, = (coma + blank) |
 | =header= | header string prepended to the result | (empty string) |
 | =footer= | footer string appended to the result | (empty string) |
@@ -321,7 +322,7 @@ Render tag information for a given category or topic.
 ---+++ SIMILARTOPICS
 
 <div class="foswikiWarningMessage">
-Warning: You are strongly encouraged to use =%SOLRSIMILAR= feature of [[Foswiki:Extensions/SolrPlugin][SolrPlugin]]
+Warning: You are strongly encouraged to use =%SOLRSIMILAR= feature of [[https://foswiki.org/Extensions/SolrPlugin][SolrPlugin]]
 for better performance and flexibility.
 </div>
 
@@ -334,12 +335,23 @@ weighted matching coefficient.
 ---++ Integration into query language 
 
 ClassificationPlugins adds three new operators to the query language to make use of category information in wiki applications.
-Note however that for now only the =%DBQUERY= language is supported (see [[Foswiki:Extensions/DBCachePlugin][DBCachePlugin]]).
+Note however that for now only the =%DBQUERY= language is supported (see [[https://foswiki.org/Extensions/DBCachePlugin][DBCachePlugin]]).
 
 | *Operator* | *Description* | 
 | =cat1 SUBSUMES cat2= | returns true when =cat1= subsumes =cat2= | 
 | =topic ISA cat= | returns true when =topic= is covered by =cat= | 
 | =catOrTopic DISTANCE catOrTopic= | returns the distance between two categories, a category and a topic or two topics within the context of the same hierarchy; see the above definition of the [[#DISTANCE][%DISTANCE]] macro |
+
+---++ Cache maintenance
+
+When you share categories definied in one place in a couple of other webs, those categories aren't updated in all other webs right away.
+For example say you defined a taxonomy in some <nop>MetaData web and these categories are imported to a couple of other webs Web1, Web2, etc
+in an atempt not having to maintain all categories per each web but just in one spot. If you add, rename, modify, delete some of the categories
+in the <nop>MetaData web then those changes aren't visuble in Web1, Web2 etc. Categories have to be "refreshed" manually. This can either be
+done using an URL parameter =refresh=cat= in the webs, or click on the "Refresh" button on the Category topic of each web. Instead you might
+click below button to update all categories of all webs in one go:
+
+%BUTTON{"Refresh all categories" target="%SCRIPTURLPATH{"rest"}%/ClassificationPlugin/updateCache?redirectto=%SCRIPTURL{"view"}%/%WEB%/%TOPIC%?flashnote=Update%20Completed" icon="fa-refresh"}%
 
 ---++ Installation Instructions
 %$INSTALL_INSTRUCTIONS%
@@ -349,6 +361,12 @@ Note however that for now only the =%DBQUERY= language is supported (see [[Foswi
 
 ---++ Change History
 %TABLE{columnwidths="7em" tablewidth="100%"}%
+|  28 Jan 2025: | replacing (optional) dependency on <nop>WorkflowPlugin with [[https://foswiki.org/Extensions/QMPlugin][QMPlugin]]; \
+                  improved formfields =cat= and =tag=; \
+                  depending on [[https://foswiki.org/Extensions/WikiWorkbenchContrib][WikiWorkbenchContrib]] &gt;= 6.00; \
+                  improved category based webdav browser using [[https://foswiki.org/Extensions/WebDAVContrib][WebDAVContrib]]; \
+                  new pagination templates to navigate between topics, e.g. blog postings; \
+                  new <nop>BaseTemplates to make features more modular |
 |  02 May 2019: | major rewrite based on latest !WikiWorkbench framework |
 |  23 Jan 2017: | added support for Foswiki:Extensions/LikePlugin; \
                   added "Responsible Person" to Category topics; \
@@ -395,17 +413,16 @@ Note however that for now only the =%DBQUERY= language is supported (see [[Foswi
 |  30 Oct 2006: | Initial version |
 
 
-
-%META:FILEATTACHMENT{name="ClassificationPluginSnap7.png" attachment="ClassificationPluginSnap7.png" attr="" comment="" date="1556791161" size="233626" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap6.png" attachment="ClassificationPluginSnap6.png" attr="" comment="" date="1556791161" size="108342" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap5.png" attachment="ClassificationPluginSnap5.png" attr="" comment="" date="1556791161" size="32247" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap4.png" attachment="ClassificationPluginSnap4.png" attr="" comment="" date="1556791161" size="113934" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap3.png" attachment="ClassificationPluginSnap3.png" attr="" comment="" date="1556791161" size="337629" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap2.png" attachment="ClassificationPluginSnap2.png" attr="" comment="" date="1556791161" size="30485" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap1.png" attachment="ClassificationPluginSnap1.png" attr="" comment="" date="1556791161" size="55821" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap7.png" attachment="ClassificationPluginSnap7.png" attr="" comment="" date="1738068130" size="233626" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap6.png" attachment="ClassificationPluginSnap6.png" attr="" comment="" date="1738068130" size="108342" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap5.png" attachment="ClassificationPluginSnap5.png" attr="" comment="" date="1738068130" size="32247" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap4.png" attachment="ClassificationPluginSnap4.png" attr="" comment="" date="1738068130" size="113934" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap3.png" attachment="ClassificationPluginSnap3.png" attr="" comment="" date="1738068130" size="337629" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap2.png" attachment="ClassificationPluginSnap2.png" attr="" comment="" date="1738068130" size="30485" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap1.png" attachment="ClassificationPluginSnap1.png" attr="" comment="" date="1738068130" size="55821" user="ProjectContributor" version="1"}%
 %META:FORM{name="PackageForm"}%
 %META:FIELD{name="Author" title="Author" value="Michael Daum"}%
-%META:FIELD{name="Copyright" title="Copyright" value="2006-2019, Michael Daum http://michaeldaumconsulting.com"}%
+%META:FIELD{name="Copyright" title="Copyright" value="&copy; 2006-2025, Michael Daum"}%
 %META:FIELD{name="Description" title="Description" value="%25$SHORTDESCRIPTION%25"}%
 %META:FIELD{name="Home" title="Home" value="https://foswiki.org/Extensions/%TOPIC%"}%
 %META:FIELD{name="License" title="License" value="GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]])"}%

@@ -1,17 +1,17 @@
 # Module of Foswiki - The Free and Open Source Wiki, http://foswiki.org/
-# 
-# Copyright (C) 2007-2019 Michael Daum http://michaeldaumconsulting.com
+#
+# Copyright (C) 2007-2025 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
 # of the License, or (at your option) any later version. For
 # more details read LICENSE in the root of this distribution.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# 
+#
 # As per the GPL, removal of this notice is prohibited.
 
 package Foswiki::Form::Cat;
@@ -26,26 +26,42 @@ use Foswiki::Plugins::ClassificationPlugin ();
 use Foswiki::Func ();
 
 sub new {
-    my $class = shift;
-    my $this = $class->SUPER::new( @_ );
+  my $class = shift;
+  my $this = $class->SUPER::new(@_);
 
-    return $this;
+  return $this;
 }
 
 sub finish {
-    my $this = shift;
-    $this->SUPER::finish();
-    undef $this->{_options};
+  my $this = shift;
+  $this->SUPER::finish();
+  undef $this->{_options};
+  undef $this->{_params};
 }
 
-sub isMultiValued { 
-  return 1;
+sub isMultiValued { return 1; }
+sub isValueMapped { return 1; }
+
+sub param {
+  my ($this, $key, $val) = @_;
+
+  unless (defined $this->{_params}) {
+    my %params = Foswiki::Func::extractParameters($this->{value});
+    $this->{_params} = \%params;
+  }
+
+  if (defined $key && defined $val) {
+    $this->{_params}{$key} = $val;
+    return $val;
+  }
+
+  return (defined $key) ? $this->{_params}{$key} : $this->{_params};
 }
 
-sub getOptions { # needed by FieldDefinition
+sub getOptions {    # needed by FieldDefinition
   my $this = shift;
 
-  my $request = Foswiki::Func::getCgiQuery();
+  my $request = Foswiki::Func::getRequestObject();
 
   # trick this in by getting all values from the query
   # and allow them to be asserted
@@ -62,42 +78,43 @@ sub getOptions { # needed by FieldDefinition
 }
 
 sub renderForDisplay {
-    my ( $this, $format, $value, $attrs ) = @_;
+  my ($this, $format, $value, $attrs, $meta) = @_;
 
-    if ( !$attrs->{showhidden} ) {
-        my $fa = $this->{attributes} || '';
-        if ( $fa =~ /H/ ) {
-            return '';
-        }
+  if (!$attrs->{showhidden}) {
+    my $fa = $this->{attributes} || '';
+    if ($fa =~ /H/) {
+      return '';
     }
+  }
 
-    my $displayValue = $this->getDisplayValue($value);
-    $format =~ s/\$value\(display\)/$displayValue/g;
-    $format =~ s/\$value/$value/g;
+  my $displayValue = $this->getDisplayValue($value, $meta->web, $meta->topic);
+  $format =~ s/\$value\(display\)/$displayValue/g;
+  $format =~ s/\$value/$value/g;
 
-    return $this->SUPER::renderForDisplay($format, $value, $attrs);
+  return $this->SUPER::renderForDisplay($format, $value, $attrs);
 }
 
 sub getDisplayValue {
-    my ($this, $value, $web, $topic) = @_;
+  my ($this, $value, $web) = @_;
 
-    $web ||= $this->{session}{webName};
+  $web //= $this->param("web") // $this->{session}{webName};
 
-    my @value = ();
-    foreach my $catName (split(/\s*,\s*/, $value)) {
-      my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($web);
-      next $value unless $hierarchy;
+  my @value = ();
+  foreach my $catName (split(/\s*,\s*/, $value)) {
+    my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($web);
+    next $value unless $hierarchy;
 
-      my $cat = $hierarchy->getCategory($catName);
-      if (defined $cat) {
-        push @value, $cat->getLink();
-      } else {
-        push @value, $catName;
-      }
+    my $cat = $hierarchy->getCategory($catName);
+    if (defined $cat) {
+      push @value, $cat->getLink();
+    } else {
+      push @value, $catName;
     }
-    $value = join(', ', @value);
+  }
+  my $sep = $this->param("separator") // ", ";
+  $value = join($sep, @value);
 
-    return $value;
+  return $value;
 }
 
 sub renderForEdit {
@@ -125,20 +142,19 @@ sub renderForEdit {
   }
 
   my $value = shift;
-  $value =~ s/\s*\w+=\".*?\"\s*//g; # remove top="..."
+  $value =~ s/\s*\w+=\".*?\"\s*//g;    # remove top="..."
 
   # SMELL find a condition under which we render hidden instead
-  #my $query = Foswiki::Func::getCgiQuery();
+  #my $query = Foswiki::Func::getRequestObject();
   #my $form = $query->param('form');
   #return ('', '<noautolink>'.$this->renderHidden($meta).'</noautolink>')
   #  unless $form;
 
-  my %params = Foswiki::Func::extractParameters($this->{value});
-  my $top = $params{top} || 'TopCategory';
+  my $top = $this->param("top") || 'TopCategory';
 
-  $web = $params{web} if defined $params{web};
+  $web = $this->param("web") || $web;
   my $baseWeb = $this->{session}->{webName};
-  my $buttons = $params{buttons} || 'on';
+  my $buttons = $this->param("buttons") || 'on';
 
   Foswiki::Func::readTemplate("classificationplugin");
 
@@ -157,10 +173,9 @@ sub renderForEdit {
   $widget =~ s/\$classes/$classes/g;
   $widget =~ s/\$buttons/$buttons/g;
   $widget =~ s/\$(name|type|size|value|attrs)//g;
+  $widget =~ Foswiki::Func::expandCommonVariables($widget, $topic, $web) if $widget =~ /%/;
 
-  #print STDERR "widget=$widget\n";
-
-  return ('', Foswiki::Func::expandCommonVariables($widget, $topic, $web));
+  return ('', $widget);
 }
 
 1;

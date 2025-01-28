@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicType"}%
 %DBCALL{"Applications.RenderTopicInstaller" TEXT="Install '%TOPIC%' TopicType" TYPE="TopicType"}%
 
@@ -15,22 +15,22 @@ See also [[%TOPIC%EditTemplate]], [[%TOPIC%ViewTemplate]]
 }%
 
 %DBCALL{"Applications.RenderTopicsOfType" 
-   FIELDS="TopicTitle, Summary, Tag, Category, Changed"
+   FIELDS="TopicTitle, Summary, Tag, Category, Changed, By"
    Category_title="%TRANSLATE{"Category"}%"
 }%
 %STOPINCLUDE%
 
 ---++ <nop>%TOPIC% form
-| *Name:*| *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
-| TopicType | label | 1 | SeoTopic, ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic | Document type  | | |
+| *Name:* | *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
+| TopicType | type | 1 | SeoTopic, ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic | Document type | h | |
 | <nop>TopicTitle | text | 75 | | | | |
 | Summary | text | 75 | | short description or tagline | c | |
 | Tag | tag | 30 | | keywords | c | |
-| Category | cat | 1 | | categories this blog entry is field to |  | |
+| Category | cat | 1 | | categories this blog entry is field to | | |
 | HTML Title | text | 75 | | controls the title being added to the html page, defaults to <nop>TopicTitle if. <a href='#' id='clsGenerateTitle'>%TRANSLATE{"Generate title"}%</a> | | |
 | Meta Description | textarea | 80x2 | | SEO description. Use a maximum of 160 chars for the description. <a href='#' id='clsGenerateDescription'>%TRANSLATE{"Generate description"}%</a> | | |
 | Meta Keywords | text | 75 | | SEO keywords. Specify a comma separate list of keywords. <a href='#' id='clsGenerateKeywords'>%TRANSLATE{"Generate keywords"}%</a> | | |
-| Meta Image | select2 | 30 | , %ATTACHMENTS{format="$name" separator=", "}% | name of attachment used as open graph image thumbnail |  | |
+| Meta Image | select2 | 30 | , %ATTACHMENTS{format="$name" separator=", "}% | name of attachment used as open graph image thumbnail | | |
 
 %META:FORM{name="Applications.TopicType"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicType, DataForm, DocuTopic, ApplicationTopic, WikiTopic"}%
@@ -39,9 +39,11 @@ See also [[%TOPIC%EditTemplate]], [[%TOPIC%ViewTemplate]]
 %META:FIELD{name="Icon" title="Icon" value="fa-cloud"}%
 %META:FIELD{name="Editor" title="Editor" value="Applications.ClassificationApp.SeoTopicEditTemplate"}%
 %META:FIELD{name="Template" title="Template" value=""}%
+%META:FIELD{name="CreateAction" title="Create Action" value="edit"}%
 %META:FIELD{name="TopicNamingMode" title="Topic Naming Mode" value="default"}%
 %META:FIELD{name="TopicNameTemplate" title="Topic Name Template" value=""}%
 %META:FIELD{name="TopicNameSource" title="Topic Name Source" value="[name=TopicTitle]"}%
 %META:FIELD{name="TopicNamePrefix" title="Topic Name Prefix" value=""}%
 %META:FIELD{name="TopicNameSuffix" title="Topic Name Suffix" value=""}%
+%META:FIELD{name="TopicNameTransliterate" title="Topic Name Transliterate" value="true"}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

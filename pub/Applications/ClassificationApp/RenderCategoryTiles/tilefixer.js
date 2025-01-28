@@ -15,6 +15,6 @@ jQuery(function($) {
          $this.append("<div class='clsCategoryTile empty'></div>");
          n++;
       }
-      $this.css("visibility", "visible");
+      /*$this.css("visibility", "visible");*/
    });
 });

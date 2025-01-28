@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="Applications/ClassificationApp.TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -19,15 +19,15 @@ a summary for an object listed within the TaggedTopic.
     $percntDBCALL{\"$web.$topic->Applications.RenderTopicThumbnail\" 
       TYPE=\"plain\"
       ALIGN=\"right\"
-      CROP=\"west\"
+      CROP=\"northwest\"
     }$percnt<!-- -->
-    [[$web.$topic][$expand(topictitle)]]%IF{"context RedDotPluginEnabled" then="$dollarpercntREDDOT{\\"$web.$topic\\"}$dollarpercnt"}%
-    $expand('<div class=\"foswikiTopicSummary\">' and Summary and '</div>')<!-- -->
+    [[$web.$topic]]%IF{"context RedDotPluginEnabled" then="$dollarpercntREDDOT{\\"$web.$topic\\"}$dollarpercnt"}%
+    <div class='foswikiTopicSummary'>$expand(Summary)</div>
     <div class='foswikiTopicInfo'>
-      <!-- -->$formatTime(info.date)
-      <!-- -->$percntUSERINFO{\"$expand(info.author)\"
-        format=\"<span class='foswikiRevisionSep'>&#124;</span> <nop>$dollarpercntGETTOPICTITLE{\\"$wikiusername\\"}$dollarpercnt\"
-      }$percnt
+      <span class='foswikiRevisionDate'>$formatTime(info.date)</span>
+      $percntUSERINFO{\"$expand(info.author)\"
+        format=\"<span class='foswikiRevisionSep'>&#124;</span> <span class='foswikiRevisionAuthor'>$dollarpercntGETTOPICTITLE{\\"$wikiusername\\"}$dollarpercnt</span>\"
+      }$percnt<!-- -->
       $percntTAGINFO{\"$web.$topic\" 
         header=\" <span class='foswikiRevisionSep'>&#124;</span> <span class='clsTagInfo'>\" 
         separator=\"&#44; \"
@@ -47,6 +47,6 @@ a summary for an object listed within the TaggedTopic.
 
 %META:FORM{name="Applications.TopicFunction"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
-%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value="TaggedTopicRenderIndexItem"}%
 %META:FIELD{name="Summary" title="Summary" value="Renders an index item for TaggedTopics"}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

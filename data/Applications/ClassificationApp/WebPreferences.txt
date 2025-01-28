@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %TOC%
 
 ---++ Naming
@@ -16,12 +16,14 @@ using a kind of tagline:
    * Set ALLOWWEBCHANGE = %USERSWEB%.AdminGroup
    * Set ALLOWTOPICCHANGE = %USERSWEB%.AdminGroup
    * Set DENYWEBCOMMENT = %USERSWEB%.WikiGuest
+   * Set DENYWEBHISTORY = %USERSWEB%.WikiGuest
+   * Set DENYWEBRAW = %USERSWEB%.WikiGuest
 
 ---++ Application Pointer
    * Set CLASSIFICATIONPLUGIN_AUTOREPARENT = 1
    * Set CLASSIFICATIONPLUGIN_NRCOLS = 3
    * Set CLASSIFICATIONPLUGIN_RENDERCATEGORY = Applications.ClassificationApp.RenderCategoryTiles
-   * Set CLASSIFICATIONPLUGIN_DEFAULTWORKFLOW = SimpleApprovalWorkflow
+   * Set CLASSIFICATIONPLUGIN_SHOWFILTER = on
 
 ---++ Wiki application settings
 

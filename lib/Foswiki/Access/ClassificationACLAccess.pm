@@ -144,15 +144,16 @@ sub _getWebACL {
   my $text = Foswiki::Func::getPreferencesValue($mode);
   Foswiki::Func::popTopicContext();
 
-  return undef unless defined $text;
+  return unless defined $text;
 
   # Remove HTML tags (compatibility, inherited from Users.pm
   $text =~ s/(<[^>]*>)//g;
 
   # Dump the users web specifier if userweb
   my @list = grep { /\S/ } map {
-    s/^($Foswiki::cfg{UsersWebName}|%USERSWEB%|%MAINWEB%)\.//;
-    $_
+    my $tmp = $_;
+    $tmp =~ s/^($Foswiki::cfg{UsersWebName}|%USERSWEB%|%MAINWEB%)\.//;
+    $tmp;
   } split(/[,\s]+/, $text);
 
   #print STDERR "getACL($mode): ".join(', ', @list)."\n";
@@ -165,7 +166,7 @@ sub _getWebACL {
 __END__
 Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 
-Copyright (C) 2015-2019 Michael Daum http://michaeldaumconsulting.com
+Copyright (C) 2015-2025 Michael Daum http://michaeldaumconsulting.com
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License

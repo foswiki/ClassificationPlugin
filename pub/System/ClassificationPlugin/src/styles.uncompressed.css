@@ -1,0 +1,229 @@
+:root {
+  --cls-pagination-foreground:var(--color-foreground);
+  --cls-pagination-background:var(--alt-background);
+  --cls-pagination-hover-foreground:var(--color-background);
+  --cls-pagination-hover-background:var(--color-primary-darker-4);
+}
+:root[data-theme='dark'] {
+  --cls-pagination-hover-foreground:var(--color-foreground);
+}
+.jqHierarchy {
+  position:relative;
+}
+.jqHierarchy label.error {
+  position:absolute;
+  bottom:0;
+  right:0;
+}
+.jqHierarchyButtons {
+  position:relative;
+  float:right;
+  line-height:30px;
+  margin:-5px -5px 0 0;
+}
+.jqHierarchyButtons .jqHierarchySearchField {
+  width:14em;
+}
+.jstree-count {
+  margin-left:0.3em;
+}
+.jqTopicCreator .jqHierarchyButtons {
+  display:none;
+}
+.jqHierarchy a {
+  text-decoration:none !important;
+}
+.clsBrowser a.foswikiCurrentTopicLink {
+  color:red;
+}
+.clsBrowser .treeview li { 
+  padding: 1px 0px 1px 20px;
+  border:0;
+}
+.clsTag {
+  padding:1px 15px 2px 5px;
+  border:1px solid #CAD8F3;
+  margin:0px 5px 5px 0px;
+  background:#DEE7F8;
+  float:left;
+  position:relative;
+}
+.clsTagCloud {
+  margin:10px 0px;
+  text-align:center;
+  line-height:normal;
+}
+.clsTagCloud strong {
+  /*
+  font-size:160%;
+  margin:0px 5px 0px 2px;
+  */
+  color: var(--color-bold, inherit);
+}
+.clsTagCloud a {
+  padding:0px 5px;
+  text-decoration:none;
+}
+.tagCloud a:hover,
+.clsBrowser .current,
+.clsTagCloud a:hover,
+.clsTagCloud .hilite,
+.clsTagCloud .current {
+  background-color:#06c !important;
+  color:white !important;
+  text-decoration:none;
+}
+.clsBrowser {
+  padding:5px;
+  border:1px solid var(--alt-border, #ddd);
+  background: var(--alt-background);
+  color: var(--alt-foreground);
+  border-radius:4px;
+}
+.clsBrowser ul li {
+  list-style-image:none;
+}
+.clsBrowser ul li a:hover,
+.clsBrowser ul li a {
+  background-image:none;
+  padding:0px;
+}
+.clsBrowser li a img {
+  padding-right:2px;
+}
+.clsSideBar.clsBrowser {
+  border:0px;
+  padding:0px;
+  margin-bottom:0px;
+}
+
+.clsSideBar ul ul {
+  border:0px;
+  margin-bottom:0.5em;
+}
+
+.clsSideBar ul ul li {
+  border:0px;
+  margin:0em 0em 0em 1.5em;
+}
+.clsSideBar ul ul li a:hover,
+.clsSideBar ul ul li a {
+  padding:0px;
+  margin:0px;
+  display:inline;
+}
+
+.clsTagCloud .typed {
+  background:pink;
+}
+
+/* indexes */
+.clsIndexItem {
+  margin-bottom:var(--margin, 1em);
+  -webkit-column-break-inside: avoid;
+          page-break-inside: avoid;
+               break-inside: avoid;
+}
+.clsTopicItem {
+  background-repeat:no-repeat;
+}
+
+.clsTopicItem .imageSimple,
+.clsTopicItem .imagePlain {
+  background: var(--color-background, #fff);
+}
+.clsTopicItem .imageSimple_left,
+.clsTopicItem .imagePlain_left {
+  margin:4px 1em 4px 0;
+}
+.clsTopicItem .imageSimple_right,
+.clsTopicItem .imagePlain_right {
+  margin:4px 0 4px 1em;
+}
+.clsIndexItem .fa {
+  font-size:110%;
+  margin-right:2px;
+}
+.clsIndexItem .clsLikeInfo .jqIcon {
+  margin:inherit;
+}
+
+.clsCategoryLink:hover,
+.clsCategoryLink {
+  padding:1px 0px 1px 20px !important;
+  background-position:0 0 !important;
+  background-repeat:no-repeat !important;
+}
+
+/* pagination */
+.clsPagination {
+  margin:calc(var(--margin) * 3) 0 0;
+  display:flex;
+  gap:var(--margin);
+}
+.clsPaginationNext {
+  text-align:right;
+}
+.clsPaginationPrev,
+.clsPaginationNext {
+  flex-grow:1;
+  padding:1em 2em;
+  text-decoration:none;
+  color:var(--cls-pagination-foreground);
+  background-color:var(--cls-pagination-background);
+  position:relative;
+  display:inline-block;
+  width: 50%;
+  box-sizing:border-box;
+  position: relative;
+  overflow: hidden;
+  transition: 250ms;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.clsPaginationDisabled {
+  background:transparent;
+}
+a.clsPaginationPrev:active:hover,
+a.clsPaginationNext:active:hover,
+a.clsPaginationPrev:hover,
+a.clsPaginationNext:hover {
+  color:var(--cls-pagination-hover-foreground);
+  background-color:var(--cls-pagination-hover-background);
+}
+.clsPaginationPrev::before,
+.clsPaginationPrev::after {
+   left: 0;
+}
+.clsPaginationNext::before,
+.clsPaginationNext::after {
+   right: 0;
+}
+
+.clsPaginationPrev::before,
+.clsPaginationPrev::after,
+.clsPaginationNext::before,
+.clsPaginationNext::after {
+   width: 15px;
+   height: 50%;
+   position: absolute;
+   content: "";
+}
+.clsPaginationPrev::before {
+   top: 0;
+   background: linear-gradient(to left top, transparent 50%, var(--color-background) 50%);
+}
+.clsPaginationPrev::after {
+   top: 50%;
+   background: linear-gradient(to left bottom, transparent 50%, var(--color-background) 50%);
+}
+
+.clsPaginationNext::before {
+   top: 0;
+   background: linear-gradient(to right top, transparent 50%, var(--color-background) 50%);
+}
+
+.clsPaginationNext::after {
+   top: 50%;
+   background: linear-gradient(to right bottom, transparent 50%, var(--color-background) 50%);
+}

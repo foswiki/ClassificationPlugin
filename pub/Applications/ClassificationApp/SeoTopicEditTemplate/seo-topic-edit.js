@@ -1,9 +1,10 @@
 "use strict";
 jQuery(function($) {
-  $(document).on("click", "#clsGenerateTitle", function() {
-    $(this).parents(".foswikiFormStep:first").find("input").val($("input[name=TopicTitle]").val());
-    return false;
-  });
+   $(document).on("click", "#clsGenerateTitle", function() {
+      var title = $("input[name=TopicTitle]").val() + " - %" + "WIKITOOLNAME%";
+      $(this).parents(".foswikiFormStep:first").find("input").val(title);
+      return false;
+   });
 
   $(document).on("click", "#clsGenerateDescription", function() {
     var $field = $(this).parents(".foswikiFormStep:first").find("textarea"),

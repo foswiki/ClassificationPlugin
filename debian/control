@@ -1,6 +1,6 @@
-Source: foswiki-classificationplugin
+Source: foswiki-classification-plugin
 Section: web
-Priority: extra
+Priority: optional
 Maintainer: Michael Daum <debian@michaeldaumconsulting.com>
 Build-Depends: debhelper (>= 8)
 Standards-Version: 3.9.2
@@ -8,10 +8,11 @@ Homepage: http://foswiki.org/Extensions/ClassificationPlugin
 #Vcs-Git: git://git.debian.org/collab-maint/foswiki.git
 #Vcs-Browser: http://git.debian.org/?p=collab-maint/foswiki.git;a=summary
 
-Package: foswiki-classificationplugin
+Package: foswiki-classification-plugin
 Architecture: all
-Depends: ${perl:Depends}, ${misc:Depends}, foswiki-core, 
-Description: A topic classification plugin and application
+Depends: ${misc:Depends}, foswiki-bread-crumbs-plugin, foswiki-core, foswiki-db-cache-plugin, foswiki-filter-plugin, foswiki-flex-form-plugin, foswiki-grid-layout-plugin, foswiki-j-query-plugin, foswiki-jq-limit-list-plugin, foswiki-js-tree-contrib, foswiki-more-formfields-plugin, foswiki-multi-lingual-plugin, foswiki-nat-edit-plugin, foswiki-render-plugin, foswiki-tag-cloud-plugin, foswiki-wiki-workbench-contrib
+Suggests: foswiki-like-plugin, foswiki-nat-skin, foswiki-qm-plugin, foswiki-red-dot-plugin
+Description: Topic categorization and tagging 
  (...add your text here...)
  .
  See http://foswiki.org/Extensions/ClassificationPlugin for more.

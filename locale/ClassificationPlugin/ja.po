@@ -18,199 +18,11 @@ msgstr ""
 "X-Poedit-Country: JAPAN\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: data/Applications/ClassificationApp/WelcomeMessage.txt:12
-msgid "... and finally delete this message."
-msgstr ""
-
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:53
-msgid "Action"
-msgstr ""
-
-#: data/_ClassificationTemplate/WebHome.txt:62
-msgid "Add more text here"
-msgstr ""
-
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:68
-msgid "Cancel"
-msgstr "キャンセル"
-
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:12
-#: data/_ClassificationTemplate/WebHome.txt:9
+#: data/_ClassificationTemplate/WebHome.txt:4
 msgid "Categories"
 msgstr "カテゴリー"
 
-#: data/Applications/ClassificationApp/CategorizedTopic.txt:20
-#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:29
-#: data/Applications/ClassificationApp/ClassifiedTopic.txt:24
-#: data/Applications/ClassificationApp/ControlledTopic.txt:25
-#: data/Applications/ClassificationApp/SeoTopic.txt:19
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:28
-#, fuzzy
-msgid "Category"
-msgstr "カテゴリー"
-
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:19
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:46
-#, fuzzy
-msgid "Change State"
-msgstr "言語を変更します"
-
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:66
-msgid "Clear"
-msgstr "クリア"
-
-#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:25
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:30
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:63
-msgid "Comment"
-msgstr "コメント"
-
-#: data/Applications/ClassificationApp/WelcomeMessage.txt:10
-msgid ""
-"Create [[%1][categories]] matching the subject fields covered in this web."
-msgstr ""
-
-#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:22
-#: data/Applications/ClassificationApp/ControlledTopic.txt:18
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:21
-#: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:20
-#, fuzzy
-msgid "Create a new %1"
-msgstr "新トピックを作成します"
-
-#: data/Applications/ClassificationApp/WelcomeMessage.txt:8
-msgid ""
-"Customize each section on this dashboard to your needs by hovering over the "
-"heading. It will display a pencil icon."
-msgstr ""
-
-#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:26
-msgid "Date"
-msgstr ""
-
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:13
-#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:22
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:8
-msgid "Details"
-msgstr ""
-
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:41
-msgid "Diff"
-msgstr ""
-
-#: data/Applications/ClassificationApp/WelcomeMessage.txt:11
-msgid ""
-"Edit this page and give it a name. This will be used as the display title "
-"linking to this web, e.g. in breadcrumbs and search interfaces."
-msgstr ""
-
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:55
-#, fuzzy
-msgid "Empty the selection"
-msgstr "変更"
-
-#: data/Applications/ClassificationApp/RenderCategory.txt:126
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:49
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:68
-msgid "Filter"
-msgstr ""
-
-#: data/Applications/ClassificationApp/SeoTopic.txt:31
-#, fuzzy
-msgid "Generate description"
-msgstr "バージョン"
-
-#: data/Applications/ClassificationApp/SeoTopic.txt:32
-msgid "Generate keywords"
-msgstr ""
-
-#: data/Applications/ClassificationApp/SeoTopic.txt:30
-msgid "Generate title"
-msgstr ""
-
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:38
-#, fuzzy
-msgid "HTML Text"
-msgstr "テキスト内容"
-
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:26
-#, fuzzy
-msgid "HTML Title"
-msgstr "トピックタイトル"
-
-#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:18
-#, fuzzy
-msgid "History"
-msgstr "履歴"
-
-#: data/Applications/ClassificationApp/RenderCategorySettings.txt:30
-msgid "Icon"
-msgstr ""
-
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:43
-msgid "Import"
-msgstr ""
-
-#: data/Applications/ClassificationApp/RenderCategorySettings.txt:26
-#, fuzzy
-msgid "Imported Categories"
-msgstr "カテゴリー"
-
-#: data/Applications/ClassificationApp/WelcomeMessage.txt:9
-msgid ""
-"Install Foswiki:Extensions/NatSkin for best usability, design and "
-"readability of your content."
-msgstr ""
-
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:31
-msgid "Meta Image"
-msgstr ""
-
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:28
-#, fuzzy
-msgid "Meta desciption"
-msgstr "バージョン"
-
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:27
-msgid "Meta keywords"
-msgstr ""
-
-#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:89
-msgid ""
-"Multiple heading 1 detected. Please only use heading 2, 3, ... inside the "
-"content area."
-msgstr ""
-
-#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:21
-#: data/Applications/ClassificationApp/ControlledTopic.txt:17
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:20
-#: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:19
-msgid "New"
-msgstr ""
-
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:32
-msgid "Notes"
-msgstr "注意"
-
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:30
-msgid "Nothing found"
-msgstr ""
-
-#: data/Applications/ClassificationApp/RenderCategorySettings.txt:22
-#, fuzzy
-msgid "Parent topic"
-msgstr "親トピックをセットします"
-
-#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:23
-msgid "Person"
-msgstr ""
-
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:28
-msgid "Plain Text"
-msgstr ""
-
-#: data/_ClassificationTemplate/WebHome.txt:46
+#: data/_ClassificationTemplate/WebHome.txt:35
 #, fuzzy
 msgid "Quick links"
 msgstr "バックリンク"
@@ -220,93 +32,28 @@ msgstr "バックリンク"
 msgid "Recent Changes"
 msgstr "最新変更されたトピック"
 
-#: data/_ClassificationTemplate/WebHome.txt:22
+#: data/_ClassificationTemplate/WebHome.txt:15
 #, fuzzy
 msgid "Recent changes"
 msgstr "最新変更されたトピック"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
-msgid "Refresh"
-msgstr ""
-
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:52
-msgid "Refresh hierarchy cache on the backend"
-msgstr ""
-
-#: templates/classificationplugin.tmpl:19
+#: templates/classificationplugin.tmpl:18
 #, fuzzy
 msgid "Related tags"
 msgstr "関連トピック：:"
 
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
-#, fuzzy
-msgid "Reset the selection"
-msgstr "変更"
-
-#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:22
-msgid "Rev"
-msgstr ""
-
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:21
-msgid "SEO"
-msgstr ""
-
-#: data/Applications/ClassificationApp/SeoTopicEditTemplate.txt:22
-#, fuzzy
-msgid "Search engine optimization"
-msgstr "他の検索オプション:"
-
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:49
-#, fuzzy
-msgid "Search for matching categories"
-msgstr "他の検索オプション:"
-
-#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:42
-msgid "Show all tags"
-msgstr ""
-
-#: data/Applications/ClassificationApp/WelcomeMessage.txt:6
-msgid "Some tips:"
-msgstr ""
-
-#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:30
-#: data/Applications/ClassificationApp/ControlledTopic.txt:26
-#: data/Applications/ClassificationApp/ControlledTopicRenderWorkflowHistory.txt:24
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:25
-msgid "State"
-msgstr ""
-
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:40
-#, fuzzy
-msgid "Sub-Categories"
-msgstr "カテゴリー"
-
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:67
-msgid "Submit"
-msgstr "確定"
-
-#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:186
-#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:340
-#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:387
-#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:459
-#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:497
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:187
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:365
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:412
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:484
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:522
 msgid "Success"
 msgstr ""
 
-#: data/Applications/ClassificationApp/ClassifiedTopicEditTemplate.txt:16
-#: data/Applications/ClassificationApp/ClassifiedTopicRenderRss.txt:34
-#: data/_ClassificationTemplate/WebHome.txt:15
+#: data/_ClassificationTemplate/WebHome.txt:8
 msgid "Tags"
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:44
-#, fuzzy
-msgid "Text"
-msgstr "テキスト内容"
-
-#: data/Applications/ClassificationApp/WebAtom.txt:5
-#: data/Applications/ClassificationApp/WebRss.txt:7
-#: data/_ClassificationTemplate/WebAtom.txt:5
 #: data/_ClassificationTemplate/WebRss.txt:7
 msgid "The %1 web of Foswiki, the Free and Open Source Wiki."
 msgstr ""
@@ -324,62 +71,14 @@ msgstr ""
 "はありません。購読したければ、あなたの%2 をアルファベット順に以下のリストに追"
 "加するだけでいいです"
 
-#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:67
-msgid ""
-"This page needs tagging. Please add keywords describing what this page is "
-"about."
-msgstr ""
-
-#: data/Applications/ClassificationApp/ClassifiedTopicViewTemplate.txt:78
-msgid ""
-"This page needs to be categorized. Please file it to an appropriate category."
-msgstr ""
-
-#: data/Applications/ClassificationApp/CategoryEditTemplate.txt:16
-#: data/Applications/ClassificationApp/ClassifiedControlledTopic.txt:20
-#: data/Applications/ClassificationApp/ControlledTopic.txt:16
-#: data/Applications/ClassificationApp/WorkflowDefinition.txt:19
-#: data/Applications/ClassificationApp/WorkflowEmailTemplate.txt:18
-#: data/Applications/ClassificationApp/WorkflowEmailTemplateEditTemplate.txt:15
-#, fuzzy
-msgid "Title"
-msgstr "トピックタイトル"
-
-#: data/_ClassificationTemplate/WebHome.txt:53
+#: data/_ClassificationTemplate/WebHome.txt:42
 msgid "Tools"
 msgstr ""
 
-#: data/_ClassificationTemplate/WebHome.txt:33
+#: data/_ClassificationTemplate/WebHome.txt:22
 #, fuzzy
 msgid "Topics tagged \"%1\""
 msgstr "トピックがまだ保存されていません"
-
-#: data/Applications/ClassificationApp/RenderCategoryBrowser.txt:58
-#: data/Applications/ClassificationApp/RenderCategoryEditor.txt:67
-msgid "Undo"
-msgstr ""
-
-#: data/Applications/ClassificationApp/RenderWorkflowInfo.txt:41
-msgid "View"
-msgstr "ビュー"
-
-#: data/_ClassificationTemplate/WebHome.txt:4
-#, fuzzy
-msgid "Welcome"
-msgstr "ようこそ"
-
-#: data/Applications/ClassificationApp/ClassifiedControlledTopicEditTemplate.txt:39
-#: data/Applications/ClassificationApp/ControlledTopicEditTemplate.txt:12
-msgid "Workflow settings"
-msgstr ""
-
-#: data/Applications/ClassificationApp/WelcomeMessage.txt:4
-msgid ""
-"You just created a new and empty web. That's why this dashboard might look "
-"at little silly in the beginning. As soon as you start creating more "
-"content, it will fill up with hopefully useful information that helps you "
-"keeping track of what's going on in this web."
-msgstr ""
 
 #: lib/Foswiki/Access/ClassificationACLAccess.pm:108
 #, fuzzy
@@ -392,68 +91,27 @@ msgid "access not allowed on category"
 msgstr "トピックへのアクセスが拒否されました"
 
 #. ($newTitle)
-#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:388
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:413
 msgid "changed title to %1"
 msgstr ""
 
 #. ($title)
-#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:460
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:485
 #, fuzzy
 msgid "created category %1"
 msgstr "新トピックを作成します"
 
 #. ($cat->title)
-#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:498
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:523
 msgid "deleted category %1"
 msgstr ""
 
-#: data/Applications/ClassificationApp/CategoryRenderCategoryItem.txt:26
-#: data/Applications/ClassificationApp/RenderClassifiedTopicView.txt:42
-msgid "more"
-msgstr "(もっと多く)"
-
 #. ($cat->title, $newParent->title)
-#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:341
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:366
 msgid "moved %1 to %2"
 msgstr ""
 
 #. ($hierarchy->{web})
-#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:187
+#: lib/Foswiki/Plugins/ClassificationPlugin/JSTreeConnector.pm:188
 msgid "refreshed hierarchy in web %1"
 msgstr ""
-
-#: data/Applications/ClassificationApp/WelcomeMessage.txt:8
-msgid "requires Foswiki:Extensions/EditChapterPlugin"
-msgstr ""
-
-#, fuzzy
-#~ msgid "Create a new category in the %1 web"
-#~ msgstr "Neues Topic im %1 Web anlegen"
-
-#, fuzzy
-#~ msgid "Last in %1"
-#~ msgstr "名："
-
-#, fuzzy
-#~ msgid "Message"
-#~ msgstr "エラーメッセージ"
-
-#, fuzzy
-#~ msgid "categorized topic"
-#~ msgstr "トピックを回復します"
-
-#, fuzzy
-#~ msgid "classified topic"
-#~ msgstr "関連トピック：:"
-
-#, fuzzy
-#~ msgid "controlled topic"
-#~ msgstr "トピックに戻ります"
-
-#, fuzzy
-#~ msgid "seo topic"
-#~ msgstr "トピックへ "
-
-#, fuzzy
-#~ msgid "workflow definition"
-#~ msgstr "フォーム定義が失われました"

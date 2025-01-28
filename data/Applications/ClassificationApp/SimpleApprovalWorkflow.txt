@@ -1,27 +1,32 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="WebHome"}%
----++ States
-| *State*   | *Allow Edit* | *Allow View* | *Message* |
-| draft     |              |              | This document is being worked on. |
-| submitted |              |  AdminGroup  | This document is waiting for approval. |
-| approved  |              |              | This document is approved. |
-| rejected  |              |              | Approval for this document has been rejected. |
-| outdated  |              |              | This document is not in use anymore. |
+---++ Roles 
+| *ID*     | *Members*                          | *Description* | *Notify* | 
+| Creator  | %IF{"istopic '%WEB%.%TOPIC%'" then="$percntREVINFO{\"$username\" rev=\"1\"}$percnt" else="%USERNAME%"}% | %TRANSLATE{"The person that created this topic."}% | nobody |
+| Approver | %FORMFIELD{"ResponsiblePersons"}%  | %TRANSLATE{"People to approve this topic."}% | nobody |
+| Admin*   | AdminGroup                         | %TRANSLATE{"People with admin rights on the workflow."}% | nobody |
 
----++ Transitions
-| *State*   | *Action*         | *Next State* | *Allowed* | *Form* | *Notify* |
-| draft     | request approval | submitted    |           |        |          |
-| draft     | withdraw         | outdated     |           |        |          |
-| submitted | approve          | approved     |           |        |          |
-| submitted | reject           | rejected     |           |        |          |
-| approved  | resume           | draft        |           |        |          |
-| approved  | finish           | outdated     |           |        |          |
-| rejected  | resume           | draft        |           |        |          |
-| rejected  | finish           | outdated     |           |        |          |
+---++ Nodes 
+| *ID*       | *Title*              | *Allow Edit* | *Allow View*      | *Message* | 
+| created    | Created              | Creator      | Creator           | %TRANSLATE{"This document has just been created."}% | 
+| inprogress | In Progress          | Creator      | Creator, Approver | %TRANSLATE{"This document is being worked on."}% | 
+| submitted  | Waiting for Approval | Nobody       | Creator, Approver | %BLUE%%TRANSLATE{"This document is waiting for approval."}%%ENDCOLOR% | 
+| approved*  | Approved             | Nobody       |                   | %GREEN%%TRANSLATE{"This document is approved."}%%ENDCOLOR% | 
+| rejected   | Rejected             | Creator      | Creator, Approver | %RED%%TRANSLATE{"Approval for this document has been rejected."}%%ENDCOLOR% | 
 
-%META:FORM{name="Applications/ClassificationApp.WorkflowDefinition"}%
+---++ Edges 
+| *From*     | *Action*          | *Icon*             | *Title*          | *To*       | *Allowed* | *Notify* | *Enabled* | *Trigger* | *Command* | *Sign Off* | 
+| created    | request approval  | fa-question-circle | Request approval | submitted  | Creator   | Approver | | | | |
+| inprogress | request approval  | fa-question-circle | Request approval | submitted  | Creator   | Approver | | | | |
+| submitted  | approve           | fa-thumbs-o-up     | Approve          | approved   | Approver  | | | | | 2 | 
+| submitted  | reject            | fa-thumbs-o-down   | Reject           | rejected   | Approver  | Creator | | | | | 
+| approved   | start revision    | fa-pencil          | Start revision   | inprogress | Approver, Admin | Creator | | | | | 
+| rejected   | resume            | fa-pencil          | Resume           | inprogress | Creator   | | | | | |
+
+%META:FORM{name="WorkflowDefinition"}%
 %META:FIELD{name="TopicType" title="TopicType" value="WorkflowDefinition, ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value=""}%
 %META:FIELD{name="Tag" title="Tag" value=""}%
 %META:FIELD{name="Category" title="Category" value=""}%
+%META:FIELD{name="NotificationTemplate" title="Notification Template" value="WorkflowNotificationTemplate"}%

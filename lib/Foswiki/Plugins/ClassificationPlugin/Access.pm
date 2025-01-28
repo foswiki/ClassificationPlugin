@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2019 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2025 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,7 +16,8 @@ package Foswiki::Plugins::ClassificationPlugin::Access;
 
 use strict;
 use warnings;
-use Foswiki::Plugins::ClassificationPlugin;
+
+use Foswiki::Plugins::ClassificationPlugin ();
 
 use constant  TRACE => 0; # toggle m
 use constant NO_CATACL => 0;

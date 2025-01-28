@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2019 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2025 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -14,6 +14,17 @@
 
 package Foswiki::Plugins::ClassificationPlugin::Hierarchy;
 
+=begin TML
+
+---+ package Foswiki::Plugins::ClassificationPlugin::Hierarchy
+
+a hierarchy is the container for all categories in a web. each web is associated
+with exactly one hierarchy object. A hierachy is stored persistently on disk
+and is loaded into memory. it is only reloaded if it changed on disk by another
+process
+
+=cut
+
 use strict;
 use warnings;
 
@@ -24,23 +35,24 @@ use Foswiki::Plugins::ClassificationPlugin::Category ();
 use Storable ();
 use Foswiki::Prefs ();
 use Foswiki::Func ();
+use Foswiki::Form ();
 use JSON ();
 use Carp qw(cluck confess);
 
-use constant OBJECTVERSION => 0.92;
+use constant OBJECTVERSION => 0.93;
 use constant CATWEIGHT => 1.0; # used in computeSimilarity()
 use constant TRACE => 0; # toggle me
 
 our %insideInit;
 
-###############################################################################
-# static
-sub writeDebug {
-  print STDERR '- ClassificationPlugin::Hierarchy - '.$_[0]."\n" if TRACE;
-}
+=begin TML
 
-################################################################################
-# constructor
+---++ ClassMethod new($web, $topic, $text) -> $hierarchy
+
+constructor
+
+=cut
+
 sub new {
   my $class = shift;
   my $web = shift;
@@ -66,14 +78,14 @@ sub new {
     }
 
     if ($this && $this->{_version} == OBJECTVERSION) {
-      writeDebug("restored hierarchy object (v$this->{_version}) from $cacheFile");
+      _writeDebug("restored hierarchy object (v$this->{_version}) from $cacheFile");
       #if (TRACE) {
       #  use Data::Dumper;
-      #  writeDebug(Dumper($this));
+      #  _writeDebug(Dumper($this));
       #}
       return $this;
     } else {
-      writeDebug("creating new object");
+      _writeDebug("creating new object");
     }
   } else {
     $web = '_virtual';
@@ -95,13 +107,19 @@ sub new {
   return $this;
 }
 
-################################################################################
-# does not invalidate this object; it is kept intact to be cached in memory
-# in a mod_perl or speedy-cgi setup; we only store it to disk if we updated it 
+=begin TML
+
+---++ ObjectMethod finish()
+
+does not invalidate this object; it is kept intact to be cached in memory
+in a mod_perl or speedy-cgi setup; we only store it to disk if we updated it 
+
+=cut
+
 sub finish {
   my $this = shift;
 
-  writeDebug("called finish()");
+  _writeDebug("called finish()");
   my $gotUpdate = $this->{gotUpdate};
   $this->{gotUpdate} = 0;
 
@@ -118,10 +136,10 @@ sub finish {
   my $key = $this->{web};
   $key .= '.'.$this->{topic} if defined $this->{topic};
 
-  writeDebug("gotUpdate=$gotUpdate");
+  _writeDebug("gotUpdate=$gotUpdate");
   if ($gotUpdate) {
     my $cacheFile = Foswiki::Plugins::ClassificationPlugin::getCore()->getCacheFile($key);
-    writeDebug("saving hierarchy $this->{web} to $cacheFile");
+    _writeDebug("saving hierarchy $this->{web} to $cacheFile");
 
     # don't cache the prefs 
     undef $this->{_prefs}; 
@@ -131,27 +149,33 @@ sub finish {
 
     #if (TRACE) {
     #  use Data::Dumper;
-    #  writeDebug(Dumper($this));
+    #  _writeDebug(Dumper($this));
     #}
 
     Storable::lock_store($this, $cacheFile);
   }
-  writeDebug("done finish()");
+  _writeDebug("done finish()");
 
 }
 
-################################################################################
-# mode = 0 -> do nothing
-# mode = 1 -> a tagged topic has been saved
-# mode = 2 -> a categorized topic has been saved
-# mode = 3 -> a classified topic has been saved
-# mode = 4 -> a category has been saved
-# mode = 5 -> clear all
+=begin TML
+
+---++ ObjectMethod purgeCache($mode, $touchedCats)
+
+   * mode = 0 -> do nothing
+   * mode = 1 -> a tagged topic has been saved
+   * mode = 2 -> a categorized topic has been saved
+   * mode = 3 -> a classified topic has been saved
+   * mode = 4 -> a category has been saved
+   * mode = 5 -> clear all
+
+=cut
+
 sub purgeCache {
   my ($this, $mode, $touchedCats) = @_;
 
   return unless $mode;
-  writeDebug("purging hierarchy cache for $this->{web} - mode = $mode");
+  _writeDebug("purging hierarchy cache for $this->{web} - mode = $mode");
 
   if ($mode == 1 || $mode == 3 || $mode > 4) { # tagged and classified topics
     undef $this->{_similarity};
@@ -169,7 +193,7 @@ sub purgeCache {
 
   if ($mode > 3) { # category topics
     # nuke all categories
-    writeDebug("nuke all categories");
+    _writeDebug("nuke all categories");
     foreach my $cat (values %{$this->{_categories}}) {
       $cat->purgeCache() if $cat;
     }
@@ -192,7 +216,14 @@ sub purgeCache {
   $this->{gotUpdate} = 1;
 }
 
-################################################################################
+=begin TML
+
+---++ ObjectMethod init()
+
+initializes all categories of this hierarchy
+
+=cut
+
 sub init {
   my $this = shift;
 
@@ -203,7 +234,7 @@ sub init {
   die "recursive call to Hierarchy::init for $key" if $insideInit{$key};
   $insideInit{$key} = 1;
 
-  writeDebug("called Hierarchy::init for $key ... EXPENSIVE");
+  _writeDebug("called Hierarchy::init for $key ... EXPENSIVE");
 
   # reset all
   $this->purgeCache(5);
@@ -231,7 +262,7 @@ sub init {
     }
   }
 
-  writeDebug("checking for default categories");
+  _writeDebug("checking for default categories");
   # every hierarchy has one top node
   my $topCat = 
     $this->{_categories}{'TopCategory'} || 
@@ -278,11 +309,18 @@ sub init {
     #$this->printDistanceMatrix();
   }
 
-  writeDebug("done init $key");
+  _writeDebug("done init $key");
   delete $insideInit{$key};
 }
 
-################################################################################
+=begin TML
+
+---++ ObjectMethod initFromTopic()
+
+initializes this hierarchy from its web.topic properties
+
+=cut
+
 sub initFromTopic {
   my $this = shift;
 
@@ -294,7 +332,14 @@ sub initFromTopic {
   return $this->initFromText($text);
 }
 
-################################################################################
+=begin TML
+
+---++ ObjectMethod initFromText()
+
+initializes this hierarchy from the text of its web.topic
+
+=cut
+
 sub initFromText {
   my $this = shift;
 
@@ -302,15 +347,17 @@ sub initFromText {
   my $web = $this->{web};
   my $topic = $this->{topic} || $Foswiki::cfg{HomeTopicName};
 
-  my $text = Foswiki::Func::expandCommonVariables($this->{text}, $topic, $web);
+  my $text = $this->{text};
+  $text = Foswiki::Func::expandCommonVariables($text, $topic, $web) if $text =~ /%/;
 
   my $insideList = 0;
   my @list = ();
   my %lookup = ();
   foreach my $line ( split( /\r?\n/, $text ) ) {
-    if ($line =~ /^((?:\t|   )+)\*\s+(.*?)\s*$/ ) {
+    if ($line =~ /^((?:\t|   )+)\*\s+(.*?)\s*(?:\s\-\s+(.*?)\s*)?$/ ) {
       my $indent = $1;
       my $title = $2;
+      my $summary = $3;
       $indent =~ s/\t/   /;
       $indent = length($indent) / 3;
       $insideList = 1;
@@ -325,11 +372,12 @@ sub initFromText {
 
       $name = $this->{prefix}.$name if defined $this->{prefix};
 
-      #print STDERR "indent=$indent, title='$title', name=$name\n";
+      #print STDERR "indent=$indent, title='$title', name=$name, summary=$summary\n";
       push @list, $lookup{$name} = {
         indent => $indent,
         title => $title,
         name => $name, 
+        summary => $summary, 
       };
     } else {
       last if $insideList;
@@ -338,12 +386,12 @@ sub initFromText {
 
   # make it a hierarchy
   my $lastItem;
-  my @root = ();
+  #my @root = ();
   foreach my $item (@list) {
 
-    if ($item->{indent} == 1) {
-      push @root, $item;
-    }
+    #if ($item->{indent} == 1) {
+    #  push @root, $item;
+    #}
 
     if ($lastItem) {
 
@@ -382,12 +430,22 @@ sub initFromText {
     $cat->setParents($parentName);
     $cat->title($item->{title});
     $cat->order($order++);
+    $cat->summary($item->{summary});
   }
 
   return 1;
 }
 
-################################################################################
+=begin TML
+
+---++ ObjectMethod initFromWeb()
+
+this is the most common way to initialize a hierarchy: by 
+traversing all topics in a web and create categories from topics
+of type "Category"
+
+=cut
+
 sub initFromWeb {
   my $this = shift;
 
@@ -408,8 +466,10 @@ sub initFromWeb {
   foreach my $topicName ($db->getKeys()) {
     my $topicObj = $db->fastget($topicName);
     next unless $topicObj;
+
     my $form = $topicObj->fastget("form");
     next unless $form;
+
     $form = $topicObj->fastget($form);
     next unless $form;
 
@@ -419,7 +479,7 @@ sub initFromWeb {
     next unless $topicType =~ /\bCategory\b/;
 
     # this topic is a category in itself
-    writeDebug("found category '$topicName' in web $key");
+    _writeDebug("found category '$topicName' in web $key");
     my $cat = $this->{_categories}{$topicName};
     $cat = $this->createCategory($topicName) unless $cat;
 
@@ -450,20 +510,28 @@ sub initFromWeb {
     $cat->icon($form->fastget("Icon"));
     $cat->redirect($form->fastget("Redirect"));
 
-    #writeDebug("$topicName has got title '$title'");
+    #_writeDebug("$topicName has got title '$title'");
 
     # import foregin categories from another web
     my $impCats = $form->fastget("ImportedCategory");
-    $cat->importCategories($impCats, $seenImport) if $impCats;
+    $cat->importCategories($impCats, $seenImport, $cat->{name}) if $impCats;
 
     my $text = $form->fastget("SubCategories");
-    $cat->importCategoriesFromText($text, $this) if $text;
+    $cat->importCategoriesFromText($text, $this, $cat->{name}) if $text;
   }
   
   return 1;
 }
 
-################################################################################
+=begin TML
+
+---++ ObjectMethod printDistanceMatrix()
+
+debugging method to show the content of the distance matrix as computed
+by =computeDistance()=
+
+=cut
+
 sub printDistanceMatrix {
   return unless TRACE;
 
@@ -479,20 +547,26 @@ sub printDistanceMatrix {
       my $catId2 = $cat2->{id};
       my $dist =  $$distance[$catId1][$catId2];
       next unless $dist;
-      writeDebug("distance($catName1/$catId1, $catName2/$catId2) = $dist");
+      _writeDebug("distance($catName1/$catId1, $catName2/$catId2) = $dist");
     }
   }
 }
 
-################################################################################
-# computes the distance between all categories using a Wallace-Kollias
-# algorith for transitive closure
+=begin TML
+
+---++ ObjectMethod computeDistance()
+
+computes the distance between all categories using a Wallace-Kollias
+algorith for transitive closure. results are cached as part of the hierarchy
+
+=cut
+
 sub computeDistance {
   my $this = shift;
 
   my @distance;
 
-  writeDebug("called computeDistance() Wallace-Kollias");
+  _writeDebug("called computeDistance() Wallace-Kollias");
 
   my $topId = $this->{_top}->{id};
   $distance[$topId][$topId] = 0;
@@ -503,13 +577,13 @@ sub computeDistance {
   # root of induction
   my %ancestors = ($topId=>$this->{_top});
   
-  writeDebug("propagate");
+  _writeDebug("propagate");
   foreach my $child ($this->{_top}->getChildren()) {
     $distance[$topId][$child->{id}] = 1;
     $child->computeDistance(\@distance, \%ancestors);
   }
 
-  writeDebug("finit");
+  _writeDebug("finit");
   #my $loops = 0;
   my $maxId = $this->{idCounter}-1;
   for my $id1 (0..$maxId) {
@@ -526,12 +600,12 @@ sub computeDistance {
     }
   }
 
-  #writeDebug("maxId=$maxId, loops=$loops");
-  writeDebug("done computeDistance() Wallace-Kollias");
+  #_writeDebug("maxId=$maxId, loops=$loops");
+  _writeDebug("done computeDistance() Wallace-Kollias");
 
   #if (TRACE) {
   #  use Data::Dumper;
-  #  writeDebug(Dumper(\@distance));
+  #  _writeDebug(Dumper(\@distance));
   #}
 
   $this->{_distance} = \@distance;
@@ -540,17 +614,23 @@ sub computeDistance {
   return \@distance;
 }
 
-################################################################################
-# this computes the minimum distance between two categories or a topic
-# and a category or between two topics. if a non-category topic is under
-# consideration then all of its categories are measured against each other
-# while computing the overall minimal distances.  so simplest case
-# is measuring the distance between two categories; the most general case is
-# computing the min distance between two sets of categories.
+=begin TML
+
+---++ ObjectMethod distance($topic1, $topic2) -> $integer
+
+This computes the minimum distance between two categories or a topic and a
+category or between two topics. If a non-category topic is under consideration
+then all of its categories are measured against each other while computing the
+overall minimal distances.  So simplest case is measuring the distance between
+two categories; the most general case is computing the min distance between two
+sets of categories.
+
+=cut
+
 sub distance {
   my ($this, $topic1, $topic2) = @_;
 
-  #writeDebug("called distance($topic1, $topic2)");
+  #_writeDebug("called distance($topic1, $topic2)");
 
   my %catSet1 = ();
   my %catSet2 = ();
@@ -567,7 +647,7 @@ sub distance {
   } else {
     $firstIsTopic = 1;
     my $cats = $this->getCategoriesOfTopic($topic1);
-    return undef unless $cats; # no categories, no distance
+    return unless $cats; # no categories, no distance
     foreach my $name (@$cats) {
       $catObj = $this->getCategory($name);
       $catSet1{$name} = $catObj->{id} if $catObj;
@@ -583,7 +663,7 @@ sub distance {
   } else {
     $secondIsTopic = 1;
     my $cats = $this->getCategoriesOfTopic($topic2);
-    return undef unless $cats; # no categories, no distance
+    return unless $cats; # no categories, no distance
     foreach my $name (@$cats) {
       $catObj = $this->getCategory($name);
       $catSet2{$name} = $catObj->{id} if $catObj;
@@ -595,8 +675,8 @@ sub distance {
     $topic1 eq $topic2;
 
   if (TRACE) {
-    #writeDebug("catSet1 = ".join(',', sort keys %catSet1));
-    #writeDebug("catSet2 = ".join(',', sort keys %catSet2));
+    #_writeDebug("catSet1 = ".join(',', sort keys %catSet1));
+    #_writeDebug("catSet2 = ".join(',', sort keys %catSet2));
   }
 
   # get the min distance between the two category sets
@@ -612,7 +692,7 @@ sub distance {
   }
 
   # both sets aren't connected
-  return undef if !defined($min) && $topic1 ne 'TopCategory' && $topic2 ne 'TopCategory';
+  return if !defined($min) && $topic1 ne 'TopCategory' && $topic2 ne 'TopCategory';
 
   $min = abs($min) + 2 if $firstIsTopic && $secondIsTopic;
   $min-- if $firstIsTopic;
@@ -621,8 +701,14 @@ sub distance {
   return $min;
 }
 
-################################################################################
-# fast lookup of the distance between two categories
+=begin TML
+
+---++ ObjectMethod catDistance($cat1, $cat2) -> $integer
+
+fast lookup of the distance between two categories
+
+=cut
+
 sub catDistance {
   my ($this, $cat1, $cat2) = @_;
 
@@ -635,7 +721,7 @@ sub catDistance {
     $id1 = $cat1->{id};
   } else {
     $cat1Obj = $this->getCategory($cat1);
-    return undef unless defined $cat1Obj;
+    return unless defined $cat1Obj;
     $id1 = $cat1Obj->{id};
   }
 
@@ -643,26 +729,31 @@ sub catDistance {
     $id2 = $cat2->{id};
   } else {
     $cat2Obj = $this->getCategory($cat2);
-    return undef unless defined $cat2Obj;
+    return unless defined $cat2Obj;
     $id2 = $cat2Obj->{id};
   }
 
   $this->computeDistance() unless $this->{_distance};
   my $dist = $this->{_distance}[$id1][$id2];
-  #writeDebug("catDistance($cat1Obj->{name}, $cat2Obj->{name})=$dist");
+  #_writeDebug("catDistance($cat1Obj->{name}, $cat2Obj->{name})=$dist");
   return $dist;
 }
 
-################################################################################
-# find all topics that are similar to the given one i nthe current web
-# similarity is computed by calculating the weighted matching coefficient (WMC)
-# counting matching tags and categories between two topics. matching categorization
-# is weighted in a way to matter more, that is two topics correlate more if
-# they are categorized similarly than if they do based on tagging information.
-# this is an rought adhoc model to reflect the intuitive importance in 
-# knowledge management of category information versus tagging information.
-# the provided threshold limits the number of topics that are considered similar
-#
+=begin TML
+
+---++ ObjectMethod getSimilarTopics($topicA, $threshold) 
+
+Find all topics that are similar to the given one i nthe current web
+similarity is computed by calculating the weighted matching coefficient (WMC)
+counting matching tags and categories between two topics. Matching categorization
+is weighted in a way to matter more, that is two topics correlate more if
+they are categorized similarly than if they do based on tagging information.
+This is an rought adhoc model to reflect the intuitive importance in 
+knowledge management of category information versus tagging information.
+The provided threshold limits the number of topics that are considered similar
+
+=cut
+
 sub getSimilarTopics {
   my ($this, $topicA, $threshold) = @_;
 
@@ -689,7 +780,12 @@ sub getSimilarTopics {
   return wantarray ? (\@foundTopics, \%wmc) : \@foundTopics;
 }
 
-################################################################################
+=begin TML
+
+---++ ObjectMethod getSimilarTopicsOfTags($tags, $threshold)
+
+=cut
+
 sub getSimilarTopicsOfTags {
   my ($this, $tags, $threshold) = @_;
 
@@ -711,7 +807,12 @@ sub getSimilarTopicsOfTags {
   return wantarray ? (\@foundTopics, \%wmc) : \@foundTopics;
 }
 
-################################################################################
+=begin TML
+
+---++ ObjectMethod computeSimilarity($params)
+
+=cut
+
 sub computeSimilarity {
   my ($this, $params) = @_;
 
@@ -757,8 +858,8 @@ sub computeSimilarity {
   my $total = $onlyA + $onlyB + $intersection;
   $similarity = $total?$intersection/$total:0;
   #if (TRACE && $similarity) {
-  #  writeDebug("similarity($param->{topicA}, $params->{topicB}) = $similarity");
-  #  writeDebug("onlyA=$onlyA, onlyB=$onlyB, intersection=$intersection, total=$total");
+  #  _writeDebug("similarity($param->{topicA}, $params->{topicB}) = $similarity");
+  #  _writeDebug("onlyA=$onlyA, onlyB=$onlyB, intersection=$intersection, total=$total");
   #}
 
   # cache
@@ -770,8 +871,14 @@ sub computeSimilarity {
   return $similarity;
 }
 
-################################################################################
-# return true if cat1 subsumes cat2 (is an ancestor of)
+=begin TML
+
+---++ ObjectMethod subsumes($cat1, $cat2)
+
+return true if cat1 subsumes cat2 (is an ancestor of)
+
+=cut
+
 sub subsumes {
   my ($this, $cat1, $cat2) = @_;
 
@@ -779,45 +886,57 @@ sub subsumes {
   return (defined($result) && $result >= 0)?1:0;
 }
 
-################################################################################
+=begin TML
+
+---++ ObjectMethod getTagsOfTopic($topic)
+
+=cut
+
 sub getTagsOfTopic {
   my ($this, $topic) = @_;
 
-  #writeDebug("called getTagsOfTopic");
+  #_writeDebug("called getTagsOfTopic");
   # allow topicName or topicObj
   my $topicObj;
   if (ref($topic)) {
     $topicObj = $topic;
   } else {
     my $db = Foswiki::Plugins::DBCachePlugin::getDB($this->{web});
-    return undef unless $db;
+    return unless $db;
     $topicObj = $db->fastget($topic);
   }
-  return undef unless $topicObj;
+  return unless $topicObj;
 
   my $form = $topicObj->fastget("form");
-  return undef unless $form;
+  return unless $form;
   $form = $topicObj->fastget($form);
-  return undef unless $form;
+  return unless $form;
 
   # SMELL: do we need to filter for TaggedTopic?
 
   my $tags = $form->fastget('Tag');
-  return undef unless $tags;
+  return unless $tags;
 
   $tags =~ s/^\s+|\s+$//g;
   my @tags = split(/\s*,\s*/, $tags);
   return \@tags;
 }
 
-################################################################################
+=begin TML
+
+---++ ObjectMethod getTags()
+
+returns a list reference of all tags in use
+
+=cut
+
 sub getTags {
   my ($this) = @_;
 
-  #writeDebug("called getTags");
+  #_writeDebug("called getTags");
   # allow topicName or topicObj
   my $db = Foswiki::Plugins::DBCachePlugin::getDB($this->{web});
-  return undef unless $db;
+  return unless $db;
 
   my %tags = ();
   foreach my $topic ($db->getKeys()) {
@@ -843,7 +962,14 @@ sub getTags {
   return \@tags;
 }
 
-################################################################################
+=begin TML
+
+---++ ObjectMethod getCategoriesOfTopic($topic) -> $list
+
+returns a list reference of all direct categories of a topic
+
+=cut
+
 sub getCategoriesOfTopic {
   my ($this, $topic) = @_;
 
@@ -854,38 +980,38 @@ sub getCategoriesOfTopic {
     $topic = $topicObj->fastget('topic');
   } else {
     my $db = Foswiki::Plugins::DBCachePlugin::getDB($this->{web});
-    return undef unless $db;
+    return unless $db;
     $topicObj = $db->fastget($topic);
   }
-  return undef unless $topicObj;
+  return unless $topicObj;
 
   my $cats = $this->{_catsOfTopic}{$topic};
   return $cats if defined $cats;
 
   my $form = $topicObj->fastget("form");
-  return undef unless $form;
+  return unless $form;
   $form = $topicObj->fastget($form);
-  return undef unless $form;
+  return unless $form;
 
-  #writeDebug("getCategoriesOfTopic()"); 
+  #_writeDebug("getCategoriesOfTopic()"); 
 
   # get typed topics
   my $topicType = $form->fastget("TopicType");
-  return undef unless $topicType;
+  return unless $topicType;
 
   my $catFields = $this->getCatFields(split(/\s*,\s*/,$topicType));
-  return undef unless $catFields;
-  #writeDebug("catFields=".join(', ', @$catFields));
+  return unless $catFields;
+  #_writeDebug("catFields=".join(', ', @$catFields));
 
   # get all categories in all category formfields
   my %cats = ();
   foreach my $catField (@$catFields) {
     # get category formfield
-    #writeDebug("looking up '$catField'");
-    my $cats = $form->fastget($catField);
-    next unless $cats;
-    #writeDebug("$catField=$cats");
-    foreach my $cat (split(/\s*,\s*/, $cats)) {
+    #_writeDebug("looking up '$catField'");
+    my $thisCats = $form->fastget($catField);
+    next unless $thisCats;
+    #_writeDebug("$catField=$thisCats");
+    foreach my $cat (split(/\s*,\s*/, $thisCats)) {
       $cat =~ s/^\s+|\s+$//g;
       $cats{$cat} = 1 if $cat && $cat ne 'TopCategory';
     }
@@ -896,20 +1022,25 @@ sub getCategoriesOfTopic {
   return $cats;
 }
 
+=begin TML
 
-################################################################################
-# get names of category formfields of a topictype
+---++ ObjectMethod getCatFields(@topicTypes) -> $list
+
+get names of category formfields of a topictype
+
+=cut
+
 sub getCatFields {
   my ($this, @topicTypes) = @_;
 
-  #writeDebug("called getCatFields()"); 
+  #_writeDebug("called getCatFields()"); 
   my $db = Foswiki::Plugins::DBCachePlugin::getDB($this->{web});
   return () unless defined $db;
 
   my %allCatFields;
   foreach my $topicType (@topicTypes) {
     # lookup cache
-    #writeDebug("looking up '$topicType' in cache");
+    #_writeDebug("looking up '$topicType' in cache");
     my $catFields = $this->{_catFields}{$topicType};
     if (defined($catFields)) {
       foreach my $cat (@$catFields) {
@@ -917,7 +1048,7 @@ sub getCatFields {
       }
       next;
     }
-    #writeDebug("looking up form definition for $topicType in web $this->{web}");
+    #_writeDebug("looking up form definition for $topicType in web $this->{web}");
     @$catFields = ();
     $this->{_catFields}{$topicType} = $catFields;
     $this->{gotUpdate} = 1;
@@ -933,10 +1064,10 @@ sub getCatFields {
     next unless $form;
 
     my $type = $form->fastget('TopicType') || '';
-    #writeDebug("type=$type");
+    #_writeDebug("type=$type");
 
     if ($type =~ /\bTopicStub\b/ || $formName =~ /\bTopicStub\b/) {
-      #writeDebug("reading stub");
+      #_writeDebug("reading stub");
       # this is a TopicStub, lookup the target
       my ($targetWeb, $targetTopic) = 
         Foswiki::Func::normalizeWebTopicName($this->{web}, $form->fastget('Target'));
@@ -961,12 +1092,12 @@ sub getCatFields {
       if ($inBlock && $line =~ s/^\s*\|\s*//) {
         $line =~ s/\\\|/\007/g; # protect \| from split
         my ($title, $type, $size, $vals) =
-          map { s/\007/|/g; $_ } split( /\s*\|\s*/, $line );
+          map { my $tmp = $_; $tmp =~ s/\007/|/g; $tmp; } split( /\s*\|\s*/, $line );
         $type ||= '';
         $type = lc $type;
         $type =~ s/^\s+|\s+$//g;
-        next if !$title or $type ne 'cat';
-        $title =~ s/<nop>//g;
+        next if !$title || $type ne 'cat';
+        $title = Foswiki::Form::fieldTitle2FieldName($title);
         push @$catFields, $title;
       } else {
         $inBlock = 0;
@@ -974,7 +1105,7 @@ sub getCatFields {
     }
 
     # cache
-    #writeDebug("setting cache for '$topicType' to ".join(',',@$catFields));
+    #_writeDebug("setting cache for '$topicType' to ".join(',',@$catFields));
     $this->{_catFields}{$topicType} = $catFields;
     foreach my $cat (@$catFields) {
       $allCatFields{$cat} = 1;
@@ -982,12 +1113,19 @@ sub getCatFields {
   }
   my @allCatFields = sort keys %allCatFields;
 
-  #writeDebug("... result=".join(",",@allCatFields));
+  #_writeDebug("... result=".join(",",@allCatFields));
 
   return \@allCatFields;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod getCategories() -> @list
+
+returns a list of all category objects in this hierarchy
+
+=cut
+
 sub getCategories {
   my $this = shift;
 
@@ -998,7 +1136,14 @@ sub getCategories {
   return values %{$this->{_categories}}
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod getCategoryNames() -> @list
+
+returns a list of all category names in this hierarchy
+
+=cut
+
 sub getCategoryNames {
   my $this = shift;
 
@@ -1010,11 +1155,20 @@ sub getCategoryNames {
 }
 
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod getCategory($name) -> $cat
+
+returns a category object of the given name
+
+See Foswiki::Plugins::ClassificationPlugin::Category
+
+=cut
+
 sub getCategory {
   my ($this, $name) = @_;
 
-  return undef unless $name;
+  return unless $name;
 
   unless (defined($this->{_categories})) {
     $this->init();
@@ -1043,27 +1197,52 @@ sub getCategory {
   return $cat
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod setCategory($name, $cat)
+
+adds the named category to the hierarchy
+
+=cut
+
 sub setCategory {
   $_[0]->{_categories}{$_[1]} = $_[2];
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod createCategory(...) -> $cat
+
+returns a new category object for the given parameters
+
+See Foswiki::Plugins::ClassificationPlugin::Category::new()
+
+=cut
+
 sub createCategory {
-  return new Foswiki::Plugins::ClassificationPlugin::Category(@_);
+  return Foswiki::Plugins::ClassificationPlugin::Category->new(@_);
 }
 
-###############################################################################
-# static
-sub inlineError {
-  return '<span class="foswikiAlert">' . $_[0] . '</span>' ;
-}
+=begin TML
 
-###############################################################################
+---++ ObjectMethod traverse($params) -> $results
+
+recursively traverses a hiearchy and formats results.
+params may hold:
+
+   * top: starting point
+   * sort
+   * header
+   * footer
+   * separator
+   * nullformat
+
+=cut
+
 sub traverse {
   my ($this, $params) = @_;
 
-  writeDebug("called traverse for hierarchy in '$this->{web}'");
+  _writeDebug("called traverse for hierarchy in '$this->{web}'");
 
   my $top = $params->{top} || 'TopCategory';
   my $sort = $params->{sort} || '';
@@ -1116,13 +1295,19 @@ sub traverse {
     );
   }
 
-  writeDebug("done traverse");
+  _writeDebug("done traverse");
 
   return $result;
 }
 
-###############################################################################
-# get preferences of a set of categories
+=begin TML
+
+---++ ObjectMethod getPreferences(@list)
+
+get preferences of a set of categories
+
+=cut
+
 sub getPreferences {
   my ($this, @cats) = @_;
 
@@ -1147,8 +1332,14 @@ sub getPreferences {
   return $this->{_prefs};
 }
 
+=begin TML
 
-###############################################################################
+---++ ObjectMethod checkAccessPermission($mode, $user, $topic, $order) -> $boolean
+
+experimental: check permissions based on category preferences
+
+=cut
+
 sub checkAccessPermission {
   my ($this, $mode, $user, $topic, $order) = @_;
 
@@ -1164,18 +1355,18 @@ sub checkAccessPermission {
 
   # get categories and gather access control lists
   my $db = Foswiki::Plugins::DBCachePlugin::getDB($this->{web});
-  return undef unless $db;
+  return unless $db;
   my $topicObj = $db->fastget($topic);
-  return undef unless $topicObj;
+  return unless $topicObj;
 
   my $form = $topicObj->fastget('form');
-  return undef unless $form;
+  return unless $form;
 
   $form = $topicObj->fastget($form);
-  return undef unless $form;
+  return unless $form;
 
   my $cats = $form->fastget($aclAttribute);
-  return undef unless $cats;
+  return unless $cats;
 
   #my $prefs = $this->getPreferences(split(/\s*,\s*/, $cats));
 
@@ -1184,13 +1375,20 @@ sub checkAccessPermission {
   return $allowed;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod collectTopicsOfCategory()
+
+iterates of the hierarchy's web and assigns topics to their category
+
+=cut
+
 sub collectTopicsOfCategory {
   my ($this) = @_;
 
   my $db = Foswiki::Plugins::DBCachePlugin::getDB($this->{web});
 
-  writeDebug("collecting topics in $this->{web}");
+  _writeDebug("collecting topics in $this->{web}");
 
   # reset _topics
   foreach my $cat ($this->getCategories()) {
@@ -1219,7 +1417,7 @@ sub collectTopicsOfCategory {
 
     foreach my $catName (@$cats) {
       my $cat = $this->getCategory($catName);
-      writeDebug("adding $topicName it to category $catName");
+      _writeDebug("adding $topicName it to category $catName");
       $cat->{_topics}{$topicName} = 1;
     }
   }
@@ -1227,7 +1425,18 @@ sub collectTopicsOfCategory {
   $this->{gotUpdate} = 1;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod filterCategories($params) -> @list
+
+returns a list of categories matching the properties in =$params= as there are:
+
+   * title: regex
+   * name: regex
+   * casesensitive: boolean
+
+=cut
+
 sub filterCategories {
   my ($this, $params) = @_;
 
@@ -1255,7 +1464,18 @@ sub filterCategories {
   return @result;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod sortCategories($cats, $crit) -> $list
+
+returns a sorted list of categories. =$crit= can be
+
+   * order: sort by order property of categories
+   * name
+   * title
+
+=cut
+
 sub sortCategories {
   my ($this, $cats, $crit) = @_;
 
@@ -1282,7 +1502,14 @@ sub sortCategories {
   return $cats;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod translate($text) -> $string
+
+compatibility wrapper for MultiLingualPlugin
+
+=cut
+
 sub translate {
   my ($this, $text) = @_;
 
@@ -1302,6 +1529,14 @@ sub translate {
   return $this->{_translate}{"$text"};
 }
 
+###############################################################################
+# static helpers
+sub _writeDebug {
+  print STDERR '- ClassificationPlugin::Hierarchy - '.$_[0]."\n" if TRACE;
+}
 
+sub _inlineError {
+  return '<span class="foswikiAlert">' . $_[0] . '</span>' ;
+}
 
 1;

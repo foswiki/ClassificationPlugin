@@ -1,0 +1,57 @@
+%META:TOPICINFO{author="micha" comment="reprev" date="1642443421" format="1.1" reprev="7" version="7"}%
+%META:TOPICPARENT{name="TopicView"}%
+%TMPL:DEF{"formfields"}%%TMPL:P{"detailstab"}%%TMPL:PREV%%TMPL:END%
+
+%TMPL:DEF{"permissionstab"}%%IF{
+   "'%QMSTATE{format="$workflow" ignoreerror="on"}%'=''"
+   then="$percntTMPL:P{\"permissionstab::prev\"}$percnt"
+}%%TMPL:END%
+
+%TMPL:DEF{"permissionstab::prev"}%%TAB{"%MAKETEXT{"Permissions"}%" id="permissions"}%
+%TMPL:P{"permissionstab::check"
+  permset_view="%TMPL:P{"getpreference" name="PERMSET_VIEW"}%"
+  permset_view_details="%TMPL:P{"getpreference" name="PERMSET_VIEW_DETAILS"}%"
+  allowtopic_view="%TMPL:P{"getpreference" name="ALLOWTOPICVIEW"}%"
+  denytopic_view="%TMPL:P{"getpreference" name="DENYTOPICVIEW"}%"
+  permset_change="%TMPL:P{"getpreference" name="PERMSET_CHANGE"}%"
+  permset_change_details="%TMPL:P{"getpreference" name="PERMSET_CHANGE_DETALS"}%"
+  allowtopic_change="%TMPL:P{"getpreference" name="ALLOWTOPICCHANGE"}%"
+  denytopic_change="%TMPL:P{"getpreference" name="DENYTOPICCHANGE"}%"
+}%%ENDTAB%%TMPL:END%
+
+%TMPL:DEF{"detailstab::exclude"}%TopicType|TopicTitle|Summary|Category|Tag%TMPL:END%
+
+%TMPL:DEF{"detailstab"}%%RENDERFOREDIT{
+   exclude="^(%TMPL:P{"detailstab::exclude"}%)$"
+   header="$percntTAB{\"%TRANSLATE{"Details"}%\"}$percnt<div class='foswikiFormSteps'>"
+   form="%TMPL:P{"formdefinition"}%"
+   format="<div class='foswikiFormStep'>
+             <h3> $title:$mandatory </h3>
+             $edit
+             $extra <!-- -->
+             <div class='foswikiFormDescription'>$description</div>
+           </div>"
+   footer="</div>$percntENDTAB$percnt"
+   hideempty="on"
+}%%TMPL:END%
+
+%TMPL:DEF{"showonscreen::revinfo"}%%TMPL:PREV%%TMPL:P{"showonscreen::history"}%%TMPL:END%
+
+%TMPL:DEF{"showonscreen::history"}%<tr>
+  <th>%MAKETEXT{"Workflow History"}%<input type='hidden' name='Default+DISPLAYWORKFLOWHISTORY' value="undefined" /></th>
+  <td>
+    <label><input type="radio" class="foswikiRadioButton" name="Local+DISPLAYWORKFLOWHISTORY" value="undefined" %IF{"preferences[name='DISPLAYWORKFLOWHISTORY'].value=''" then="checked"}% />%MAKETEXT{"default"}%</label>
+  </td>
+  <td>
+    <label><input type="radio" class="foswikiRadioButton" name="Local+DISPLAYWORKFLOWHISTORY" value="on" %IF{"preferences[name='DISPLAYWORKFLOWHISTORY'].value='on'" then="checked"}% />%MAKETEXT{"on"}%</label>
+  </td>
+  <td>
+    <label><input type='radio' class="foswikiRadioButton" name='Local+DISPLAYWORKFLOWHISTORY' value="off" %IF{"preferences[name='DISPLAYWORKFLOWHISTORY'].value='off'" then="checked"}% />%MAKETEXT{"off"}%</label>
+  </td>
+</tr>%TMPL:END%
+
+%META:FORM{name="Applications.TopicView"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="base definitions for ControlledTopics"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

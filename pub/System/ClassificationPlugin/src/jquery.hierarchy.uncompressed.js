@@ -1,7 +1,7 @@
 /*
- * jQuery hierarchy plugin 2.00
+ * jQuery hierarchy plugin 2.10
  *
- * Copyright (c) 2013-2019 Michael Daum http://michaeldaumconsulting.com
+ * Copyright (c) 2013-2025 Michael Daum http://michaeldaumconsulting.com
  *
  * Licensed under the GPL license http://www.gnu.org/licenses/gpl.html
  *
@@ -21,6 +21,7 @@
         root: "",
         displayCounts: true,
         mode: "select" /* select, browse or edit */,
+        multiple: true,
         searchButton: ".jqHierarchySearchButton",
         searchField: ".jqHierarchySearchField",
         clearButton: ".jqHierarchyClearButton",
@@ -28,10 +29,15 @@
         refreshButton: ".jqHierarchyRefreshButton",
         inputFieldName: undefined,
         container: undefined,
-        multiSelect: true,
         sort: 'index'
       };
 
+  /***************************************************************************
+   * helper
+   */
+  function _id2cat (id) {
+    return id.replace(/__.*$/, "");
+  }
 
   /***************************************************************************
    * constructor 
@@ -51,14 +57,14 @@
 
     self.searchButton = self.elem.find(self.opts.searchButton);
     self.searchField = self.elem.find(self.opts.searchField);
-    self.searchButton.click(function() {
+    self.searchButton.on("click", function() {
       self.searchField.animate({opacity:'toggle'}, 'fast', function() {
         $(this).focus();
       });
       return false;
     });
 
-    self.searchField.bind("keypress", function(event) {
+    self.searchField.on("keypress", function(event) {
       var $this = $(this), val;
       // track last key pressed
       if(event.keyCode == 13) {
@@ -67,7 +73,7 @@
           self.jstree.clear_search();
           $this.hide(); 
         } else {
-          $this.effect('highlight');
+          //$this.effect('highlight');
           self.jstree.search(val);
         }
         event.preventDefault();
@@ -76,19 +82,19 @@
     });
 
     self.refreshButton = self.elem.find(self.opts.refreshButton);
-    self.refreshButton.click(function() {
+    self.refreshButton.on("click", function() {
       self.refresh();
       return false;
     });
 
     self.undoButton = self.elem.find(self.opts.undoButton);
-    self.undoButton.click(function() {
+    self.undoButton.on("click", function() {
       self.reset();
       return false;
     });
 
     self.clearButton = self.elem.find(self.opts.clearButton);
-    self.clearButton.click(function() {
+    self.clearButton.on("click", function() {
       self.clear();
       self.searchField.val("").hide();
       return false;
@@ -127,10 +133,12 @@
       "core": {
         "animation":100,
         "check_callback": true,
-        "multiple": true,
+        "multiple": self.opts.multiple,
+        "dblclick_toggle": false,
         "themes": {
-           "url": foswiki.getPubUrl("System", "JSTreeContrib", "themes/minimal/style.css"),
-           "name":"minimal", 
+           "dir": foswiki.getPubUrl("System", "JSTreeContrib", "themes"),
+           "url": true,
+           "name": "foswiki", 
            "icons": true
         }, 
         "data": {
@@ -251,7 +259,7 @@
     if (self.opts.mode === "edit") {
 
       /* moving a node */
-      self.treeElem.bind("move_node.jstree", function(e, data) {
+      self.treeElem.on("move_node.jstree", function(e, data) {
         var parNode, parTitle, nodeTitle;
 
         if (self._ignore_move_node) {
@@ -286,7 +294,7 @@
       })
 
       /* renaming a node */
-      .bind("rename_node.jstree", function(ev, data) {
+      .on("rename_node.jstree", function(ev, data) {
         if (data.node.a_attr.href === '#') {
           self.createNode(data.node);
         } else if (data.text !== data.old) {
@@ -295,7 +303,7 @@
       })
 
       /* removing a node */
-      .bind("delete_node.jstree", function (e, obj) {
+      .on("delete_node.jstree", function (ev, data) {
         $.ajax({
           type: 'POST',
           url: self.opts.url,
@@ -303,7 +311,7 @@
             "action" : "remove_node", 
             "web": self.opts.web,
             "topic": self.opts.topic,
-            "cat": obj.node.id,
+            "cat": data.node.id,
             "t": (new Date()).getTime()
           }, 
           error: function() {
@@ -313,7 +321,7 @@
             self.removeVal(this.id);
           },
           complete: function(xhr) {
-            var response = $.parseJSON(xhr.responseText);
+            var response = JSON.parse(xhr.responseText);
             //console.log(response);
             $.pnotify({
               type: response.type,
@@ -326,16 +334,17 @@
     } // end if edit
 
 
-    self.treeElem.bind("loaded.jstree", function() {
+    self.treeElem.on("loaded.jstree", function() {
       self.reset();
-    }).bind("select_node.jstree", function(e, obj) {
+    }).on("select_node.jstree", function(e, obj) {
       var node = obj.node, 
           id = node.id, 
+          cat = node.a_attr["data-name"], 
           href = node.a_attr.href,
           baseTopic = foswiki.getPreference("TOPIC");
 
       if (self.opts.mode === 'select') {
-        if (id === baseTopic) {
+        if (cat === baseTopic) {
           /*
           $.pnotify({
             type: "error",
@@ -344,7 +353,7 @@
           });*/
           self.jstree.deselect_node(id);
         } else {
-          self.addVal(id);
+          self.addVal(cat);
         }
       } 
 
@@ -358,9 +367,9 @@
         return false; 
       }
 
-    }).bind("deselect_node.jstree", function(e, obj) {
-      var node = obj.node, id = node.id;
-      self.removeVal(id);
+    }).on("deselect_node.jstree", function(e, obj) {
+      var cat = obj.node.a_attr["data-name"];
+      self.removeVal(cat);
     });
   }; 
 
@@ -370,15 +379,41 @@
   Hierarchy.prototype.getSelection = function() {
     var self = this, vals = [];
 
-    $.each(self.jstree.get_selected(), function(i, item) {
-      if ( $.inArray(item, vals) < 0) {
-        vals.push(item);
+    $.each(self.jstree.get_selected(), function(i, id) {
+      var cat = _id2cat(id); 
+      if ( $.inArray(cat, vals) < 0) {
+        vals.push(cat);
       }
     });
 
     return vals;
   };
 
+  /***************************************************************************
+   * get node ids of cats
+   */
+  Hierarchy.prototype.getIds = function(vals) {
+    var self = this, ids = [];
+
+    if (typeof(vals) === 'string') {
+      vals = vals.split(/\s*,\s*/);
+    } else {
+      vals = vals || [];
+    }
+
+    if (vals.length) {
+      // get ids of vals
+      $.each(vals, function(i, val) {
+        if (val !== '') {
+          self.jstree.get_container().find("."+val).parent().each(function() {
+            ids.push(this.id);
+          });
+        }
+      });
+    }
+
+    return ids;
+  };
 
   /***************************************************************************
    * set selected categories 
@@ -393,7 +428,7 @@
     }
 
     self.inputField.val(vals.sort().join(", ")).trigger("change");
-    self.jstree.select_node(vals);
+    self.jstree.select_node(self.getIds(vals));
 
     return vals;
   };
@@ -430,6 +465,7 @@
       }
     }
 
+    self.jstree.deselect_all();
     return self.setSelection(newVals);
   };
 
@@ -455,7 +491,7 @@
         //$.jstree.rollback(data.rlbk);
       },
       complete: function(xhr) {
-        var response = $.parseJSON(xhr.responseText);
+        var response = JSON.parse(xhr.responseText);
         //console.log(response);
         $.pnotify({
           type: response.type,
@@ -507,7 +543,7 @@
         self.jstree.refresh();
       },
       complete: function(xhr) {
-        var response = $.parseJSON(xhr.responseText);
+        var response = JSON.parse(xhr.responseText);
         //console.log(response);
         $.pnotify({
           type: response.type,
@@ -552,7 +588,7 @@
         self.jstree.refresh();
       },
       complete: function(xhr) {
-        var response = $.parseJSON(xhr.responseText);
+        var response = JSON.parse(xhr.responseText);
         //console.log(response);
         $.pnotify({
           type: response.type,
@@ -583,14 +619,16 @@
         $.blockUI({message:"<h1>"+$.i18n("Refreshing ...")+"</h1>"});
       },
       complete: function(xhr) {
-        var response = $.parseJSON(xhr.responseText);
+        var response = JSON.parse(xhr.responseText);
         $.unblockUI();
         //console.log(response);
+        /*
         $.pnotify({
           type: response.type,
           title: response.title,
           text: response.message
         });
+        */
         self.jstree.refresh();
         self.reset();
       }

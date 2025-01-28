@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="WorkflowEmailTemplate"}%
 %DBCALL{"Applications.ClassificationApp.RenderWorkflowEmail"}%
 
@@ -6,11 +6,12 @@
 %META:FIELD{name="TopicType" title="TopicType" value="WorkflowEmailTemplate, WikiTopic"}%
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value=""}%
-%META:FIELD{name="From" title="From" value="foo@bar.com"}%
-%META:FIELD{name="To" title="To" value="baz@bar.com"}%
+%META:FIELD{name="From" title="From" value=""}%
+%META:FIELD{name="To" title="To" value=""}%
 %META:FIELD{name="Cc" title="Cc" value=""}%
 %META:FIELD{name="Subject" title="Subject" value="This is a test"}%
+%META:FIELD{name="Priority" title="Priority" value="3"}%
 %META:FIELD{name="RelatedWorkflow" title="Related Workflow" value="SimpleApprovalWorkflow"}%
-%META:FIELD{name="PlainText" title="Plain Text" value="qwe%0d%0a%0d%0aqweqweq"}%
-%META:FIELD{name="HTMLText" title="HTML Text" value=""}%
+%META:FIELD{name="PlainText" title="Plain Text" value=""}%
+%META:FIELD{name="HTMLText" title="HTML Text" value="<!DOCTYPE html>%0d%0a<html lang=%22%25LANG%25%22>%0d%0a<head>%0d%0a   <title>%25TOPICTITLE%25</title>%0d%0a   <meta name=%22viewport%22 content=%22width=device-width, initial-scale=1.0%22>%0d%0a   <meta http-equiv=%22Content-Type%22 content=%22text/html; charset=UTF-8%22>%0d%0a</head>%0d%0a<body style=%22background-color: #f6f6f6; font-family: sans-serif; font-size: 14px; line-height: 1.4; margin: 1em; padding: 0;%22>%0d%0a<h1>%25TOPICTITLE%25</h1>%0d%0a%0d%0a<a href=%22%25SCRIPTURLPATH%7b%22view%22%7d%25/%25WEB%25/%25TOPIC%25%22>read more</a>%0d%0a</body>%0d%0a</html>"}%
 %META:WORKFLOW{name="draft" LASTCOMMENT_draft="" LASTTIME_draft="06 Nov 2015 - 17:23" LASTUSER_draft="Home.MichaelDaum" LASTVERSION_draft="3"}%

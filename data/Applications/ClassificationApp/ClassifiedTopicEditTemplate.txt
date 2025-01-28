@@ -1,55 +1,57 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
-%{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.WikiTopicEdit"}%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
+%TMPL:DEF{"formfields"}%%TMPL:PREV%%TMPL:P{"categoriestab"}%%TMPL:P{"tagstab"}%%TMPL:END%
+
+%TMPL:DEF{"topicsettings"}%%TMPL:P{"topicsettings::title"}%
+<div class="foswikiFormSteps">
+  <div class="foswikiFormStep">
+    <table class="foswikiLayoutTable">
+      %IF{
+         "'%CLASSIFICATIONPLUGIN_AUTOREPARENT{default="off"}%'='off'"
+         then="$percntTMPL:P{\"topicsettings::parenttopic\" topicparent=\"%TOPICPARENT%\"}$percnt"
+         else="<!-- -->"
+      }%
+      %TMPL:P{"topicsettings::contentlanguage"}%
+      %TMPL:P{"topicsettings::caching"}%
+    </table>
+  </div>
+</div>%TMPL:END%
+
 %TMPL:DEF{"catfield"}%Category%TMPL:END%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
 %TMPL:DEF{"categorieslabel"}%%TRANSLATE{"Categories" web="Applications.ClassificationApp"}%%TMPL:END%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
+%TMPL:DEF{"categoriestab"}%%TAB{"%TMPL:P{"categorieslabel"}%"}%
+%RENDERFOREDIT{
+  field="%TMPL:P{"catfield"}%"
+  form="%TMPL:P{"formdefinition"}%"
+  value="%URLPARAM{"%TMPL:P{"catfield"}%" 
+            multiple="on" 
+            separator="," 
+            default="%ENCODE{
+                        "%FORMFIELD{"%TMPL:P{"catfield"}%"}%" 
+                        type="entity"}%"
+                     }%"
+}%
+%ENDTAB%%TMPL:END%
+
 %TMPL:DEF{"tagslabel"}%%TRANSLATE{"Tags" web="Applications.ClassificationApp"}%%TMPL:END%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
-%TMPL:DEF{"categoriestab"}%<!-- -->
-%TAB{"%TMPL:P{"categorieslabel"}%"
-  url="%SCRIPTURL{"rest"}%/RenderPlugin/tag?topic=%BASEWEB%.%BASETOPIC%;name=RENDERFOREDIT;formstyle=above;field=%TMPL:P{"catfield"}%;form=%TMPL:P{"formdefinition"}%;%IF{"defined '%TMPL:P{"catfield"}%'" then="value=%URLPARAM{"%TMPL:P{"catfield"}%" multiple="on" encode="url" separator=","}%;"}%render=on;t=%GMTIME{"$epoch"}%"
+%TMPL:DEF{"tagstab"}%%TAB{"%TMPL:P{"tagslabel"}%"}%
+%RENDERFOREDIT{
+  field="Tag"
+  form="%TMPL:P{"formdefinition"}%"
+  value="%URLPARAM{"Tag" 
+            multiple="on" 
+            separator="," 
+            default="%ENCODE{
+                        "%FORMFIELD{"Tag"}%" 
+                        type="entity"}%"
+                     }%"
 }%
-%JQICON{"fa-spinner" animate="spin"}%
-<noautolink>
-<input type="hidden" name="%TMPL:P{"catfield"}%" value="%URLPARAM{"%TMPL:P{"catfield"}%" multiple="on" separator="," default="%ENCODE{"%FORMFIELD{"%TMPL:P{"catfield"}%"}%" type="entity"}%"}%" />
-</noautolink>
-%ENDTAB%
-<!-- -->%TMPL:END%
-%{</verbatim>}%
-
-%{<verbatim class="tml">}%
-%TMPL:DEF{"tagstab"}%<!-- -->
-%TAB{
-  "%TMPL:P{"tagslabel"}%" 
-  url="%SCRIPTURL{"rest"}%/RenderPlugin/tag?topic=%BASEWEB%.%BASETOPIC%;name=RENDERFOREDIT;formstyle=above;field=Tag;form=%TMPL:P{"formdefinition"}%;%IF{"defined 'Tag'" then="value=%URLPARAM{"Tag" multiple="on" separator="," encode="url"}%;"}%render=on;t=%GMTIME{"$epoch"}%"
-}%
-%JQICON{"fa-spinner" animate="spin"}%
-%JQREQUIRE{"ui, blockui"}%<!-- -->
-<noautolink>
-<input type="hidden" name="Tag" value="%URLPARAM{"Tag" multiple="on" separator="," default="%ENCODE{"%FORMFIELD{"Tag"}%" type="entity"}%"}%" />
-</noautolink>
-%ENDTAB%
-<!-- -->%TMPL:END%
-%{</verbatim>}%
-
-%{<verbatim class="tml">}%
-%TMPL:DEF{"formfields"}%%TMPL:PREV%
-%TMPL:P{"categoriestab"}%
-%TMPL:P{"tagstab"}%
-<!-- -->%TMPL:END%
-%{</verbatim>}%
+%ENDTAB%%TMPL:END%
 
 %META:FORM{name="Applications.TopicView"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%

@@ -1,6 +1,6 @@
 # Module of Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 # 
-# Copyright (C) 2007-2019 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2007-2025 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -54,17 +54,22 @@ sub getDefaultValue {
 sub getDisplayValue {
     my ( $this, $value) = @_;
 
-    my $baseWeb = $this->{session}->{webName};
-    my $baseTopic = $this->{session}->{topicName};
-    my $web = $baseWeb;
-
+    my $web = $this->{session}->{webName};
+    my $topic = $this->{session}->{topicName};
     my $context = Foswiki::Func::getContext();
 
     my @value = ();
-    foreach my $tag (split(/\s*,\s*/, $value)) {
+    foreach my $tag (sort split(/\s*,\s*/, $value)) {
       my $url = '';
       if ($context->{SolrPluginEnabled}) {
-        $url = '<noautolink>%SOLRSCRIPTURL{topic="'.$web.'.WebSearch" tag="'.$tag.'" web="'.$web.'" union="web" separator="&&"}%</noautolink>';
+        $url = $this->solrScriptUrl($web, $topic, {
+          topic => "$web.WebSearch",
+          tag => $tag,
+          web => $web,
+          union => "web",
+          multivalue => "web",
+          separator => "&"
+        });
       } else {
         $url = Foswiki::Func::getScriptUrl($web, "WebTagCloud", "view", tag=>$tag);
       }
@@ -74,6 +79,13 @@ sub getDisplayValue {
     $value = join("<span class='tagSep'>, </span>", @value);
 
     return $value;
+}
+
+sub solrScriptUrl {
+  my ($this, $web, $topic, $params) = @_;
+
+  require Foswiki::Plugins::SolrPlugin;
+  return Foswiki::Plugins::SolrPlugin::getSearcher($this->{session})->handleSOLRSCRIPTURL($params, $web, $topic);
 }
 
 sub renderForEdit {
@@ -112,7 +124,9 @@ sub renderForEdit {
   $widget =~ s/\$classes/$classes/g;
   $widget =~ s/\$(name|type|size|value|attrs)//g;
 
-  return ('', Foswiki::Func::expandCommonVariables($widget, $topic, $web));
+  $widget = Foswiki::Func::expandCommonVariables($widget, $topic, $web) if $widget =~ /%/;
+
+  return ('', $widget);
 
 }
 

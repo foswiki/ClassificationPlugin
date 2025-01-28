@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2019 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2025 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -14,11 +14,20 @@
 
 package Foswiki::Plugins::ClassificationPlugin::Core;
 
+=begin TML
+
+---+ package Foswiki::Plugins::ClassificationPlugin::Core
+
+core class of which a singleton instance is allocated via Foswiki::Plugins::ClassificationPlugin::getCore()
+
+=cut
+
 use strict;
 use warnings;
 
 use constant TRACE => 0; # toggle me
 use constant FIXFORMFIELDS => 1; # work around a bug in Foswiki
+
 use Foswiki::Plugins::ClassificationPlugin ();
 use Foswiki::Plugins::DBCachePlugin ();
 use Foswiki::Form ();
@@ -27,13 +36,20 @@ use Foswiki::Contrib::MailerContrib ();
 use Error qw( :try );
 use Carp qw(confess cluck);
 
-###############################################################################
+=begin TML
+
+---++ ClassMethod new() -> $core
+
+constructor
+
+=cut
+
 sub new {
   my $class = shift;
 
   my $this = bless({
       purgeMode => 0,
-      beforeResponsiblePerson => '',
+      beforeResponsiblePerson => [],
       modTimeStamps => {},
       loadTimeStamps => {},
       hierarchies => {},
@@ -47,7 +63,15 @@ sub new {
   return $this;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod finish()
+
+part of the plugin's destruction, ie. finishes delegate objects
+such as loaded hierarchies
+
+=cut
+
 sub finish {
   my $this = shift;
 
@@ -65,7 +89,14 @@ sub finish {
   #_writeDebug("done finish()");
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod OP_subsumes($r, $l, $map) -> $boolean
+
+implements the DBQUERY operator "subsumes"
+
+=cut
+
 sub OP_subsumes {
   my ($this, $r, $l, $map) = @_;
   my $lval = $l->matches( $map );
@@ -79,7 +110,14 @@ sub OP_subsumes {
   return $hierarchy->subsumes($lval, $rval);
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod OP_isa($r, $l, $map) -> $boolean
+
+implements the DBQUERY operator "isa"
+
+=cut
+
 sub OP_isa {
   my ($this, $r, $l, $map) = @_;
   my $lval = $l->matches( $map );
@@ -97,7 +135,14 @@ sub OP_isa {
   return ($cat->contains($lval))?1:0;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod OP_distance($r, $l, $map) -> $integer
+
+implements the DBQUERY operator "distance"
+
+=cut
+
 sub OP_distance {
   my ($this, $r, $l, $map) = @_;
   my $lval = $l->matches( $map );
@@ -114,7 +159,14 @@ sub OP_distance {
   return $dist || 0;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod handleSIMILARTOPICS($session, $params, $topic, $web) -> $result
+
+implements the =%SIMMILARTOPICS= macro
+
+=cut
+
 sub handleSIMILARTOPICS {
   my ($this, $session, $params, $theTopic, $theWeb) = @_;
 
@@ -184,7 +236,14 @@ sub handleSIMILARTOPICS {
   return $theHeader.join($theSep, @lines).$theFooter;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod handleHIERARCHY($session, $params, $topic, $web) -> $result
+
+implements the =%HIERARCHY= macro
+
+=cut
+
 sub handleHIERARCHY {
   my ($this, $session, $params, $theTopic, $theWeb) = @_;
 
@@ -198,7 +257,14 @@ sub handleHIERARCHY {
   return $hierarchy->traverse($params);
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod handleISA($session, $params, $topic, $web) -> $result
+
+implements the =%ISA= macro
+
+=cut
+
 sub handleISA {
   my ($this, $session, $params, $theTopic, $theWeb) = @_;
 
@@ -230,7 +296,14 @@ sub handleISA {
   return 0;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod handleSUBSUMES($session, $params, $topic, $web) -> $result
+
+implements the =%SUBSUMES= macro
+
+=cut
+
 sub handleSUBSUMES {
   my ($this, $session, $params, $theTopic, $theWeb) = @_;
 
@@ -263,7 +336,14 @@ sub handleSUBSUMES {
   return $result;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod handleDISTANCE($session, $params, $topic, $web) -> $result
+
+implements the =%DISTANCE= macro
+
+=cut
+
 sub handleDISTANCE {
   my ($this, $session, $params, $theTopic, $theWeb) = @_;
 
@@ -292,7 +372,14 @@ sub handleDISTANCE {
   return $result;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod handleCATINFO($session, $params, $topic, $web) -> $result
+
+implements the =%CATINFO= macro
+
+=cut
+
 sub handleCATINFO {
   my ($this, $session, $params, $theTopic, $theWeb) = @_;
 
@@ -372,7 +459,7 @@ sub handleCATINFO {
 
   foreach my $category (sort {uc($a->title) cmp uc($b->title)} @categories) {
     my $catName = $category->{name};
-    next if $theCat && $theCat ne 'TopCategory' && $catName =~ /BottomCategory|TopCategory/;
+    next if $theCat && $theCat ne 'TopCategory' && $catName =~ /^(BottomCategory|TopCategory)$/;
 
     if ($theMatchCase eq 'on') {
       next if $theExclude && $category->{$theMatchAttr} =~ /^($theExclude)$/;
@@ -468,10 +555,10 @@ sub handleCATINFO {
       $doneBreadCrumbs = 1;
     }
 
-    my @children;
+    my @children = ();
     my $moreChildren = '';
     my $user = Foswiki::Func::getWikiName();
-    if ($line =~ /\$children/) {
+    if ($line =~ /\$children/ && $theMaxChildren) {
       @children = sort {uc($a->title) cmp uc($b->title)} $category->getChildren();
       @children = grep {$_->{name} ne 'BottomCategory'} @children;
       @children = grep {Foswiki::Func::checkAccessPermission("view", $user, undef, $_->{name}, $_->{origWeb})} @children;
@@ -499,7 +586,7 @@ sub handleCATINFO {
     }
 
     my $children = '';
-    if ($line =~ /\$children(links)?\b/) {
+    if ($line =~ /\$children(links?)?\b/) {
       my @links = ();
       foreach my $child (@children) {
         push @links, $child->getLink();
@@ -508,7 +595,7 @@ sub handleCATINFO {
     }
 
     my $childrenName = '';
-    if ($line =~ /\$children?names?/) {
+    if ($line =~ /\$childrennames?/) {
       my @names = ();
       foreach my $child (@children) {
         push @names, $child->{name};
@@ -517,7 +604,7 @@ sub handleCATINFO {
     }
 
     my $childrenTitle = '';
-    if ($line =~ /\$childrentitle/) {
+    if ($line =~ /\$childrentitles?/) {
       my @titles = ();
       foreach my $child (@children) {
         push @titles, $child->title;
@@ -587,8 +674,8 @@ sub handleCATINFO {
     $line =~ s/\$count/$nrTopics/g;
     $line =~ s/\$breadcrumbnames?/$breadCrumbNames/g;
     $line =~ s/\$breadcrumbs?/$breadCrumbs/g;
-    $line =~ s/\$children?name/$childrenName/g;
-    $line =~ s/\$childrentitle/$childrenTitle/g;
+    $line =~ s/\$childrennames?/$childrenName/g;
+    $line =~ s/\$childrentitles?/$childrenTitle/g;
     $line =~ s/\$childrenurls?/$childrenUrls/g;
     $line =~ s/\$children(links?)?/$children/g;
     $line =~ s/\$iconurl/$iconUrl/g;
@@ -607,7 +694,14 @@ sub handleCATINFO {
   return $result;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod handleTAGINFO($session, $params, $topic, $web) -> $result
+
+implements the =%TAGINFO= macro
+
+=cut
+
 sub handleTAGINFO {
   my ($this, $session, $params, $theTopic, $theWeb) = @_;
 
@@ -672,6 +766,7 @@ sub handleTAGINFO {
     $line =~ s/\$link/$link/g;
     $line =~ s/\$class/$class/g;
     $line =~ s/\$name/$tag/g;
+    $line =~ s/\$title/$tag/g;
     push @result, $line;
     last if $theLimit && $index >= $theLimit;
   }
@@ -688,9 +783,14 @@ sub handleTAGINFO {
   return $result;
 }
 
-###############################################################################
-# reparent based on the category we are in
-# takes the first category in alphabetic order
+=begin TML
+
+---++ ObjectMethod beforeSaveHandler($text, $topic, $web, $meta)
+
+reparent based on the category we are in, takes the first category in alphabetic order
+
+=cut
+
 sub beforeSaveHandler {
   my ($this, $text, $topic, $web, $meta) = @_;
 
@@ -761,12 +861,11 @@ sub beforeSaveHandler {
       if ($isCatField{$field->{name}}) {
         #_writeDebug("before, value=$field->{value}");
         $field->{value} =~ s/^top=.*$//; # clean up top= in value definition
-        my $item;
         $field->{value} = join(', ', 
             map { 
-              $item = $_;
-              $item =~ s/^.*[\.\/](.*?)$/$1/; 
-              $_ = $item;
+              my $tmp = $_;
+              $tmp =~ s/^.*[\.\/](.*?)$/$1/; 
+              $tmp;
             }
             split(/\s*,\s*/, $field->{value})
         ); # remove accidental web part from categories
@@ -796,11 +895,13 @@ sub beforeSaveHandler {
   #_writeDebug("old TopicType=$topicType");
   my @topicType = split(/\s*,\s*/, $topicType);
   my $index = scalar(@topicType)+3;
-  my %newTopicType = map {$_ =~ s/^.*\.//; $_ => $index--} @topicType;
+  my %newTopicType = map {my $tmp = $_; $tmp =~ s/^.*\.//; $tmp => $index--} @topicType;
 
   if ($formName =~ /^Applications[\.\/]ClassificationApp[\.\/]Category$/) {
-    $newTopicType{Category} = 2;
-    $newTopicType{CategorizedTopic} = 1;
+    $newTopicType{Category} = 4;
+    $newTopicType{ClassifiedTopic} = 3;
+    $newTopicType{CategorizedTopic} = 2;
+    $newTopicType{TaggedTopic} = 1;
     $newTopicType{WikiTopic} = 0;
   } 
   elsif ($formName =~ /^Applications[\.\/]ClassificationApp[\.\/]CategorizedTopic$/) {
@@ -888,7 +989,7 @@ sub beforeSaveHandler {
   }
 
   # set the new parent topic
-  my $doAutoReparent = Foswiki::Func::getPreferencesFlag('CLASSIFICATIONPLUGIN_AUTOREPARENT', $web);
+  my $doAutoReparent = Foswiki::Func::getPreferencesFlag('CLASSIFICATIONPLUGIN_AUTOREPARENT');
 
   if ($doAutoReparent && $topicType =~ /CategorizedTopic/) {
     #_writeDebug("autoreparenting");
@@ -932,8 +1033,8 @@ sub beforeSaveHandler {
   # try even harder if it missing the CategorizedTopic TopicType but
   # still uses categories
   if ($this->{purgeMode} < 2) { 
-    my $hierarchy = $this->getHierarchy($web); 
-    my $catFields = $hierarchy->getCatFields(split(/\s*,\s*/,$topicType));
+    $hierarchy = $this->getHierarchy($web); 
+    $catFields = $hierarchy->getCatFields(split(/\s*,\s*/,$topicType));
     if ($catFields && @$catFields) {
       $this->{purgeMode} = ($this->{purgeMode} < 1)?2:3;
     }
@@ -944,7 +1045,14 @@ sub beforeSaveHandler {
 
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod afterSaveHandler($text, $topic, $web, $error, $meta)
+
+handles subscriptions to a category as well as cache purging
+
+=cut
+
 sub afterSaveHandler {
   #my ($this, $text, $topic, $web, $error, $meta) = @_;
   my $this = shift;
@@ -994,15 +1102,8 @@ sub afterSaveHandler {
     my @unsubscribe = ();
     my @subscribe = ();
 
-    my %before = ();
-    foreach my $person (split(/\s*,\s*/, $this->{beforeResponsiblePerson})) {
-      $before{$person}++;
-    }
-    my %after = ();
-    my $afterResponsiblePerson = _getResponsiblePerson($meta);
-    foreach my $person (split(/\s*,\s*/, $afterResponsiblePerson)) {
-      $after{$person}++;
-    }
+    my %before = map {$_=> 1} @{$this->{beforeResponsiblePerson}};
+    my %after = map {$_=> 1} @{_getResponsiblePerson($meta)};
     foreach my $person (keys %before) {
       next if $after{$person};
       push @unsubscribe, $person;
@@ -1013,17 +1114,24 @@ sub afterSaveHandler {
     }
     
     if (@unsubscribe) {
-      #_writeDebug("auto-un-subscribing @unsubscribe");
+      _writeDebug("auto-un-subscribing @unsubscribe");
       Foswiki::Contrib::MailerContrib::changeSubscription($web, $_, $topic, "-") foreach @unsubscribe;
     }
     if (@subscribe) {
-      #_writeDebug("auto-subscribing @subscribe");
+      _writeDebug("auto-subscribing @subscribe");
       Foswiki::Contrib::MailerContrib::changeSubscription($web, $_, $topic) foreach @subscribe;
     }
   }
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod afterRenameHandler($fromWeb, $fromTopic, $fromAttachment, $toWeb, $toTopic, $toAttachment)
+
+maintance steps when a category has been renamed
+
+=cut
+
 sub afterRenameHandler {
   my ($this, $fromWeb, $fromTopic, $fromAttachment, $toWeb, $toTopic, $toAttachment) = @_;
 
@@ -1058,7 +1166,14 @@ sub afterRenameHandler {
   }
 }
 
-################################################################################
+=begin TML
+
+---++ ObjectMethod getCacheFile($web, $topic) -> $filePath
+
+returns the file path the the cache file holding the hierarchy for the given web
+
+=cut
+
 sub getCacheFile {
   my ($this, $web, $topic) = @_;
 
@@ -1071,7 +1186,14 @@ sub getCacheFile {
   return Foswiki::Func::getWorkArea("ClassificationPlugin").'/'.$key.'.hierarchy';
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod getModificationTime($web, $topic) -> $epoch
+
+returns the time a hierarchy cache has been last modified
+
+=cut
+
 sub getModificationTime {
   my ($this, $web, $topic) = @_;
 
@@ -1087,18 +1209,23 @@ sub getModificationTime {
   return $this->{modTimeStamps}{$key};
 }
 
-###############################################################################
-# returns the hierarchy object for a given web; construct a new one if
-# not already done
+=begin TML
+
+---++ ObjectMethod getHierarchy($web) -> $hierarchy
+
+returns a hierarchy object for a given web; construct a new one if
+required
+
+see Foswiki::Plugins::ClassificationPlugin::Hierarchy
+
+=cut
+
 sub getHierarchy {
   my ($this, $web) = @_;
 
   die "no web defined" unless defined $web;
 
-  unless (Foswiki::Func::webExists($web)) {
-    confess("ERROR: can't get hierarchy for non-existing web '$web'");
-    return;
-  }
+  confess("ERROR: can't get hierarchy for non-existing web '$web'") unless Foswiki::Func::webExists($web);
 
   $web =~ s/\//\./g;
   if (!$this->{loadTimeStamps}{$web} || $this->{loadTimeStamps}{$web} < $this->getModificationTime($web)) {
@@ -1112,9 +1239,15 @@ sub getHierarchy {
   return $this->{hierarchies}{$web};
 }
 
-###############################################################################
-# returns the hierarchy object for a given web.topic; construct a new one if
-# not already done
+=begin TML
+
+---++ ObjectMethod getHierarchyFromTopic($web, $topic)
+
+returns the hierarchy object for a given web.topic; construct a new one if
+required
+
+=cut
+
 sub getHierarchyFromTopic {
   my ($this, $web, $topic) = @_;
 
@@ -1133,9 +1266,14 @@ sub getHierarchyFromTopic {
   return $this->{hierarchies}{$key};
 }
 
-###############################################################################
-# returns a hierarchy object for a given bullet list
-# not already done
+=begin TML
+
+---++ ObjectMethod getHierarchyFromText($text)
+
+returns a hierarchy object for a given bullet list
+
+=cut
+
 sub getHierarchyFromText {
   my ($this, $text) = @_;
 
@@ -1143,10 +1281,15 @@ sub getHierarchyFromText {
   return Foswiki::Plugins::ClassificationPlugin::Hierarchy->new(undef, undef, $text, @_);
 }
 
+=begin TML
 
-###############################################################################
-# get the hierarchy that implements the given category; this traverses all
-# webs and loads their hierarchy to see if it exists
+---++ ObjectMethod findHierarchy($catName)
+
+get the hierarchy that implements the given category. Note this traverses all
+webs and loads their hierarchy to see if the category exists in it
+
+=cut
+
 sub findHierarchy {
   my ($this, $catName) = @_;
 
@@ -1166,7 +1309,16 @@ sub findHierarchy {
   return $hierarchy;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod renameTag($from, $to, $web, $topics) -> $count
+
+renames a given tag from =$from= to =$to= as used in the hierarchy of web =$web=.
+The process is constraint to the given list of =$topics= or applied to all
+topics in the =$web= otherwise. Returns the number of touched topics
+
+=cut
+
 sub renameTag {
   my ($this, $from, $to, $web, $topics) = @_;
 
@@ -1210,10 +1362,9 @@ sub renameTag {
         print STDERR "$topic: new=$newTags\n";
       } 
 
-      my ($meta, $text) = Foswiki::Func::readTopic($web, $topic);
+      my ($meta) = Foswiki::Func::readTopic($web, $topic);
       $meta->putKeyed( 'FIELD', { name => 'Tag', title => 'Tag', value =>$newTags});
-      #print STDERR "saving $web.$topic\n";
-      Foswiki::Func::saveTopic($web, $topic, $meta, $text);
+      $meta->save();
       #print STDERR "...done\n";
 
       $count++;
@@ -1223,7 +1374,14 @@ sub renameTag {
   return $count;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod getIndexFields($web, $topic, $meta) -> $list
+
+returns a list reference of all formfields to be indexed by Solr
+
+=cut
+
 sub getIndexFields {
   my ($this, $web, $topic, $meta) = @_;
 
@@ -1275,15 +1433,15 @@ sub getIndexFields {
 	}
 
         if ($hierarchy) {
-          # create a category title field
+          # create a category title and link fields
           foreach my $category (keys %thisCategories) {
             my $cat = $hierarchy->getCategory($category);
             next unless $cat;
             push @$indexFields, ['field_'.$name.'_title_lst' => $cat->title];
+            push @$indexFields, ['field_'.$name.'_link_lst' => $cat->getLink];
           }
-        
 
-          # then, gather all parent categories for this cat field
+          # gather all parent categories for this cat field
           foreach my $category (keys %thisCategories) {
             my $cat = $hierarchy->getCategory($category);
             next unless $cat;
@@ -1342,15 +1500,63 @@ sub getIndexFields {
   return $indexFields;
 }
 
-###############################################################################
-sub indexAttachmentHandler {
+=begin TML
+
+---++ ObjectMethod solrIndexTopicHandler($indexer, $doc, $web, $topic, $meta, $text)
+
+hools into the indexing process for a topic
+
+=cut
+
+sub solrIndexTopicHandler {
+  my ($this, $indexer, $doc, $web, $topic, $meta, $text) = @_;
+
+  my $indexFields = $this->getIndexFields($web, $topic, $meta);
+  if ($indexFields) {
+    foreach my $item (@$indexFields) {
+      my $field = $indexer->getField($doc, $item->[0]);
+      if (!$field || $field->value() ne $item->[1]) {
+        $doc->add_fields($item);
+      }
+    }
+  }
+
+  my $icon;
+
+  if ($meta->get('FIELD', 'TopicType')) {
+    $icon = $this->getIconOfTopic($web, $topic);
+  } 
+
+  if ($icon) {
+    my $field = $indexer->getField($doc, "icon");
+    $field->value($icon) if $field;
+  }
+}
+
+
+=begin TML
+
+---++ ObjectMethod solrIndexAttachmentHandler($indexer, $doc, $web, $topic, $attacment)
+
+hooks into the indexing process for attachments and adds additional fields as required
+
+=cut
+
+sub solrIndexAttachmentHandler {
   my ($this, $indexer, $doc, $web, $topic, $attachment) = @_;
 
   my $indexFields = $this->getIndexFields($web, $topic);
   $doc->add_fields(@$indexFields) if $indexFields;
 }
 
-###############################################################################
+=begin TML
+
+---++ ObjectMethod getIconOfTopic($web, $topic)
+
+returns an icon for the given web.topic and adds it to the solr index
+
+=cut
+
 sub getIconOfTopic {
   my ($this, $web, $topic) = @_;
 
@@ -1395,50 +1601,14 @@ sub getIconOfTopic {
   return $icon if defined $icon;
 }
 
-###############################################################################
-sub indexTopicHandler {
-  my ($this, $indexer, $doc, $web, $topic, $meta, $text) = @_;
+=begin TML
 
-  my $indexFields = $this->getIndexFields($web, $topic, $meta);
-  $doc->add_fields(@$indexFields) if $indexFields;
+---++ ObjectMethod getTopicTypes($web, $topic) -> @list
 
-  my $icon;
+returns a list of topic types for the given web.topic
 
-  if ($meta->get('FIELD', 'TopicType')) {
-    $icon = $this->getIconOfTopic($web, $topic);
-  } 
+=cut
 
-  if ($icon) {
-    my $field = $indexer->getField($doc, "icon");
-    $field->value($icon) if $field;
-  }
-}
-
-###############################################################################
-# statics 
-###############################################################################
-sub _getResponsiblePerson {
-  my $meta = shift;
-
-  my $topicType = $meta->get('FIELD', 'TopicType');
-  $topicType = $topicType->{value} if $topicType;
-  $topicType ||= '';
-
-  return "" unless $topicType =~ /\bCategory\b/;
-
-  my $responsiblePerson = $meta->get('FIELD', "ResponsiblePerson");
-  $responsiblePerson = $responsiblePerson->{value} if defined $responsiblePerson;
-
-  return $responsiblePerson || "";
-}
-
-###############################################################################
-sub _writeDebug {
-  print STDERR '- ClassificationPlugin::Core - '.$_[0]."\n" if TRACE;
-  #Foswiki::Func::writeDebug('- ClassificationPlugin::Core - '.$_[0]) if TRACE;
-}
-
-###############################################################################
 sub getTopicTypes {
   my ($this, $web, $topic) = @_;
 
@@ -1460,7 +1630,31 @@ sub getTopicTypes {
   return split(/\s*,\s*/, $topicTypes);
 }
 
-###############################################################################
+################################################################################
+###  static helpers
+sub _getResponsiblePerson {
+  my $meta = shift;
+
+  my $topicType = $meta->get('FIELD', 'TopicType');
+  $topicType = $topicType->{value} if $topicType;
+  $topicType ||= '';
+
+  my %list = ();
+
+  if ($topicType =~ /\bCategory\b/) {
+
+    my $responsiblePerson = $meta->get('FIELD', "ResponsiblePerson");
+    $responsiblePerson = $responsiblePerson->{value} if defined $responsiblePerson;
+
+    foreach my $person (split(/\s*,\s*/, $responsiblePerson || "")) {
+      $person =~ s/^.*\.(.*?)$/$1/;
+      $list{$person} = 1;
+    }
+  }
+
+  return [sort keys %list];
+}
+
 sub _expandVariables {
   my ($theFormat, %params) = @_;
 
@@ -1469,8 +1663,8 @@ sub _expandVariables {
   #_writeDebug("called _expandVariables($theFormat)");
 
   foreach my $key (keys %params) {
-    #die "params{$key} undefined" unless defined($params{$key});
-    $theFormat =~ s/\$$key\b/$params{$key}/g;
+    my $val = $params{$key} // '';
+    $theFormat =~ s/\$$key\b/$val/g;
   }
   $theFormat =~ s/\$percnt/\%/g;
   $theFormat =~ s/\$nop//g;
@@ -1483,6 +1677,9 @@ sub _expandVariables {
   return $theFormat;
 }
 
+sub _writeDebug {
+  print STDERR '- ClassificationPlugin::Core - '.$_[0]."\n" if TRACE;
+  #Foswiki::Func::writeDebug('- ClassificationPlugin::Core - '.$_[0]) if TRACE;
+}
 
 1;
-

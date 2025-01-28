@@ -5,7 +5,7 @@
   NAME="$name"
   VALUE="$value" 
   TOP="$top"
-  THEWEB="$baseweb"
+  THEWEB="$web"
   MODE="select"
   CLASSES="$classes"
   BUTTONS="$buttons"
@@ -13,9 +13,8 @@
 
 %TMPL:DEF{"tageditor"}%<div class="jqTagEditor" data-tag-suggestion-url="%SCRIPTURLPATH{"rest"}%/RenderPlugin/template?topic=$web.$topic;name=classificationplugin;expand=suggesttags;contenttype=application/json">
 <noautolink>
-<input type="text" class="foswikiInputField jqTextboxList" autocomplete="%SCRIPTURL{"rest"}%/RenderPlugin/template?topic=$web.$topic;name=classificationplugin;expand=querytags;contenttype=application/json" name="$name" id="$name" size="$size" value="$value" />
+<input type="text" class="foswikiInputField jqTextboxList" autocomplete="%SCRIPTURLPATH{"rest"}%/RenderPlugin/template?topic=$web.$topic;name=classificationplugin;expand=querytags;contenttype=application/json" name="$name" size="$size" value="$value" />
 <div class='jqTagSuggestions' style='display:none'>
-<hr />
 <h3 >%TRANSLATE{"Related tags"}%:</h3>
 <ol></ol>
 </div>
@@ -23,8 +22,8 @@
   "script" 
   id="TAGEDITOR" 
   requires="JQUERYPLUGIN::BLOCKUI" 
-  text="<script type='text/javascript' src='%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/jquery.tageditor.js'></script>"
-}%%JQREQUIRE{"ui, blockui"}%
+  text="<script src='%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/build/jquery.tageditor.js'></script>"
+}%%JQREQUIRE{"ui, blockui, textboxlist"}%
 </div>%TMPL:END%
 
 %TMPL:DEF{"querytags"}%%TMPL:P{context="SolrPluginEnabled" then="querytags::solr" else="querytags::default"}%%TMPL:END%

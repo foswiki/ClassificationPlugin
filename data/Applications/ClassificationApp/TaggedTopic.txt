@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicType"}%
 %DBCALL{"Applications.RenderTopicInstaller" TYPE="TopicType" PARENT="TopicType"}%
 ---++ Documentation
@@ -22,8 +22,8 @@ See also: [[ClassifiedTopic]], [[CategorizedTopic]], [[TaggedTopicViewTemplate]]
 <!-- -->%STOPINCLUDE%
 
 ---++ <nop>%TOPIC% form
-| *Name:*| *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
-| TopicType | label | 1 | TaggedTopic, WikiTopic | Document type  | | TaggedTopic, WikiTopic |
+| *Name:* | *Type:* | *Size:* | *Values:* | *Description:* | *Attributes:* | *Default:* |
+| TopicType | type | 1 | TaggedTopic, WikiTopic | Document type | h | |
 | <nop>TopicTitle | text | 75 | | | | |
 | Summary | text | 75 | | short description or tagline | c | |
 | Tag | tag | 30 | | keywords for this topic | c | |
@@ -36,6 +36,7 @@ See also: [[ClassifiedTopic]], [[CategorizedTopic]], [[TaggedTopicViewTemplate]]
 %META:FIELD{name="Icon" title="Icon" value="fa-tags"}%
 %META:FIELD{name="Editor" title="Editor" value="Applications.ClassificationApp.TaggedTopicEditTemplate"}%
 %META:FIELD{name="Template" title="Template" value=""}%
+%META:FIELD{name="CreateAction" title="Create Action" value="edit"}%
 %META:FIELD{name="TopicNamingMode" title="Topic Naming Mode" value="default"}%
 %META:FIELD{name="TopicNameTemplate" title="Topic Name Template" value=""}%
 %META:FIELD{name="TopicNameSource" title="Topic Name Source" value="[name=TopicTitle]"}%

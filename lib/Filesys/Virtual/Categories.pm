@@ -1,3 +1,17 @@
+# Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
+#
+# Copyright (C) 2006-2025 Michael Daum http://michaeldaumconsulting.com
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version. For
+# more details read LICENSE in the root of this distribution.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
 package Filesys::Virtual::Categories;
 
 use strict;
@@ -6,7 +20,7 @@ use warnings;
 use Foswiki::Func ();
 use Foswiki::Plugins::ClassificationPlugin ();
 use Filesys::Virtual::Attachments ();
-our @ISA = ('Filesys::Virtual::Attachments');
+our @ISA = ('Filesys::Virtual::Foswiki');
 
 #use Data::Dump qw(dump);
 use constant NOCAT => '00.uncategorized';
@@ -17,6 +31,7 @@ sub new {
 
   my $this = bless($class->SUPER::new($args), $class);
 
+  $this->{attachmentsDirExtension} = '';
   $this->{hideEmptyCategories} = $Foswiki::cfg{Plugins}{FilesysVirtualPlugin}{HideEmptyCategories}
     || 0;
 
@@ -33,108 +48,103 @@ sub new {
 sub _parseResource {
   my ($this, $resource) = @_;
 
-  if (defined $this->{location} && $resource =~ s/^$this->{location}//) {
+  my @path = $this->_getPathOfResource($resource);
+  my $path = join("/", @path);
 
-    # Absolute path; must be, cos it has a location
-  } elsif ($resource !~ /^\//) {
+  my $info = $this->{_infoOfResource}{$path};
+  return $info if defined $info;
 
-    # relative path
-    $resource = $this->{path} . '/' . $resource;
-  }
-  $resource =~ s/\/\/+/\//g;    # normalise // -> /
-  $resource =~ s/^\/+//;        # remove leading /
-
-  # Resolve the path into it's components
-  my @path;
-  foreach (split(/\//, $resource)) {
-    if ($_ eq '..') {
-      if ($#path) {
-        pop(@path);
-      }
-    } elsif ($_ eq '.') {
-      next;
-    } elsif ($_ eq '~') {
-      @path = ($Foswiki::cfg{UsersWebName});
-    } else {
-      push(@path, $_);
-    }
-  }
-
-  # strip off hidden attribute from filename
-  @path = map { $_ =~ s/^\.//; $_ } @path if $this->{hideEmptyAttachmentDirs};
-
-  # rebuild normalized resource
-  $resource = join("/", @path);
-
-  # get web part
-  my $web = '';
-  while (@path) {
-    last if $web && Foswiki::Func::topicExists($web, $path[0]);
-    if (Foswiki::Func::webExists($web)) {
-      my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($web);
-      last if $path[0] eq NOCAT || $hierarchy->getCategory($path[0]);
-    }
-    $web .= ($web ? '/' : '') . shift(@path);
-  }
-
-  my %info = (
+  $info = {
     type => 'R',
-    web => $web,
     resource => $resource,
-  );
+    path => $path,
+  };
 
-  # get category part
-  my $catPath = '';
-  if (Foswiki::Func::webExists($web)) {
-    my $cat = '';
-    my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($web);
-    while (@path && ($path[0] eq NOCAT || $hierarchy->getCategory($path[0]))) {
-      $cat = shift(@path);
-      $catPath = ($catPath ? '/' : '') . $cat;
-    }
-    $info{category} = $cat if $cat;
-  }
-
-  # get topic part
-  $info{topic} = shift(@path) if Foswiki::Func::topicExists($web, $path[0]);
-
-  # get attachment part
-  $info{attachment} = shift(@path);
+  $this->_parseWebOfResource($info, \@path);
+  $this->_parseCategoryOfResource($info, \@path);
+  $this->_parseTopicOfResource($info, \@path);
+  $this->_parseAttachmentOfResource($info, \@path);
+  $this->_parseViewOfResource($info, \@path);
+  $this->_parseFileOfResource($info, \@path);
 
   # anything else is an error
-  return undef if scalar(@path);
-
-  # derive type from found resources and rebuild path
-  @path = ();
-  if ($info{web}) {
-    push @path, $info{web};
-
-    if ($info{category}) {
-      push @path, $catPath;
-      $info{type} = 'C';
-    } else {
-      $info{type} = 'W';
-    }
-
-    if ($info{topic}) {
-      push @path, $info{topic};
-      $info{type} = 'D';
-    }
-
-    if ($info{attachment}) {
-      push @path, $info{attachment};
-      $info{type} = 'A';
-    }
-  }
+  return if scalar(@path);
 
   # init topic for compatibility with upper level
-  $info{topic} ||= $info{category};
+  $info->{topic} ||= $info->{category};
 
-  $info{path} = join("/", @path);
+  #print STDERR "... info=".dump($info)."\n";
+  $this->{_infoOfResource}{$path} = $info;
 
-  #print STDERR dump(\%info)."\n";
+  return $info;
+}
 
-  return \%info;
+sub _parseViewOfResource {
+  my ($this, $info, $path) = @_;
+
+  return unless $info->{web} && $info->{topic} && $info->{attachment} && $path;
+
+  my $viewFile = "01.$info->{topic}";
+
+  foreach my $v (@{$this->{views}}) {
+    my $ext = $v->extension;
+    if ($info->{attachment} =~ /^$viewFile$ext$/) {
+      $info->{type} = 'T';
+      $info->{view} = $v;
+      last;
+    }
+  }
+}
+
+sub _parseCategoryOfResource {
+  my ($this, $info, $path) = @_;
+
+  return unless $info->{web} && $path;
+
+  print STDERR "called _parseCategoryOfResource(@$path)\n" if $this->{trace} & 4;
+
+  my $cat = '';
+  my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($info->{web});
+
+  my $part = $path->[0];
+
+  while ($part && ($part eq NOCAT || $hierarchy->getCategory($part))) {
+    $cat = $part;
+    shift @$path;
+    $part = $path->[0];
+  }
+
+  if ($cat) {
+    $info->{category} = $cat;
+    $info->{topic} = $cat;
+    $info->{type} = 'C';
+
+    print STDERR "... cat=$cat\n" if $this->{trace} & 2;
+  }
+
+  return $cat;
+}
+
+sub _D_list {
+  my ($this, $info) = @_;
+
+  my $list = $this->SUPER::_D_list($info);
+
+  foreach my $v (@{$this->{views}}) {
+    push @$list, "01.$info->{topic}".$v->extension;
+  }
+
+  return $list;
+}
+
+sub _C_displayName {
+  my ($this, $info) = @_;
+
+  if ( Foswiki::Func::webExists( $info->{web} ) ) {
+      my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($info->{web});
+      my $cat = $hierarchy->getCategory($info->{category});
+      return $cat->title if $cat;
+  }
 }
 
 sub _C_chdir {
@@ -144,7 +154,7 @@ sub _C_chdir {
     $this->{path} = $info->{path};
     return $this->{path};
   }
-  return undef;
+  return;
 }
 
 sub _W_list {
@@ -159,7 +169,7 @@ sub _W_list {
 
   foreach my $sweb (Foswiki::Func::getListOfWebs('user,public')) {
     next if $sweb eq $info->{web};
-    next unless $sweb =~ s/^$info->{web}\/+//;
+    next unless $sweb =~ s/^$info->{web}\b.//;
     next if $sweb =~ m#/#;
     push(@list, $sweb);
   }
@@ -185,6 +195,11 @@ sub _W_list {
 
   push @list, '.';
   push @list, '..';
+  push(@list, $this->{resourceLinkFileName}) if $this->{resourceLinkFileName};
+
+#  foreach my $v (@{$this->{views}}) {
+#    push @list, "01.$info->{web}".$v->extension;
+#  }
 
   return \@list;
 }
@@ -239,6 +254,11 @@ sub _C_list {
 
   push @list, '.';
   push @list, '..';
+  push(@list, $this->{resourceLinkFileName}) if $this->{resourceLinkFileName} && $info->{category} ne NOCAT;
+
+  foreach my $v (@{$this->{views}}) {
+    push @list, "01.$info->{category}".$v->extension;
+  }
 
   return \@list;
 }
@@ -285,7 +305,7 @@ sub _C_stat {
   my $file = "$Foswiki::cfg{DataDir}/$cat->{origWeb}/$catName.txt";
   my @stat = CORE::stat($file);
   $stat[2] = $this->_getMode($cat->{origWeb}, $catName);
-  $stat[2] = ($stat[2] & ~(00222))
+  $stat[2] = ($stat[2] & ~(222))
     if $cat->{origWeb} ne $info->{web} || $info->{category} eq NOCAT;
 
   #printf STDERR "mode=%#o\n", $stat[2];
@@ -330,5 +350,15 @@ sub _C_test {
 
   return eval "-$type $file";
 }
+
+# deny any modifications of a view
+sub _T_delete {
+    return shift->_fail( POSIX::EPERM, @_ );
+}
+
+sub _T_rename {
+  return shift->_fail(POSIX::EPERM, @_);
+}
+
 
 1;

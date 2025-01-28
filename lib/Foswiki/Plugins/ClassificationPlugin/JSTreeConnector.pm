@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2013-2019 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2013-2025 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -48,6 +48,8 @@ sub dispatchAction {
   my $request = Foswiki::Func::getRequestObject();
   my $theWeb = $request->param('web') || $session->{webName};
   $theWeb = Foswiki::Sandbox::untaint($theWeb, \&Foswiki::Sandbox::validateWebName) || '';
+  my $theTopic = $session->{topicName};
+  ($theWeb, $theTopic) = Foswiki::Func::normalizeWebTopicName($theWeb, $theTopic);
 
   my $result;
   try {
@@ -140,7 +142,7 @@ sub getChildren {
     my $record = {
       "text" => $child->title.($nrTopics?"<span class='jstree-count'>($nrTopics)</span>":""),
       "icon" => $icon,
-      "id" => $child->{name},
+      "id" => $child->{name}, # . ($cat->isRoot? '' : '__'.$cat->{name}),
       "a_attr" => {
         "href" => $child->getUrl(),
         "class" => $child->{name},
@@ -149,6 +151,7 @@ sub getChildren {
           #redirectto => Foswiki::Func::getScriptUrl($session->{webName}, $session->{topicName}, "view")
         ), 
         "data-title" => $child->title(),
+        "data-name" => $child->{name},
       },
       state => \%state,
     };
@@ -196,7 +199,9 @@ sub handle_get_children {
 
   my $request = Foswiki::Func::getRequestObject();
 
-  my $catName = $request->param('cat') || "TopCategory";
+  my $id = $request->param("cat");
+  my $catName = _getCatParam($request) || "TopCategory";
+
   my @select = $request->multi_param('select');
   my $maxDepth = $request->param('maxDepth');
   $maxDepth = -1 unless defined $maxDepth;
@@ -215,13 +220,28 @@ sub handle_get_children {
   my %select = ();
   foreach (@select) {
     foreach my $item (split(/\s*,\s+/)) {
-      my $cat = $hierarchy->getCategory($item);
-      $select{$item} = $cat if defined $cat;
+      my $c = $hierarchy->getCategory($item);
+      $select{$item} = $c if defined $c;
     }
   }
   @select = values %select; 
 
-  return $this->getChildren($session, $cat, \@select, $maxDepth, $displayCounts, $sort);
+  my $result = $this->getChildren($session, $cat, \@select, $maxDepth, $displayCounts, $sort);
+ 
+  _fixIds($result, $id);
+
+  return $result;
+}
+
+sub _fixIds {
+  my ($records, $id) = @_;
+
+  return unless $records && ref($records) eq 'ARRAY';
+
+  foreach my $record (@$records) {
+    $record->{id} .= '__' . $id unless $id eq 'TopCategory';
+    _fixIds($record->{children}, $record->{id});
+  }
 }
 
 ################################################################################
@@ -231,7 +251,7 @@ sub handle_search {
   my $request = Foswiki::Func::getRequestObject();
   my %cats = ();
 
-  my $search = join(".*", split(/\s+/, $request->param("title")));
+  my $search = join(".*", split(/\s+/, $request->param("title")||''));
 
   $hierarchy->filterCategories({
     casesensitive => "off",
@@ -239,13 +259,20 @@ sub handle_search {
     callback => sub {
       my $cat = shift;
       $cats{$cat->{name}} = 1;
-      foreach my $parent ($cat->getAllParents) {
-        $cats{$parent} = 1;
+      foreach my $name ($cat->getAllParents) {
+        $cats{$name} = 1;
       }
     }
   });
 
-  return [keys %cats];
+  my %result = ();
+  foreach my $cat (keys %cats) {
+    foreach my $path ($hierarchy->getCategory($cat)->getPathsToRoot()) {
+      $result{join("__", reverse @$path)} = 1;
+    }
+  }
+
+  return [sort keys %result];
 }
 
 ################################################################################
@@ -256,17 +283,17 @@ sub handle_move_node {
 
   my $request = Foswiki::Func::getRequestObject();
 
-  my $catName = $request->param("cat");
+  my $catName = _getCatParam($request);
   throw Error::Simple("No category") unless defined $catName;
 
   my $cat = $hierarchy->getCategory($catName);
   throw Error::Simple("Unknown category") unless defined $cat;
 
-  my $newParentName = $request->param("parent") || "TopCategory";
+  my $newParentName = _getCatParam($request, "parent") || "TopCategory";
   my $newParent = $hierarchy->getCategory($newParentName);
   throw Error::Simple("Unknown category") unless defined $newParent;
 
-  my $oldParentName = $request->param("oldParent") || "TopCategory";
+  my $oldParentName = _getCatParam($request, "oldParent") || "TopCategory";
   my $oldParent = $hierarchy->getCategory($oldParentName);
   throw Error::Simple("Unknown category") unless defined $oldParent;
 
@@ -282,14 +309,14 @@ sub handle_move_node {
   throw Error::Simple("Woops, can't reparent category") unless defined $meta;
   
   # reorder 
-  my $nextCatName = $request->param("next");
+  my $nextCatName = _getCatParam($request, "next");
   my $nextCat;
   if ($nextCatName) {
     $nextCat = $hierarchy->getCategory($nextCatName);
     throw Error::Simple("Unknown category") unless defined $nextCat;
   }
 
-  my $prevCatName = $request->param("prev");
+  my $prevCatName = _getCatParam($request, "prev");
   my $prevCat;
   if ($prevCatName) {
     $prevCat = $hierarchy->getCategory($prevCatName);
@@ -313,9 +340,9 @@ sub handle_move_node {
     my $index = 10;
     foreach my $item (@sortedCats) {
       try {
-        my ($meta) = Foswiki::Func::readTopic($item->{origWeb}, $item->{name});
-        $item->order($index, $meta);
-        Foswiki::Func::saveTopic($item->{origWeb}, $item->{name}, $meta);
+        my ($itemMeta) = Foswiki::Func::readTopic($item->{origWeb}, $item->{name});
+        $item->order($index, $itemMeta);
+        $itemMeta->save();
       } catch Foswiki::AccessControlException with {
         throw Error::Simple("No write access");  
       };
@@ -324,7 +351,7 @@ sub handle_move_node {
   }
 
   try {
-    Foswiki::Func::saveTopic($cat->{origWeb}, $cat->{name}, $meta);
+    $meta->save();
   } catch Foswiki::AccessControlException with {
     throw Error::Simple("No write access");  
   };
@@ -351,7 +378,7 @@ sub handle_rename_node {
 
   my $request = Foswiki::Func::getRequestObject();
 
-  my $catName = $request->param("cat");
+  my $catName = _getCatParam($request);
   throw Error::Simple("No category") unless defined $catName;
 
   my $cat = $hierarchy->getCategory($catName);
@@ -371,7 +398,7 @@ sub handle_rename_node {
   $meta->putKeyed('FIELD', $field);
 
   try {
-    Foswiki::Func::saveTopic($cat->{origWeb}, $cat->{name}, $meta);
+    $meta->save();
   } catch Foswiki::AccessControlException with {
     throw Error::Simple("No write access");  
   };
@@ -398,7 +425,7 @@ sub handle_create_node {
 
   my $request = Foswiki::Func::getRequestObject();
 
-  my $catName = $request->param("cat");
+  my $catName = _getCatParam($request);
   throw Error::Simple("No category") unless defined $catName;
 
   my $title = $request->param("title") || $catName;
@@ -406,7 +433,7 @@ sub handle_create_node {
   my $cat = $hierarchy->getCategory($catName);
   throw Error::Simple("Category already exists") if defined $cat;
 
-  my $parentName = $request->param("parent") || '';
+  my $parentName = _getCatParam($request, "parent") || '';
   if ($parentName) {
     throw Error::Simple("Parent category does not exists") 
       unless defined $hierarchy->getCategory($parentName);
@@ -470,7 +497,7 @@ sub handle_remove_node {
 
   my $request = Foswiki::Func::getRequestObject();
 
-  my $catName = $request->param("cat");
+  my $catName = _getCatParam($request);
   throw Error::Simple("No category") unless defined $catName;
 
   my $cat = $hierarchy->getCategory($catName); 
@@ -498,6 +525,18 @@ sub handle_remove_node {
     message => $session->i18n->maketext("deleted category [_1]", $cat->title),
     id => $catName
   };
+}
+
+################################################################################
+sub _getCatParam {
+  my ($request, $name) = @_;
+
+  $name ||= "cat";
+
+  my $cat = $request->param($name) || '';
+  $cat =~ s/__.*$//;
+
+  return $cat;
 }
 
 1;

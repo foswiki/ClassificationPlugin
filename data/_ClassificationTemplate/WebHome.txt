@@ -1,32 +1,21 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
----+!! %TOPICTITLE%
-
----++ %MAKETEXT{"Welcome"}%
-%DBCALL{"Applications.ClassificationApp.WelcomeMessage"}%
-
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1" version="1"}%
 %BEGINGRID{border="on"}%
 %BEGINCOL{"8"}%
 ---++ %MAKETEXT{"Categories"}%
-%DBCALL{"Applications.ClassificationApp.RenderCategory" 
-   CAT="TopCategory"
-}%
+%DBCALL{"%CLASSIFICATIONPLUGIN_RENDERCATEGORY{default="Applications.ClassificationApp.RenderCategory"}%" CAT="TopCategory"}%
 %STOPCHAPTER%
 ---
 ---++ %MAKETEXT{"Tags"}%
-%DBCALL{"Applications.ClassificationApp.RenderSolrTagCloud" 
+%DBCALL{"Applications.ClassificationApp.%IF{"context SolrPluginEnabled" then="RenderSolrTagCloud" else="RenderWebTagCloud"}%" 
   LIMIT="100"
   THEWEB="%BASEWEB%"
 }%
 %STOPCHAPTER%
 %BEGINCOL{"4"}%
 ---++ %MAKETEXT{"Recent changes"}%
-<verbatim class="jqLoader {section:'recentchanges'}">
-%STARTSECTION{"recentchanges"}%<!-- -->
 %DBCALL{"Applications.RenderRecentChanges" 
   HEIGHT="40em"
 }%
-<!-- -->%ENDSECTION{"recentchanges"}%
-</verbatim>
 %STOPCHAPTER%
 %BEGINROW{class="foswikiRedBullets"}%
 %BEGINCOL{"4"}%
@@ -58,19 +47,12 @@
    * [[WebStatistics]]
    * [[WebNotify]]
 %STOPCHAPTER%
-%BEGINCOL{"12"}%
----++ %MAKETEXT{"Add more text here"}%
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam aliquam molestie scelerisque. Aenean accumsan ante cursus nisl dapibus sed rhoncus lacus bibendum. Quisque eros libero, feugiat porttitor semper quis, commodo et magna. Sed fermentum lacinia dolor vitae iaculis. Nulla dapibus commodo orci non lacinia. Aliquam erat volutpat. Proin in nulla ut libero fringilla iaculis vitae sit amet purus. Vivamus ut convallis lacus. Nulla turpis eros, tincidunt sit amet accumsan non, molestie ut eros. Nunc porta rhoncus dui vitae interdum. Praesent rhoncus mollis quam, vel egestas mi rhoncus at. Quisque vestibulum magna sed justo laoreet at ultricies quam adipiscing. Vivamus sit amet sem justo, id ultrices sem. Vestibulum risus ipsum, congue eu varius sit amet, luctus eget velit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-
-%STOPCHAPTER%
 %ENDGRID%
-<!-- %JQREQUIRE{"loader, infinitescroll, reddot" warn="off"}% %IMAGE% -->
-<!--
-   * Set CACHEABLE = on
-   * Set REDDOT_REDIRECT = %BASEWEB%.%BASETOPIC%
--->
+<!-- %JQREQUIRE{"infinitescroll, reddot" warn="off"}% %IMAGE% -->
 
+%META:FORM{name="Applications.WikiTopic"}%
 %META:PREFERENCE{name="NATSKIN_SIDEBAR" title="NATSKIN_SIDEBAR" type="Local" value="off"}%
 %META:PREFERENCE{name="DISPLAYREVISIONINFO" title="DISPLAYREVISIONINFO" type="Local" value="off"}%
 %META:PREFERENCE{name="NOWYSIWYG" title="NOWYSIWYG" type="Set" value="on"}%
+%META:PREFERENCE{name="CACHEABLE" title="CACHEABLE" type="Set" value="on"}%
+%META:PREFERENCE{name="REDDOT_REDIRECT" title="REDDOT_REDIRECT" type="Set" value="%25BASEWEB%25.%25BASETOPIC%25"}%

@@ -1,0 +1,43 @@
+%META:TOPICINFO{author="micha" comment="reprev" date="1655971904" format="1.1" reprev="2" version="3"}%
+%META:TOPICPARENT{name="WorkflowDefinition"}%
+%TMPL:INCLUDE{"Applications.ClassificationApp.ClassifiedTopicEdit"}%
+
+%TMPL:DEF{"formfields"}%%TMPL:P{"detailstab"}%%TMPL:PREV%%TMPL:END%
+
+%TMPL:DEF{"detailstab::exclude"}%TopicType|TopicTitle|Summary|Category|Tag%TMPL:END%
+
+%TMPL:DEF{"detailstab"}%%RENDERFOREDIT{
+   exclude="^(%TMPL:P{"detailstab::exclude"}%)$"
+   header="$percntTAB{\"%TRANSLATE{"Details"}%\"}$percnt<div class='foswikiFormSteps'>"
+   format="<div class='foswikiFormStep'>
+             <h3> $title:$mandatory </h3>
+             $edit
+             $extra <!-- -->
+             <div class='foswikiFormDescription'>$description</div>
+           </div>"
+   footer="</div>$percntENDTAB$percnt"
+   hideempty="on"
+}%%TMPL:END%
+
+%TMPL:DEF{"showonscreen::revinfo"}%%TMPL:PREV%%TMPL:P{"showonscreen::graph"}%%TMPL:END%
+
+%TMPL:DEF{"showonscreen::graph"}%<tr>
+  <th>%MAKETEXT{"Workflow Graph"}%<input type='hidden' name='Default+DISPLAYWORKFLOWGRAPH' value="undefined" /></th>
+  <td>
+    <label><input type="radio" class="foswikiRadioButton" name="Local+DISPLAYWORKFLOWGRAPH" value="undefined" %IF{"preferences[name='DISPLAYWORKFLOWGRAPH'].value=''" then="checked"}% />%MAKETEXT{"default"}%</label>
+  </td>
+  <td>
+    <label><input type="radio" class="foswikiRadioButton" name="Local+DISPLAYWORKFLOWGRAPH" value="on" %IF{"preferences[name='DISPLAYWORKFLOWGRAPH'].value='on'" then="checked"}% />%MAKETEXT{"on"}%</label>
+  </td>
+  <td>
+    <label><input type='radio' class="foswikiRadioButton" name='Local+DISPLAYWORKFLOWGRAPH' value="off" %IF{"preferences[name='DISPLAYWORKFLOWGRAPH'].value='off'" then="checked"}% />%MAKETEXT{"off"}%</label>
+  </td>
+</tr>%TMPL:END%
+
+
+%META:FORM{name="Applications.TopicView"}%
+%META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value="Editor for WorkflowDefinitions"}%
+%META:FIELD{name="WikiApplication" title="WikiApplication" value="none"}%
+%META:PREFERENCE{name="CREATED_WITH_TEMPLATETOPIC" title="CREATED_WITH_TEMPLATETOPIC" type="Local" value="Applications.TopicViewTemplate"}%

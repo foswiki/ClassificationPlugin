@@ -1,39 +1,24 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
-%{<verbatim class="tml">}%
 %TMPL:INCLUDE{"Applications.ClassificationApp.ClassifiedTopicView"}%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
 %TMPL:DEF{"beforetext"}%%TMPL:PREV%
 %RENDERFORDISPLAY{
-   exclude="TopicTitle|Summary|TopicType|Category|Tag"
-   footer="$n"
+   exclude="^(TopicTitle|Summary|TopicType|Category|Tag)$"
+   editable="on"
+   hideempty="on"
 }%
-%TMPL:END%
-%{</verbatim>}%
 
-%{<verbatim class="tml">}%
-%TMPL:DEF{"aftertext"}%<!-- -->
----++ Flowchart
-%GRAPHVIZ{
-  topic="%BASEWEB%.%BASETOPIC%"
-  nodestable="0" 
-  edgestable="1"
-  sourcecol="0"
-  labelcol="1"
-  targetcol="2"
-  renderer="dot"
-  type="svg" 
-  inline="off" 
-  preamble="
-    labelfloat=true;
-    graph [fontname = helvetica];
-    node [fontname = helvetica, fontsize=10, shape=box, fontsize=12, style=\"rounded, filled\", fillcolor=\"#EEEEEE\", color=\"#AAAAAA\", margin=\"0.25,0\"];
-    edge [fontname = helvetica, fontsize=10, color=\"#31CEF0\", arrowhead=\"vee\", minlen=1];"
-}%
-<!-- -->%TMPL:END%
-%{</verbatim>}%
+%TMPL:END%
+
+%TMPL:DEF{"aftertext"}%%IF{"$'DISPLAYWORKFLOWGRAPH'!='off'" then="$percntTMPL:P{\"workflowgraph\"}$percnt"}%%TMPL:END%
+
+%TMPL:DEF{"workflowgraph"}%
+---++ Graph
+<div class="overflow">
+%QMGRAPH{workflow="%WEB%.%TOPIC%"}%
+</div>
+%{}%%TMPL:END%
 
 %META:FORM{name="Applications.TopicView"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%

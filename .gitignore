@@ -6,15 +6,8 @@ DirectedGraphPlugin_*
 *,v
 *.swp
 *.lease
-pub/System/ClassificationPlugin/jquery.catselector.js
-pub/System/ClassificationPlugin/jquery.classifiedtopic.js
-pub/System/ClassificationPlugin/jquery.hierarchy.js
-pub/System/ClassificationPlugin/jquery.tagcloud.js
-pub/System/ClassificationPlugin/jquery.tagselector.js
-pub/System/ClassificationPlugin/jquery.tagsuggestion.js
-pub/System/ClassificationPlugin/jquery.tageditor.js
-pub/System/ClassificationPlugin/renametag.js
-pub/System/ClassificationPlugin/styles.css
+pub/System/ClassificationPlugin/build
+pub/System/ClassificationPlugin/attic
 /ClassificationPlugin.md5
 /ClassificationPlugin.sha1
 /ClassificationPlugin.tgz

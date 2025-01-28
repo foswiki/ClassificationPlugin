@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 ---++ Documentation
@@ -28,7 +28,7 @@
     web="%THEWEB{default="%BASEWEB%"}%" 
   }%" 
   header="<div class='clsTagCloud'>" 
-  format="<span style='font-size:$weightpx;line-height:1.2'><a href='%SCRIPTURLPATH{"view"}%/%BASEWEB%/%BASETOPIC%$percntFORMATLIST{
+  format="<span style='font-size:$weightpx;line-height:1.2'><a href='%SCRIPTURLPATH{"view" topic="%BASEWEB%.%BASETOPIC%"}%$percntFORMATLIST{
       \"%TAG{default=""}%,$term\" 
       split=\"\s*,\s*\" 
       unique=\"on\"
@@ -70,7 +70,7 @@
 </verbatim>
 
 ---++ Test
-%DBCALL{"%TOPIC%" THEWEB="%URLPARAM{"theweb"}%"}%
+%DBCALL{"%TOPIC%" THEWEB="%URLPARAM{"theweb" default="%WEB%"}%"}%
 
 %META:FORM{name="Applications.TopicFunction"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
