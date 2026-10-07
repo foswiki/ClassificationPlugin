@@ -1,13 +1,15 @@
-%META:TOPICINFO{author="micha" comment="reprev" date="1718176890" format="1.1" reprev="6" version="7"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %TMPL:DEF{"beforetext"}%%TMPL:PREV%%IF{"'%QMSTATE{format="$workflow" ignoreerror="on"}%'!=''" 
    then="$percntDBCALL{\"%WEB%.%TOPIC%->RenderWorkflowInfo\"}$percnt"
    else="<!-- -->"
 }%%TMPL:END%
 
-%TMPL:DEF{"aftertext"}%%IF{"'%QMSTATE{format="$workflow" ignoreerror="on"}%'!='' AND '%DISPLAYWORKFLOWHISTORY{default="off"}%'='on'"
+%TMPL:DEF{"aftertext"}%%IF{"'%QMSTATE{format="$workflow" ignoreerror="on"}%'!='' AND '%TMPL:P{"displayworkflow"}%'='on'"
    then="$percntDBCALL{\"%WEB%.%TOPIC%->RenderWorkflowHistory\"}$percnt"
 }%%TMPL:PREV%%TMPL:END%
+
+%TMPL:DEF{"displayworkflow"}%%DISPLAYWORKFLOWHISTORY{default="off"}%%TMPL:END%
 
 %META:FORM{name="Applications.TopicView"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%

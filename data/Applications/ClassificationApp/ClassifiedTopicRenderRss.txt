@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -18,9 +18,9 @@ See [[Applications.RssViewTemplate]], [[Applications.RenderRss]]
    topic="%OBJECT%"
    datelanguage="en"
    format="<item>
-       <title>$expand(topictitle)</title>
+       <title>$expandEncoded(topictitle)</title>
        <link>$percntSCRIPTURL{\"view\" topic=\"$web/$topic\"}$percnt</link>
-       <guid>$percntSCRIPTURL{\"view\" topic=\"$web/$topic\"}$percnt</guid>
+       <guid>$percntSCRIPTURL{\"view\" topic=\"$web/$topic\"}$percnt?_t=$expand(info.date)</guid>
        <dc:creator>$percntGETTOPICTITLE{\"$percntUSERINFO{\"$expand(info.author)\" format=\"$wikiusername\"}$percnt\"}$percnt</dc:creator>
        <dc:date>$formatTime(info.date, '$year-$mo-$dayT$hour:$minute:$secondsZ')</dc:date>
        $percntCATINFO{\"$web.$topic\" 

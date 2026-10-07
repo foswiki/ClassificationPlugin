@@ -1,12 +1,51 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %TMPL:INCLUDE{"Applications.WikiTopicView"}%
 
 %TMPL:INCLUDE{"Applications.ClassificationApp.PaginationBase"}%
 
-%TMPL:DEF{"pagination::enabled"}%'%DISPLAYPAGINATION{default="on"}%'='on' and TopicType=~'\bCategorizedTopic\b'%TMPL:END%
-%TMPL:DEF{"pagination::query::exclude"}% AND topic!='TopCategory' AND topic!='BottomCategory'%TMPL:END%
-%TMPL:DEF{"pagination::order"}%Order,translate(topictitle)%TMPL:END%
+%TMPL:DEF{"pagination::enabled"}%'%DISPLAYPAGINATION{default="on"}%'='on'%TMPL:END%
+
+%TMPL:DEF{"pagination"}%<noautolink><div class='clsPagination foswikiHideOnPrint'>%TMPL:P{"pagination::default"
+   cats="%TMPL:P{"pagination::cats"
+               cat="%CATINFO{
+                     cat="%URLPARAM{"catname" default="%BASETOPIC%"}%" 
+                     format="$parentname"
+                  }%"
+            }%"
+}%</div></noautolink>%TMPL:END%
+
+%TMPL:DEF{"pagination::cats"}%%HIERARCHY{
+   top="%cat%"
+   exclude="%cat%"
+   depth="2"
+   format="$name"
+   separator=", "
+}%%TMPL:END%
+
+%TMPL:DEF{"pagination::default"}%%TMPL:P{"pagination::prev" 
+   cat="%EXTRACT{
+            text="%cats%"
+            pattern="\b(\w+)\b,\s*%URLPARAM{"catname" default="%BASETOPIC%"}%\b"
+            format="$1"
+         }%"
+}%%TMPL:P{"pagination::separator"}%%TMPL:P{"pagination::next" 
+   cat="%EXTRACT{
+            text="%cats%"
+            pattern="\b%URLPARAM{"catname" default="%BASETOPIC%"}%\b,\s*(\w+)\b"
+            format="$1"
+         }%"
+}%%TMPL:END%
+
+%TMPL:DEF{"pagination::prev"}%%IF{"'%cat%'=''"
+   then="<span class='clsPaginationPrev clsPaginationDisabled'></span>"
+   else="$percntCATINFO{cat=\"%cat%\" format=\"<a href='$url' class='clsPaginationPrev'>$title</a>\"}$percnt"
+}%%TMPL:END%
+
+%TMPL:DEF{"pagination::next"}%%IF{"'%cat%'=''"
+   then="<span class='clsPaginationNext clsPaginationDisabled'></span>"
+   else="$percntCATINFO{cat=\"%cat%\" format=\"<a href='$url' class='clsPaginationNext'>$title</a>\"}$percnt"
+}%%TMPL:END%
 
 %TMPL:DEF{"uploaderenabled"}%%CATEGORY_UPLOADERENABLED{default="on"}%%TMPL:END%
 
@@ -42,29 +81,45 @@
    hideempty="on"
    header=""
    footer=""
-   TopicTitle_default="%TOPICTITLE{encode="entity"}%"
+   TopicTitle_default="%TOPICTITLE{encode="quotes"}%"
    TopicTitle_format="<div class='$name'><span itemprop='name' class='inlineEditValue' data-formfield='$name' data-default='$default' data-format='$edit'><a href='%SCRIPTURLPATH{"view" topic="%WEB%.%TOPIC%"}%'>$percntTRANSLATE{\"$value\"}$percnt</a> $editicon</span> $percntTMPL:P{\"topicinfo::extra\"}$percnt</div>"
    Summary_format="<div class='$name'><div class='foswikiTopicSummary inlineEditValue' data-formfield='$name' data-format='$edit'>$percntTRANSLATE{\"$value\"}$percnt $editicon</div></div>"
 }%%TMPL:END%
 
-%TMPL:DEF{"revinfo::impl"}%<div class='foswikiRevision'><noautolink>%CATINFO{
+%TMPL:DEF{"revinfo::impl"}%<div class='foswikiRevision'><noautolink>
+%TMPL:P{"revinfo::cat"}%<!-- -->
+%TMPL:P{"revinfo::responsible"}%<!-- -->
+%TMPL:P{context="LikePluginEnabled" then="revinfo::likes"}%<!-- -->
+%TMPL:P{"revinfo::tag"}%<!-- -->
+%TMPL:P{"revinfo::more"}%%JQREQUIRE{"ui, limitlist"}%</noautolink></div>%TMPL:END%
+
+%TMPL:DEF{"revinfo::cat"}%%CATINFO{
   cat="%URLPARAM{"catname" default="%BASETOPIC%"}%" 
   format="$percntFORMATLIST{\"$parentlinks\" 
          split=\"\s*,\s*\" 
          separator=\"&#44; \" 
          header=\"%JQICON{"fa-share fa-rotate-270"}% \"
       }$percnt"
-}%%RENDERFORDISPLAY{
-   fields="ResponsiblePerson, Tag"
+}%%TMPL:END%
+
+%TMPL:DEF{"revinfo::tag"}%%RENDERFORDISPLAY{
+   fields="Tag"
    header=" <span class='inlineEditor' data-active-class='inlineEditActive alt'>"
    footer="</span>"
-   separator="  " 
-   Tag_default="untagged"
-   Tag_format="<span><span class='inlineEditValue' data-view-def='renderForDisplay::formfield' data-formfield='$name'>%TMPL:P{"format::Tag"}%</span></span>"
-   ResponsiblePerson_format="<span><span class='inlineEditValue' data-view-def='renderForDisplay::formfield' data-formfield='$name'>%TMPL:P{"format::ResponsiblePerson"}%</span></span>"
+   default="untagged"
+   format="<span><span class='inlineEditValue' data-view-def='renderForDisplay::formfield' data-formfield='$name'>%TMPL:P{"format::Tag"}%</span></span>"
    hideempty="on"
    editable="on"
-}%%TMPL:P{"revinfo::more"}%%JQREQUIRE{"ui, limitlist"}%</noautolink></div>%TMPL:END%
+}%%TMPL:END%
+
+%TMPL:DEF{"revinfo::responsible"}%%RENDERFORDISPLAY{
+   fields="ResponsiblePerson"
+   header=" <span class='inlineEditor' data-active-class='inlineEditActive alt'>"
+   footer="</span>"
+   format="<span><span class='inlineEditValue' data-view-def='renderForDisplay::formfield' data-formfield='$name'>%TMPL:P{"format::ResponsiblePerson"}%</span></span>"
+   hideempty="on"
+   editable="on"
+}%%TMPL:END%
 
 %TMPL:DEF{"title"}%%HTMLTITLE{
   separator=" %HTMLTITLESEP{default="-"}% "

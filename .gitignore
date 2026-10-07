@@ -17,3 +17,5 @@ pub/System/ClassificationPlugin/attic
 /ClassificationPlugin_installer.pl
 .changes
 locale/**/*mo
+data/**/.store
+pub/**/.store

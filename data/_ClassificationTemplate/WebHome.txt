@@ -1,16 +1,20 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1"  version="1"}%
 %BEGINGRID{border="on"}%
 %BEGINCOL{"8"}%
 ---++ %MAKETEXT{"Categories"}%
 %DBCALL{"%CLASSIFICATIONPLUGIN_RENDERCATEGORY{default="Applications.ClassificationApp.RenderCategory"}%" CAT="TopCategory"}%
+<div class="foswikiRight foswikiGrayText">... [[Category][%TRANSLATE{"all categories" de="alle Kategorien"}%]]</div>
 %STOPCHAPTER%
+%CLEAR%
 ---
 ---++ %MAKETEXT{"Tags"}%
 %DBCALL{"Applications.ClassificationApp.%IF{"context SolrPluginEnabled" then="RenderSolrTagCloud" else="RenderWebTagCloud"}%" 
   LIMIT="100"
   THEWEB="%BASEWEB%"
 }%
+<div class='foswikiRight foswikiGrayText'>... [[WebTagList][%TRANSLATE{"all tags" de="alle Schlüsselworte"}%]]</div>
 %STOPCHAPTER%
+%CLEAR%
 %BEGINCOL{"4"}%
 ---++ %MAKETEXT{"Recent changes"}%
 %DBCALL{"Applications.RenderRecentChanges" 
@@ -33,10 +37,7 @@
 %STOPCHAPTER%
 %BEGINCOL{"4"}%
 ---++ %MAKETEXT{"Quick links"}%
-   * ...
-   * ...
-   * ...
-
+%LISTY%
 %STOPCHAPTER%
 %BEGINCOL{"4"}%
 ---++ %MAKETEXT{"Tools"}%
@@ -51,8 +52,12 @@
 <!-- %JQREQUIRE{"infinitescroll, reddot" warn="off"}% %IMAGE% -->
 
 %META:FORM{name="Applications.WikiTopic"}%
+%META:FIELD{name="TopicType" title="TopicType" value="WikiTopic"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value=""}%
 %META:PREFERENCE{name="NATSKIN_SIDEBAR" title="NATSKIN_SIDEBAR" type="Local" value="off"}%
 %META:PREFERENCE{name="DISPLAYREVISIONINFO" title="DISPLAYREVISIONINFO" type="Local" value="off"}%
 %META:PREFERENCE{name="NOWYSIWYG" title="NOWYSIWYG" type="Set" value="on"}%
-%META:PREFERENCE{name="CACHEABLE" title="CACHEABLE" type="Set" value="on"}%
+%META:PREFERENCE{name="CACHEABLE" title="CACHEABLE" type="Local" value="on"}%
 %META:PREFERENCE{name="REDDOT_REDIRECT" title="REDDOT_REDIRECT" type="Set" value="%25BASEWEB%25.%25BASETOPIC%25"}%
+%META:PREFERENCE{name="NATEDIT_SECURITY" title="NATEDIT_SECURITY" type="Set" value="off"}%

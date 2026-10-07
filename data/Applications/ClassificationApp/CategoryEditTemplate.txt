@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %TMPL:INCLUDE{"Applications.ClassificationApp.ClassifiedTopicEdit"}%
 
@@ -31,6 +31,21 @@
    separator="$n"
    footer="$percntENDTABPANE$percnt"
 }%%ENDTAB%%TMPL:END%
+
+%TMPL:DEF{"showonscreen::more"}%%TMPL:P{"showonscreen::filter"}%%TMPL:END%
+
+%TMPL:DEF{"showonscreen::filter"}%<tr>
+  <th>%MAKETEXT{"Filter"}%<input type='hidden' name='Default+SHOWFILTER' value='undefined' /></th>
+  <td>
+    <label><input type="radio" class="foswikiRadioButton natDisplayComments" name="Local+SHOWFILTER" value='undefined' %IF{"preferences[name='SHOWFILTER'].value=''" then="checked"}%/>%MAKETEXT{"default"}%</label>
+  </td>
+  <td>
+    <label><input type="radio" class="foswikiRadioButton natDisplayComments" name="Local+SHOWFILTER" value='on' %IF{"preferences[name='SHOWFILTER'].value='on'" then="checked"}% />%MAKETEXT{"on"}%</label>
+  </td>
+  <td>
+    <label><input type='radio' class="foswikiRadioButton natDisplayComments" name='Local+SHOWFILTER' value='off' %IF{"preferences[name='SHOWFILTER'].value='off'" then="checked"}% />%MAKETEXT{"off"}%</label>
+  </td>
+</tr>%TMPL:END%
 
 %META:FORM{name="Applications.TopicView"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%

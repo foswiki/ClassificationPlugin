@@ -5,24 +5,24 @@
   NAME="$name"
   VALUE="$value" 
   TOP="$top"
-  THEWEB="$web"
+  THEWEB="$baseweb"
   MODE="select"
   CLASSES="$classes"
   BUTTONS="$buttons"
 }%<!-- -->%TMPL:END%
 
-%TMPL:DEF{"tageditor"}%<div class="jqTagEditor" data-tag-suggestion-url="%SCRIPTURLPATH{"rest"}%/RenderPlugin/template?topic=$web.$topic;name=classificationplugin;expand=suggesttags;contenttype=application/json">
+%TMPL:DEF{"tageditor"}%<div class="jqTagEditor">
 <noautolink>
 <input type="text" class="foswikiInputField jqTextboxList" autocomplete="%SCRIPTURLPATH{"rest"}%/RenderPlugin/template?topic=$web.$topic;name=classificationplugin;expand=querytags;contenttype=application/json" name="$name" size="$size" value="$value" />
 <div class='jqTagSuggestions' style='display:none'>
-<h3 >%TRANSLATE{"Related tags"}%:</h3>
+<h5 >%TRANSLATE{"Related tags"}%:</h5>
 <ol></ol>
 </div>
 </noautolink>%ADDTOZONE{
   "script" 
   id="TAGEDITOR" 
   requires="JQUERYPLUGIN::BLOCKUI" 
-  text="<script src='%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/build/jquery.tageditor.js'></script>"
+  text="<script src='%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/build/tageditor.js'></script>"
 }%%JQREQUIRE{"ui, blockui, textboxlist"}%
 </div>%TMPL:END%
 
@@ -75,7 +75,13 @@
 %TMPL:DEF{"suggesttags::default"}%[%DBSTATS{
    web="%URLPARAM{"theweb" default="%BASEWEB%"}%"
    topics="%SIMILARTOPICS{
-      tags="%URLPARAM{"tags" multiple="on" default="%FORMFIELD{"Tag"}%"}%"
+            tags="%FORMATLIST{
+            "%URLPARAM{"tags" 
+                  multiple="on" 
+                  separator=", " 
+                  default="%FORMFIELD{"Tag"}%"
+               }%"
+            }%"
       web="%URLPARAM{"theweb" default="%BASEWEB%"}%"
       format="$topic" 
       exclude="%BASETOPIC%"
@@ -83,7 +89,16 @@
       limit="20"
       threshold="30"
    }%, no_such_thing"
-   exclude="%FORMATLIST{"%URLPARAM{"tags" multiple="on" default="%FORMFIELD{"Tag"}%"}%" separator="|" header="^(" footer=")$"}%"
+   exclude="%FORMATLIST{
+                "%URLPARAM{"tags" 
+                  multiple="on" 
+                  separator=", " 
+                  default="%FORMFIELD{"Tag"}%"
+                }%" 
+                separator="|" 
+                header="^(" 
+                footer=")$"
+            }%"
    field="Tag"
    sort="count"
    reverse="on"

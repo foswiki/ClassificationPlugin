@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -15,7 +15,7 @@ a summary for an object listed within the Category topic.
 
 ---++ Implementation
 <verbatim class="tml">
-%STARTINCLUDE%<div class='clsIndexItem clsCategoryItem clearfix'>
+%STARTINCLUDE%<div class='clsIndexItem clsCategoryItem clearfix hyphenate'>
 %CATINFO{ 
    %DBQUERY{topic="%OBJECT%" format="cat=\"$topic\" web=\"$web\""}%
    format="$icon<!-- --> 
@@ -38,6 +38,6 @@ a summary for an object listed within the Category topic.
 
 %META:FORM{name="Applications.TopicFunction"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%
-%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value="CategoryRenderIndexItem"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value="Render a summary for Categories"}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="ClassificationApp"}%

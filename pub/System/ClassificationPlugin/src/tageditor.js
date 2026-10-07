@@ -1,7 +1,7 @@
 /*
- * jQuery Tag Editor 1.01
+ * jQuery Tag Editor 1.20
  *
- * Copyright (c) 2018-2025 Michael Daum http://michaeldaumconsulting.com
+ * Copyright (c) 2018-2026 Michael Daum http://michaeldaumconsulting.com
  *
  * Licensed under the GPL license http://www.gnu.org/licenses/gpl.html
  *
@@ -20,7 +20,11 @@
     self.elem = $(elem);
 
     // gather options by merging global defaults, plugin defaults and element defaults
-    self.opts = $.extend({}, defaults, self.elem.data(), opts);
+    self.opts = $.extend({
+      web: foswiki.getPreference("WEB"),
+      topic: foswiki.getPreference("TOPIC"),
+    }, defaults, self.elem.data(), opts);
+
     self.init();
   }
 
@@ -29,39 +33,45 @@
 
     self.input = self.elem.find("input.jqTextboxList");
     self.container = self.elem.find(".jqTagSuggestions");
-    self.getTagSuggestions();
-    self.input.on("DeleteValue, SelectedValue", function(ev, data) {
-      //console.log("changed values data=",data);
+    self.input.on("DeleteValue SelectValue refresh", function(ev, data) {
       self.getTagSuggestions();
     });
+
+    window.setTimeout(function() {
+      self.getTagSuggestions();
+    }, 500);
   };
 
   TagEditor.prototype.getTags = function() {
-    var self = this, vals = [];
+    var self = this,
+      delegate = self.input.data("textboxlist");
 
-    // OUTCH
-    self.elem.find(".jqTextboxListValue > input").each(function() {
-      vals.push($(this).val());
-    });
-
-    return vals;
+    return delegate ? delegate.currentValues : [];
   };
 
   TagEditor.prototype.getTagSuggestions = function() {
     var self = this,
         suggestions = self.container.find("ol"),
+        url = foswiki.getScriptUrlPath("rest", "RenderPlugin", "template"),
         tags = self.getTags();
 
+    //console.log("tags=",tags);
     self.container.block({message:""});
 
-    $.get(self.opts.tagSuggestionUrl+";tags="+encodeURIComponent(tags)).done(function(data) {
+    $.post(url, {
+      web: self.opts.web,
+      topic: self.opts.web + "." + self.opts.topic,
+      name: "classificationplugin",
+      expand: "suggesttags",
+      contenttype: "application/json",
+      tags: tags.join(", ")
+    }).done(function(data) {
       self.container.unblock();
       suggestions.empty();
       if (data.length) {
         $.each(data, function(i, item) {
-          $("<li><a href='#'>"+item.key+"</a></li>").on("click", function() {
+          $(`<li><a href='#' title='${$.i18n("click to add")}'>${item.key}</a></li>`).on("click", function() {
             self.addVal(item.key);
-            self.getTagSuggestions();
             return false;
           }).appendTo(suggestions);
         });

@@ -1,10 +1,12 @@
-%META:TOPICINFO{author="micha" comment="reprev" date="1714115782" format="1.1" reprev="9" version="9"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
 ---++ Documentation
 %STARTSECTION{"documentation"}%
-%RED%TODO%ENDCOLOR%
+see also:
+
+   * [[RenderCategoryTiles]] 
 
 ---+++++ Parameters
    * cat
@@ -17,7 +19,7 @@
 <verbatim class="tml">
 %STARTINCLUDE%%DBCALL{"%WEB%.%TOPIC%"
    section="%IF{
-      "context SolrPluginEnabled"
+      "context DISSolrPluginEnabled"
       then="solr"
       else="dbstats"
    }%"
@@ -36,7 +38,7 @@
    sort="field_TopicType_first_s asc"
    groupsort="title_sort asc"
    fields="web,topic"
-   header_group="<h2>[[%web%.$groupValue]]</h2>$n<div class='clsMakeIndexWrapper'>
+   header_group="<h2>[[%web%.$groupValue][$percntGETTOPICTITLE{\"%web%.$groupValue\" translate=\"on\"}$percnt]]</h2>$n<div class='clsMakeIndexWrapper'>
       %IF{"'%showfilter{default="%CLASSIFICATIONPLUGIN_SHOWFILTER{default="off"}%"}%'='on'"
          then="$dollarpercntDBCALL{\\"Applications.ClassificationApp.RenderCategory\\" section=\\"filter\\"}$dollarpercnt"
       }%<!-- -->
@@ -54,8 +56,9 @@
 ---++ dbstats impl
 <verbatim>
 %STARTSECTION{"dbstats"}%%DBSTATS{
-   "('%cat%' DISTANCE topic) = 1 AND ! TopicType=~'\bCategory\b'"
+   "TopicType!~'\bCategory\b'"
    web="%web%"
+   Category="%cat%"
    field="TopicType"
    process="$percntFORMATLIST{\"$value\" limit=\"1\"}$percnt"
    format="$percntDBCALL{\"%WEB%.%TOPIC%\" 

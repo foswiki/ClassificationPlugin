@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicView"}%
 %TMPL:INCLUDE{"Applications.WikiTopicEdit"}%
 
@@ -52,6 +52,19 @@
                      }%"
 }%
 %ENDTAB%%TMPL:END%
+
+%TMPL:DEF{"showonscreen::pagination"}%<tr>
+  <th>%MAKETEXT{"Pagination"}%<input type='hidden' name='Default+DISPLAYPAGINATION' value='undefined' /></th>
+  <td>
+    <label><input type="radio" class="foswikiRadioButton" name="Local+DISPLAYPAGINATION" value='undefined' %IF{"preferences[name='DISPLAYPAGINATION'].value=''" then="checked"}%/>%MAKETEXT{"default"}%</label>
+  </td>
+  <td>
+    <label><input type="radio" class="foswikiRadioButton" name="Local+DISPLAYPAGINATION" value='on' %IF{"preferences[name='DISPLAYPAGINATION'].value='on'" then="checked"}% />%MAKETEXT{"on"}%</label>
+  </td>
+  <td>
+    <label><input type='radio' class="foswikiRadioButton" name='Local+DISPLAYPAGINATION' value='off' %IF{"preferences[name='DISPLAYPAGINATION'].value='off'" then="checked"}% />%MAKETEXT{"off"}%</label>
+  </td>
+</tr>%TMPL:END%
 
 %META:FORM{name="Applications.TopicView"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicView, ApplicationTopic, WikiTopic"}%

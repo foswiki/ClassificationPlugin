@@ -1,9 +1,9 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1" version="1"}%
 %META:TOPICPARENT{name="WebHome"}%
 %MAKEINDEX{
   "%DBSTATS{ 
-     web="%BASEWEB%"
-    "TopicType=~'\b(Tagged|Classified)Topic\b'" 
+    web="%BASEWEB%"
+    TopicType="\b(Tagged|Classified)Topic\b" 
     format="$key:$count"  
     separator=", " 
     field="Tag" 
@@ -22,7 +22,7 @@
 
 %META:FORM{name="Applications.WikiTopic"}%
 %META:FIELD{name="TopicType" title="TopicType" value="WikiTopic"}%
-%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value="WebTagIndex"}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value="list of all tags in this web"}%
 %META:PREFERENCE{name="NATSKIN_SIDEBAR" title="NATSKIN_SIDEBAR" type="Local" value="off"}%
 %META:PREFERENCE{name="DISPLAYREVISIONINFO" title="DISPLAYREVISIONINFO" type="Local" value="off"}%

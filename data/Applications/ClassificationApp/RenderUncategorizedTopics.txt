@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1485174319" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -16,7 +16,9 @@ List all topics that are not filed into any category. Technically they are direc
 <verbatim class="tml">
 %STARTINCLUDE%
 %DBQUERY{
-  "TopicType=~'\b(Classified|Categorized)Topic\b' AND TopicType !~ '\bCategory\b' AND ('TopCategory' DISTANCE topic) = 1"
+  "TopicType!~'\bCategory\b'"
+  TopicType="\b(Classified|Categorized)Topic\b"
+  Category="_undef_"
   exclude="%EXCLUDE{default="WebTopicEditTemplate"}%"
   web="%THEWEB{default="%BASEWEB%"}%"
   format="   1 [[$web.$topic]]"

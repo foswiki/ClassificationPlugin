@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 ---++ Documentation
@@ -20,7 +20,8 @@
 <noautolink>
 %TAGCLOUD{ 
   terms="%DBSTATS{
-    "TopicType=~'\b(%TOPICTYPE{default="TaggedTopic|ClassifiedTopic"}%)\b' %FORMATLIST{"%TAG{default=""}%" format="AND Tag=~'\b($1)\b'" separator=" "}%"
+    "%FORMATLIST{"%TAG{default=""}%" format="Tag=~'\b($1)\b'" separator=" AND "}%"
+    TopicType="\b(%TOPICTYPE{default="TaggedTopic|ClassifiedTopic"}%)\b"
     format="$key:$count" 
     separator=", "
     field="Tag"
@@ -36,9 +37,9 @@
       header=\"?\" 
       format=\"tag=$1\" 
       separator=\"&\"
-   }$percnt' style='color:$fadeRGB(%TAGCLOUD_START{default="111,169,255"}%,%TAGCLOUD_END{default="0,89,224"}%);' name='tag_$term' value='$term' class='$percntIF{\"'%TAG{default=""}%'=~'$term'\" then=\"current\"}$percnt'>$term</a></span>" 
+   }$percnt' rel='noindex nofollow' style='color:$fadeRGB(%TAGCLOUD_START{default="111,169,255"}%,%TAGCLOUD_END{default="0,89,224"}%);' name='tag_$term' value='$term' class='$percntIF{\"'%TAG{default=""}%'=~'$term'\" then=\"current\"}$percnt'>$term</a></span>"
   footer="</div>" 
-  group="<strong>$group</strong>&nbsp;" 
+  group="<strong>$group</strong>&nbsp;"
   split="\s*,\s*" 
   buckets="25" 
   offset="13" 
@@ -57,9 +58,9 @@
 </verbatim>
 
 <verbatim class="tml">
-%STARTSECTION{"search"}%
-%DBQUERY{
-   "TopicType=~'\b(%TOPICTYPE%)\b' %FORMATLIST{"%TAG%" format="AND Tag=~'\b($1)\b'" separator=" "}%"
+%STARTSECTION{"search"}%%DBQUERY{
+   "%FORMATLIST{"%TAG%" format="Tag=~'\b($1)\b'" separator=" AND "}%"
+   TopicType="%TOPICTYPE%"
    web="%THEWEB%"
    sort="publishdate" 
    reverse="on"
@@ -70,7 +71,10 @@
 </verbatim>
 
 ---++ Test
-%DBCALL{"%TOPIC%" THEWEB="%URLPARAM{"theweb" default="%WEB%"}%"}%
+%DBCALL{"%TOPIC%" 
+   THEWEB="%URLPARAM{"theweb" default="%WEB%"}%"
+   TAG="%URLPARAM{"tag" multiple="on" separator=", "}%"
+}%
 
 %META:FORM{name="Applications.TopicFunction"}%
 %META:FIELD{name="TopicType" title="TopicType" value="TopicFunction, DocuTopic, ApplicationTopic, WikiTopic"}%

@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2025 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2026 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -35,6 +35,7 @@ use Foswiki::OopsException ();
 use Foswiki::Contrib::MailerContrib ();
 use Error qw( :try );
 use Carp qw(confess cluck);
+#use Data::Dump qw(dump);
 
 =begin TML
 
@@ -177,8 +178,8 @@ sub handleSIMILARTOPICS {
   ($thisWeb, $thisTopic) = Foswiki::Func::normalizeWebTopicName($thisWeb, $thisTopic);
 
   my $theFormat = $params->{format} || '$topic';
-  my $theHeader = $params->{header} || '';
-  my $theFooter = $params->{footer} || '';
+  my $theHeader = $params->{header} // '';
+  my $theFooter = $params->{footer} // '';
   my $theSep = $params->{separator};
   my $theLimit = $params->{limit};
   my $theSkip = $params->{skip};
@@ -309,7 +310,7 @@ sub handleSUBSUMES {
 
   my $thisWeb = $params->{web} || $session->{webName};
   my $theCat1 = $params->{_DEFAULT} || $session->{topicName};
-  my $theCat2 = $params->{cat} || '';
+  my $theCat2 = $params->{cat} // '';
 
   #_writeDebug("called handleSUBSUMES($theCat1, $theCat2)");
 
@@ -352,7 +353,7 @@ sub handleDISTANCE {
   my $theTo = $params->{to} || 'TopCategory';
   my $theAbs = $params->{abs} || 'off';
   my $theFormat = $params->{format} || '$dist';
-  my $theUndef = $params->{undef} || '';
+  my $theUndef = $params->{undef} // '';
 
   #_writeDebug("called handleDISTANCE($theFrom, $theTo)");
 
@@ -385,21 +386,21 @@ sub handleCATINFO {
 
   #_writeDebug("called handleCATINFO(".$params->stringify().")");
   my $theCat = $params->{cat};
-  my $theFormat = $params->{format} || '$link';
+  my $theFormat = $params->{format} // '$link';
   my $theSep = $params->{separator};
-  my $theHeader = $params->{header} || '';
-  my $theFooter = $params->{footer} || '';
+  my $theHeader = $params->{header} // '';
+  my $theFooter = $params->{footer} // '';
   my $thisWeb = $params->{web} || $session->{webName};
   my $thisTopic = $params->{_DEFAULT} || $params->{topic};
-  my $theSubsumes = $params->{subsumes} || '';
-  my $theParentSubsumes = $params->{parentsubsumes} || '';
+  my $theSubsumes = $params->{subsumes} // '';
+  my $theParentSubsumes = $params->{parentsubsumes} // '';
   my $theSortChildren = $params->{sortchildren} || 'off';
   my $theMaxChildren = $params->{maxchildren} || 0;
   my $theHideNull = $params->{hidenull} || 'off';
-  my $theNull = $params->{null} || '';
-  my $theExclude = $params->{exclude} || '';
-  my $theInclude = $params->{include} || '';
-  my $theTruncate = $params->{truncate} || '';
+  my $theNull = $params->{null} // '';
+  my $theExclude = $params->{exclude} // '';
+  my $theInclude = $params->{include} // '';
+  my $theTruncate = $params->{truncate} // '';
   my $theMatchAttr = $params->{matchattr} || 'name';
   my $theMatchCase = $params->{matchcase} || 'on';
   my $theLimit = $params->{limit};
@@ -561,7 +562,7 @@ sub handleCATINFO {
     if ($line =~ /\$children/ && $theMaxChildren) {
       @children = sort {uc($a->title) cmp uc($b->title)} $category->getChildren();
       @children = grep {$_->{name} ne 'BottomCategory'} @children;
-      @children = grep {Foswiki::Func::checkAccessPermission("view", $user, undef, $_->{name}, $_->{origWeb})} @children;
+      @children = grep {Foswiki::Func::checkAccessPermission("VIEW", $user, undef, $_->{name}, $_->{origWeb})} @children;
 
       if ($theHideNull eq 'on') {
         @children = grep {$_->countLeafs() > 0} 
@@ -580,7 +581,7 @@ sub handleCATINFO {
 
       if ($theMaxChildren && $theMaxChildren < @children) {
         if (splice(@children, $theMaxChildren)) {
-          $moreChildren = $params->{morechildren} || '';
+          $moreChildren = $params->{morechildren} // '';
         }
       }
     }
@@ -622,11 +623,12 @@ sub handleCATINFO {
       $childrenUrls = join($theSep, @urls);
     }
 
+    # TODO: subcats
+
     my $tags = '';
     if ($line =~ /\$tags/) {
       $tags = join($theSep, sort $category->getTagsOfTopics());
     }
-
 
     my $isCyclic = 0;
     $isCyclic = $category->isCyclic() if $theFormat =~ /\$cyclic/;
@@ -642,7 +644,7 @@ sub handleCATINFO {
     my $origlink = $category->getLink(0);
     my $origurl = $category->getUrl(0);
     my $url = $category->getUrl();
-    my $summary = $category->summary || '';
+    my $summary = $category->summary // '';
 
     my $iconName = $category->icon();
     my $icon = $category->getIcon();
@@ -708,12 +710,12 @@ sub handleTAGINFO {
   #_writeDebug("called handleTAGINFO(".$params->stringify().")");
   my $theFormat = $params->{format} || '$link';
   my $theSep = $params->{separator};
-  my $theHeader = $params->{header} || '';
-  my $theFooter = $params->{footer} || '';
+  my $theHeader = $params->{header} // '';
+  my $theFooter = $params->{footer} // '';
   my $thisWeb = $params->{web} || $session->{webName};
   my $thisTopic = $params->{_DEFAULT} || $params->{topic} || $session->{topicName};
-  my $theExclude = $params->{exclude} || '';
-  my $theInclude = $params->{include} || '';
+  my $theExclude = $params->{exclude} // '';
+  my $theInclude = $params->{include} // '';
   my $theLimit = $params->{limit};
   my $theSkip = $params->{skip};
 
@@ -741,7 +743,6 @@ sub handleTAGINFO {
   my @tags = split(/\s*,\s*/, $tags);
 
   my @result;
-  my $context = Foswiki::Func::getContext();
   my $index = 0;
   foreach my $tag (sort @tags) {
     $tag =~ s/^\s+|\s+$//g;
@@ -750,17 +751,11 @@ sub handleTAGINFO {
     $index++;
     next if $theSkip && $index <= $theSkip;
     my $line = $theFormat;
-    my $url;
-    if ($context->{SolrPluginEnabled}) {
-      # SMELL: WikiWords are autolinked in parameter position ... wtf
-      $url = '<noautolink>%SOLRSCRIPTURL{topic="'.$thisWeb.'.WebSearch" tag="'.$tag.'" separator="&&"}%</noautolink>'; # && to please MAKETEXT :(
-    } else {
-      $url = Foswiki::Func::getScriptUrlPath($thisWeb, "WebTagCloud", "view", tag=>$tag);
-    }
+    my $url = $this->getTagUrl($thisWeb, $tag);
+    my $link = $this->getTagLink($thisWeb, $tag);
     my $class = $tag;
     $class =~ s/["' ]/_/g;
     $class = "tag_".$class;
-    my $link = "<a href='$url' rel='tag' class='\$class'><noautolink>$tag</noautolink></a>";
     $line =~ s/\$index/$index/g;
     $line =~ s/\$url/$url/g;
     $line =~ s/\$link/$link/g;
@@ -781,6 +776,24 @@ sub handleTAGINFO {
 
   #_writeDebug("result='$result'");
   return $result;
+}
+
+sub getTagUrl {
+  my ($this, $web, $tag) = @_;
+
+  my $url;
+  if (Foswiki::Func::getContext()->{SolrPluginEnabled}) {
+    return '<noautolink>%SOLRSCRIPTURL{topic="'.$web.'.WebSearch" union="web" multivalue="web" web="'.$web.'" tag="'.$tag.'" separator="&&"}%</noautolink>'; # && to please MAKETEXT :(
+  } 
+
+  return Foswiki::Func::getScriptUrlPath($web, "WebTagCloud", "view", tag=>$tag);
+}
+
+sub getTagLink {
+  my ($this, $web, $tag) = @_;
+
+  my $url = $this->getTagUrl($web, $tag);
+  return "<a href='$url' rel='tag' itemprop='keywords' class='\$class'><noautolink>$tag</noautolink></a>";
 }
 
 =begin TML
@@ -1346,7 +1359,7 @@ sub renameTag {
 
     foreach my $from (@from) {
       if ($tags{$from}) {
-        $gotAccess = Foswiki::Func::checkAccessPermission('change', $user, undef, $topic, $web)
+        $gotAccess = Foswiki::Func::checkAccessPermission('CHANGE', $user, undef, $topic, $web)
           unless defined $gotAccess;
         next unless $gotAccess;
         delete $tags{$from};
@@ -1414,8 +1427,9 @@ sub getIndexFields {
       my $name = $fieldDef->{name};
       my $type = $fieldDef->{type};
       my $field = $meta->get('FIELD', $name);
-      my $value = $field->{value} || '';
+      my $value = $field->{value} // '';
 
+      next if $value eq "";
       next if $seenFields{$name};
       $seenFields{$name} = 1;
 
@@ -1452,37 +1466,18 @@ sub getIndexFields {
         }
 
         # create a field specific category facet
-	my $fieldName = 'field_'.$name.'_lst'; # Note, there's a field_..._s as well
-	foreach my $category (keys %thisCategories) {
-	  push @$indexFields, [$fieldName => $category];
-	}
+        my $fieldName = 'field_'.$name.'_lst'; # Note, there's a field_..._s as well
+        foreach my $category (keys %thisCategories) {
+          push @$indexFields, [$fieldName => $category];
+        }
       }
 
       # tags
       elsif ($type eq 'tag') {
-        foreach my $item (split(/\s*,\s*/, $value)) {
-          $tags{$item} = 1; 
-        }
-      }
-    }
-
-    # gather all parents of all cat fields
-    if ($hierarchy) {
-      my %seenWebCat = ();
-      foreach my $category (keys %categories) {
-	my $cat = $hierarchy->getCategory($category);
-	next unless $cat;
-	foreach my $parent ($cat->getAllParents()) {
-	  $categories{$parent} = 1;
-	}
-        foreach my $breadCrumb ($cat->getAllBreadCrumbs) {
-          my $prefix = $web;
-          foreach my $component (split(/\./, $breadCrumb)) {
-            $prefix .= '.'.$component;
-            next if $seenWebCat{$prefix};
-            $seenWebCat{$prefix} = 1;
-            push @$indexFields, ['webcat' => $prefix];
-          }
+        foreach my $tag (split(/\s*,\s*/, $value)) {
+          #push @$indexFields, ['field_'.$name.'_link_lst' => $this->getTagLink($web, $tag)]
+          #  unless $tags{$tag};
+          $tags{$tag} = 1; 
         }
       }
     }
@@ -1496,6 +1491,7 @@ sub getIndexFields {
     }
   }
 
+  #print STDERR "indexedFiles=".dump($indexFields)."\n";
   $this->{cachedIndexFields}{"$web.$topic"} = $indexFields;
   return $indexFields;
 }
@@ -1514,10 +1510,15 @@ sub solrIndexTopicHandler {
   my $indexFields = $this->getIndexFields($web, $topic, $meta);
   if ($indexFields) {
     foreach my $item (@$indexFields) {
-      my $field = $indexer->getField($doc, $item->[0]);
-      if (!$field || $field->value() ne $item->[1]) {
-        $doc->add_fields($item);
+      my @fields = $indexer->getField($doc, $item->[0]);
+      my $found = 0;
+      foreach my $field (@fields) {
+        if ($field->value eq $item->[1]) {
+          $found = 1;
+          last;
+        }
       }
+      $doc->add_fields($item) unless $found;
     }
   }
 
@@ -1630,8 +1631,6 @@ sub getTopicTypes {
   return split(/\s*,\s*/, $topicTypes);
 }
 
-################################################################################
-###  static helpers
 sub _getResponsiblePerson {
   my $meta = shift;
 
@@ -1646,7 +1645,7 @@ sub _getResponsiblePerson {
     my $responsiblePerson = $meta->get('FIELD', "ResponsiblePerson");
     $responsiblePerson = $responsiblePerson->{value} if defined $responsiblePerson;
 
-    foreach my $person (split(/\s*,\s*/, $responsiblePerson || "")) {
+    foreach my $person (split(/\s*,\s*/, $responsiblePerson // '')) {
       $person =~ s/^.*\.(.*?)$/$1/;
       $list{$person} = 1;
     }
@@ -1679,7 +1678,6 @@ sub _expandVariables {
 
 sub _writeDebug {
   print STDERR '- ClassificationPlugin::Core - '.$_[0]."\n" if TRACE;
-  #Foswiki::Func::writeDebug('- ClassificationPlugin::Core - '.$_[0]) if TRACE;
 }
 
 1;

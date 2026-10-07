@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2025 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2026 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -43,7 +43,6 @@ use JSON ();
 # 900: oops, not mapped onto any facet
 
 
-###############################################################################
 sub new {
   my $class = shift;
 
@@ -54,12 +53,10 @@ sub new {
   return $this;
 }
 
-###############################################################################
 sub finish {
   # a nop for now
 }
 
-###############################################################################
 sub printJSONRPC {
   my ($this, $response, $code, $text, $id) = @_;
 
@@ -93,7 +90,6 @@ sub printJSONRPC {
   $response->print($message);
 }
 
-###############################################################################
 sub normalizeTags {
   my ($this, $session, $subject, $verb, $response) = @_;
 
@@ -139,7 +135,6 @@ sub normalizeTags {
   return;
 }
 
-###############################################################################
 # rename a tag: 
 #
 # parameters
@@ -184,7 +179,6 @@ sub renameTag {
   return;
 }
 
-###############################################################################
 # convert all topics of a TopicType to a newly created TopicType by splitting
 # and distributing its facets onto newly named formfields. For example
 # a Category field might hold categories of different kind. You can now
@@ -349,7 +343,6 @@ sub splitFacet {
   return "OK: converted $foundTopics topics\n";
 }
 
-###############################################################################
 sub deployTopicType {
   my ($this, $session, $subject, $verb, $response) = @_;
 
@@ -512,7 +505,7 @@ sub deployTopicType {
       #_writeDebug("adding form $dataForm");
       $meta->put('FORM', { name => $dataForm });
 
-      my $topicTitle = Foswiki::Func::getTopicTitle($web, $topic, undef, $meta);
+      my $topicTitle = _getTopicTitle($web, $topic, undef, $meta);
       if (defined $topicTitle) {
         $meta->remove('PREFERENCE', 'TOPICTITLE');
         $meta->putKeyed( 'FIELD', { 
@@ -571,12 +564,23 @@ sub deployTopicType {
   return;
 }
 
-###############################################################################
 # statics
-###############################################################################
 sub _writeDebug {
   print STDERR $_[0]."\n" if $debug;
-  #Foswiki::Func::writeDebug('- ClassificationPlugin::Services - '.$_[0]) if $debug;
+}
+
+sub _getTopicTitle {
+  my $web = shift;
+  my $topic = shift;
+
+  return Foswiki::Func::getTopicTitle($web, $topic, @_) if $Foswiki::cfg{Plugins}{TopicTitlePlugin}{Enabled};
+
+  return $topic if $topic ne $Foswiki::cfg{HomeTopicName};
+
+  my $webTitle = $web;
+  $webTitle =~ s/^.*[\/\.]//;
+
+  return $webTitle;
 }
 
 1;

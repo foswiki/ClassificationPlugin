@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1" version="1"}%
 %META:TOPICPARENT{name="WebHome"}%
 
 
@@ -7,7 +7,6 @@
 %META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
 %META:FIELD{name="Summary" title="Summary" value=""}%
 %META:FIELD{name="WikiApplication" title="WikiApplication" value="none"}%
-%META:PREFERENCE{name="VIEW_TEMPLATE" title="VIEW_TEMPLATE" type="Set" value="Applications.WebLexiconView"}%
 %META:LEXICON{name="id1" Comment="" Englishen="" Frenchfr="" Germande="Kategorien" String="Categories" author="micha" date="1605979297"}%
 %META:LEXICON{name="id2" Comment="" Englishen="" Frenchfr="" Germande="Schlüsselworte" String="Tags" author="micha" date="1605979472"}%
 %META:LEXICON{name="id3" Comment="" Englishen="" Frenchfr="" Germande="Kategorie" String="Category" author="micha" date="1605979309"}%
@@ -37,7 +36,7 @@
 %META:LEXICON{name="id28" Comment="CategoryEditTemplate" Englishen="" Frenchfr="" Germande="Importieren" String="Import" author="micha" date="1605979354"}%
 %META:LEXICON{name="id29" Comment="" Englishen="" Frenchfr="" Germande="Dieser Artikel benötigt eine Verschlagwortung. Bitte fügen Sie Schlüsselworte hinzu, um zu beschreiben, wovon dieser Artikel handelt." String="This page needs tagging. Please add keywords describing what this page is about." author="micha" date="1605979500"}%
 %META:LEXICON{name="id30" Comment="" Englishen="" Frenchfr="" Germande="Dieser Artikel benötigt eine Kategorisierung. Bitte stellen Sie ihn in eine adäquate Kategorie." String="This page needs to be categorized. Please file it to an appropriate category." author="micha" date="1605979506"}%
-%META:LEXICON{name="id31" Comment="" Englishen="" Frenchfr="" Germande="Mehrere Überschriften h1 erkannt. Bitte benutzen Sie nur Überschriften h2, h3, …. innerhalb des Inhaltsbereiches." String="Multiple heading 1 detected. Please only use heading 2, 3, … inside the content area." author="micha" date="1605979381"}%
+%META:LEXICON{name="id31" Comment="" Englishen="" Frenchfr="" Germande="Mehrere Überschriften h1 erkannt. Bitte benutzen Sie nur Überschriften h2, h3, …. innerhalb des Inhaltsbereiches." String="Multiple heading 1 detected. Please only use heading 2, 3, ... inside the content area." author="micha" date="1770296302"}%
 %META:LEXICON{name="id32" Comment="" Englishen="" Frenchfr="" Germande="Bitte geben Sie einen Titel für diesen Artikel an." String="enter a title for this topic" author="micha" date="1605979340"}%
 %META:LEXICON{name="id33" Comment="" Englishen="" Frenchfr="" Germande="Kurzbeschreibung oder Untertitel" String="short description or tagline" author="micha" date="1605979441"}%
 %META:LEXICON{name="id34" Comment="" Englishen="" Frenchfr="" Germande="Schlüsselworte für diesen Artikel" String="keywords for this topic" author="micha" date="1605979376"}%
@@ -75,3 +74,5 @@
 %META:LEXICON{name="id70" Comment="" Englishen="" Frenchfr="non marqué" Germande="unmarkiert" String="untagged" author="micha" createauthor="micha" createdate="1731431536" date="1731431536"}%
 %META:LEXICON{name="id71" Comment="" Englishen="" Frenchfr="Cette page a besoin d'être étiquetée. Veuillez ajouter des mots-clés décrivant le sujet de cette page." Germande="Diese Seite muss verschlagwortet werden. Bitte fügen Sie Stichworte hinzu, die beschreiben, worum es auf dieser Seite geht." String="This page needs tagging. Please add keywords describing what this page is about." author="micha" createauthor="micha" createdate="1731431553" date="1731431553"}%
 %META:LEXICON{name="id72" Comment="" Englishen="" Frenchfr="Cette page doit être classée. Veuillez la classer dans une catégorie appropriée." Germande="Diese Seite muss kategorisiert werden. Bitte ordnen Sie sie in eine passende Kategorie ein." String="This page needs to be categorized. Please file it to an appropriate category." author="micha" createauthor="micha" createdate="1731431568" date="1731431568"}%
+%META:LEXICON{name="id73" Comment="" Englishen="" Frenchfr="Ajouter un préfixe" Germande="Präfix hinzufügen" String="Add Prefix" author="micha" createauthor="micha" createdate="1779461883" date="1779461883"}%
+%META:PREFERENCE{name="VIEW_TEMPLATE" title="VIEW_TEMPLATE" type="Set" value="Applications.WebLexiconView"}%

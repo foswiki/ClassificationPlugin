@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2025 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2026 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -357,10 +357,13 @@ sub initFromText {
     if ($line =~ /^((?:\t|   )+)\*\s+(.*?)\s*(?:\s\-\s+(.*?)\s*)?$/ ) {
       my $indent = $1;
       my $title = $2;
-      my $summary = $3;
+      my $summary = $3 || '';
       $indent =~ s/\t/   /;
       $indent = length($indent) / 3;
       $insideList = 1;
+
+      my $isFixedName = 0;
+      $isFixedName = 1 if $title =~ s/^\///;
 
       my $name = $title;
       $name =~ s/^\s*//;
@@ -368,11 +371,11 @@ sub initFromText {
       $name = ucfirst($name);
       $name =~ s/[^$Foswiki::regex{mixedAlphaNum}]//g;
       $name =~ s/\s([$Foswiki::regex{mixedAlphaNum}])/\U$1/g;
-      $name .= 'Category';
+      $name .= 'Category' unless $isFixedName;
+      $name = $this->{prefix}.$name if defined $this->{prefix} && !$isFixedName;
 
-      $name = $this->{prefix}.$name if defined $this->{prefix};
-
-      #print STDERR "indent=$indent, title='$title', name=$name, summary=$summary\n";
+      $summary =~ s/%\$SHORTDESCRIPTION%//g; # SMELL
+      #print STDERR "indent=$indent, isFixedName=$isFixedName, title='$title', name=$name, summary=$summary\n";
       push @list, $lookup{$name} = {
         indent => $indent,
         title => $title,
@@ -516,8 +519,10 @@ sub initFromWeb {
     my $impCats = $form->fastget("ImportedCategory");
     $cat->importCategories($impCats, $seenImport, $cat->{name}) if $impCats;
 
-    my $text = $form->fastget("SubCategories");
-    $cat->importCategoriesFromText($text, $this, $cat->{name}) if $text;
+    my $text = $form->fastget("SubCategories") // '';
+    $text =~ s/^\s+//;
+    $text =~ s/\s+$//;
+    $cat->importCategoriesFromText($text, $this) if $text;
   }
   
   return 1;
@@ -1033,9 +1038,10 @@ get names of category formfields of a topictype
 sub getCatFields {
   my ($this, @topicTypes) = @_;
 
+
   #_writeDebug("called getCatFields()"); 
   my $db = Foswiki::Plugins::DBCachePlugin::getDB($this->{web});
-  return () unless defined $db;
+  return [] unless defined $db;
 
   my %allCatFields;
   foreach my $topicType (@topicTypes) {
@@ -1114,7 +1120,6 @@ sub getCatFields {
   my @allCatFields = sort keys %allCatFields;
 
   #_writeDebug("... result=".join(",",@allCatFields));
-
   return \@allCatFields;
 }
 
@@ -1251,13 +1256,13 @@ sub traverse {
   my $nrCalls = 0;
   my $seen = {};
 
-  my @cats = map { $this->getCategory($_) } split(/\s*,\s*/,$top);
+  my @cats = grep {$_} map { $this->getCategory($_) } split(/\s*,\s*/,$top);
   $this->sortCategories(\@cats, $sort);
 
   my $nrSiblings = scalar(@cats);
   my $user = Foswiki::Func::getWikiName();
   foreach my $cat (@cats) {
-    if ($cat && Foswiki::Func::checkAccessPermission("view", $user, undef, $cat->{name}, $this->{web})) {
+    if ($cat && Foswiki::Func::checkAccessPermission("VIEW", $user, undef, $cat->{name}, $this->{web})) {
       my $catResult =  $cat->traverse($params, \$nrCalls, 1, $nrSiblings, $seen);
       push @result, $catResult if $catResult;
     }
@@ -1529,7 +1534,6 @@ sub translate {
   return $this->{_translate}{"$text"};
 }
 
-###############################################################################
 # static helpers
 sub _writeDebug {
   print STDERR '- ClassificationPlugin::Hierarchy - '.$_[0]."\n" if TRACE;

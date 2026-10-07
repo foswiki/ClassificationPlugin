@@ -1,8 +1,8 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="WebHome"}%
 ---++ Roles 
 | *ID*     | *Members*                          | *Description* | *Notify* | 
-| Creator  | %IF{"istopic '%WEB%.%TOPIC%'" then="$percntREVINFO{\"$username\" rev=\"1\"}$percnt" else="%USERNAME%"}% | %TRANSLATE{"The person that created this topic."}% | nobody |
+| Creator  | %IF{"istopic '%WEB%.%TOPIC%'" then="$percntCREATEAUTHOR$percnt" else="%USERNAME%"}% | %TRANSLATE{"The person that created this topic."}% | nobody |
 | Approver | %FORMFIELD{"ResponsiblePersons"}%  | %TRANSLATE{"People to approve this topic."}% | nobody |
 | Admin*   | AdminGroup                         | %TRANSLATE{"People with admin rights on the workflow."}% | nobody |
 

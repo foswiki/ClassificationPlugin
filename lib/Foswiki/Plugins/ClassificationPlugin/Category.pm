@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2025 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2026 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,13 +24,6 @@ use Foswiki::Plugins::JQueryPlugin ();
 
 use constant TRACE => 0; # toggle me
 
-###############################################################################
-# static
-sub writeDebug {
-  print STDERR ' - ClassificationPlugin::Category - '.$_[0]."\n" if TRACE;
-}
-
-################################################################################
 # constructor
 sub new {
   my $class = shift;
@@ -54,17 +47,16 @@ sub new {
   # register to hierarchy
   $hierarchy->setCategory($name, $this);
 
-  #writeDebug("new category name=$this->{name} title=$this->title web=$hierarchy->{web}");
+  #_writeDebug("new category name=$this->{name} title=$this->title web=$hierarchy->{web}");
 
   return $this;
 }
 
-###############################################################################
 sub title {
   my ($this, $val) = @_;
 
   if (defined $val) {
-    $val = urlDecode($val);
+    $val = _urlDecode($val);
     if ($val ne ($this->{title}//'')) {
       $this->{title} = $val;
       $this->{gotUpdate} = 1;
@@ -74,12 +66,11 @@ sub title {
   return $this->{hierarchy}->translate($this->{title});
 }
 
-###############################################################################
 sub summary {
   my ($this, $val) = @_;
 
   if (defined $val) {
-    $val = urlDecode($val);
+    $val = _urlDecode($val);
     if ($val ne ($this->{summary}//'')) {
       $this->{summary} = $val;
       $this->{gotUpdate} = 1;
@@ -89,7 +80,6 @@ sub summary {
   return $this->{hierarchy}->translate($this->{summary});
 }
 
-###############################################################################
 sub redirect {
   my ($this, $val) = @_;
 
@@ -103,7 +93,6 @@ sub redirect {
   return $this->{redirect};
 }
 
-###############################################################################
 sub icon {
   my ($this, $val) = @_;
 
@@ -115,7 +104,6 @@ sub icon {
   return $this->{icon};
 }
 
-###############################################################################
 sub getIcon {
   my $this = shift;
 
@@ -130,7 +118,6 @@ sub getIcon {
   });
 }
 
-###############################################################################
 sub getIconUrl {
   my $this = shift;
 
@@ -142,7 +129,6 @@ sub getIconUrl {
   return Foswiki::Plugins::JQueryPlugin::getIconService()->getIconUrlPath($icon);
 }
 
-###############################################################################
 sub order {
   my ($this, $val, $meta) = @_;
 
@@ -169,11 +155,10 @@ sub order {
 }
 
 
-###############################################################################
 sub purgeCache {
   my $this = shift;
 
-  writeDebug("purging category cache for $this->{name}");
+  _writeDebug("purging category cache for $this->{name}");
   undef $this->{_topics};
   undef $this->{_tags};
   undef $this->{_prefs};
@@ -186,7 +171,6 @@ sub purgeCache {
   $this->{gotUpdate} = 1;
 }
 
-###############################################################################
 # destructor
 sub DESTROY {
   my $this = shift;
@@ -198,14 +182,13 @@ sub DESTROY {
   undef $this->{hierarchy};
 }
 
-###############################################################################
 sub init {
   my $this = shift;
 
   my $key = $this->{hierarchy}{web};
   $key .= '.'.$this->{hierarchy}{topic} if defined $this->{hierarchy}{topic};
 
-  writeDebug("init category $this->{name} in $key");
+  _writeDebug("init category $this->{name} in $key");
   foreach my $name (keys %{$this->{parents}}) {
     my $parent = $this->{parents}{$name};
 
@@ -215,7 +198,7 @@ sub init {
       if ($parent) {
         $this->{parents}{$name} = $parent;
       } else {
-        writeDebug("parent $name of $this->{name} NOT found in $key");
+        _writeDebug("parent $name of $this->{name} NOT found in $key");
         delete $this->{parents}{$name};
       }
     }
@@ -227,7 +210,6 @@ sub init {
   $this->{gotUpdate} = 1;
 }
 
-###############################################################################
 sub getLeafs {
   my ($this, $result, $seen) = @_;
 
@@ -250,13 +232,12 @@ sub getLeafs {
   
   unless($foundChild) {
     $result->{$this->{name}} = 1;
-    #writeDebug("found leaf $this->{name}");
+    #_writeDebug("found leaf $this->{name}");
   }
 
   return keys %$result;
 }
 
-###############################################################################
 sub countLeafs {
   my ($this, $filter) = @_;
 	
@@ -264,7 +245,7 @@ sub countLeafs {
   my $nrLeafs = $this->{_nrLeafs}{$filter};
 
   unless (defined $nrLeafs) {
-    #writeDebug("counting leafs of $this->{name}, filter=$filter");
+    #_writeDebug("counting leafs of $this->{name}, filter=$filter");
 
     my @leafs = $this->getLeafs();
     if ($filter) {
@@ -284,13 +265,12 @@ sub countLeafs {
 
     $this->{_nrLeafs}{$filter} = $nrLeafs;
     $this->{gotUpdate} = 1;
-    #writeDebug("countLeafs($this->{name})=$nrLeafs");
+    #_writeDebug("countLeafs($this->{name})=$nrLeafs");
   }
 
   return $nrLeafs;
 }
 
-###############################################################################
 # recursive version of the Wallace-Kollias for transitive closure
 sub computeDistance {
   my ($this, $distance, $ancestors) = @_;
@@ -316,7 +296,7 @@ sub computeDistance {
       # ... to find out if there is a shorter path
       if (!$ancestorToChild || $newDistance < $ancestorToChild) {
         $$distance[$ancestorId][$childId] = $newDistance;
-        #writeDebug("computed distance ($ancestor->{name},$child->{name})=$newDistance");
+        #_writeDebug("computed distance ($ancestor->{name},$child->{name})=$newDistance");
       }
     }
   }
@@ -329,21 +309,18 @@ sub computeDistance {
   $ancestors->{$thisId} = 0;
 }
 
-###############################################################################
 sub distance {
   my ($this, $that) = @_;
 
   return $this->{hierarchy}->catDistance($this, $that);
 }
 
-###############################################################################
 sub subsumes {
   my ($this, $that) = @_;
 
   return $this->{hierarchy}->subsumes($this, $that);
 }
 
-###############################################################################
 # returns 1 if the given topic is in the current category or any sub-category
 sub contains {
   my ($this, $topic) = @_;
@@ -361,12 +338,12 @@ sub contains {
   my $cats = $hierarchy->getCategoriesOfTopic($topic);
   if ($cats) {
     foreach my $cat (@$cats) {
-      #writeDebug("checking $cat");
+      #_writeDebug("checking $cat");
       $result = $hierarchy->subsumes($this, $cat);
       last if $result;
     }
   }
-  #writeDebug("called contains($this->{name}, $topic) = $result");
+  #_writeDebug("called contains($this->{name}, $topic) = $result");
   
   # cache
   $this->{_contains}{$topic} = $result;
@@ -374,11 +351,10 @@ sub contains {
   return $result;
 }
 
-###############################################################################
 sub setParents {
   my $this = shift;
 
-  #writeDebug("called $this->{name}->setParents(@_)");
+  #_writeDebug("called $this->{name}->setParents(@_)");
   foreach my $parent (@_) {
     my $parentObj = $parent;
     my $parentName = $parent;
@@ -393,7 +369,6 @@ sub setParents {
   $this->{gotUpdate} = 1;
 }
 
-###############################################################################
 sub reparent {
   my ($this, $newParent, $oldParent, $meta) = @_;
 
@@ -439,7 +414,6 @@ sub reparent {
   return $meta;
 }
 
-###############################################################################
 # get all parent nodes
 # subdsumes may be a category or category name to restrict parents to those
 # being subsumed
@@ -465,7 +439,6 @@ sub getParents {
   return @parents;
 }
 
-###############################################################################
 # get the "natural" parent
 sub getParent {
   my ($this, $subsumes) = @_;
@@ -476,21 +449,18 @@ sub getParent {
   return shift @parents;
 }
 
-###############################################################################
 sub getAllParents {
   my $this = shift;
 
   return keys %{$this->_getAllParents()};
 }
 
-###############################################################################
 sub isRoot {
   my $this = shift;
 
   return $this eq $this->{hierarchy}{_top} ? 1: 0;
 }
 
-###############################################################################
 sub _getAllParents {
   my ($this, $seen) = @_;
 
@@ -513,7 +483,6 @@ sub _getAllParents {
   return $this->{allparents};
 }
 
-###############################################################################
 sub countTopics {
   my ($this, $filter) = @_;
 
@@ -524,7 +493,6 @@ sub countTopics {
   return scalar(@topics);
 }
 
-###############################################################################
 sub getAllTopics {
   my ($this, $seen) = @_;
 
@@ -544,15 +512,14 @@ sub getAllTopics {
   return keys %topics;
 }
 
-###############################################################################
 sub getTopics {
   my ($this, $filter) = @_;
 
   unless (defined($this->{_topics})) {
-   # writeDebug("$this->{name} triggers collecting topics of categories in $this->{hierarchy}{web}");
+   # _writeDebug("$this->{name} triggers collecting topics of categories in $this->{hierarchy}{web}");
     $this->{hierarchy}->collectTopicsOfCategory();
   } else {
-    #writeDebug("_topics found in cache of $this->{name}");
+    #_writeDebug("_topics found in cache of $this->{name}");
   }
 
   my @topics = ();
@@ -563,7 +530,7 @@ sub getTopics {
     my $web = $this->{hierarchy}{web};
     my $db = Foswiki::Plugins::DBCachePlugin::getDB($web);
     foreach my $topic (keys %{$this->{_topics}}) {
-      #if (Foswiki::Func::checkAccessPermission("view", $user, undef, $topic, $web)) {
+      #if (Foswiki::Func::checkAccessPermission("VIEW", $user, undef, $topic, $web)) {
       #  push @topics, $topic;
       #}
       if ($db->hasAccess("VIEW", $topic, undef, $user)) {
@@ -576,7 +543,6 @@ sub getTopics {
   return $this->filterTopics(\@topics, $filter);
 }
 
-###############################################################################
 sub filterTopics {
   my ($this, $topics, $filter) = @_;
 
@@ -592,12 +558,11 @@ sub filterTopics {
   } @$topics;
 }
 
-###############################################################################
 sub getTagsOfTopics {
   my $this = shift;
 
   unless (defined($this->{_tags})) {
-    #writeDebug("gathering tags in category $this->{name}");
+    #_writeDebug("gathering tags in category $this->{name}");
     my %tags;
     my $hierarchy = $this->{hierarchy};
     my $db = Foswiki::Plugins::DBCachePlugin::getDB($hierarchy->{web});
@@ -620,7 +585,6 @@ sub getTagsOfTopics {
   return keys %{$this->{_tags}};
 }
 
-###############################################################################
 # register a subcategory
 sub addChild {
   my ($this, $cat) = @_;
@@ -630,13 +594,12 @@ sub addChild {
     die "no name in category called from $package, line $line";
   }
 
-  #writeDebug("called $this->{name}->addChild($cat->{name})");
+  #_writeDebug("called $this->{name}->addChild($cat->{name})");
   $this->{children}{$cat->{name}} = $cat;
   $this->{gotUpdate} = 1;
   $cat->{importRoot} = $this->{importRoot} if defined $this->{importRoot};
 }
 
-###############################################################################
 sub removeChild {
   my ($this, $child) = @_;
 
@@ -645,26 +608,24 @@ sub removeChild {
   }
 }
 
-###############################################################################
 sub getChildren {
   return values %{$_[0]->{children}};
 }
 
-###############################################################################
 sub isCyclic {
   my $this = shift;
 
   my $result = $this->{_isCyclic};
   return $result if defined $result;
 
-  #writeDebug("called isCyclic($this->{name})");
+  #_writeDebug("called isCyclic($this->{name})");
 
   $result = 0;
   foreach my $child ($this->getChildren()) {
     next if $child->{name} eq 'BottomCategory';
     $result = $child->subsumes($this);
     if ($result) {
-      #writeDebug("child $child->{name} subsumes $this->{name}: $result");
+      #_writeDebug("child $child->{name} subsumes $this->{name}: $result");
       last;
     }
   }
@@ -675,7 +636,6 @@ sub isCyclic {
   return $result;
 }
 
-###############################################################################
 sub checkAccessPermission {
   my ($this, $user, $type, $seen) = @_;
 
@@ -697,8 +657,8 @@ sub checkAccessPermission {
   unless (defined $access) {
     my $topic = $this->{name};
     my $web = $this->{origWeb};
-    #writeDebug("checking $type access to category $web.$topic for $user");
-    $access = Foswiki::Func::checkAccessPermission($type, $user, undef, $topic, $web);
+    #_writeDebug("checking $type access to category $web.$topic for $user");
+    $access = Foswiki::Func::checkAccessPermission(uc($type), $user, undef, $topic, $web);
   
     if ($access) {
       # recurse til access granted
@@ -716,7 +676,6 @@ sub checkAccessPermission {
   return $access;
 }
 
-###############################################################################
 sub getPreferences {
   my ($this) = @_;
 
@@ -729,13 +688,12 @@ sub getPreferences {
   return $this->{_prefs};
 }
 
-###############################################################################
 sub importCategories {
   my ($this, $impCats) = @_;
 
   return unless $impCats;
 
-  writeDebug("called importCategories($impCats)");
+  _writeDebug("called importCategories($impCats)");
 
   my $thisHierarchy = $this->{hierarchy};
   my $thisWeb = $thisHierarchy->{web};
@@ -783,18 +741,17 @@ sub importCategories {
   $this->{gotUpdate} = 1;
 }
 
-###############################################################################
 sub importCategoriesFromText {
   my ($this, $text, $targetHierarchy) = @_;
 
-  writeDebug("called importCategoriesFromText()");
+  _writeDebug("called importCategoriesFromText()");
   die "no targert hierarchy" unless defined $targetHierarchy;
 
   my $prefix = $this->{name};
   $prefix =~ s/Category$//;
 
   my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchyFromText($text, 
-    prefix => $prefix,
+    prefix => $prefix
   );
   my $top = $hierarchy->getCategory("TopCategory");
 
@@ -813,7 +770,6 @@ sub importCategoriesFromText {
   }
 }
 
-###############################################################################
 sub import {
   my ($this, $hierarchy, $seen) = @_;
 
@@ -842,7 +798,6 @@ sub import {
   return $cat;
 }
 
-###############################################################################
 sub getBreadCrumbs {
   my ($this, $subsumes) = @_;
 
@@ -864,7 +819,6 @@ sub getBreadCrumbs {
   return reverse @breadCrumbs;
 }
 
-###############################################################################
 sub getPathsToRoot {
   my ($this, $subsumes, $seen) = @_;
 
@@ -890,7 +844,6 @@ sub getPathsToRoot {
 }
 
 
-###############################################################################
 sub getAllBreadCrumbs {
   my ($this, $separator, $seen) = @_;
 
@@ -915,7 +868,6 @@ sub getAllBreadCrumbs {
   return @result;
 }
 
-###############################################################################
 sub getLink {
   my ($this, $doRedirect) = @_;
 
@@ -930,10 +882,9 @@ sub getLink {
     if ($baseWeb eq $this->{hierarchy}{web} && $baseTopic eq $this->{name}) || $request->param("catname");
 
   my $class = $currentTopic?" class='$currentTopic'":"";
-  return "<a href='".$this->getUrl($doRedirect)."'$class><noautolink>".$this->title."</noautolink></a>";
+  return "<a href='".$this->getUrl($doRedirect)."'$class>".$this->title."</a>";
 }
 
-###############################################################################
 sub getUrl {
   my ($this, $doRedirect) = @_;
   
@@ -955,7 +906,6 @@ sub getUrl {
   return $url;
 }
 
-###############################################################################
 # get a list of all offsprings
 sub getSubCategories {
   my ($this, $minDepth, $maxDepth) = @_;
@@ -983,7 +933,6 @@ sub _getSubCategories {
 }
 
 
-###############################################################################
 sub traverse {
   my ($this, $params, $nrCalls, $index, $nrSiblings, $seen, $depth, $parentTitle) = @_;
 
@@ -1027,8 +976,8 @@ sub traverse {
   $this->{hierarchy}->sortCategories(\@children, $sort);
   my $nrChildren = scalar(@children);
 
-  #writeDebug("traverse() nrCalls=$$nrCalls, depth=$depth, name=$this->{name} order=".$this->order);
-  #writeDebug("children=".join(', ', map {$_->{name}} @children));
+  #_writeDebug("traverse() nrCalls=$$nrCalls, depth=$depth, name=$this->{name} order=".$this->order);
+  #_writeDebug("children=".join(', ', map {$_->{name}} @children));
 
   my $doChildren = (@children)?1:0;
   my $isExpanded = 0; # set to true if this category is opened by a subsumed opener
@@ -1051,18 +1000,18 @@ sub traverse {
       $openers = Foswiki::Func::expandCommonVariables($openers) if $openers =~ /%/;
       my $isCacheable = ($params->{open} eq $openers)?1:0;
       $openers =~ s/^\s*(.*?)\s*$/$1/;
-      #writeDebug("openers=$openers");
+      #_writeDebug("openers=$openers");
       %openers = map {$_ => 1} split(/\s*,\s*/, $openers);
       $params->{_openers} = \%openers if $isCacheable;
     }
     $isOpener = ($openers{$this->{name}})?1:0;
     foreach my $opener (keys %openers) {
-      #writeDebug("checking at $this->{name} opener '$opener'");
+      #_writeDebug("checking at $this->{name} opener '$opener'");
       my $distance = $this->distance($opener);
       #if ($this->subsumes($opener)) {
       # open thos that show up within the given depth
       if (defined $distance && $distance >= 0 && (!$maxDepth || $distance <= $maxDepth)) {
-        #writeDebug("$this->{name} opened by $opener");
+        #_writeDebug("$this->{name} opened by $opener");
         $doChildren = 1;
         $isExpanded = 1;
         last;
@@ -1073,25 +1022,25 @@ sub traverse {
   #print STDERR "$this->{name}: isOpener=$isOpener, isExpanded=$isExpanded, doChildren=$doChildren\n";
 
   if (!$isOpener && !$isExpanded && $params->{hideclosed} && $params->{hideclosed} eq 'on') {
-    #writeDebug("hideclosed $this->{name} / ".$this->title);
+    #_writeDebug("hideclosed $this->{name} / ".$this->title);
     return '';
   }
 
   my @subResult;
   my $childIndex = 1;
   if ($doChildren) {
-    #writeDebug("doing children of $this->{name}/".$this->title");
+    #_writeDebug("doing children of $this->{name}/".$this->title");
     my $user = Foswiki::Func::getWikiName();
     my $web = $this->{hierarchy}{web};
     foreach my $child (@children) {
       next if $child->{name} eq 'BottomCategory';
-      next unless Foswiki::Func::checkAccessPermission("view", $user, undef, $child->{name}, $web);
+      next unless Foswiki::Func::checkAccessPermission("VIEW", $user, undef, $child->{name}, $web);
       my $childResult = $child->traverse($params, $nrCalls, $childIndex, $nrChildren, $seen, $isExpanded?$depth:$depth+1, $this->title);
       push @subResult, $childResult if $childResult;
       $childIndex++;
     }
   } else {
-    #writeDebug("not decending at $this->{name}");
+    #_writeDebug("not decending at $this->{name}");
     if (@children) {
       my $placeholder = $params->{placeholder};
       push @subResult, $placeholder if $placeholder;
@@ -1179,7 +1128,7 @@ sub traverse {
   # DEPRECATED: use filter instead
   my $tagFilter = $params->{tags};
   if ($tagFilter) {
-    #writeDebug("tagFilter=$tagFilter");
+    #_writeDebug("tagFilter=$tagFilter");
     $this->getTagsOfTopics(); # CAUTION: depends on filter
     foreach my $tag (split(/\s*,\s*/, $tagFilter)) {
       return $subResult unless defined $this->{_tags}{$tag};
@@ -1200,7 +1149,7 @@ sub traverse {
   if ($header =~ /\$tags/ ||
       $footer =~ /\$tags/ ||
       $format =~ /\$tags/) {
-    #writeDebug("getting tags");
+    #_writeDebug("getting tags");
     my @tags = $this->getTagsOfTopics(); # CAUTION: depends on filter
     $tags = join(', ', @tags);
   }
@@ -1322,14 +1271,19 @@ sub traverse {
   );
 }
 
-###############################################################################
 # from Foswiki.pm
-sub urlDecode {
-    my $text = shift;
+sub _urlDecode {
+  my $text = shift;
 
-    $text =~ s/%([\da-f]{2})/chr(hex($1))/gei;
+  $text =~ s/%([\da-f]{2})/chr(hex($1))/gei;
 
-    return $text;
+  return $text;
 }
+
+# static
+sub _writeDebug {
+  print STDERR ' - ClassificationPlugin::Category - '.$_[0]."\n" if TRACE;
+}
+
 
 1;

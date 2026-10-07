@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2025 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2026 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,28 +26,6 @@ use constant ALLOW_DENY => 2;
 
 use base 'Foswiki::Access';
 
-###############################################################################
-# static
-sub writeDebug {
-  #&Foswiki::Func::writeDebug('- ClassificationPlugin - '.$_[0]) if TRACE;
-  print STDERR '- ClassificationPlugin::Access - '.$_[0]."\n" if TRACE;
-}
-
-###############################################################################
-# static
-sub init {
-
-  writeDebug("called init");
-
-  # create a derived Access object
-  my $session = $Foswiki::Plugins::SESSION;
-  my $access = new Foswiki::Plugins::ClassificationPlugin::Access($session);
-
-  # and plug it in
-  $session->{security} = $access;
-}
-
-###############################################################################
 sub new {
   my ($class, $session) = @_;
 
@@ -56,13 +34,12 @@ sub new {
   return $this;
 }
 
-###############################################################################
 sub checkAccessPermission {
   my $this = shift;
   my ($mode, $user, $text, $meta, $topic, $web) = @_;
 
   $topic ||= '';
-  writeDebug("called checkAccessPermission() for $web.$topic for $user");
+  _writeDebug("called checkAccessPermission() for $web.$topic for $user");
 
   # get checking order of access control
   my $aclOrder = $this->{_aclOrderOfWeb}{$web};
@@ -99,6 +76,24 @@ sub checkAccessPermission {
 
   return $catAllow if defined $catAllow;
   return $allowed;
+}
+
+# static
+sub _writeDebug {
+  #&Foswiki::Func::_writeDebug('- ClassificationPlugin - '.$_[0]) if TRACE;
+  print STDERR '- ClassificationPlugin::Access - '.$_[0]."\n" if TRACE;
+}
+
+sub init {
+
+  _writeDebug("called init");
+
+  # create a derived Access object
+  my $session = $Foswiki::Plugins::SESSION;
+  my $access = new Foswiki::Plugins::ClassificationPlugin::Access($session);
+
+  # and plug it in
+  $session->{security} = $access;
 }
 
 1;

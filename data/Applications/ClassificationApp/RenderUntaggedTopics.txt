@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="micha" comment="reprev" date="1475146244" format="1.1" reprev="1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -16,7 +16,8 @@ List all topics that are not tagged. See also [[RenderUncategorizedTopics]].
 <verbatim class="tml">
 %STARTINCLUDE%
 %DBQUERY{
-  "TopicType=~'\b(Classified|Tagged)Topic\b' AND ! Tag"
+  "!Tag"
+  TopicType="\b(Classified|Tagged)Topic\b'"
   exclude="%EXCLUDE{default="UncategorizedTopics|UntaggedTopics|WebTopicEditTemplate"}%"
   web="%THEWEB{default="%BASEWEB%"}%"
   format="   1 [[$web.$topic]]"

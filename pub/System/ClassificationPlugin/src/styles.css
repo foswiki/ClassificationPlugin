@@ -49,15 +49,11 @@
   position:relative;
 }
 .clsTagCloud {
-  margin:10px 0px;
+  margin:var(--margin, 1rem)x 0px;
   text-align:center;
   line-height:normal;
 }
 .clsTagCloud strong {
-  /*
-  font-size:160%;
-  margin:0px 5px 0px 2px;
-  */
   color: var(--color-bold, inherit);
 }
 .clsTagCloud a {
@@ -104,12 +100,12 @@
 
 .clsSideBar ul ul li {
   border:0px;
-  margin:0em 0em 0em 1.5em;
+  margin:0em 0em 0em var(--margin, 1em);
 }
 .clsSideBar ul ul li a:hover,
 .clsSideBar ul ul li a {
   padding:0px;
-  margin:0px;
+  margin:0;
   display:inline;
 }
 
@@ -135,10 +131,12 @@
 .clsTopicItem .imageSimple_left,
 .clsTopicItem .imagePlain_left {
   margin:4px 1em 4px 0;
+  border-radius:2px;
 }
 .clsTopicItem .imageSimple_right,
 .clsTopicItem .imagePlain_right {
   margin:4px 0 4px 1em;
+  border-radius:var(--thumbnail-border-radius, 3px);
 }
 .clsIndexItem .fa {
   font-size:110%;
@@ -157,7 +155,7 @@
 
 /* pagination */
 .clsPagination {
-  margin:calc(var(--margin) * 3) 0 0;
+  margin:var(--margin-2) 0 0;
   display:flex;
   gap:var(--margin);
 }
@@ -182,7 +180,7 @@
   white-space:nowrap;
 }
 .clsPaginationDisabled {
-  background:transparent;
+  visibility:hidden;
 }
 a.clsPaginationPrev:active:hover,
 a.clsPaginationNext:active:hover,
@@ -226,4 +224,8 @@ a.clsPaginationNext:hover {
 .clsPaginationNext::after {
    top: 50%;
    background: linear-gradient(to right bottom, transparent 50%, var(--color-background) 50%);
+}
+.jqTagSuggestions h5,
+.jqTagSuggestions ol {
+  margin:var(--margin-half, 1rem) 0;
 }

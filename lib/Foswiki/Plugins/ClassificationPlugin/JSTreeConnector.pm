@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2013-2025 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2013-2026 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,13 +26,6 @@ use Error qw( :try );
 
 use constant TRACE => 0; # toggle me
 
-################################################################################
-# static
-sub writeDebug {
-  print STDERR $_[0]."\n" if TRACE;
-}
-
-################################################################################
 # constructor
 sub new {
   my $class = shift;
@@ -40,19 +33,23 @@ sub new {
   return bless({@_}, $class);
 }
 
-################################################################################
 # dispatch all handler_... methods
 sub dispatchAction {
   my ($this, $session, $subject, $verb, $response) = @_;
 
   my $request = Foswiki::Func::getRequestObject();
   my $theWeb = $request->param('web') || $session->{webName};
-  $theWeb = Foswiki::Sandbox::untaint($theWeb, \&Foswiki::Sandbox::validateWebName) || '';
+  _writeDebug("called dispatchAction, web=$theWeb");
+
   my $theTopic = $session->{topicName};
   ($theWeb, $theTopic) = Foswiki::Func::normalizeWebTopicName($theWeb, $theTopic);
 
   my $result;
   try {
+
+    throw Error::Simple("access denied")
+      unless Foswiki::Func::checkAccessPermission("VIEW", $session->{user}, undef, $theTopic, $theWeb);
+
     my $hierarchy = Foswiki::Plugins::ClassificationPlugin::getHierarchy($theWeb);
     throw Error::Simple("Hierarchy not found") unless defined $hierarchy;
 
@@ -89,13 +86,12 @@ sub dispatchAction {
   return;
 }
 
-################################################################################
 sub getChildren {
   my ($this, $session, $cat, $selected, $depth, $displayCounts, $sort, $seen) = @_;
 
   return if $depth == 0;
 
-  #writeDebug("getChildren($cat->{name}, $depth)");
+  #_writeDebug("getChildren($cat->{name}, $depth)");
 
   $seen ||= {};
   return if $seen->{$cat};
@@ -171,15 +167,12 @@ sub getChildren {
 }
 
 
-################################################################################
 # handlers
-################################################################################
 
-################################################################################
 sub handle_refresh {
   my ($this, $session, $hierarchy) = @_;
 
-  writeDebug("refresh called for ".$hierarchy->{web});
+  _writeDebug("refresh called for ".$hierarchy->{web});
 
   $hierarchy->init;
   $hierarchy->finish;
@@ -191,11 +184,10 @@ sub handle_refresh {
   };
 }
 
-################################################################################
 sub handle_get_children {
   my ($this, $session, $hierarchy) = @_;
 
-  #writeDebug("get_children called");
+  #_writeDebug("get_children called");
 
   my $request = Foswiki::Func::getRequestObject();
 
@@ -211,7 +203,7 @@ sub handle_get_children {
   my $sort = $request->param('sort');
   $sort = 'on' if !defined($sort) || $sort !~ /^(on|title|order|name)$/;
 
-  #writeDebug("select=@select") if @select;
+  #_writeDebug("select=@select") if @select;
 
   my $cat = $hierarchy->getCategory($catName);
   throw Error::Simple("Unknown category") 
@@ -236,7 +228,7 @@ sub handle_get_children {
 sub _fixIds {
   my ($records, $id) = @_;
 
-  return unless $records && ref($records) eq 'ARRAY';
+  return unless $records && $id && ref($records) eq 'ARRAY';
 
   foreach my $record (@$records) {
     $record->{id} .= '__' . $id unless $id eq 'TopCategory';
@@ -244,7 +236,6 @@ sub _fixIds {
   }
 }
 
-################################################################################
 sub handle_search {
   my ($this, $session, $hierarchy) = @_;
 
@@ -275,11 +266,10 @@ sub handle_search {
   return [sort keys %result];
 }
 
-################################################################################
 sub handle_move_node {
   my ($this, $session, $hierarchy) = @_;
 
-  #writeDebug("move_node called");
+  #_writeDebug("move_node called");
 
   my $request = Foswiki::Func::getRequestObject();
 
@@ -288,6 +278,11 @@ sub handle_move_node {
 
   my $cat = $hierarchy->getCategory($catName);
   throw Error::Simple("Unknown category") unless defined $cat;
+
+  my ($meta) = Foswiki::Func::readTopic($cat->{origWeb}, $cat->{name});
+  throw Error::Simple("access denied") unless $meta->haveAccess("CHANGE");
+  throw Error::Simple("Woops, category not found")
+    unless Foswiki::Func::topicExists($cat->{origWeb}, $cat->{name});
 
   my $newParentName = _getCatParam($request, "parent") || "TopCategory";
   my $newParent = $hierarchy->getCategory($newParentName);
@@ -301,10 +296,6 @@ sub handle_move_node {
   throw Error::Simple("Copy not implemented yet") if $doCopy;
 
   # reparent
-  my ($meta) = Foswiki::Func::readTopic($cat->{origWeb}, $cat->{name});
-  throw Error::Simple("Woops, category not found")
-    unless Foswiki::Func::topicExists($cat->{origWeb}, $cat->{name});
-
   $meta = $cat->reparent($newParent, $oldParent, $meta);
   throw Error::Simple("Woops, can't reparent category") unless defined $meta;
   
@@ -324,7 +315,7 @@ sub handle_move_node {
   }
 
   if (defined $nextCat && defined $prevCat) {
-    #writeDebug("catName=$catName, newParentName=$newParentName, oldParentName=$oldParentName, nextCatName=$nextCatName, prevCatName=$prevCatName, doCopy=$doCopy");
+    #_writeDebug("catName=$catName, newParentName=$newParentName, oldParentName=$oldParentName, nextCatName=$nextCatName, prevCatName=$prevCatName, doCopy=$doCopy");
 
     my @sortedCats = 
       sort {
@@ -350,11 +341,7 @@ sub handle_move_node {
     }
   }
 
-  try {
-    $meta->save();
-  } catch Foswiki::AccessControlException with {
-    throw Error::Simple("No write access");  
-  };
+  $meta->save();
 
   # init'ing hierarchy 
   if ($cat->{hierarchy}{web} ne $cat->{origWeb}) {
@@ -370,11 +357,10 @@ sub handle_move_node {
   };
 }
 
-################################################################################
 sub handle_rename_node {
   my ($this, $session, $hierarchy) = @_;
 
-  #writeDebug("rename_node called");
+  _writeDebug("rename_node called");
 
   my $request = Foswiki::Func::getRequestObject();
 
@@ -417,11 +403,10 @@ sub handle_rename_node {
   };
 }
 
-################################################################################
 sub handle_create_node {
   my ($this, $session, $hierarchy) = @_;
 
-  #writeDebug("create_node called");
+  #_writeDebug("called create_node");
 
   my $request = Foswiki::Func::getRequestObject();
 
@@ -441,7 +426,7 @@ sub handle_create_node {
 
   my $position = $request->param("position");
   $position = '' unless defined $position;
-  #writeDebug("catName=$catName, parentName=$parentName, position=$position, title=$title");
+  #_writeDebug("catName=$catName, parentName=$parentName, position=$position, title=$title");
 
   my $tmplObj;
   my $tmplText;
@@ -450,6 +435,8 @@ sub handle_create_node {
     if Foswiki::Func::topicExists("Applications.ClassificationApp", "CategoryTemplate");
 
   my $obj = Foswiki::Meta->new($session, $hierarchy->{web}, $catName);
+  throw Error::Simple("access denied") unless $obj->haveAccess("CHANGE");
+
   $obj->text($tmplText) if defined $tmplText;
   
   # add form
@@ -475,8 +462,9 @@ sub handle_create_node {
     value => "$position",
   });
 
+
   $obj->save();
-  #writeDebug("new category object:".$obj->getEmbeddedStoreForm());
+  #_writeDebug("new category object:".$obj->getEmbeddedStoreForm());
 
   $hierarchy->init;
   $hierarchy->finish;
@@ -489,11 +477,10 @@ sub handle_create_node {
   };
 }
 
-################################################################################
 sub handle_remove_node {
   my ($this, $session, $hierarchy) = @_;
 
-  #writeDebug("remove_node called");
+  #_writeDebug("remove_node called");
 
   my $request = Foswiki::Func::getRequestObject();
 
@@ -515,7 +502,7 @@ sub handle_remove_node {
     $n++;
   }
 
-  #writeDebug("moving $fromWeb.$fromTopic to $toWeb.$toTopic");
+  #_writeDebug("moving $fromWeb.$fromTopic to $toWeb.$toTopic");
 
   Foswiki::Func::moveTopic($fromWeb, $fromTopic, $toWeb, $toTopic);
 
@@ -527,7 +514,6 @@ sub handle_remove_node {
   };
 }
 
-################################################################################
 sub _getCatParam {
   my ($request, $name) = @_;
 
@@ -538,5 +524,11 @@ sub _getCatParam {
 
   return $cat;
 }
+
+# static
+sub _writeDebug {
+  print STDERR $_[0]."\n" if TRACE;
+}
+
 
 1;

@@ -1,60 +1,47 @@
 .clsCategoryContainer {
-  display:flex;
-  flex-wrap:wrap;
-  margin-right:calc(var(--margin-half) * -1);
-  /*visibility:hidden;*/
+  box-sizing:border-box;
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(var(--min-width, 20rem), 100%), 1fr));
+  gap:var(--margin-half);
+  margin:var(--margin) 0;
 }
-.clsCategoryContainer.cols2 .clsCategoryTile {
-   flex-basis:47%;
-}
-.clsCategoryContainer.cols3 .clsCategoryTile {
-   flex-basis:31%;
-}
-.clsCategoryContainer.cols4 .clsCategoryTile {
-   flex-basis:22%;
-}
-.clsCategoryContainer.cols5 .clsCategoryTile {
-   flex-basis:17%;
-}
-.clsCategoryTile {  
-   min-width:230px;
-   flex-shrink: 1;
-   flex-grow: 1;
-   margin:0 var(--margin-half) var(--margin-half) 0;
+.clsCategoryContainer > * {
    text-decoration:none; 
    box-sizing:border-box;
-   padding:20px !important;
+   padding:1rem !important;
    border:0;
    color: var(--alt-foreground, #333);
    background-color: var(--alt-background, #f6f6f6);
    border: 1px solid var(--alt-border, #ddd);
    border-radius:3px;
+   /*transition:border 150ms ease-out, background 150ms ease-out, box-shadow 150ms ease-out;*/
+}
+.clsCategoryTile.empty {
+   background:transparent;
+   border:0 !important;
+   padding:0 !important;
 }
 .clsCategoryTile .foswikiTopicInfo {
    margin-bottom:0;
 }
-.clsCategoryTile.empty {
-   background:transparent;
-   border:0;
-}
 .clsCategoryTile h4 { 
-   margin:-20px -20px 0 !important;
+   margin:-1rem !important;
    font-weight:normal;
    color:inherit;
 }
 .clsCategoryTile h4 a {
    text-decoration:none;
-   padding:20px 20px 0;
+   padding:1rem;
 }
 .clsCategoryTile h4 .clsCategoryCount {
    font-size:90%;
    color:#818181;
    float:right;
-   margin:20px var(--margin-half) 0 5px;
+   margin:1rem var(--margin-half) 0 5px;
 }
 .clsCategoryTile h4 .jqIcon {
    float:left;
-   margin:20px 5px 0 var(--margin-half);
+   margin:1rem 0.5rem 0 1rem;
 }
 .clsCategoryTile a {
    display:block;
@@ -65,7 +52,7 @@
    text-decoration:underline;
 }
 .clsCategoryTile ul {
-   margin:5px 0 20px;
+   margin:1em 0;
    padding:0 0 0 25px;
 }
 .clsCategoryTile li {
@@ -73,4 +60,10 @@
 }
 .clsCategoryTile li a:hover {
    text-decoration:underline;
+}
+.clsCategoryTile:hover {
+/*
+   border-color:var(--color-secondary-lighter-5);
+   box-shadow:0 0 #000, 0 0 #000, 0 0 0 #000, 0 0 0 #0000, 0 20px 25px -5px var(--color-border), 0 8px 10px -6px var(--color-border);
+*/
 }

@@ -8,11 +8,11 @@
       function updateCategoryIndex(val) {
          $container.find(".fltMakeIndexItem").each(function() { 
             var $this = $(this), 
-               text = $this.text(),
+               text = $this.text().replace(/­/g, ""),
                regex = new RegExp(val, "i");
 
             if (!regex.test(text)) { 
-               $this.fadeOut(); 
+               $this.hide(); 
             } else {
                if (!$this.is(":visible")) {
                   $this.fadeIn();

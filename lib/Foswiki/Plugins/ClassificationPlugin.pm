@@ -1,6 +1,6 @@
 # Plugin for Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 #
-# Copyright (C) 2006-2025 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2006-2026 Michael Daum http://michaeldaumconsulting.com
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@ use Foswiki::Func ();
 use Foswiki::Contrib::DBCacheContrib::Search ();
 use Foswiki::Request();
   
-our $VERSION = '8.00';
+our $VERSION = '8.10';
 our $RELEASE = '%$RELEASE%';
 our $NO_PREFS_IN_TOPIC = 1;
 our $SHORTDESCRIPTION = 'A topic classification plugin and application';
@@ -169,7 +169,7 @@ sub initPlugin {
   );
 
   Foswiki::Func::addToZone('head', 'CLASSIFICATIONPLUGIN::CSS', <<'HERE', 'JQUERYPLUGIN::FOSWIKI');
-<link rel="stylesheet" type="text/css" href="%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/build/styles.css" media="all" />
+<link rel="stylesheet" type="text/css" href="%PUBURLPATH%/%SYSTEMWEB%/ClassificationPlugin/build/styles.css" media="all">
 HERE
 
   if (exists $Foswiki::cfg{Plugins}{SolrPlugin} && $Foswiki::cfg{Plugins}{SolrPlugin}{Enabled}) {

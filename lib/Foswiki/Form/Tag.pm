@@ -1,6 +1,6 @@
 # Module of Foswiki - The Free and Open Source Wiki, http://foswiki.org/
 # 
-# Copyright (C) 2007-2025 Michael Daum http://michaeldaumconsulting.com
+# Copyright (C) 2007-2026 Michael Daum http://michaeldaumconsulting.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,6 +23,27 @@ use Foswiki::Func ();
 use Foswiki::Form::Textboxlist ();
 our @ISA = ('Foswiki::Form::Textboxlist');
 
+sub finish {
+  my $this = shift;
+  $this->SUPER::finish();
+  undef $this->{_params};
+}
+
+sub param {
+  my ($this, $key, $val) = @_;
+
+  unless (defined $this->{_params}) {
+    my %params = Foswiki::Func::extractParameters($this->{value});
+    $this->{_params} = \%params;
+  }
+
+  if (defined $key && defined $val) {
+    $this->{_params}{$key} = $val;
+    return $val;
+  }
+
+  return (defined $key) ? $this->{_params}{$key} : $this->{_params};
+}
 
 sub renderForDisplay {
     my ( $this, $format, $value, $attrs) = @_;
@@ -58,8 +79,17 @@ sub getDisplayValue {
     my $topic = $this->{session}->{topicName};
     my $context = Foswiki::Func::getContext();
 
-    my @value = ();
-    foreach my $tag (sort split(/\s*,\s*/, $value)) {
+    my $sorting = $this->param("sorting") // '';
+
+    my @result = ();
+    my @values = split(/\s*,\s*/, $value);
+    @values = sort @values unless $sorting eq 'manual';
+  
+    my %seen = ();
+    foreach my $tag (@values) {
+      next if $seen{$tag};
+      $seen{$tag} = 1;
+
       my $url = '';
       if ($context->{SolrPluginEnabled}) {
         $url = $this->solrScriptUrl($web, $topic, {
@@ -74,11 +104,10 @@ sub getDisplayValue {
         $url = Foswiki::Func::getScriptUrl($web, "WebTagCloud", "view", tag=>$tag);
       }
 
-      push @value, "<a href='$url' class='tag'>$tag</a>";
+      push @result, "<a href='$url' class='tag'>$tag</a>";
     }
-    $value = join("<span class='tagSep'>, </span>", @value);
 
-    return $value;
+    return join("<span class='tagSep'>, </span>", @result);
 }
 
 sub solrScriptUrl {

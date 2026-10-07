@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicFunction"}%
 %TOC{depth="2"}%
 
@@ -19,7 +19,8 @@
 %STARTINCLUDE%<noautolink> 
 %TAGCLOUD{  
   terms="%DBSTATS{ 
-    "TopicType=~'\b(Categorized|Classified)Topic\b' AND TopicType!~'\bCategory\b'" 
+    "TopicType!~'\bCategory\b'" 
+    TopicType="\b(Categorized|Classified)Topic\b"
     format="$percntCATINFO{cat=\"$key\" web=\"$web\" format=\"$title:$count:$key\"}$percnt"  
     separator=", " 
     field="Category" 
@@ -46,7 +47,7 @@
 
 ---++ Test
 %STARTSECTION{"test"}%
-%DBCALL{"%TOPIC%" THEWEB="%URLPARAM{"theweb"}%" LIMIT="%URLPARAM{"limit" default="30"}%"}%
+%DBCALL{"%TOPIC%" THEWEB="%URLPARAM{"theweb" default="%WEB%"}%" LIMIT="%URLPARAM{"limit" default="30"}%"}%
 %ENDSECTION{"test"}%
 
 

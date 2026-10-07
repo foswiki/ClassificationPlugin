@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1"  version="1"}%
 %META:TOPICPARENT{name="WebHome"}%
 <verbatim>
    * ISA{IntranetDirectory}: %ISA{cat="IntranetDirectory"}%
@@ -19,9 +19,9 @@
 
 %META:FORM{name="Applications.ClassificationApp.ClassifiedTopic"}%
 %META:FIELD{name="TopicType" title="TopicType" value="ClassifiedTopic, CategorizedTopic, TaggedTopic, WikiTopic"}%
-%META:FIELD{name="TopicTitle" attributes="" title="<nop>TopicTitle" value=""}%
-%META:FIELD{name="Summary" attributes="" title="Summary" value=""}%
-%META:FIELD{name="Tag" attributes="" title="Tag" value="FooBar, BarBaz"}%
-%META:FIELD{name="Category" attributes="" title="Category" value=""}%
+%META:FIELD{name="TopicTitle" title="<nop>TopicTitle" value=""}%
+%META:FIELD{name="Summary" title="Summary" value=""}%
+%META:FIELD{name="Tag" title="Tag" value="FooBar, BarBaz"}%
+%META:FIELD{name="Category" title="Category" value=""}%
 %META:PREFERENCE{name="COMMENTSTATE" title="COMMENTSTATE" type="Local" value="closed"}%
 %META:PREFERENCE{name="COMMENTSTRUCTURE" title="COMMENTSTRUCTURE" type="Local" value="threaded"}%

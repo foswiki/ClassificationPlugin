@@ -1,11 +1,5 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1556791161" format="1.1" version="1"}%
-
-
-<channel rdf:about="%SCRIPTURL{"view"}%/%WEB%">
-%IF{ "$'URLPARAM{search}'!=''" then="<title><nop>%WIKITOOLNAME% search results for <nop>%URLPARAM{search}%</title>" else="<title><nop>%WIKITOOLNAME%'s <nop>%WEB% web</title>"}%
-  <link>%SCRIPTURL{"view"}%/%WEB%</link>
-  <description>%TRANSLATE{"The [_1] web of Foswiki, the Free and Open Source Wiki." args="<nop>%WEB%"}%</description>
-%INCLUDE{"%SYSTEMWEB%.WebRssBase"}%<!--
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1" version="1"}%
+   * Set VIEW_TEMPLATE = Applications.RssView
+   * Set LIMIT = 10
    * Set SKIN = rss
-   * Set COVER = rss
--->
+   * Set CACHEABLE = on

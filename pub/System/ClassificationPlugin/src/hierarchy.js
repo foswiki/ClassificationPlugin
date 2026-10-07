@@ -1,7 +1,7 @@
 /*
  * jQuery hierarchy plugin 2.10
  *
- * Copyright (c) 2013-2025 Michael Daum http://michaeldaumconsulting.com
+ * Copyright (c) 2013-2026 Michael Daum http://michaeldaumconsulting.com
  *
  * Licensed under the GPL license http://www.gnu.org/licenses/gpl.html
  *
@@ -238,10 +238,9 @@
             "icon": self.opts.pubUrlPath+"/"+self.opts.systemWeb+"/FamFamFamSilkIcons/bin.png",
             "action": function(obj) { 
               self.confirm({
-                message: "<div class='foswikiCenter'>" + 
-                  $.i18n("Are you sure that you want to delete<br /><b>%title%</b>?", {
+                message: $.i18n("Are you sure that you want to delete <b>%title%</b>?", {
                     title: obj.reference.data("title")
-                  }) + "</div>",
+                  }),
                 okayText: $.i18n("Yes, delete it."),
                 okayIcon: "ui-icon-trash",
                 cancelText: $.i18n("No, thanks.")
@@ -276,12 +275,10 @@
         nodeTitle = data.node.a_attr["data-title"];
 
         self.confirm({
-          message:"<div class='foswikiCenter'>" + 
-                  $.i18n("Are you sure that you want to move <br /><b>%cat%</b><br/>to<br /><b>%to%</b>?", {
+          message: $.i18n("Are you sure that you want to move <b>%cat%</b> to <b>%to%</b>?", {
                     cat: nodeTitle,
                     to: parTitle
-                  }) + 
-                  "</div>",
+                  }),
           okayText: $.i18n("Yes, move it."),
           cancelText: $.i18n("No, thanks.")
         }).then(function() {
@@ -340,21 +337,10 @@
       var node = obj.node, 
           id = node.id, 
           cat = node.a_attr["data-name"], 
-          href = node.a_attr.href,
-          baseTopic = foswiki.getPreference("TOPIC");
+          href = node.a_attr.href;
 
       if (self.opts.mode === 'select') {
-        if (cat === baseTopic) {
-          /*
-          $.pnotify({
-            type: "error",
-            text: $.i18n("Don't select yourself."),
-            delay: 2000
-          });*/
-          self.jstree.deselect_node(id);
-        } else {
-          self.addVal(cat);
-        }
+        self.addVal(cat);
       } 
 
       if (self.opts.mode === 'browse') {
@@ -660,7 +646,7 @@
   Hierarchy.prototype.confirm = function(opts) {
     var defaults = {
       message: "",
-      title: "Confirmation required",
+      title: $.i18n("Confirmation required"),
       okayText: $.i18n("Ok"),
       okayIcon: "ui-icon-check",
       cancelText: $.i18n("Cancel"),

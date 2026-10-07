@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1" version="1"}%
 %META:TOPICPARENT{name="TopicType"}%
 %DBCALL{"Applications.RenderTopicInstaller" 
   TYPE="TopicType"
@@ -23,9 +23,13 @@ See also:
 
 %ENDSECTION{name="documentation" type="section"}%
 
-%STARTINCLUDE%<!-- -->
-%DBCALL{"%WEB%.%TOPIC%" section="%IF{"'%URLPARAM{"web" default="%BASEWEB%"}%.TopCategory' allows 'CHANGE'" then="readwrite" else="readonly"}%"}%
-<!-- -->%STOPINCLUDE%
+%STARTINCLUDE%%DBCALL{"%WEB%.%TOPIC%" 
+   section="%IF{
+               "'%URLPARAM{"web" default="%BASEWEB%"}%.TopCategory' allows 'CREATE'" 
+               then="readwrite" 
+               else="readonly"
+            }%"
+}%%STOPINCLUDE%
 
 <verbatim class="tml">
 %STARTSECTION{"readwrite"}%<!-- -->
@@ -44,7 +48,8 @@ See also:
      MODE=\"edit\"
      BUTTONS=\"filter, refresh\"
    }$percnt"
-}%<!-- -->%ENDSECTION{"readwrite"}%
+}%
+%ENDSECTION{"readwrite"}%
 </verbatim>
 
 <verbatim class="tml">
@@ -70,10 +75,10 @@ See also:
 | Summary | text | 75 | | short description of this category | | |
 | Redirect | topic | 30 | | topic where to redirect to when visiting this category, e.g. a portal page representing this category | | |
 | Tag | tag | 30 | | keywords for this category | | |
-| Category | cat | 1 | web="%BASEWEB%" | one or more parent categories that this category is filed to | c | |
+| Category | cat | 1 | | one or more parent categories that this category is filed to | c | |
 | Icon | icon | 30 | cat="fonticon" | icon to be displayed listing this category | | |
 | <nop>ImportedCategory | text | 75 | | import a root category from another web; all categories below it will be imported to this web in a virtual way | | |
-| <nop>SubCategories | natedit | 0x35 | | specify sub-categories inline as a bullet list | | |
+| <nop>SubCategories | natedit | 0x35 | wysiwyg="off" | specify sub-categories inline as a bullet list | | |
 | Order | text | 5 | | number used in sorting categories | | |
 | Responsible Person | user+multi | 30 | | person taking care of this category | | |
 
@@ -85,7 +90,7 @@ See also:
 %META:FIELD{name="Icon" title="Icon" value="fa-sitemap"}%
 %META:FIELD{name="Editor" title="Editor" value="Applications.ClassificationApp.CategoryEditTemplate"}%
 %META:FIELD{name="Template" title="Template" value="Applications.ClassificationApp.CategoryTemplate"}%
-%META:FIELD{name="CreateAction" title="Create Action" value="edit"}%
+%META:FIELD{name="CreateAction" title="Create Action" value="save"}%
 %META:FIELD{name="TopicNamingMode" title="Topic Naming Mode" value="derived"}%
 %META:FIELD{name="TopicNameTemplate" title="Topic Name Template" value=""}%
 %META:FIELD{name="TopicNameSource" title="Topic Name Source" value="[name=TopicTitle]"}%

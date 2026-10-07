@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="ProjectContributor" comment="" date="1738068130" format="1.1"  version="1"}%
+%META:TOPICINFO{author="ProjectContributor" comment="" date="1791387387" format="1.1" version="1"}%
 ---+!! ClassificationPlugin
 %FORMFIELD{"Description"}%
 
@@ -361,6 +361,7 @@ click below button to update all categories of all webs in one go:
 
 ---++ Change History
 %TABLE{columnwidths="7em" tablewidth="100%"}%
+|  25 Sep 2026: | insufficient check for access rights in jsTreeConnector |
 |  28 Jan 2025: | replacing (optional) dependency on <nop>WorkflowPlugin with [[https://foswiki.org/Extensions/QMPlugin][QMPlugin]]; \
                   improved formfields =cat= and =tag=; \
                   depending on [[https://foswiki.org/Extensions/WikiWorkbenchContrib][WikiWorkbenchContrib]] &gt;= 6.00; \
@@ -413,16 +414,16 @@ click below button to update all categories of all webs in one go:
 |  30 Oct 2006: | Initial version |
 
 
-%META:FILEATTACHMENT{name="ClassificationPluginSnap7.png" attachment="ClassificationPluginSnap7.png" attr="" comment="" date="1738068130" size="233626" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap6.png" attachment="ClassificationPluginSnap6.png" attr="" comment="" date="1738068130" size="108342" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap5.png" attachment="ClassificationPluginSnap5.png" attr="" comment="" date="1738068130" size="32247" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap4.png" attachment="ClassificationPluginSnap4.png" attr="" comment="" date="1738068130" size="113934" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap3.png" attachment="ClassificationPluginSnap3.png" attr="" comment="" date="1738068130" size="337629" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap2.png" attachment="ClassificationPluginSnap2.png" attr="" comment="" date="1738068130" size="30485" user="ProjectContributor" version="1"}%
-%META:FILEATTACHMENT{name="ClassificationPluginSnap1.png" attachment="ClassificationPluginSnap1.png" attr="" comment="" date="1738068130" size="55821" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap7.png" attachment="ClassificationPluginSnap7.png" attr="" comment="" date="1791387387" size="233626" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap6.png" attachment="ClassificationPluginSnap6.png" attr="" comment="" date="1791387387" size="108342" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap5.png" attachment="ClassificationPluginSnap5.png" attr="" comment="" date="1791387387" size="32247" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap4.png" attachment="ClassificationPluginSnap4.png" attr="" comment="" date="1791387387" size="113934" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap3.png" attachment="ClassificationPluginSnap3.png" attr="" comment="" date="1791387387" size="337629" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap2.png" attachment="ClassificationPluginSnap2.png" attr="" comment="" date="1791387387" size="30485" user="ProjectContributor" version="1"}%
+%META:FILEATTACHMENT{name="ClassificationPluginSnap1.png" attachment="ClassificationPluginSnap1.png" attr="" comment="" date="1791387387" size="55821" user="ProjectContributor" version="1"}%
 %META:FORM{name="PackageForm"}%
 %META:FIELD{name="Author" title="Author" value="Michael Daum"}%
-%META:FIELD{name="Copyright" title="Copyright" value="&copy; 2006-2025, Michael Daum"}%
+%META:FIELD{name="Copyright" title="Copyright" value="&copy; 2006-2026, Michael Daum"}%
 %META:FIELD{name="Description" title="Description" value="%25$SHORTDESCRIPTION%25"}%
 %META:FIELD{name="Home" title="Home" value="https://foswiki.org/Extensions/%TOPIC%"}%
 %META:FIELD{name="License" title="License" value="GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]])"}%
